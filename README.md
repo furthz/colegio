@@ -2,7 +2,8 @@
 
 # colegio
 
-colegio is a _short description_. It is built with [Python][0] using the [Django Web Framework][1].
+colegio es un proyecto para soportar los principales procesos de negocio de los colegios privados del Perú.
+It is built with [Python][0] using the [Django Web Framework][1].
 
 This project has the following basic apps:
 
