@@ -11,6 +11,7 @@ Creado 15/07/2017
 from django.db import models
 from urllib.parse import urlparse
 from django.conf import settings
+from django.utils.timezone import now as timezone_now
 
 
 class UrlMixin(models.Model):
@@ -106,7 +107,56 @@ class CreatorMixin(models.Model):
         abstract = True
 
 
-class Tiposdocumentos(models.Model):
+class ActivoMixin(models.Model):
+    """
+    Clase abstracta para definir aquellas que tendrán el campo Activo
+    """
+    activo = models.BooleanField()
+
+    class Meta:
+        abstract = True
+
+
+class CreacionModificacionUserMixin(models.Model):
+    """
+    Clase abstracta para poder especificar los usuario:
+        - Creacion
+        - Modificacion
+    """
+    usuario_creacion = models.CharField('Usuario_Creacion', max_length=10)
+    usuario_modificacion = models.CharField('Usuario_Modificacion', max_length=10)
+
+    class Meta:
+        abstract = True
+
+
+class CreacionModificacionFechaMixin(models.Model):
+    """
+    Clase abstracta para definir las fechas de:
+     - Fecha_creacion
+     - Fecha_modificacion
+    """
+    fecha_creacion = models.DateTimeField()
+    fecha_modificacion = models.DateTimeField()
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.fecha_creacion = timezone_now()
+        else:
+            if not self.fecha_creacion:
+                self.fecha_creacion = timezone_now()
+
+            self.fecha_modificacion = timezone_now()
+
+        super(CreacionModificacionFechaMixin, self).save(*args, **kwargs)
+
+    save.alters_data = True
+
+    class Meta:
+        abstract = True
+
+
+class Tiposdocumentos(ActivoMixin, models.Model):
     """
     clase para definir el catalogo de tipos de documentos
     Campos:
@@ -117,7 +167,6 @@ class Tiposdocumentos(models.Model):
     """
     id_tipo = models.AutoField(primary_key=True)
     descripcion = models.CharField(max_length=25)
-    activo = models.BooleanField()
 
     class Meta:
         managed = False
@@ -127,7 +176,7 @@ class Tiposdocumentos(models.Model):
         return self.descripcion
 
 
-class TipoSexo(models.Model):
+class TipoSexo(ActivoMixin, models.Model):
     """
     Clase para definir el catalogo de tipos de sexo
     Campos:
@@ -137,14 +186,13 @@ class TipoSexo(models.Model):
     """
     id_sexo = models.CharField(primary_key=True, max_length=10)
     descripcion = models.CharField(max_length=10)
-    activo = models.BooleanField()
 
     class Meta:
         managed = False
         db_table = 'tipo_sexo'
 
 
-class TiposGrados(models.Model):
+class TiposGrados(ActivoMixin, models.Model):
     """
     Clase para definir los tipos de grados
     Campos:
@@ -154,14 +202,13 @@ class TiposGrados(models.Model):
     """
     id_tipo_grado = models.AutoField(primary_key=True)
     descripcion = models.CharField(max_length=20)
-    activo = models.BooleanField()
 
     class Meta:
         managed = False
         db_table = 'tipos_grados'
 
 
-class TiposMedioPago(models.Model):
+class TiposMedioPago(ActivoMixin, models.Model):
     """
     Clase para definir el catalogo de los medios de pago
     Campos:
@@ -171,14 +218,13 @@ class TiposMedioPago(models.Model):
     """
     id_tipo_medio = models.AutoField(primary_key=True)
     descripcion = models.CharField(max_length=15)
-    activo = models.BooleanField()
 
     class Meta:
         managed = False
         db_table = 'tipos_medio_pago'
 
 
-class TiposNivel(models.Model):
+class TiposNivel(ActivoMixin, models.Model):
     """
     Clase para definir los tipos de nivel disponibles
     Campos:
@@ -188,7 +234,6 @@ class TiposNivel(models.Model):
     """
     id_tipo = models.AutoField(primary_key=True)
     descripcion = models.CharField(max_length=15)
-    activo = models.BooleanField()
 
     class Meta:
         managed = False
