@@ -44,7 +44,7 @@ class UrlMixin(models.Model):
 
     def get_url_path(self):
         """
-        Metodo que obtiene la url del objeto
+        Metodo que obtiene la url del objetos
         :return: ruta
         """
         if hasattr(self.get_url, "dont_recurse"):
