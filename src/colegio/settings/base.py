@@ -81,9 +81,14 @@ INSTALLED_APPS = (
     'crispy_forms',
     'easy_thumbnails',
 
-    'profiles',
-    'accounts',
 
+    'accounts',
+    'cash',
+    'enrollment',
+    'income',
+    'profiles',
+    'register',
+    'utils',
 )
 
 MIDDLEWARE_CLASSES = (

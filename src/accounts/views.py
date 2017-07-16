@@ -14,6 +14,9 @@ User = get_user_model()
 
 class LoginView(bracesviews.AnonymousRequiredMixin,
                 authviews.LoginView):
+    """
+    Método que permite realizar el Login de un usuario
+    """
     template_name = "accounts/login.html"
     form_class = forms.LoginForm
 
