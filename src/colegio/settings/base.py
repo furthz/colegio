@@ -89,7 +89,9 @@ INSTALLED_APPS = (
     'profiles',
     'register',
     'utils',
+
 )
+
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -105,14 +107,17 @@ ROOT_URLCONF = 'colegio.urls'
 
 WSGI_APPLICATION = 'colegio.wsgi.application'
 
+IS_TESTING = True
+
 # Database
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 
 DATABASES = {
-    # Raises ImproperlyConfigured exception if DATABASE_URL not in
-    # os.environ
+
     'default': env.db(),
+    'TEST': env.db(),
 }
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/dev/topics/i18n/

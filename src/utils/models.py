@@ -7,7 +7,7 @@ Modelo de las clases soporte para la aplicación
 Creado 15/07/2017
 
 """
-
+from __future__ import unicode_literals
 from django.db import models
 from urllib.parse import urlparse
 from django.conf import settings

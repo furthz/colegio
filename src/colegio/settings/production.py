@@ -63,3 +63,5 @@ LOGGING = {
 }
 
 logging.config.dictConfig(LOGGING)
+
+IS_TESTING = False

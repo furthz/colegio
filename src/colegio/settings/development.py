@@ -83,3 +83,5 @@ LOGGING = {
 }
 
 logging.config.dictConfig(LOGGING)
+
+TEST_RUNNER = 'colegio.settings.testing.UseDBTestRunner'
