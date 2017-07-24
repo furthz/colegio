@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
                 ('descripcion', models.CharField(max_length=25)),
             ],
             options={
-                'db_table': 'tiposdocumentos',
+                'db_table': 'tipo_documento',
                 #'managed': False,
             },
         ),

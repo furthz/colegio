@@ -156,7 +156,7 @@ class CreacionModificacionFechaMixin(models.Model):
         abstract = True
 
 
-class Tiposdocumentos(ActivoMixin, models.Model):
+class TipoDocumento(ActivoMixin, models.Model):
     """
     clase para definir el catalogo de tipos de documentos
     Campos:
@@ -170,7 +170,7 @@ class Tiposdocumentos(ActivoMixin, models.Model):
 
     class Meta:
         managed = False
-        db_table = 'tiposdocumentos'
+        db_table = 'tipo_documento'
 
     def __str__(self):
         return self.descripcion
