@@ -10,7 +10,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from datetime import datetime
 from utils.models import CreacionModificacionUserMixin, CreacionModificacionFechaMixin
-
+from django.utils.functional import cached_property
 
 class Persona(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
     """
@@ -37,16 +37,17 @@ class Persona(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, mod
         managed = False
         db_table = 'persona'
 
+    @cached_property
     def getNombreCompleto(self):
         """
         Método que concatena los nombres y apellidos
 
         :return: Nombre completo de la persona
         """
-        nombrecompleto = self.nombre + " " + self.segundo_nombre + " " + self.apellido_pa + " " + self.apellido_ma
 
-        return nombrecompleto
+        return "{0} {1} {2} {3}".format(self.nombre, self.segundo_nombre, self.apellido_pa, self.apellido_ma)
 
+    @property
     def getEdad(self):
         """
         Método que calcula los años de una persona
@@ -61,6 +62,7 @@ class Persona(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, mod
 
         return años
 
+    @property
     def getSexo(self):
         """
         Método que retorna la descripción del tipo de sexo, cruzandolo con el catalogo TipoSexo
@@ -75,6 +77,7 @@ class Persona(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, mod
 
         return sexo.descripcion
 
+    @property
     def getTipoDocumento(self):
         """
         Método que retorna la descripción del tipo de documento, cruzándolo con el cataloto TipoDocumento

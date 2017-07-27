@@ -66,13 +66,14 @@ class ApoderadoModelTest(TestCase):
         self.assertEquals(self.apoderado.nombre, "Juan")
 
     def test_Personasexo(self):
+
         tipo = TipoSexo.objects.create(descripcion="Masculino", activo=True)
 
         self.apoderado.sexo = tipo.id_sexo
 
         self.apoderado.save()
 
-        print("Sexo: " + tipo.descripcion + " Apoderado.Sexo: " + self.apoderado.getSexo)
+        print(str("Apoderado.Sexo: %s" % self.apoderado.getSexo))
 
         self.assertEquals(self.apoderado.getSexo, tipo.descripcion)
 
@@ -83,9 +84,9 @@ class ApoderadoModelTest(TestCase):
 
         self.apoderado.save()
 
-        print("TipoDocumento: " + tipodoc.descripcion + " Apoderado.TipoDoc: " + self.apoderado.getTipoDocumento())
+        print("TipoDocumento: " + tipodoc.descripcion + " Apoderado.TipoDoc: " + self.apoderado.getTipoDocumento)
 
-        self.assertEquals(self.apoderado.getTipoDocumento(), tipodoc.descripcion)
+        self.assertEquals(self.apoderado.getTipoDocumento, tipodoc.descripcion)
 
     def test_TelefonosPersona(self):
         telef = Telefono(numero="940294196", tipo="Movil")
