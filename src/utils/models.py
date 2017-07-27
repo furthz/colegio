@@ -111,7 +111,7 @@ class ActivoMixin(models.Model):
     """
     Clase abstracta para definir aquellas que tendrán el campo Activo
     """
-    activo = models.BooleanField()
+    activo = models.BooleanField(default=True)
 
     class Meta:
         abstract = True
@@ -123,8 +123,8 @@ class CreacionModificacionUserMixin(models.Model):
         - Creacion
         - Modificacion
     """
-    usuario_creacion = models.CharField('Usuario_Creacion', max_length=10)
-    usuario_modificacion = models.CharField('Usuario_Modificacion', max_length=10)
+    usuario_creacion = models.CharField('Usuario_Creacion', null=True, blank=True, max_length=10)
+    usuario_modificacion = models.CharField('Usuario_Modificacion', null= True, blank=True, max_length=10)
 
     class Meta:
         abstract = True
@@ -136,8 +136,8 @@ class CreacionModificacionFechaMixin(models.Model):
      - Fecha_creacion
      - Fecha_modificacion
     """
-    fecha_creacion = models.DateTimeField()
-    fecha_modificacion = models.DateTimeField()
+    fecha_creacion = models.DateTimeField(blank=True, null=True)
+    fecha_modificacion = models.DateTimeField(blank=True, null=True)
 
     def save(self, *args, **kwargs):
         if not self.pk:
