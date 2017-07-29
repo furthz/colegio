@@ -25,3 +25,5 @@ MIGRATION_MODULES = {
     'utils': 'utils.migrations',
     'register': 'register.migrations',
 }
+
+IS_TESTING = True

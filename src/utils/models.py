@@ -87,7 +87,7 @@ class CreatorMixin(models.Model):
     """
     clase abstracta para obtener el creador
     """
-    creator = models.BooleanField('Creator', max_length=255, blank=True)
+    creator = models.BooleanField('Creator', max_length=255, null=True, blank=True)
 
     def save(self, *args, **kwargs):
         """
@@ -96,7 +96,7 @@ class CreatorMixin(models.Model):
         :param kwargs:
         :return:
         """
-        from src.utils.middleware import get_current_user
+        from utils.middleware import get_current_user
         if not self:
             self.creator = get_current_user()
         super(CreatorMixin, self).save(*args, **kwargs)
@@ -124,7 +124,7 @@ class CreacionModificacionUserMixin(models.Model):
         - Modificacion
     """
     usuario_creacion = models.CharField('Usuario_Creacion', null=True, blank=True, max_length=10)
-    usuario_modificacion = models.CharField('Usuario_Modificacion', null= True, blank=True, max_length=10)
+    usuario_modificacion = models.CharField('Usuario_Modificacion', null=True, blank=True, max_length=10)
 
     class Meta:
         abstract = True
@@ -184,7 +184,7 @@ class TipoSexo(ActivoMixin, models.Model):
         - descripción: nombre a utilzar para definir el sexo
         - activo: identificar si el registro está habilitado
     """
-    id_sexo = models.CharField(primary_key=True, max_length=10)
+    id_sexo = models.AutoField(primary_key=True)
     descripcion = models.CharField(max_length=10)
 
     class Meta:
