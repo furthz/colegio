@@ -1,0 +1,19 @@
+<h1>Tipos de Servicio</h1>
+<ul>
+    <form >
+        {% for tiposervicio in object_list %}
+            <li>
+                {{tiposervicio}}
+                <input type="submit" formaction="../list/{{ tiposervicio.id_tipo_servicio }}" value="Ver">
+                <input type="submit" formaction="../list/{{ tiposervicio.id_tipo_servicio }}/update" value="Modificar">
+                <input type="submit" formaction="../list/{{ tiposervicio.id_tipo_servicio }}/delete" value="Borrar">
+                <input type="submit" formaction="../list/{{ tiposervicio.id_tipo_servicio }}/listservicios" value="Servicios">
+            </li>
+        {% empty %}
+            <li>No hay tipos de servicio</li>
+        {% endfor %}
+    </form>
+</ul>
+<form action="../list/create">
+    <input type="submit" value="Crear Tipo de Servicio">
+</form>

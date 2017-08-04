@@ -1,0 +1,11 @@
+<h1>Detalle Completo</h1>
+<ul>
+{% for detalles in servicio.full_detail %}
+    <li>{{detalles}}</li>
+{% empty %}
+    <li>No hay tipos de servicio</li>
+{% endfor %}
+</ul>
+<form action="..">
+    <input type="submit" value="Volver">
+</form>

@@ -23,4 +23,5 @@ TEST_RUNNER = 'colegio.settings.testing.UnManagedModelTestRunner'
 
 MIGRATION_MODULES = {
     'utils': 'utils.migrations',
+    'enrollment': 'enrollment.migrations',
 }
