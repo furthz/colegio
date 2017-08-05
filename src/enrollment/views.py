@@ -17,6 +17,8 @@ from django.core.urlresolvers import reverse_lazy
 from enrollment.forms import ServicioForm
 from enrollment.forms import TipoServicioForm
 from django.urls import reverse
+from utils.models import TiposNivel
+from utils.models import TiposGrados
 import logging
 # Create your views here.
 
@@ -62,6 +64,11 @@ class TipoServicioCreate(CreateView):
         form.instance.fecha_creacion = date.today()
         form.instance.fecha_modificacion = date.today()
         return super(TipoServicioCreate, self).form_valid(form)
+
+    #def get_context_data(self, **kwargs):
+    #    context = super(TipoServicioCreate, self).get_context_data(**kwargs)
+    #    context['nivel'] = Colegio.objects.all()
+    #    return context
 
 class TipoServicioUpdate(UpdateView):
     """
@@ -119,6 +126,7 @@ class ServicioCreate(CreateView):
         form.instance.fecha_creacion = date.today()
         form.instance.fecha_modificacion = date.today()
         return super(ServicioCreate, self).form_valid(form)
+
 
 class ServicioUpdate(UpdateView):
     """

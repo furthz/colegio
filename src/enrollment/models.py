@@ -1,5 +1,7 @@
 from django.db import models
 from django.urls import reverse
+from utils.models import TiposNivel
+from utils.models import TiposGrados
 # Create your models here.
 
 class Colegio(models.Model):
@@ -41,8 +43,10 @@ class TipoServicio(models.Model):
     id_tipo_servicio = models.AutoField(primary_key=True)
     colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column='id_colegio')
     is_ordinario = models.BooleanField()
-    nivel = models.IntegerField(blank=True, null=True)
-    grado = models.IntegerField(blank=True, null=True)
+    nivel = models.ForeignKey(TiposNivel, models.DO_NOTHING, db_column='nivel')
+    #nivel = models.IntegerField(blank=True, null=True)
+    grado = models.ForeignKey(TiposGrados, models.DO_NOTHING, db_column='grado')
+    #grado = models.IntegerField(blank=True, null=True)
     extra = models.CharField(max_length=50, blank=True, null=True)
     codigo_modular = models.CharField(max_length=10)
     fecha_creacion = models.DateField()
