@@ -10,18 +10,19 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
+
     ]
 
     operations = [
         migrations.CreateModel(
             name='Tiposdocumentos',
             fields=[
-                ('activo', models.BooleanField()),
+                ('activo', models.BooleanField(default=True)),
                 ('id_tipo', models.AutoField(primary_key=True, serialize=False)),
-                ('descripcion', models.CharField(max_length=25)),
+                ('descripcion', models.CharField(max_length=25, null=True)),
             ],
             options={
-                'db_table': 'tiposdocumentos',
+                'db_table': 'tipo_documento',
                 #'managed': False,
             },
         ),
@@ -29,7 +30,7 @@ class Migration(migrations.Migration):
             name='TipoSexo',
             fields=[
                 ('activo', models.BooleanField()),
-                ('id_sexo', models.CharField(max_length=10, primary_key=True, serialize=False)),
+                ('id_sexo', models.AutoField(primary_key=True, serialize=False)),
                 ('descripcion', models.CharField(max_length=10)),
             ],
             options={

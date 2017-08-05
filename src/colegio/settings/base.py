@@ -107,8 +107,6 @@ ROOT_URLCONF = 'colegio.urls'
 
 WSGI_APPLICATION = 'colegio.wsgi.application'
 
-IS_TESTING = True
-
 # Database
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 
@@ -122,7 +120,7 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/dev/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-es'
 
 TIME_ZONE = 'UTC'
 
