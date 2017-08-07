@@ -3,6 +3,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.conf import settings
 import logging
+
 from . import models
 
 logger = logging.getLogger("project")
@@ -13,6 +14,10 @@ def create_profile_handler(sender, instance, created, **kwargs):
     if not created:
         return
     # Create the profile object, only if it is newly created
-    profile = models.Profile(user=instance)
-    profile.save()
+    if settings.IS_TESTING == False:
+        profile = models.Profile(user=instance)
+        profile.save()
+
+    #persona = Persona(user=instance)
+    #persona.save()
     logger.info('New user profile for {} created'.format(instance))

@@ -1,5 +1,15 @@
+# system librearies
 import subprocess
 from datetime import datetime
+
+# Third-party libraries
+
+# django modules
+
+# django apps
+
+# current app modules
+
 
 def get_git_changeset(absolute_path):
     repo_dir = absolute_path

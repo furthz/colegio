@@ -2,13 +2,15 @@
 
 from django.test import TestCase
 
-from .models import Apoderado
-from datetime import date
+from datetime import date, datetime
+
 from utils.models import TipoSexo
 from utils.models import TipoDocumento
+
+from django.contrib.auth import REDIRECT_FIELD_NAME, get_user_model, SESSION_KEY
+from .models import Apoderado
 from .models import Telefono
 from .models import Alumno
-from .models import Persona
 from .models import ApoderadoAlumno
 from .models import Direccion
 from .models import Personal
@@ -17,32 +19,51 @@ from .models import Cajero
 from .models import Director
 from .models import Colegio
 from .models import PersonalColegio
+from profiles.models import Profile
 
 from django.utils.timezone import now as timezone_now
+
+User = get_user_model()
 
 
 class PersonaModelTest(TestCase):
     def setUp(self):
-        self.persona = Persona(nombre="Juan",
+
+        usuario = User.objects.create(password='sha1$6efc0$f93efe9fd7542f25a7be94871ea45aa95de57161',
+                                      last_login=date.today(), is_superuser=False,
+                                      name='testclient',
+                                      is_staff=False, is_active=True,
+                                      date_joined=date.today()
+                                      )
+
+
+        print("Usuario: "+ str(usuario.id))
+
+        self.persona = Profile(nombre="Juan",
                                segundo_nombre="Carlos",
                                apellido_ma='Carrasco',
                                apellido_pa="Bermudez",
                                tipo_documento="1",
                                numerodocumento="3344955",
                                sexo="1",
-                               correo="sas",
+                               correo="sasa",
                                fecha_nac=date.today(),
                                fecha_creacion_persona=date.today(),
                                fecha_modificacion_persona=date.today(),
                                usuario_modificacion_persona="raul",
-                               usuario_creacion_persona="raul"
+                               usuario_creacion_persona="raul",
+                                user=usuario
                                )
         self.persona.save()
+
+
+
+        # self.persona.save()
 
         self.tipo = TipoDocumento(descripcion="DNI", activo=True)
         self.tipo.save()
 
-        print("idpersonainicio: " + str(self.persona.id_persona))
+        print("idpersonainicio: " + str(self.persona.id_profile))
 
     def test_PersonaAddApoderado(self):
         apo = Apoderado()
@@ -77,6 +98,11 @@ class PersonaModelTest(TestCase):
 
         director = Director().saveDirectorFromPersonal(personal=self.personal, activo_director=True)
         self.assertEquals(director.nombre, director.persona.nombre)
+
+
+
+
+        # print("URL: " + self.personal.get_url_path())
 
 
 class ApoderadoModelTest(TestCase):
@@ -206,7 +232,7 @@ class ColegioModelTest(TestCase):
         self.colegio.telefonos.add(tel)
         self.colegio.save()
 
-        self.assertEquals(self.colegio.telefonos.count(),1)
+        self.assertEquals(self.colegio.telefonos.count(), 1)
 
     def test_colegioDireccion(self):
         dire = Direccion(distrito="San Isidro", numero="306", calle="Los Pinos")
@@ -215,23 +241,23 @@ class ColegioModelTest(TestCase):
         self.colegio.direcciones.add(dire)
         self.colegio.save()
 
-        self.assertEquals(self.colegio.direcciones.count(),1)
+        self.assertEquals(self.colegio.direcciones.count(), 1)
 
     def test_colegioAddPersonal(self):
         pers = Personal(nombre="Juan",
-                               segundo_nombre="Carlos",
-                               apellido_ma='Carrasco',
-                               apellido_pa="Bermudez",
-                               tipo_documento="1",
-                               numerodocumento="3344955",
-                               sexo="1",
-                               correo="sas",
-                               fecha_nac=date.today(),
-                               fecha_creacion_persona=date.today(),
-                               fecha_modificacion_persona=date.today(),
-                               usuario_modificacion_persona="raul",
-                               usuario_creacion_persona="raul"
-                               )
+                        segundo_nombre="Carlos",
+                        apellido_ma='Carrasco',
+                        apellido_pa="Bermudez",
+                        tipo_documento="1",
+                        numerodocumento="3344955",
+                        sexo="1",
+                        correo="sas",
+                        fecha_nac=date.today(),
+                        fecha_creacion_persona=date.today(),
+                        fecha_modificacion_persona=date.today(),
+                        usuario_modificacion_persona="raul",
+                        usuario_creacion_persona="raul"
+                        )
         pers.save()
 
         persocole = PersonalColegio(personal=pers, colegio=self.colegio, activo=True)

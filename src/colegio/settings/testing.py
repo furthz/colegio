@@ -27,3 +27,4 @@ MIGRATION_MODULES = {
 }
 
 IS_TESTING = True
+IS_MIGRATE = False

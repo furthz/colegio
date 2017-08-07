@@ -2,6 +2,8 @@
 __pycache__/
 *.py[cod]
 
+*.iml
+
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
