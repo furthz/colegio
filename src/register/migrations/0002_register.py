@@ -85,7 +85,7 @@ class Migration(migrations.Migration):
                 ('id_alumno', models.AutoField(primary_key=True, serialize=False)),
                 ('codigoint', models.CharField(blank=True, max_length=15, null=True)),
                 ('persona', models.OneToOneField(on_delete=django.db.models.deletion.DO_NOTHING,
-                                                 parent_link=True, to='profiles.Profile', db_column="id_persona")),
+                                                 parent_link=True, to='profiles.Profile')),
                 ('fecha_creacion', models.DateField(null=True)),
                 ('fecha_modificacion', models.DateField(null=True)),
                 ('usuario_creacion', models.CharField(max_length=10, null=True)),
