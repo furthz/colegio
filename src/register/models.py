@@ -9,36 +9,28 @@ Fecha: 23/07/2017
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.db import models
-# from django.contrib.auth import get_user_model
-from django.contrib.auth.models import User
-from utils.models import CreacionModificacionUserMixin
+from utils.models import CreacionModificacionUserMixin, CreacionModificacionFechaPersonalMixin, \
+    CreacionModificacionFechaApoderadoMixin, CreacionModificacionFechaAlumnoMixin, \
+    CreacionModificacionFechaPromotorMixin, CreacionModificacionFechaCajeroMixin, CreacionModificacionFechaDirectorMixin
 from utils.models import CreacionModificacionFechaMixin
 from utils.models import ActivoMixin
 from utils.models import UrlMixin
 
-from django.conf import settings
-from django.utils.functional import cached_property
-from datetime import datetime
-from profiles.models import BaseProfile
-
 from profiles.models import Profile
-# User = get_user_model()
 
-class Personal(UrlMixin, Profile, models.Model):
+
+class Personal(CreacionModificacionFechaPersonalMixin, Profile, models.Model):
     """
     Clase para el Personal
     """
     id_personal = models.AutoField(primary_key=True)
     persona = models.OneToOneField(Profile, models.DO_NOTHING, parent_link=True)
     activo_personal = models.BooleanField(db_column="activo", default=True)
-    fecha_creacion_personal = models.DateField(db_column="fecha_creacion")
-    fecha_modificacion_personal = models.DateField(db_column="fecha_modificacion")
+    # fecha_creacion_personal = models.DateField(db_column="fecha_creacion")
+    # fecha_modificacion_personal = models.DateField(db_column="fecha_modificacion")
     usuario_creacion_personal = models.CharField(max_length=10, db_column="usuario_creacion")
     usuario_modificacion_personal = models.CharField(max_length=10, db_column="usuario_modificacion")
 
-    def get_url_path(self):
-
-        return reverse("", kwargs={"id_personal": str(self.pk), })
 
     def savePersonalFromPersona(self, persona: Profile, **atributos):
         """
@@ -126,15 +118,15 @@ class Direccion(CreacionModificacionUserMixin, CreacionModificacionFechaMixin, m
         db_table = 'direccion'
 
 
-class Apoderado(Profile, models.Model):
+class Apoderado(CreacionModificacionFechaApoderadoMixin, Profile, models.Model):
     """
     Clase para identificar a los apoderados de los alumnos
     """
     id_apoderado = models.AutoField(primary_key=True)
     parentesco = models.CharField(max_length=30)
     persona = models.OneToOneField(Profile, models.DO_NOTHING, parent_link=True, )
-    fecha_creacion_apoderado = models.DateField(db_column="fecha_creacion")
-    fecha_modificacion_apoderado = models.DateField(db_column="fecha_modificacion")
+    # fecha_creacion_apoderado = models.DateField(db_column="fecha_creacion")
+    # fecha_modificacion_apoderado = models.DateField(db_column="fecha_modificacion")
     usuario_creacion_apoderado = models.CharField(max_length=10, db_column="usuario_creacion")
     usuario_modificacion_apoderado = models.CharField(max_length=10, db_column="usuario_modificacion")
 
@@ -170,7 +162,7 @@ class Apoderado(Profile, models.Model):
         db_table = 'apoderado'
 
 
-class Alumno(Profile, models.Model):
+class Alumno(CreacionModificacionFechaAlumnoMixin, Profile, models.Model):
     """
     Clase para identificar a los Alumnos
     """
@@ -178,8 +170,8 @@ class Alumno(Profile, models.Model):
     codigoint = models.CharField(max_length=15, blank=True, null=True)
     persona = models.OneToOneField(Profile, models.DO_NOTHING, parent_link=True)
     apoderados = models.ManyToManyField(Apoderado, through='ApoderadoAlumno', related_name='alumnos', null=True)
-    fecha_creacion_alumno = models.DateField(db_column="fecha_creacion")
-    fecha_modificacion_alumno = models.DateField(db_column="fecha_modificacion")
+    # fecha_creacion_alumno = models.DateField(db_column="fecha_creacion")
+    # fecha_modificacion_alumno = models.DateField(db_column="fecha_modificacion")
     usuario_creacion_alumno = models.CharField(max_length=10, db_column="usuario_creacion")
     usuario_modificacion_alumno = models.CharField(max_length=10, db_column="usuario_modificacion")
 
@@ -226,15 +218,15 @@ class ApoderadoAlumno(ActivoMixin, CreacionModificacionFechaMixin, CreacionModif
         unique_together = (("apoderado", "alumno"),)
 
 
-class Promotor(Personal, models.Model):
+class Promotor(CreacionModificacionFechaPromotorMixin, Personal, models.Model):
     """
     Clase para el Promotor
     """
     id_promotor = models.AutoField(primary_key=True)
     personalprom = models.OneToOneField(Personal, models.DO_NOTHING, parent_link=True, )
     activo_promotor = models.BooleanField(default=True, db_column="activo")
-    fecha_creacion_promotor = models.DateField(db_column="fecha_creacion")
-    fecha_modificacion_promotor = models.DateField(db_column="fecha_modificacion")
+    # fecha_creacion_promotor = models.DateField(db_column="fecha_creacion")
+    # fecha_modificacion_promotor = models.DateField(db_column="fecha_modificacion")
     usuario_creacion_promotor = models.CharField(max_length=10, db_column="usuario_creacion")
     usuario_modificacion_promotor = models.CharField(max_length=10, db_column="usuario_modificacion")
 
@@ -270,15 +262,15 @@ class Promotor(Personal, models.Model):
         db_table = 'promotor'
 
 
-class Cajero(Personal, models.Model):
+class Cajero(CreacionModificacionFechaCajeroMixin, Personal, models.Model):
     """
     Clase para el Cajero
     """
     id_cajero = models.AutoField(primary_key=True)
     personalcajero = models.OneToOneField(Personal, models.DO_NOTHING, parent_link=True, )
     activo_cajero = models.BooleanField(default=True, db_column="activo")
-    fecha_creacion_cajero = models.DateField(db_column="fecha_creacion")
-    fecha_modificacion_cajero = models.DateField(db_column="fecha_modificacion")
+    # fecha_creacion_cajero = models.DateField(db_column="fecha_creacion")
+    # fecha_modificacion_cajero = models.DateField(db_column="fecha_modificacion")
     usuario_creacion_cajero = models.CharField(max_length=10, db_column="usuario_creacion")
     usuario_modificacion_cajero = models.CharField(max_length=10, db_column="usuario_modificacion")
 
@@ -314,15 +306,15 @@ class Cajero(Personal, models.Model):
         db_table = 'cajero'
 
 
-class Director(Personal, models.Model):
+class Director(CreacionModificacionFechaDirectorMixin, Personal, models.Model):
     """
     Clase para el Director
     """
     id_director = models.AutoField(primary_key=True)
     personaldirector = models.OneToOneField(Personal, models.DO_NOTHING, parent_link=True, )
     activo_director = models.BooleanField(default=True, db_column="activo")
-    fecha_creacion_director = models.DateField(db_column="fecha_creacion")
-    fecha_modificacion_director = models.DateField(db_column="fecha_modificacion")
+    # fecha_creacion_director = models.DateField(db_column="fecha_creacion")
+    # fecha_modificacion_director = models.DateField(db_column="fecha_modificacion")
     usuario_creacion_director = models.CharField(max_length=10, db_column="usuario_creacion")
     usuario_modificacion_director = models.CharField(max_length=10, db_column="usuario_modificacion")
 

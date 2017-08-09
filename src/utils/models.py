@@ -128,6 +128,45 @@ class CreacionModificacionUserMixin(models.Model):
     usuario_creacion = models.CharField('Usuario_Creacion', null=True, blank=True, max_length=10)
     usuario_modificacion = models.CharField('Usuario_Modificacion', null=True, blank=True, max_length=10)
 
+    def save(self, *args, **kwargs):
+        from utils.middleware import get_current_user
+
+        #creacion
+        if not self:
+            self.usuario_creacion = get_current_user()
+        else: #modificación
+            self.usuario_modificacion = get_current_user()
+
+        super(CreacionModificacionUserMixin, self).save(*args, **kwargs)
+
+    save.alters_data = True
+
+    class Meta:
+        abstract = True
+
+
+class CreacionModificacionUserProfileMixin(models.Model):
+    """
+    Clase abstracta para poder especificar los usuario:
+        - Creacion
+        - Modificacion
+    """
+    usuario_creacion_persona = models.CharField('Usuario_Creacion', null=True, blank=True, max_length=10)
+    usuario_modificacion_persona = models.CharField('Usuario_Modificacion', null=True, blank=True, max_length=10)
+
+    def save(self, *args, **kwargs):
+        from utils.middleware import get_current_user
+
+        #creacion
+        if not self:
+            self.usuario_creacion_persona = get_current_user()
+        else: #modificación
+            self.usuario_modificacion_persona = get_current_user()
+
+        super(CreacionModificacionUserProfileMixin, self).save(*args, **kwargs)
+
+    save.alters_data = True
+
     class Meta:
         abstract = True
 
@@ -142,9 +181,10 @@ class CreacionModificacionFechaMixin(models.Model):
     fecha_modificacion = models.DateTimeField(blank=True, null=True)
 
     def save(self, *args, **kwargs):
+        #creación
         if not self.pk:
             self.fecha_creacion = timezone_now()
-        else:
+        else: #modificacion
             if not self.fecha_creacion:
                 self.fecha_creacion = timezone_now()
 
@@ -157,6 +197,193 @@ class CreacionModificacionFechaMixin(models.Model):
     class Meta:
         abstract = True
 
+class CreacionModificacionFechaProfileMixin(models.Model):
+    """
+    Clase abstracta para definir las fechas de:
+     - Fecha_creacion
+     - Fecha_modificacion
+    """
+    fecha_creacion_persona = models.DateTimeField(blank=True, null=True)
+    fecha_modificacion_persona = models.DateTimeField(blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        #creación
+        if not self.pk:
+            self.fecha_creacion_persona = timezone_now()
+        else: #modificacion
+            if not self.fecha_creacion_persona:
+                self.fecha_creacion_persona = timezone_now()
+
+            self.fecha_modificacion_persona = timezone_now()
+
+        super(CreacionModificacionFechaProfileMixin, self).save(*args, **kwargs)
+
+    save.alters_data = True
+
+    class Meta:
+        abstract = True
+
+
+class CreacionModificacionFechaPersonalMixin(models.Model):
+    """
+    Clase abstracta para definir las fechas de:
+     - Fecha_creacion
+     - Fecha_modificacion
+    """
+    fecha_creacion_personal = models.DateTimeField(blank=True, null=True, db_column="fecha_creacion")
+    fecha_modificacion_personal = models.DateTimeField(blank=True, null=True, db_column="fecha_modificacion")
+
+    def save(self, *args, **kwargs):
+        #creación
+        if not self.pk:
+            self.fecha_creacion_personal = timezone_now()
+        else: #modificacion
+            if not self.fecha_creacion_personal:
+                self.fecha_creacion_personal = timezone_now()
+
+            self.fecha_modificacion_personal = timezone_now()
+
+        super(CreacionModificacionFechaPersonalMixin, self).save(*args, **kwargs)
+
+    save.alters_data = True
+
+    class Meta:
+        abstract = True
+
+
+class CreacionModificacionFechaApoderadoMixin(models.Model):
+    """
+    Clase abstracta para definir las fechas de:
+     - Fecha_creacion
+     - Fecha_modificacion
+    """
+    fecha_creacion_apoderado = models.DateTimeField(blank=True, null=True, db_column="fecha_creacion")
+    fecha_modificacion_apoderado = models.DateTimeField(blank=True, null=True, db_column="fecha_modificacion")
+
+    def save(self, *args, **kwargs):
+        #creación
+        if not self.pk:
+            self.fecha_creacion_apoderado = timezone_now()
+        else: #modificacion
+            if not self.fecha_creacion_apoderado:
+                self.fecha_creacion_apoderado = timezone_now()
+
+            self.fecha_modificacion_apoderado = timezone_now()
+
+        super(CreacionModificacionFechaApoderadoMixin, self).save(*args, **kwargs)
+
+    save.alters_data = True
+
+    class Meta:
+        abstract = True
+
+
+class CreacionModificacionFechaAlumnoMixin(models.Model):
+    """
+    Clase abstracta para definir las fechas de:
+     - Fecha_creacion
+     - Fecha_modificacion
+    """
+    fecha_creacion_alumno = models.DateTimeField(blank=True, null=True, db_column="fecha_creacion")
+    fecha_modificacion_alumno = models.DateTimeField(blank=True, null=True, db_column="fecha_modificacion")
+
+    def save(self, *args, **kwargs):
+        #creación
+        if not self.pk:
+            self.fecha_creacion_alumno = timezone_now()
+        else: #modificacion
+            if not self.fecha_creacion_alumno:
+                self.fecha_creacion_alumno = timezone_now()
+
+            self.fecha_modificacion_alumno = timezone_now()
+
+        super(CreacionModificacionFechaAlumnoMixin, self).save(*args, **kwargs)
+
+    save.alters_data = True
+
+    class Meta:
+        abstract = True
+
+
+class CreacionModificacionFechaPromotorMixin(models.Model):
+    """
+    Clase abstracta para definir las fechas de:
+     - Fecha_creacion
+     - Fecha_modificacion
+    """
+    fecha_creacion_promotor = models.DateTimeField(blank=True, null=True, db_column="fecha_creacion")
+    fecha_modificacion_promotor = models.DateTimeField(blank=True, null=True, db_column="fecha_modificacion")
+
+    def save(self, *args, **kwargs):
+        #creación
+        if not self.pk:
+            self.fecha_creacion_promotor = timezone_now()
+        else: #modificacion
+            if not self.fecha_creacion_promotor:
+                self.fecha_creacion_promotor = timezone_now()
+
+            self.fecha_modificacion_promotor = timezone_now()
+
+        super(CreacionModificacionFechaPromotorMixin, self).save(*args, **kwargs)
+
+    save.alters_data = True
+
+    class Meta:
+        abstract = True
+
+
+class CreacionModificacionFechaCajeroMixin(models.Model):
+    """
+    Clase abstracta para definir las fechas de:
+     - Fecha_creacion
+     - Fecha_modificacion
+    """
+    fecha_creacion_cajero = models.DateTimeField(blank=True, null=True, db_column="fecha_creacion")
+    fecha_modificacion_cajero = models.DateTimeField(blank=True, null=True, db_column="fecha_modificacion")
+
+    def save(self, *args, **kwargs):
+        #creación
+        if not self.pk:
+            self.fecha_creacion_cajero = timezone_now()
+        else: #modificacion
+            if not self.fecha_creacion_cajero:
+                self.fecha_creacion_cajero = timezone_now()
+
+            self.fecha_modificacion_cajero = timezone_now()
+
+        super(CreacionModificacionFechaCajeroMixin, self).save(*args, **kwargs)
+
+    save.alters_data = True
+
+    class Meta:
+        abstract = True
+
+
+class CreacionModificacionFechaDirectorMixin(models.Model):
+    """
+    Clase abstracta para definir las fechas de:
+     - Fecha_creacion
+     - Fecha_modificacion
+    """
+    fecha_creacion_director = models.DateTimeField(blank=True, null=True, db_column="fecha_creacion")
+    fecha_modificacion_director = models.DateTimeField(blank=True, null=True, db_column="fecha_modificacion")
+
+    def save(self, *args, **kwargs):
+        #creación
+        if not self.pk:
+            self.fecha_creacion_director = timezone_now()
+        else: #modificacion
+            if not self.fecha_creacion_director:
+                self.fecha_creacion_director = timezone_now()
+
+            self.fecha_modificacion_director = timezone_now()
+
+        super(CreacionModificacionFechaDirectorMixin, self).save(*args, **kwargs)
+
+    save.alters_data = True
+
+    class Meta:
+        abstract = True
 
 class TipoDocumento(ActivoMixin, models.Model):
     """
