@@ -7,7 +7,10 @@ from django.db import models
 
 from django.conf import settings
 
-class BaseProfile(models.Model):
+from utils.models import CreacionModificacionFechaProfileMixin, CreacionModificacionUserProfileMixin
+
+
+class BaseProfile(CreacionModificacionFechaProfileMixin, CreacionModificacionUserProfileMixin, models.Model):
 
     user = models.OneToOneField(settings.AUTH_USER_MODEL, null=True)
     slug = models.UUIDField(default=uuid.uuid4, blank=True, editable=False)
@@ -29,10 +32,10 @@ class BaseProfile(models.Model):
     sexo = models.IntegerField()
     correo = models.CharField(max_length=100, blank=True, null=True)
     fecha_nac = models.DateField()
-    fecha_creacion_persona = models.DateField()
-    fecha_modificacion_persona = models.DateField()
-    usuario_creacion_persona = models.CharField(max_length=10)
-    usuario_modificacion_persona = models.CharField(max_length=10)
+    # fecha_creacion_persona = models.DateField()
+    # fecha_modificacion_persona = models.DateField()
+    # usuario_creacion_persona = models.CharField(max_length=10)
+    # usuario_modificacion_persona = models.CharField(max_length=10)
 
     @cached_property
     def getNombreCompleto(self):

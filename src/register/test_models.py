@@ -48,15 +48,17 @@ class PersonaModelTest(TestCase):
                                sexo="1",
                                correo="sasa",
                                fecha_nac=date.today(),
-                               fecha_creacion_persona=date.today(),
-                               fecha_modificacion_persona=date.today(),
-                               usuario_modificacion_persona="raul",
-                               usuario_creacion_persona="raul",
+                               # fecha_creacion_persona=date.today(),
+                               # fecha_modificacion_persona=date.today(),
+                               # usuario_modificacion_persona="raul",
+                               # usuario_creacion_persona="raul",
                                 user=usuario
                                )
         self.persona.save()
 
-
+        print("Fecha Creacion Persona: " + str(self.persona.fecha_creacion_persona))
+        print("Fecha Modificacion Persona: " + str(self.persona.fecha_modificacion_persona))
+        print("Fecha USUARIO CREACION Persona: " + str(self.persona.usuario_creacion_persona))
 
         # self.persona.save()
 
@@ -88,6 +90,8 @@ class PersonaModelTest(TestCase):
         self.personal = Personal()
 
         self.personal = self.personal.savePersonalFromPersona(persona=self.persona, activo_personal=True)
+        print("fecha creacion personal: " + str(self.personal.fecha_creacion_personal))
+
         self.assertEquals(self.personal.nombre, self.personal.persona.nombre)
 
         promotor = Promotor().savePromotorFromPersonal(personal=self.personal, activo_promotor=True)
