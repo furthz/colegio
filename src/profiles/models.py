@@ -13,7 +13,7 @@ from utils.models import CreacionModificacionFechaProfileMixin, CreacionModifica
 class BaseProfile(CreacionModificacionFechaProfileMixin, CreacionModificacionUserProfileMixin, models.Model):
 
     user = models.OneToOneField(settings.AUTH_USER_MODEL, null=True)
-    slug = models.UUIDField(default=uuid.uuid4, blank=True, editable=False)
+    slug = models.UUIDField(default=uuid.uuid4, blank=True, editable=False, null=True)
     # Add more user profile fields here. Make sure they are nullable
     # or with default values
     picture = models.ImageField('Profile picture',
@@ -27,11 +27,11 @@ class BaseProfile(CreacionModificacionFechaProfileMixin, CreacionModificacionUse
     segundo_nombre = models.CharField(max_length=200, blank=True, null=True)
     apellido_pa = models.CharField(max_length=50, null=True, blank=True)
     apellido_ma = models.CharField(max_length=50, blank=True, null=True)
-    tipo_documento = models.IntegerField()
-    numerodocumento = models.CharField(max_length=15)
-    sexo = models.IntegerField()
+    tipo_documento = models.IntegerField(null=True)
+    numerodocumento = models.CharField(max_length=15,null=True)
+    sexo = models.IntegerField(null=True)
     correo = models.CharField(max_length=100, blank=True, null=True)
-    fecha_nac = models.DateField()
+    fecha_nac = models.DateField(null=True)
     # fecha_creacion_persona = models.DateField()
     # fecha_modificacion_persona = models.DateField()
     # usuario_creacion_persona = models.CharField(max_length=10)

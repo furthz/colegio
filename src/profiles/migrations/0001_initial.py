@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id_profile', models.AutoField(primary_key=True)),
                 ('user', models.OneToOneField(serialize=False,to=settings.AUTH_USER_MODEL, null=True)),
-                ('slug', models.UUIDField(default=uuid.uuid4, blank=True, editable=False)),
+                ('slug', models.UUIDField(default=uuid.uuid4, blank=True, editable=False,null=True)),
                 ('picture', models.ImageField(verbose_name='Profile picture', upload_to='profile_pics/%Y-%m-%d/', blank=True, null=True)),
                 ('bio', models.CharField(verbose_name='Short Bio', max_length=200, blank=True, null=True)),
                 ('email_verified', models.BooleanField(default=False, verbose_name='Email verified')),
