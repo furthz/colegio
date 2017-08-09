@@ -11,6 +11,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
+        ('profiles', '0001_initial'),
         ('register', '0001_initial'),
     ]
 

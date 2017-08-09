@@ -59,7 +59,7 @@ class TipoServicioCreate(CreateView):
     """
 
     """
-    colegio = Colegio.objects.get(pk=1)
+    #colegio = Colegio.objects.get(pk=1)
     model = TipoServicio
     form_class = TipoServicioForm
     template_name = "tiposervicio_form.html"
@@ -188,7 +188,7 @@ class MatriculaCreate(CreateView):
     form_class = MatriculaForm
     template_name = "matricula_form.html"
     def form_valid(self, form):
-        form.instance.colegio = Colegio.objects.get(pk=1)
+        #form.instance.colegio = Colegio.objects.get(pk=1)
         form.instance.fecha_creacion = date.today()
         form.instance.fecha_modificacion = date.today()
         return super(MatriculaCreate, self).form_valid(form)
@@ -210,7 +210,7 @@ class CrearTipodeServicios(View):
     form_class =  TipoServicioForm
     initial = {'key': 'value'}
     template_name = "ProyectoMundoPixel/CrearTipoDeServicio.html"
-    colegio = Colegio.objects.get(pk=1)
+    #colegio = Colegio.objects.get(pk=1)
 
     def get(self, request, *args, **kwargs):
         form = self.form_class(initial=self.initial)
