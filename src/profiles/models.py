@@ -25,7 +25,7 @@ class BaseProfile(CreacionModificacionFechaProfileMixin, CreacionModificacionUse
 
     nombre = models.CharField(max_length=50)
     segundo_nombre = models.CharField(max_length=200, blank=True, null=True)
-    apellido_pa = models.CharField(max_length=50)
+    apellido_pa = models.CharField(max_length=50, null=True, blank=True)
     apellido_ma = models.CharField(max_length=50, blank=True, null=True)
     tipo_documento = models.IntegerField()
     numerodocumento = models.CharField(max_length=15)
