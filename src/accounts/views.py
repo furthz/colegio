@@ -1,15 +1,34 @@
 from __future__ import unicode_literals
+
+from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse_lazy
+from django.http import HttpResponseRedirect
+from django.template import RequestContext
+from django.utils.decorators import method_decorator
 from django.views import generic
 from django.contrib.auth import get_user_model
 from django.contrib import auth
 from django.contrib import messages
+from django.core.urlresolvers import reverse
+
 from authtools import views as authviews
 from braces import views as bracesviews
 from django.conf import settings
+from profiles.models import Profile
+from django.shortcuts import get_object_or_404, redirect, render_to_response
+from django.contrib.auth.mixins import LoginRequiredMixin
+from register.models import Personal
+from register.models import PersonalColegio
+from django.views.generic.edit import FormView
+from django.shortcuts import render
+from django.views import View
+#from utils.views import LoginRequiredMixin
 from . import forms
 
+import logging
+
 User = get_user_model()
+logger = logging.getLogger("project")
 
 
 class LoginView(bracesviews.AnonymousRequiredMixin,
@@ -24,10 +43,38 @@ class LoginView(bracesviews.AnonymousRequiredMixin,
         redirect = super(LoginView, self).form_valid(form)
         remember_me = form.cleaned_data.get('remember_me')
         if remember_me is True:
-            ONE_MONTH = 30*24*60*60
+            ONE_MONTH = 30 * 24 * 60 * 60
             expiry = getattr(settings, "KEEP_LOGGED_DURATION", ONE_MONTH)
             self.request.session.set_expiry(expiry)
         return redirect
+
+
+class AsignColegioView(LoginRequiredMixin, View):
+
+    """
+    Vista que permite mostrar la asignación del colegio
+    """
+
+    template_name = "accounts/asign_colegio.html"
+
+    def get(self, request, *args, **kwargs):
+        logger.debug("GET formulario")
+
+        form = forms.AsignColegioForm(request.POST, user=request.user)
+        logger.debug("Formulario para mostrar selección de colegios")
+
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+
+        form = forms.AsignColegioForm(request.POST, user=request.user)
+
+        if form.is_valid():
+            colegios = form.cleaned_data['colegios']
+            logger.debug("Colegio seleccionado: " + str(colegios.id_colegio))
+            request.session['colegio'] = colegios.id_colegio
+
+        return HttpResponseRedirect('/users/me')
 
 
 class LogoutView(authviews.LogoutView):

@@ -7,13 +7,25 @@ https://docs.djangoproject.com/en/dev/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/dev/ref/settings/
 """
+
 from django.core.urlresolvers import reverse_lazy
-from os.path import dirname, join, exists
+from os.path import dirname, join, exists, os, sys
+from utils.misc import get_git_changeset
 
 # Build paths inside the project like this: join(BASE_DIR, "directory")
+
 BASE_DIR = dirname(dirname(dirname(__file__)))
+
+EXTERNAL_LIBS_PATH = os.path.join(BASE_DIR,"externals","libs")
+
+EXTERNAL_APPS_PATH = os.path.join(BASE_DIR, "externals", "apps")
+
+sys.path = ["", EXTERNAL_LIBS_PATH, EXTERNAL_APPS_PATH] + sys.path
+
 STATICFILES_DIRS = [join(BASE_DIR, 'static')]
+
 MEDIA_ROOT = join(BASE_DIR, 'media')
+
 MEDIA_URL = "/media/"
 
 # Use Django templates using the new Django 1.8 TEMPLATES settings
@@ -120,9 +132,9 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/dev/topics/i18n/
 
-LANGUAGE_CODE = 'es-es'
+LANGUAGE_CODE = 'es-PE'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Lima'
 
 USE_I18N = True
 
@@ -133,7 +145,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/dev/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/static/' #% get_git_changeset(BASE_DIR)
 
 ALLOWED_HOSTS = []
 
@@ -148,7 +160,8 @@ MESSAGE_TAGS = {
 
 # Authentication Settings
 AUTH_USER_MODEL = 'authtools.User'
-LOGIN_REDIRECT_URL = reverse_lazy("profiles:show_self")
+#LOGIN_REDIRECT_URL = reverse_lazy("profiles:show_self")
+LOGIN_REDIRECT_URL = reverse_lazy("accounts:tocolegio_self")
 LOGIN_URL = reverse_lazy("accounts:login")
 
 THUMBNAIL_EXTENSION = 'png'     # Or any extn for your thumbnails

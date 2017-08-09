@@ -1,5 +1,7 @@
 from __future__ import unicode_literals
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field
@@ -7,6 +9,13 @@ from crispy_forms.bootstrap import AppendedText, PrependedText, FormActions
 from authtools import forms as authtoolsforms
 from django.contrib.auth import forms as authforms
 from django.core.urlresolvers import reverse
+
+from profiles.models import Profile
+from register.models import Personal
+
+import logging
+
+logger = logging.getLogger("project")
 
 
 class LoginForm(AuthenticationForm):
@@ -25,11 +34,45 @@ class LoginForm(AuthenticationForm):
             Field('remember_me'),
             Submit('sign_in', 'Log in',
                    css_class="btn btn-lg btn-primary btn-block"),
-            )
+        )
+
+
+class AsignColegioForm(forms.Form):
+
+    colegios = forms.ModelChoiceField(
+        label='Colegios',
+        queryset=None,
+        required=True,)
+
+    def __init__(self, *args, **kwargs):
+
+        if kwargs.get('user'):
+            self.user = kwargs.pop('user', None)
+
+        super(AsignColegioForm, self).__init__(*args, **kwargs)
+
+        user = self.user
+        logger.debug("Usuario: " + user.name)
+
+        profile = Profile.objects.get(user=user)
+        logger.debug("profile: " + str(profile.id_profile))
+
+        personal = Personal.objects.get(persona=profile)
+        logger.debug("personal: " + str(personal.id_personal))
+
+        colegios = personal.Colegios.all()
+        logger.debug("colegios: " + str(colegios.count()))
+
+        self.helper = FormHelper()
+        self.helper.form_id = "idcolegios"
+        self.helper.form_method = "post"
+
+        self.fields['colegios'].queryset=colegios
+
+        self.helper.add_input(Submit('submit', 'Asignar',  css_class="btn btn-lg btn-primary btn-block"))
 
 
 class SignupForm(authtoolsforms.UserCreationForm):
-
     def __init__(self, *args, **kwargs):
         super(SignupForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -41,11 +84,10 @@ class SignupForm(authtoolsforms.UserCreationForm):
             Field('password1', placeholder="Enter Password"),
             Field('password2', placeholder="Re-enter Password"),
             Submit('sign_up', 'Sign up', css_class="btn-warning"),
-            )
+        )
 
 
 class PasswordChangeForm(authforms.PasswordChangeForm):
-
     def __init__(self, *args, **kwargs):
         super(PasswordChangeForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -56,11 +98,10 @@ class PasswordChangeForm(authforms.PasswordChangeForm):
             Field('new_password1', placeholder="Enter new password"),
             Field('new_password2', placeholder="Enter new password (again)"),
             Submit('pass_change', 'Change Password', css_class="btn-warning"),
-            )
+        )
 
 
 class PasswordResetForm(authtoolsforms.FriendlyPasswordResetForm):
-
     def __init__(self, *args, **kwargs):
         super(PasswordResetForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -69,7 +110,7 @@ class PasswordResetForm(authtoolsforms.FriendlyPasswordResetForm):
             Field('email', placeholder="Enter email",
                   autofocus=""),
             Submit('pass_reset', 'Reset Password', css_class="btn-warning"),
-            )
+        )
 
 
 class SetPasswordForm(authforms.SetPasswordForm):
@@ -82,4 +123,4 @@ class SetPasswordForm(authforms.SetPasswordForm):
                   autofocus=""),
             Field('new_password2', placeholder="Enter new password (again)"),
             Submit('pass_change', 'Change Password', css_class="btn-warning"),
-            )
+        )

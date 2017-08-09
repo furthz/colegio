@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 
 from django.db import migrations, models
+from django.conf import settings
 
 
 class Migration(migrations.Migration):
@@ -23,7 +24,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'tipo_documento',
-                #'managed': False,
+                'managed': settings.IS_TESTING,
             },
         ),
         migrations.CreateModel(
@@ -35,7 +36,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'tipo_sexo',
-                #'managed': False,
+                'managed': settings.IS_TESTING,
             },
         ),
         migrations.CreateModel(
@@ -47,7 +48,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'tipos_grados',
-                #'managed': False,
+                'managed': settings.IS_TESTING,
             },
         ),
         migrations.CreateModel(
@@ -59,7 +60,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'tipos_medio_pago',
-                #'managed': False,
+                'managed': settings.IS_TESTING,
             },
         ),
         migrations.CreateModel(
@@ -71,7 +72,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'tipos_nivel',
-                #'managed': False,
+                'managed': settings.IS_TESTING,
             },
         ),
     ]

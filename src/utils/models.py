@@ -58,6 +58,8 @@ class UrlMixin(models.Model):
 
         return urlparse(("", "") + bits[2:])
 
+    get_url_path.dont_recurse = True
+
     def get_absolute_url(self):
         """
         Método que devuelve la url absoluta del objeto

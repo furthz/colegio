@@ -7,109 +7,40 @@ Fecha: 23/07/2017
 
 """
 from django.core.exceptions import ValidationError
+from django.core.urlresolvers import reverse
 from django.db import models
-from datetime import datetime
-from utils.models import CreacionModificacionUserMixin, CreacionModificacionFechaMixin, ActivoMixin
+# from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
+from utils.models import CreacionModificacionUserMixin
+from utils.models import CreacionModificacionFechaMixin
+from utils.models import ActivoMixin
+from utils.models import UrlMixin
+
+from django.conf import settings
 from django.utils.functional import cached_property
+from datetime import datetime
+from profiles.models import BaseProfile
 
+from profiles.models import Profile
+# User = get_user_model()
 
-class Persona(models.Model):
-    """
-    Clase para albergar todos los datos comunes a las personas
-    que pueden ser:
-        - Apoderados
-        - Alumnos
-        - Promotor
-        - Director
-        - Cajero
-    """
-    id_persona = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=50)
-    segundo_nombre = models.CharField(max_length=200, blank=True, null=True)
-    apellido_pa = models.CharField(max_length=50)
-    apellido_ma = models.CharField(max_length=50, blank=True, null=True)
-    tipo_documento = models.IntegerField()
-    numero_documento = models.CharField(max_length=15)
-    sexo = models.IntegerField()
-    correo = models.CharField(max_length=100, blank=True, null=True)
-    fecha_nac = models.DateField()
-    fecha_creacion = models.DateField()
-    fecha_modificacion = models.DateField()
-    usuario_creacion = models.CharField(max_length=10)
-    usuario_modificacion = models.CharField(max_length=10)
-
-    class Meta:
-        managed = False
-        db_table = 'persona'
-
-    @cached_property
-    def getNombreCompleto(self):
-        """
-        Método que concatena los nombres y apellidos
-
-        :return: Nombre completo de la persona
-        """
-
-        return "{0} {1} {2} {3}".format(self.nombre, self.segundo_nombre, self.apellido_pa, self.apellido_ma)
-
-    @property
-    def getEdad(self):
-        """
-        Método que calcula los años de una persona
-        :return: La cantidad de años de la persona
-        """
-
-        edad = datetime.now().date() - self.fecha_nac
-
-        diasedad = edad.days
-
-        años = diasedad / 365
-
-        return años
-
-    @property
-    def getSexo(self):
-        """
-        Método que retorna la descripción del tipo de sexo, cruzandolo con el catalogo TipoSexo
-
-        :return: Descripción del catalogo TipoSexo
-        """
-        from utils.models import TipoSexo
-
-        idsexo = self.sexo
-
-        sexo = TipoSexo.objects.get(pk=idsexo)
-
-        return sexo.descripcion
-
-    @property
-    def getTipoDocumento(self):
-        """
-        Método que retorna la descripción del tipo de documento, cruzándolo con el cataloto TipoDocumento
-        :return: Descripción del catalogo TipoDocumento
-        """
-
-        from utils.models import TipoDocumento
-
-        idtipo = self.tipo_documento
-
-        tipodoc = TipoDocumento.objects.get(pk=idtipo)
-
-        return tipodoc.descripcion
-
-class Personal(Persona, models.Model):
+class Personal(UrlMixin, Profile, models.Model):
     """
     Clase para el Personal
     """
     id_personal = models.AutoField(primary_key=True)
-    persona = models.OneToOneField(Persona, models.DO_NOTHING, parent_link=True)
+    persona = models.OneToOneField(Profile, models.DO_NOTHING, parent_link=True)
     activo_personal = models.BooleanField(db_column="activo", default=True)
     fecha_creacion_personal = models.DateField(db_column="fecha_creacion")
     fecha_modificacion_personal = models.DateField(db_column="fecha_modificacion")
     usuario_creacion_personal = models.CharField(max_length=10, db_column="usuario_creacion")
     usuario_modificacion_personal = models.CharField(max_length=10, db_column="usuario_modificacion")
 
-    def savePersonalFromPersona(self, persona: Persona, **atributos):
+    def get_url_path(self):
+
+        return reverse("", kwargs={"id_personal": str(self.pk), })
+
+    def savePersonalFromPersona(self, persona: Profile, **atributos):
         """
         Método que permite guardar un Personal a partir de una persona existente
         :param persona: Persona existente
@@ -126,7 +57,10 @@ class Personal(Persona, models.Model):
         atributos[personalink.name] = persona
 
         for field in persona._meta.fields:
-            atributos[field.name] = getattr(persona, field.name)
+            try:
+                atributos[field.name] = getattr(persona, field.name)
+            except:
+                pass
 
         personal = Personal(**atributos)
         personal.save()
@@ -136,7 +70,7 @@ class Personal(Persona, models.Model):
     class Meta:
         managed = False
         db_table = 'personal'
-        unique_together = (('id_personal', 'persona'),)
+        # unique_together = (('id_personal', 'persona'),)
 
 
 class Colegio(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
@@ -148,6 +82,9 @@ class Colegio(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionU
     ruc = models.CharField(max_length=11)
     ugel = models.CharField(max_length=100)
     personales = models.ManyToManyField(Personal, through='PersonalColegio', related_name='Colegios', null=True)
+
+    def __str__(self):
+        return self.nombre
 
     class Meta:
         managed = False
@@ -161,7 +98,7 @@ class Telefono(ActivoMixin, CreacionModificacionUserMixin, CreacionModificacionF
     """
     id_telefono = models.AutoField(primary_key=True)
     colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column='id_colegio', related_name="telefonos")
-    persona = models.ForeignKey(Persona, models.DO_NOTHING, db_column='id_persona', related_name="telefonos")
+    persona = models.ForeignKey(Profile, models.DO_NOTHING, db_column='id_persona', related_name="telefonos")
     numero = models.IntegerField()
     tipo = models.CharField(max_length=10)
 
@@ -176,7 +113,7 @@ class Direccion(CreacionModificacionUserMixin, CreacionModificacionFechaMixin, m
     """
 
     id_direccion = models.AutoField(primary_key=True)
-    persona = models.ForeignKey(Persona, models.DO_NOTHING, db_column='id_persona', related_name="direcciones")
+    persona = models.ForeignKey(Profile, models.DO_NOTHING, db_column='id_persona', related_name="direcciones")
     colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column='id_colegio', related_name="direcciones")
     calle = models.CharField(max_length=100)
     dpto = models.CharField(max_length=15)
@@ -189,19 +126,19 @@ class Direccion(CreacionModificacionUserMixin, CreacionModificacionFechaMixin, m
         db_table = 'direccion'
 
 
-class Apoderado(Persona, models.Model):
+class Apoderado(Profile, models.Model):
     """
     Clase para identificar a los apoderados de los alumnos
     """
     id_apoderado = models.AutoField(primary_key=True)
     parentesco = models.CharField(max_length=30)
-    persona = models.OneToOneField(Persona, models.DO_NOTHING, parent_link=True, )
+    persona = models.OneToOneField(Profile, models.DO_NOTHING, parent_link=True, )
     fecha_creacion_apoderado = models.DateField(db_column="fecha_creacion")
     fecha_modificacion_apoderado = models.DateField(db_column="fecha_modificacion")
     usuario_creacion_apoderado = models.CharField(max_length=10, db_column="usuario_creacion")
     usuario_modificacion_apoderado = models.CharField(max_length=10, db_column="usuario_modificacion")
 
-    def saveApoderadoFromPersona(self, persona: Persona, **atributos):
+    def saveApoderadoFromPersona(self, persona: Profile, **atributos):
         """
         Método que permite guardar un Apoderado a partir de una persona existente
         :param persona: Persona existente
@@ -218,7 +155,10 @@ class Apoderado(Persona, models.Model):
         atributos[personalink.name] = persona
 
         for field in persona._meta.fields:
-            atributos[field.name] = getattr(persona, field.name)
+            try:
+                atributos[field.name] = getattr(persona, field.name)
+            except:
+                pass
 
         apo = Apoderado(**atributos)
         apo.save()
@@ -230,20 +170,20 @@ class Apoderado(Persona, models.Model):
         db_table = 'apoderado'
 
 
-class Alumno(Persona, models.Model):
+class Alumno(Profile, models.Model):
     """
     Clase para identificar a los Alumnos
     """
     id_alumno = models.AutoField(primary_key=True)
     codigoint = models.CharField(max_length=15, blank=True, null=True)
-    persona = models.OneToOneField(Persona, models.DO_NOTHING, parent_link=True, db_column='id_persona')
+    persona = models.OneToOneField(Profile, models.DO_NOTHING, parent_link=True)
     apoderados = models.ManyToManyField(Apoderado, through='ApoderadoAlumno', related_name='alumnos', null=True)
     fecha_creacion_alumno = models.DateField(db_column="fecha_creacion")
     fecha_modificacion_alumno = models.DateField(db_column="fecha_modificacion")
     usuario_creacion_alumno = models.CharField(max_length=10, db_column="usuario_creacion")
     usuario_modificacion_alumno = models.CharField(max_length=10, db_column="usuario_modificacion")
 
-    def saveAlumnoFromPersona(self, persona: Persona, **atributos):
+    def saveAlumnoFromPersona(self, persona: Profile, **atributos):
         """
         Método que permite guardar un Apoderado a partir de una persona existente
         :param persona: Persona existente
@@ -267,9 +207,6 @@ class Alumno(Persona, models.Model):
 
         return alu
 
-    def __str__(self):
-        return self.persona.getNombreCompleto
-
     class Meta:
         managed = False
         db_table = 'alumno'
@@ -287,7 +224,6 @@ class ApoderadoAlumno(ActivoMixin, CreacionModificacionFechaMixin, CreacionModif
         managed = False
         db_table = 'apoderado_alumno'
         unique_together = (("apoderado", "alumno"),)
-
 
 
 class Promotor(Personal, models.Model):
@@ -319,7 +255,10 @@ class Promotor(Personal, models.Model):
         atributos[personalink.name] = personal
 
         for field in personal._meta.fields:
-            atributos[field.name] = getattr(personal, field.name)
+            try:
+                atributos[field.name] = getattr(personal, field.name)
+            except:
+                pass
 
         promotor = Promotor(**atributos)
         promotor.save()
@@ -360,7 +299,10 @@ class Cajero(Personal, models.Model):
         atributos[personalink.name] = personal
 
         for field in personal._meta.fields:
-            atributos[field.name] = getattr(personal, field.name)
+            try:
+                atributos[field.name] = getattr(personal, field.name)
+            except:
+                pass
 
         cajero = Cajero(**atributos)
         cajero.save()
@@ -401,7 +343,10 @@ class Director(Personal, models.Model):
         atributos[personalink.name] = personal
 
         for field in personal._meta.fields:
-            atributos[field.name] = getattr(personal, field.name)
+            try:
+                atributos[field.name] = getattr(personal, field.name)
+            except:
+                pass
 
         director = Director(**atributos)
         director.save()
@@ -421,8 +366,7 @@ class PersonalColegio(ActivoMixin, CreacionModificacionUserMixin, CreacionModifi
     personal = models.ForeignKey(Personal, models.DO_NOTHING, db_column="id_personal")
     colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column="id_colegio")
 
-
     class Meta:
         managed = False
         db_table = 'personal_colegio'
-        #unique_together = (("apoderado", "alumno"),)
+        # unique_together = (("apoderado", "alumno"),)
