@@ -6,8 +6,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from django.forms import ModelForm
 from utils.models import TiposNivel
-from register.models import Persona
-from register.models import Alumno
+
 
 class TipoServicioForm(ModelForm):
     """
@@ -85,8 +84,4 @@ class MatriculaForm(ModelForm):
         #super().__init__(*args, **kwargs)
         #self.fields['nombre'] = forms.ChoiceField(choices=self.ChoiceServicios())
 
-class AlumnoForm(ModelForm):
-    class Meta:
-        model = Alumno
-        fields = ['nombre','segundo_nombre', 'apellido_pa', 'apellido_ma',
-                  'tipo_documento', 'numero_documento', 'sexo', 'correo','fecha_nac','codigoint']
+

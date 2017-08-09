@@ -10,12 +10,12 @@ from enrollment.views import ServicioDelete
 from enrollment.views import ServicioUpdate
 from enrollment.views import ServicioDetail
 from enrollment.views import MatriculaCreate
-from enrollment.views import MatriculaCreate2
+#from enrollment.views import MatriculaCreate2
 from enrollment.views import MatriculaDelete
 from enrollment.views import MatriculaDetail
 from enrollment.views import MatriculaList
 from enrollment.views import MatriculaUpdate
-from enrollment.views import AlumnoCreate
+#from enrollment.views import AlumnoCreate
 
 urlpatterns = [
     url(r'^impdates/list/create/$',TipoServicioCreate.as_view(), name="tiposervicio_create"),
@@ -29,10 +29,9 @@ urlpatterns = [
     url(r'^impdates/list/(?P<pkts>\d+)/listservicios/(?P<pk>\d+)/delete/$',ServicioDelete.as_view(), name="servicio_delete"),
     url(r'^impdates/list/(?P<pkts>\d+)/listservicios/$', ServicioList.as_view(), name="servicio_list"),
     url(r'^matricula/list/create/$', MatriculaCreate.as_view(), name="matricula_create"),
-    url(r'^matricula/list/create/(?P<pk>\d+)/$', MatriculaCreate2.as_view(), name="matricula_create2"),
+    #url(r'^matricula/list/create/(?P<pk>\d+)/$', MatriculaCreate2.as_view(), name="matricula_create2"),
     url(r'^matricula/list/(?P<pk>\d+)/$', MatriculaDetail.as_view(), name='matricula_detail'),
     url(r'^matricula/list/(?P<pk>\d+)/update/$', MatriculaUpdate.as_view(), name="matricula_update"),
     url(r'^matricula/list/(?P<pk>\d+)/delete/$', MatriculaDelete.as_view(), name="matricula_delete"),
     url(r'^matricula/list/$', MatriculaList.as_view(), name="matricula_list"),
-    url(r'^persona/list/create/$', AlumnoCreate.as_view(), name="alumno_create"),
 ]

@@ -5,7 +5,7 @@ from enrollment.models import Servicio
 from enrollment.models import TipoServicio
 from enrollment.models import Matricula
 from register.models import Colegio
-from register.models import Persona
+from profiles.models import Profile
 from register.models import Alumno
 from django.views.generic import TemplateView
 from django.views.generic import DetailView
@@ -20,7 +20,6 @@ from django.core.urlresolvers import reverse_lazy
 from enrollment.forms import ServicioForm
 from enrollment.forms import TipoServicioForm
 from enrollment.forms import MatriculaForm
-from enrollment.forms import AlumnoForm
 from django.urls import reverse
 from utils.models import TiposNivel
 from utils.models import TiposGrados
@@ -194,20 +193,48 @@ class MatriculaCreate(CreateView):
         form.instance.fecha_modificacion = date.today()
         return super(MatriculaCreate, self).form_valid(form)
 
-class MatriculaCreate2(CreateView):
-    """
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            data_form = form.cleaned_data
+            matricula = self.model(alumno_id=data_form["alumno"],
+                                   colegio_id=data_form["colegio"],
+                                   tipo_servicio_id=data_form["tipo_servicio"]
+                                   )
+            matricula.save()
+            return HttpResponseRedirect(self.model.get_absolute_url())
+        return HttpResponseRedirect(reverse('enrollments:matricula_create'))
 
-    """
-    model = Matricula
-    form_class = MatriculaForm
-    template_name = "matricula_form.html"
-    def form_valid(self, form):
-        form.instance.colegio = Colegio.objects.get(pk=1)
-        form.instance.fecha_creacion = date.today()
-        form.instance.fecha_modificacion = date.today()
-        form.instance.alumno = Alumno.objects.get(pk=self.kwargs["pk"])
-        return super(MatriculaCreate, self).form_valid(form)
+class CrearTipodeServicios(View):
 
+    form_class =  TipoServicioForm
+    initial = {'key': 'value'}
+    template_name = "ProyectoMundoPixel/CrearTipoDeServicio.html"
+    colegio = Colegio.objects.get(pk=1)
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class(initial=self.initial)
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        print(str(form.data['is_ordinario']))
+        if form.is_valid():
+            data_form = form.cleaned_data
+            tiposervicio = TipoServicio(colegio=self.colegio,
+                                        is_ordinario = data_form['is_ordinario'],
+                                        nivel = data_form['nivel'],
+                                        grado = data_form['grado'],
+                                        extra = data_form['extra'],
+                                        codigo_modular = data_form['codigo_modular'],
+                                        fecha_creacion = date.today(),
+                                        fecha_modificacion = date.today()
+                                        )
+            tiposervicio.save()
+            # <process form cleaned data>
+            return HttpResponseRedirect('/success/')
+
+        return HttpResponseRedirect(request.POST['nombre'])
 
 class MatriculaUpdate(UpdateView):
     """
@@ -232,30 +259,4 @@ class MatriculaDelete(DeleteView):
         return reverse_lazy('enrollments:matricula_list')
         #return "/servicios/impdates/list/{id_tipo_servicio}/listservicios"
 
-#################################################
-#
-#
-#################################################
-
-class AlumnoCreate(CreateView):
-    """
-
-    """
-    model = Alumno
-    form_class = AlumnoForm
-    template_name = "Alumno_form.html"
-
-    def get_success_url(self):
-        #tiposervicio = self.object.tipo_servicio
-        return reverse_lazy('enrollments:matricula_create2', kwargs={'pk': self.object.pk})
-
-    def form_valid(self, form):
-        form.instance.fecha_creacion = date.today()
-        form.instance.fecha_modificacion = date.today()
-        return super(AlumnoCreate, self).form_valid(form)
-
-#################################################
-#
-#
-#################################################
 
