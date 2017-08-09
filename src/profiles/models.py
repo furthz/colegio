@@ -98,7 +98,7 @@ class BaseProfile(CreacionModificacionFechaProfileMixin, CreacionModificacionUse
 
 @python_2_unicode_compatible
 class Profile(BaseProfile):
-    id_profile = models.AutoField(primary_key=True)
+    id_persona = models.AutoField(primary_key=True)
     def __str__(self):
         return "{}'s profile". format(self.user)
 

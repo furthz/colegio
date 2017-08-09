@@ -55,7 +55,7 @@ class AsignColegioForm(forms.Form):
         logger.debug("Usuario: " + user.name)
 
         profile = Profile.objects.get(user=user)
-        logger.debug("profile: " + str(profile.id_profile))
+        logger.debug("profile: " + str(profile.id_persona))
 
         personal = Personal.objects.get(persona=profile)
         logger.debug("personal: " + str(personal.id_personal))
