@@ -3,7 +3,10 @@ from django.shortcuts import render
 from datetime import date
 from enrollment.models import Servicio
 from enrollment.models import TipoServicio
-from enrollment.models import Colegio
+from enrollment.models import Matricula
+from register.models import Colegio
+from register.models import Persona
+from register.models import Alumno
 from django.views.generic import TemplateView
 from django.views.generic import DetailView
 from django.views.generic import CreateView
@@ -16,6 +19,8 @@ from django.views import View
 from django.core.urlresolvers import reverse_lazy
 from enrollment.forms import ServicioForm
 from enrollment.forms import TipoServicioForm
+from enrollment.forms import MatriculaForm
+from enrollment.forms import AlumnoForm
 from django.urls import reverse
 from utils.models import TiposNivel
 from utils.models import TiposGrados
@@ -150,3 +155,107 @@ class ServicioDelete(DeleteView):
         tiposervicio = self.object.tipo_servicio
         return reverse_lazy('enrollments:servicio_list', kwargs={'pkts': tiposervicio.id_tipo_servicio})
         #return "/servicios/impdates/list/{id_tipo_servicio}/listservicios"
+
+#################################################
+#
+#
+#################################################
+
+
+class MatriculaList(ListView):
+    """
+
+    """
+    model = Matricula
+    template_name = "matricula_list.html"
+    #def get_queryset(self):
+    #    return self.model.objects.filter(tipo_servicio = self.kwargs["pkts"])
+    #def get_context_data(self, **kwargs):
+    #    context = super(ServicioList, self).get_context_data(**kwargs)
+    #    return context
+
+class MatriculaDetail(DetailView):
+    """
+
+    """
+    model = Matricula
+    template_name = "matricula_detail.html"
+
+class MatriculaCreate(CreateView):
+    """
+
+    """
+    model = Matricula
+    form_class = MatriculaForm
+    template_name = "matricula_form.html"
+    def form_valid(self, form):
+        form.instance.colegio = Colegio.objects.get(pk=1)
+        form.instance.fecha_creacion = date.today()
+        form.instance.fecha_modificacion = date.today()
+        return super(MatriculaCreate, self).form_valid(form)
+
+class MatriculaCreate2(CreateView):
+    """
+
+    """
+    model = Matricula
+    form_class = MatriculaForm
+    template_name = "matricula_form.html"
+    def form_valid(self, form):
+        form.instance.colegio = Colegio.objects.get(pk=1)
+        form.instance.fecha_creacion = date.today()
+        form.instance.fecha_modificacion = date.today()
+        form.instance.alumno = Alumno.objects.get(pk=self.kwargs["pk"])
+        return super(MatriculaCreate, self).form_valid(form)
+
+
+class MatriculaUpdate(UpdateView):
+    """
+
+    """
+    model = Matricula
+    form_class = MatriculaForm
+    template_name = "matricula_form.html"
+
+    def form_valid(self, form):
+        form.instance.fecha_modificacion = date.today()
+        return super(MatriculaUpdate, self).form_valid(form)
+
+class MatriculaDelete(DeleteView):
+    """
+
+    """
+    model = Matricula
+    template_name = "matricula_confirm_delete.html"
+    def get_success_url(self):
+        #tiposervicio = self.object.tipo_servicio
+        return reverse_lazy('enrollments:matricula_list')
+        #return "/servicios/impdates/list/{id_tipo_servicio}/listservicios"
+
+#################################################
+#
+#
+#################################################
+
+class AlumnoCreate(CreateView):
+    """
+
+    """
+    model = Alumno
+    form_class = AlumnoForm
+    template_name = "Alumno_form.html"
+
+    def get_success_url(self):
+        #tiposervicio = self.object.tipo_servicio
+        return reverse_lazy('enrollments:matricula_create2', kwargs={'pk': self.object.pk})
+
+    def form_valid(self, form):
+        form.instance.fecha_creacion = date.today()
+        form.instance.fecha_modificacion = date.today()
+        return super(AlumnoCreate, self).form_valid(form)
+
+#################################################
+#
+#
+#################################################
+

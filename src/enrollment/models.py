@@ -1,37 +1,13 @@
 from django.db import models
 from django.urls import reverse
-from utils.models import TiposNivel
-from utils.models import TiposGrados
+from register.models import Colegio
+from register.models import Alumno
+from utils.models import ActivoMixin
+from utils.models import CreacionModificacionFechaMixin
+from utils.models import CreacionModificacionUserMixin
 # Create your models here.
 
-class Colegio(models.Model):
-    """
-    Nombre:     nombre del colegio
-    RUC:        ruc perteneciente al colegio
-    UGEL:       ugel a la cual pertenece el colegio
-    """
-    id_colegio = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=100)
-    ruc = models.CharField(max_length=11)
-    ugel = models.CharField(max_length=100)
-    fecha_creacion = models.DateField()
-    fecha_modificacion = models.DateField()
-    usuario_creacion = models.CharField(max_length=10)
-    usuario_modificacion = models.CharField(max_length=10)
-
-    def __str__(self):
-        """
-        Solo retorna informacion de la clase como string
-        :return: nombre del servicio
-        """
-        return self.nombre
-
-    class Meta:
-        managed = False
-        db_table = 'colegio'
-
-
-class TipoServicio(models.Model):
+class TipoServicio(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
     """
     isordinario:        indica si el servicio es ordinario (1er grado, 2do grado, etc.)
                         o extra (curso de verano, danza, etc.)
@@ -43,31 +19,25 @@ class TipoServicio(models.Model):
     id_tipo_servicio = models.AutoField(primary_key=True)
     colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column='id_colegio')
     is_ordinario = models.BooleanField()
-    nivel = models.ForeignKey(TiposNivel, models.DO_NOTHING, db_column='nivel')
-    #nivel = models.IntegerField(blank=True, null=True)
-    grado = models.ForeignKey(TiposGrados, models.DO_NOTHING, db_column='grado')
-    #grado = models.IntegerField(blank=True, null=True)
+    nivel = models.IntegerField(blank=True, null=True)
+    grado = models.IntegerField(blank=True, null=True)
     extra = models.CharField(max_length=50, blank=True, null=True)
     codigo_modular = models.CharField(max_length=10)
-    fecha_creacion = models.DateField()
-    fecha_modificacion = models.DateField()
-    usuario_creacion = models.CharField(max_length=10, blank=True, null=True)
-    usuario_modificacion = models.CharField(max_length=10, blank=True, null=True)
 
     def __str__(self):
         """
         Solo retorna informacion de la clase como string
         :return: nombre del servicio
         """
-        return "nivel: {0}   grado: {1}   extra: {2}".format(self.nivel,self.grado,self.extra)
+        return "nivel: {0}   grado: {1}   extra: {2}".format(self.getTipoNivel,self.getTipoGrado,self.extra)
 
     def full_detail(self):
         """
         Da una descripcion detallada de la informacion del Tipo de Servicio
         :return: lista de todos los atributos de la clase
         """
-        detalle_completo = ["Nivel: {0}".format(self.nivel),
-                            "Grado: {0}".format(self.grado),
+        detalle_completo = ["Nivel: {0}".format(self.getTipoNivel),
+                            "Grado: {0}".format(self.getTipoGrado),
                             "Extra: {0}".format(self.extra),
                             "Codigo modular: {0}".format(self.codigo_modular),
                             "Fecha creacion: {0}".format(self.fecha_creacion),
@@ -80,17 +50,47 @@ class TipoServicio(models.Model):
     def get_absolute_url(self):
         """
         Redirecciona las views que usan como modelo esta clase
-        :return:
+        :return: url de detalles del tipo de servicio
         """
         return reverse('enrollments:tiposervicio_detail', kwargs={'pk': self.pk})
         #return "/servicios/impdates/list/{0}/".format(str(self.pk))
+
+    @property
+    def getTipoNivel(self):
+        """
+        Método que retorna la descripción del tipo de nivel, cruzándolo con el cataloto TipoNivel
+        :return: Descripción del catalogo TipoNivel
+        """
+
+        from utils.models import TiposNivel
+
+        idtipo = self.nivel
+
+        tipodoc = TiposNivel.objects.get(pk=idtipo)
+
+        return tipodoc.descripcion
+
+    @property
+    def getTipoGrado(self):
+        """
+        Método que retorna la descripción del tipo de grado, cruzándolo con el cataloto TiposGrados
+        :return: Descripción del catalogo TiposGrados
+        """
+
+        from utils.models import TiposGrados
+
+        idtipo = self.grado
+
+        tipodoc = TiposGrados.objects.get(pk=idtipo)
+
+        return tipodoc.descripcion
 
     class Meta:
         managed = False
         db_table = 'tipo_servicio'
         #unique_together = (('id_tipo_servicio', 'colegio'),)
 
-class Servicio(models.Model):
+class Servicio(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
     """
     nombre:         nombre del servicio
     precio:         precio del servicio
@@ -105,10 +105,6 @@ class Servicio(models.Model):
     is_periodic = models.BooleanField()
     fecha_facturar = models.DateField()
     cuotas = models.IntegerField()
-    fecha_creacion = models.DateField()
-    fecha_modificacion = models.DateField()
-    usuario_creacion = models.CharField(max_length=10, blank=True, null=True)
-    usuario_modificacion = models.CharField(max_length=10, blank=True, null=True)
 
     def __str__(self):
         """
@@ -136,7 +132,7 @@ class Servicio(models.Model):
     def get_absolute_url(self):
         """
         Redirecciona las views que usan como modelo esta clase
-        :return:
+        :return: url de la lista de servicios
         """
         return reverse('enrollments:servicio_list', kwargs={'pkts': self.tipo_servicio.pk})
         #return "/servicios/impdates/list/{0}/listservicios".format(str(self.tipo_servicio.id_tipo_servicio))
@@ -144,5 +140,50 @@ class Servicio(models.Model):
     class Meta:
         managed = False
         db_table = 'servicio'
+
+
+class Matricula( ActivoMixin, CreacionModificacionUserMixin, CreacionModificacionFechaMixin, models.Model):
+    """
+
+    """
+    id_matricula = models.AutoField(primary_key=True)
+    alumno = models.ForeignKey(Alumno, models.DO_NOTHING, db_column='id_alumno')
+    colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column='id_colegio')
+    tipo_servicio = models.ForeignKey(TipoServicio, models.DO_NOTHING, db_column='id_tipo_servicio')
+
+    def __str__(self):
+        """
+
+        :return:
+        """
+        return "El alumno: {0} esta registrado en {1}".format(self.alumno.persona.getNombreCompleto, self.tipo_servicio)
+
+    def get_absolute_url(self):
+        """
+        Redirecciona las views que usan como modelo esta clase
+        :return: url de la lista de servicios
+        """
+        return reverse('enrollments:matricula_list')
+
+    class Meta:
+        managed = False
+        db_table = 'matricula'
+
+class Cuentascobrar(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
+    """
+
+    """
+    id_cuentascobrar = models.AutoField(primary_key=True)
+    matricula = models.ForeignKey(Matricula, models.DO_NOTHING, db_column='id_matricula')
+    servicio = models.ForeignKey(Servicio, models.DO_NOTHING, db_column='id_servicio')
+    fecha_ven = models.DateField()
+    comentario = models.CharField(max_length=500, blank=True, null=True)
+    estado = models.BooleanField()
+    precio = models.FloatField()
+    deuda = models.FloatField()
+
+    class Meta:
+        managed = False
+        db_table = 'cuentascobrar'
 
 

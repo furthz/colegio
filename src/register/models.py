@@ -29,14 +29,14 @@ class Persona(models.Model):
     apellido_pa = models.CharField(max_length=50)
     apellido_ma = models.CharField(max_length=50, blank=True, null=True)
     tipo_documento = models.IntegerField()
-    numerodocumento = models.CharField(max_length=15)
+    numero_documento = models.CharField(max_length=15)
     sexo = models.IntegerField()
     correo = models.CharField(max_length=100, blank=True, null=True)
     fecha_nac = models.DateField()
-    fecha_creacion_persona = models.DateField()
-    fecha_modificacion_persona = models.DateField()
-    usuario_creacion_persona = models.CharField(max_length=10)
-    usuario_modificacion_persona = models.CharField(max_length=10)
+    fecha_creacion = models.DateField()
+    fecha_modificacion = models.DateField()
+    usuario_creacion = models.CharField(max_length=10)
+    usuario_modificacion = models.CharField(max_length=10)
 
     class Meta:
         managed = False
@@ -236,7 +236,7 @@ class Alumno(Persona, models.Model):
     """
     id_alumno = models.AutoField(primary_key=True)
     codigoint = models.CharField(max_length=15, blank=True, null=True)
-    persona = models.OneToOneField(Persona, models.DO_NOTHING, parent_link=True)
+    persona = models.OneToOneField(Persona, models.DO_NOTHING, parent_link=True, db_column='id_persona')
     apoderados = models.ManyToManyField(Apoderado, through='ApoderadoAlumno', related_name='alumnos', null=True)
     fecha_creacion_alumno = models.DateField(db_column="fecha_creacion")
     fecha_modificacion_alumno = models.DateField(db_column="fecha_modificacion")
@@ -266,6 +266,9 @@ class Alumno(Persona, models.Model):
         alu.save()
 
         return alu
+
+    def __str__(self):
+        return self.persona.getNombreCompleto
 
     class Meta:
         managed = False

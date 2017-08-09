@@ -1,0 +1,7 @@
+{% load crispy_forms_tags %}
+
+<form action="" method="POST">{% csrf_token %}
+    {% csrf_token %}
+    {{ tiposervicio }}
+    <input type="submit" value="Borrar">
+</form>

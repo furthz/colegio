@@ -1,0 +1,18 @@
+<h1>Matricula</h1>
+<ul>
+    <form >
+        {% for matricula in object_list %}
+            <li>
+                {{matricula}}
+                <input type="submit" formaction="../list/{{ matricula.id_matricula }}" value="Ver">
+                <input type="submit" formaction="../list/{{ matricula.id_matricula }}/update" value="Modificar">
+                <input type="submit" formaction="../list/{{ matricula.id_matricula }}/delete" value="Borrar">
+            </li>
+        {% empty %}
+            <li>No hay ningun alumno matriculado </li>
+        {% endfor %}
+    </form>
+</ul>
+<form action="../list/create">
+    <input type="submit" value="Nueva Matricula">
+</form>
