@@ -168,7 +168,7 @@ class Alumno(CreacionModificacionFechaAlumnoMixin, Profile, models.Model):
     """
     id_alumno = models.AutoField(primary_key=True)
     codigoint = models.CharField(max_length=15, blank=True, null=True)
-    persona = models.OneToOneField(Profile, models.DO_NOTHING, parent_link=True, db_column="id_persona")
+    persona = models.OneToOneField(Profile, models.DO_NOTHING, parent_link=True)
     apoderados = models.ManyToManyField(Apoderado, through='ApoderadoAlumno', related_name='alumnos', null=True)
     # fecha_creacion_alumno = models.DateField(db_column="fecha_creacion")
     # fecha_modificacion_alumno = models.DateField(db_column="fecha_modificacion")
