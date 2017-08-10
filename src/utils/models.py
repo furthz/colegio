@@ -131,11 +131,17 @@ class CreacionModificacionUserMixin(models.Model):
     def save(self, *args, **kwargs):
         from utils.middleware import get_current_user
 
-        #creacion
+        usuario = get_current_user()
+        if usuario is not None:
+            iduser = usuario.id
+        else:
+            iduser = -1
+
+        # creacion
         if not self:
-            self.usuario_creacion = get_current_user()
-        else: #modificación
-            self.usuario_modificacion = get_current_user()
+            self.usuario_creacion = iduser
+        else:  # modificación
+            self.usuario_modificacion = iduser
 
         super(CreacionModificacionUserMixin, self).save(*args, **kwargs)
 
@@ -157,13 +163,229 @@ class CreacionModificacionUserProfileMixin(models.Model):
     def save(self, *args, **kwargs):
         from utils.middleware import get_current_user
 
-        #creacion
+        usuario = get_current_user()
+
+        if usuario is not None:
+            iduser = usuario.id
+        else:
+            iduser = -1
+
+        # creacion
         if not self:
-            self.usuario_creacion_persona = get_current_user()
-        else: #modificación
-            self.usuario_modificacion_persona = get_current_user()
+            self.usuario_creacion_persona = iduser
+        else:  # modificación
+            self.usuario_modificacion_persona = iduser
 
         super(CreacionModificacionUserProfileMixin, self).save(*args, **kwargs)
+
+    save.alters_data = True
+
+    class Meta:
+        abstract = True
+
+
+class CreacionModificacionUserPersonalMixin(models.Model):
+    """
+    Clase abstracta para poder especificar los usuario:
+        - Creacion
+        - Modificacion
+    """
+    usuario_creacion_personal = models.CharField('Usuario_Creacion', null=True, blank=True, max_length=10,
+                                                 db_column='usuario_creacion')
+    usuario_modificacion_personal = models.CharField('Usuario_Modificacion', null=True, blank=True, max_length=10,
+                                                     db_column='usuario_modificacion')
+
+    def save(self, *args, **kwargs):
+        from utils.middleware import get_current_user
+
+        usuario = get_current_user()
+        if usuario is not None:
+            iduser = usuario.id
+        else:
+            iduser = -1
+
+        # creacion
+        if not self:
+            self.usuario_creacion_personal = iduser
+        else:  # modificación
+            self.usuario_modificacion_personal = iduser
+
+        super(CreacionModificacionUserPersonalMixin, self).save(*args, **kwargs)
+
+    save.alters_data = True
+
+    class Meta:
+        abstract = True
+
+
+class CreacionModificacionUserApoderadoMixin(models.Model):
+    """
+    Clase abstracta para poder especificar los usuario:
+        - Creacion
+        - Modificacion
+    """
+    usuario_creacion_apoderado = models.CharField('Usuario_Creacion', null=True, blank=True, max_length=10,
+                                                  db_column='usuario_creacion')
+    usuario_modificacion_apoderado = models.CharField('Usuario_Modificacion', null=True, blank=True, max_length=10,
+                                                      db_column='usuario_modificacion')
+
+    def save(self, *args, **kwargs):
+        from utils.middleware import get_current_user
+
+        usuario = get_current_user()
+
+        if usuario is not None:
+            iduser = usuario.id
+        else:
+            iduser = -1
+
+        # creacion
+        if not self:
+            self.usuario_creacion_apoderado = iduser
+        else:  # modificación
+            self.usuario_modificacion_apoderado = iduser
+
+        super(CreacionModificacionUserApoderadoMixin, self).save(*args, **kwargs)
+
+    save.alters_data = True
+
+    class Meta:
+        abstract = True
+
+
+class CreacionModificacionUserAlumnoMixin(models.Model):
+    """
+    Clase abstracta para poder especificar los usuario:
+        - Creacion
+        - Modificacion
+    """
+    usuario_creacion_alumno = models.CharField('Usuario_Creacion', null=True, blank=True, max_length=10,
+                                               db_column='usuario_creacion')
+    usuario_modificacion_alumno = models.CharField('Usuario_Modificacion', null=True, blank=True, max_length=10,
+                                                   db_column='usuario_modificacion')
+
+    def save(self, *args, **kwargs):
+        from utils.middleware import get_current_user
+
+        usuario = get_current_user()
+
+        if usuario is not None:
+            iduser = usuario.id
+        else:
+            iduser = -1
+
+        # creacion
+        if not self:
+            self.usuario_creacion_alumno = iduser
+        else:  # modificación
+            self.usuario_modificacion_alumno = iduser
+
+        super(CreacionModificacionUserAlumnoMixin, self).save(*args, **kwargs)
+
+    save.alters_data = True
+
+    class Meta:
+        abstract = True
+
+
+class CreacionModificacionUserPromotorMixin(models.Model):
+    """
+    Clase abstracta para poder especificar los usuario:
+        - Creacion
+        - Modificacion
+    """
+    usuario_creacion_promotor = models.CharField('Usuario_Creacion', null=True, blank=True, max_length=10,
+                                                 db_column='usuario_creacion')
+    usuario_modificacion_promotor = models.CharField('Usuario_Modificacion', null=True, blank=True, max_length=10,
+                                                     db_column='usuario_modificacion')
+
+    def save(self, *args, **kwargs):
+        from utils.middleware import get_current_user
+
+        usuario = get_current_user()
+
+        if usuario is not None:
+            iduser = usuario.id
+        else:
+            iduser = -1
+
+        # creacion
+        if not self:
+            self.usuario_creacion_promotor = iduser
+        else:  # modificación
+            self.usuario_modificacion_promotor = iduser
+
+        super(CreacionModificacionUserPromotorMixin, self).save(*args, **kwargs)
+
+    save.alters_data = True
+
+    class Meta:
+        abstract = True
+
+
+class CreacionModificacionUserCajeroMixin(models.Model):
+    """
+    Clase abstracta para poder especificar los usuario:
+        - Creacion
+        - Modificacion
+    """
+    usuario_creacion_cajero = models.CharField('Usuario_Creacion', null=True, blank=True, max_length=10,
+                                               db_column='usuario_creacion')
+    usuario_modificacion_cajero = models.CharField('Usuario_Modificacion', null=True, blank=True, max_length=10,
+                                                   db_column='usuario_modificacion')
+
+    def save(self, *args, **kwargs):
+        from utils.middleware import get_current_user
+
+        usuario = get_current_user()
+
+        if usuario is not None:
+            iduser = usuario.id
+        else:
+            iduser = -1
+
+        # creacion
+        if not self:
+            self.usuario_creacion_cajero = iduser
+        else:  # modificación
+            self.usuario_modificacion_cajero = iduser
+
+        super(CreacionModificacionUserCajeroMixin, self).save(*args, **kwargs)
+
+    save.alters_data = True
+
+    class Meta:
+        abstract = True
+
+
+class CreacionModificacionUserDirectorMixin(models.Model):
+    """
+    Clase abstracta para poder especificar los usuario:
+        - Creacion
+        - Modificacion
+    """
+    usuario_creacion_director = models.CharField('Usuario_Creacion', null=True, blank=True, max_length=10,
+                                                 db_column='usuario_creacion')
+    usuario_modificacion_director = models.CharField('Usuario_Modificacion', null=True, blank=True, max_length=10,
+                                                     db_column='usuario_modificacion')
+
+    def save(self, *args, **kwargs):
+        from utils.middleware import get_current_user
+
+        usuario = get_current_user()
+
+        if usuario is not None:
+            iduser = usuario.id
+        else:
+            iduser = -1
+
+        # creacion
+        if not self:
+            self.usuario_creacion_director = iduser
+        else:  # modificación
+            self.usuario_modificacion_director = iduser
+
+        super(CreacionModificacionUserDirectorMixin, self).save(*args, **kwargs)
 
     save.alters_data = True
 
@@ -181,10 +403,10 @@ class CreacionModificacionFechaMixin(models.Model):
     fecha_modificacion = models.DateTimeField(blank=True, null=True)
 
     def save(self, *args, **kwargs):
-        #creación
+        # creación
         if not self.pk:
             self.fecha_creacion = timezone_now()
-        else: #modificacion
+        else:  # modificacion
             if not self.fecha_creacion:
                 self.fecha_creacion = timezone_now()
 
@@ -197,6 +419,7 @@ class CreacionModificacionFechaMixin(models.Model):
     class Meta:
         abstract = True
 
+
 class CreacionModificacionFechaProfileMixin(models.Model):
     """
     Clase abstracta para definir las fechas de:
@@ -207,10 +430,10 @@ class CreacionModificacionFechaProfileMixin(models.Model):
     fecha_modificacion_persona = models.DateTimeField(blank=True, null=True)
 
     def save(self, *args, **kwargs):
-        #creación
+        # creación
         if not self.pk:
             self.fecha_creacion_persona = timezone_now()
-        else: #modificacion
+        else:  # modificacion
             if not self.fecha_creacion_persona:
                 self.fecha_creacion_persona = timezone_now()
 
@@ -234,10 +457,10 @@ class CreacionModificacionFechaPersonalMixin(models.Model):
     fecha_modificacion_personal = models.DateTimeField(blank=True, null=True, db_column="fecha_modificacion")
 
     def save(self, *args, **kwargs):
-        #creación
+        # creación
         if not self.pk:
             self.fecha_creacion_personal = timezone_now()
-        else: #modificacion
+        else:  # modificacion
             if not self.fecha_creacion_personal:
                 self.fecha_creacion_personal = timezone_now()
 
@@ -261,10 +484,10 @@ class CreacionModificacionFechaApoderadoMixin(models.Model):
     fecha_modificacion_apoderado = models.DateTimeField(blank=True, null=True, db_column="fecha_modificacion")
 
     def save(self, *args, **kwargs):
-        #creación
+        # creación
         if not self.pk:
             self.fecha_creacion_apoderado = timezone_now()
-        else: #modificacion
+        else:  # modificacion
             if not self.fecha_creacion_apoderado:
                 self.fecha_creacion_apoderado = timezone_now()
 
@@ -288,10 +511,10 @@ class CreacionModificacionFechaAlumnoMixin(models.Model):
     fecha_modificacion_alumno = models.DateTimeField(blank=True, null=True, db_column="fecha_modificacion")
 
     def save(self, *args, **kwargs):
-        #creación
+        # creación
         if not self.pk:
             self.fecha_creacion_alumno = timezone_now()
-        else: #modificacion
+        else:  # modificacion
             if not self.fecha_creacion_alumno:
                 self.fecha_creacion_alumno = timezone_now()
 
@@ -315,10 +538,10 @@ class CreacionModificacionFechaPromotorMixin(models.Model):
     fecha_modificacion_promotor = models.DateTimeField(blank=True, null=True, db_column="fecha_modificacion")
 
     def save(self, *args, **kwargs):
-        #creación
+        # creación
         if not self.pk:
             self.fecha_creacion_promotor = timezone_now()
-        else: #modificacion
+        else:  # modificacion
             if not self.fecha_creacion_promotor:
                 self.fecha_creacion_promotor = timezone_now()
 
@@ -342,10 +565,10 @@ class CreacionModificacionFechaCajeroMixin(models.Model):
     fecha_modificacion_cajero = models.DateTimeField(blank=True, null=True, db_column="fecha_modificacion")
 
     def save(self, *args, **kwargs):
-        #creación
+        # creación
         if not self.pk:
             self.fecha_creacion_cajero = timezone_now()
-        else: #modificacion
+        else:  # modificacion
             if not self.fecha_creacion_cajero:
                 self.fecha_creacion_cajero = timezone_now()
 
@@ -369,10 +592,10 @@ class CreacionModificacionFechaDirectorMixin(models.Model):
     fecha_modificacion_director = models.DateTimeField(blank=True, null=True, db_column="fecha_modificacion")
 
     def save(self, *args, **kwargs):
-        #creación
+        # creación
         if not self.pk:
             self.fecha_creacion_director = timezone_now()
-        else: #modificacion
+        else:  # modificacion
             if not self.fecha_creacion_director:
                 self.fecha_creacion_director = timezone_now()
 
@@ -384,6 +607,7 @@ class CreacionModificacionFechaDirectorMixin(models.Model):
 
     class Meta:
         abstract = True
+
 
 class TipoDocumento(ActivoMixin, models.Model):
     """

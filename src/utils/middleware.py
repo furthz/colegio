@@ -16,3 +16,8 @@ class ThreadLocalMiddleware(object):
         to thread local storage """
     def process_request(self, request):
         _thread_locals.request = request
+
+    def process_response(self, request, response):
+        if hasattr(_thread_locals, 'request'):
+            del _thread_locals.request
+        return response

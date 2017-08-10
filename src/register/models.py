@@ -6,63 +6,37 @@ Autor: Raul Talledo <raul.talledo@technancial.com.pe>
 Fecha: 23/07/2017
 
 """
-from django.core.exceptions import ValidationError
-from django.core.urlresolvers import reverse
 from django.db import models
+
+from utils.misc import insert_child
 from utils.models import CreacionModificacionUserMixin, CreacionModificacionFechaPersonalMixin, \
     CreacionModificacionFechaApoderadoMixin, CreacionModificacionFechaAlumnoMixin, \
-    CreacionModificacionFechaPromotorMixin, CreacionModificacionFechaCajeroMixin, CreacionModificacionFechaDirectorMixin
+    CreacionModificacionFechaPromotorMixin, CreacionModificacionFechaCajeroMixin, \
+    CreacionModificacionFechaDirectorMixin, \
+    CreacionModificacionUserPersonalMixin, CreacionModificacionUserApoderadoMixin, \
+    CreacionModificacionUserAlumnoMixin, \
+    CreacionModificacionUserPromotorMixin, CreacionModificacionUserCajeroMixin, CreacionModificacionUserDirectorMixin
 from utils.models import CreacionModificacionFechaMixin
 from utils.models import ActivoMixin
-from utils.models import UrlMixin
 
 from profiles.models import Profile
 
 
-class Personal(CreacionModificacionFechaPersonalMixin, Profile, models.Model):
+class Personal(CreacionModificacionUserPersonalMixin, CreacionModificacionFechaPersonalMixin, Profile, models.Model):
     """
     Clase para el Personal
     """
     id_personal = models.AutoField(primary_key=True)
     persona = models.OneToOneField(Profile, models.DO_NOTHING, parent_link=True)
     activo_personal = models.BooleanField(db_column="activo", default=True)
-    # fecha_creacion_personal = models.DateField(db_column="fecha_creacion")
-    # fecha_modificacion_personal = models.DateField(db_column="fecha_modificacion")
-    usuario_creacion_personal = models.CharField(max_length=10, db_column="usuario_creacion")
-    usuario_modificacion_personal = models.CharField(max_length=10, db_column="usuario_modificacion")
 
-
-    def savePersonalFromPersona(self, persona: Profile, **atributos):
-        """
-        Método que permite guardar un Personal a partir de una persona existente
-        :param persona: Persona existente
-        :param atributos: Nuevos atributos propios de Apoderado
-        :return: Objeto Personal creado
-        """
-
-        personalink = Personal._meta.parents.get(persona.__class__, None)
-
-        if personalink is None:
-            raise ValidationError(str("A %s no puede ser padre de %s" % (
-                persona.__class__.__name__, self.__name__)))
-
-        atributos[personalink.name] = persona
-
-        for field in persona._meta.fields:
-            try:
-                atributos[field.name] = getattr(persona, field.name)
-            except:
-                pass
-
-        personal = Personal(**atributos)
-        personal.save()
-
-        return personal
+    @staticmethod
+    def savePersonalFromPersona(persona: Profile, **atributos):
+        return insert_child(persona, Personal, **atributos)
 
     class Meta:
         managed = False
         db_table = 'personal'
-        # unique_together = (('id_personal', 'persona'),)
 
 
 class Colegio(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
@@ -118,51 +92,30 @@ class Direccion(CreacionModificacionUserMixin, CreacionModificacionFechaMixin, m
         db_table = 'direccion'
 
 
-class Apoderado(CreacionModificacionFechaApoderadoMixin, Profile, models.Model):
+class Apoderado(CreacionModificacionUserApoderadoMixin, CreacionModificacionFechaApoderadoMixin, Profile, models.Model):
     """
     Clase para identificar a los apoderados de los alumnos
     """
     id_apoderado = models.AutoField(primary_key=True)
     parentesco = models.CharField(max_length=30)
     persona = models.OneToOneField(Profile, models.DO_NOTHING, parent_link=True, )
-    # fecha_creacion_apoderado = models.DateField(db_column="fecha_creacion")
-    # fecha_modificacion_apoderado = models.DateField(db_column="fecha_modificacion")
-    usuario_creacion_apoderado = models.CharField(max_length=10, db_column="usuario_creacion")
-    usuario_modificacion_apoderado = models.CharField(max_length=10, db_column="usuario_modificacion")
 
-    def saveApoderadoFromPersona(self, persona: Profile, **atributos):
+    @staticmethod
+    def saveApoderadoFromPersona(persona: Profile, **atributos):
         """
         Método que permite guardar un Apoderado a partir de una persona existente
         :param persona: Persona existente
         :param atributos: Nuevos atributos propios de Apoderado
         :return: Objeto Apoderado creado
         """
-
-        personalink = Apoderado._meta.parents.get(persona.__class__, None)
-
-        if personalink is None:
-            raise ValidationError(str("A %s no puede ser padre de %s" % (
-                persona.__class__.__name__, self.__name__)))
-
-        atributos[personalink.name] = persona
-
-        for field in persona._meta.fields:
-            try:
-                atributos[field.name] = getattr(persona, field.name)
-            except:
-                pass
-
-        apo = Apoderado(**atributos)
-        apo.save()
-
-        return apo
+        return insert_child(persona, Apoderado, **atributos)
 
     class Meta:
         managed = False
         db_table = 'apoderado'
 
 
-class Alumno(CreacionModificacionFechaAlumnoMixin, Profile, models.Model):
+class Alumno(CreacionModificacionUserAlumnoMixin, CreacionModificacionFechaAlumnoMixin, Profile, models.Model):
     """
     Clase para identificar a los Alumnos
     """
@@ -170,34 +123,16 @@ class Alumno(CreacionModificacionFechaAlumnoMixin, Profile, models.Model):
     codigoint = models.CharField(max_length=15, blank=True, null=True)
     persona = models.OneToOneField(Profile, models.DO_NOTHING, parent_link=True)
     apoderados = models.ManyToManyField(Apoderado, through='ApoderadoAlumno', related_name='alumnos', null=True)
-    # fecha_creacion_alumno = models.DateField(db_column="fecha_creacion")
-    # fecha_modificacion_alumno = models.DateField(db_column="fecha_modificacion")
-    usuario_creacion_alumno = models.CharField(max_length=10, db_column="usuario_creacion")
-    usuario_modificacion_alumno = models.CharField(max_length=10, db_column="usuario_modificacion")
 
-    def saveAlumnoFromPersona(self, persona: Profile, **atributos):
+    @staticmethod
+    def saveAlumnoFromPersona(persona: Profile, **atributos):
         """
         Método que permite guardar un Apoderado a partir de una persona existente
         :param persona: Persona existente
         :param atributos: Nuevos atributos propios de Apoderado
         :return: Objeto Alumno creado
         """
-
-        personalink = Alumno._meta.parents.get(persona.__class__, None)
-
-        if personalink is None:
-            raise ValidationError(str("A %s no puede ser padre de %s" % (
-                persona.__class__.__name__, self.__name__)))
-
-        atributos[personalink.name] = persona
-
-        for field in persona._meta.fields:
-            atributos[field.name] = getattr(persona, field.name)
-
-        alu = Alumno(**atributos)
-        alu.save()
-
-        return alu
+        return insert_child(persona, Alumno, **atributos)
 
     class Meta:
         managed = False
@@ -218,19 +153,16 @@ class ApoderadoAlumno(ActivoMixin, CreacionModificacionFechaMixin, CreacionModif
         unique_together = (("apoderado", "alumno"),)
 
 
-class Promotor(CreacionModificacionFechaPromotorMixin, Personal, models.Model):
+class Promotor(CreacionModificacionUserPromotorMixin, CreacionModificacionFechaPromotorMixin, Personal, models.Model):
     """
     Clase para el Promotor
     """
     id_promotor = models.AutoField(primary_key=True)
     personalprom = models.OneToOneField(Personal, models.DO_NOTHING, parent_link=True, )
     activo_promotor = models.BooleanField(default=True, db_column="activo")
-    # fecha_creacion_promotor = models.DateField(db_column="fecha_creacion")
-    # fecha_modificacion_promotor = models.DateField(db_column="fecha_modificacion")
-    usuario_creacion_promotor = models.CharField(max_length=10, db_column="usuario_creacion")
-    usuario_modificacion_promotor = models.CharField(max_length=10, db_column="usuario_modificacion")
 
-    def savePromotorFromPersonal(self, personal: Personal, **atributos):
+    @staticmethod
+    def savePromotorFromPersonal(personal: Personal, **atributos):
         """
         # Método que permite guardar un Promotor a partir de un personal existente
         # :param personal: Personal existente
@@ -238,43 +170,23 @@ class Promotor(CreacionModificacionFechaPromotorMixin, Personal, models.Model):
         # :return: Objeto Promotor creado
         """
 
-        personalink = Promotor._meta.parents.get(personal.__class__, None)
-
-        if personalink is None:
-            raise ValidationError(str("A %s no puede ser padre de %s" % (
-                personal.__class__.__name__, self.__name__)))
-
-        atributos[personalink.name] = personal
-
-        for field in personal._meta.fields:
-            try:
-                atributos[field.name] = getattr(personal, field.name)
-            except:
-                pass
-
-        promotor = Promotor(**atributos)
-        promotor.save()
-
-        return promotor
+        return insert_child(personal, Promotor, **atributos)
 
     class Meta:
         managed = False
         db_table = 'promotor'
 
 
-class Cajero(CreacionModificacionFechaCajeroMixin, Personal, models.Model):
+class Cajero(CreacionModificacionUserCajeroMixin, CreacionModificacionFechaCajeroMixin, Personal, models.Model):
     """
     Clase para el Cajero
     """
     id_cajero = models.AutoField(primary_key=True)
     personalcajero = models.OneToOneField(Personal, models.DO_NOTHING, parent_link=True, )
     activo_cajero = models.BooleanField(default=True, db_column="activo")
-    # fecha_creacion_cajero = models.DateField(db_column="fecha_creacion")
-    # fecha_modificacion_cajero = models.DateField(db_column="fecha_modificacion")
-    usuario_creacion_cajero = models.CharField(max_length=10, db_column="usuario_creacion")
-    usuario_modificacion_cajero = models.CharField(max_length=10, db_column="usuario_modificacion")
 
-    def saveCajeroFromPersonal(self, personal: Personal, **atributos):
+    @staticmethod
+    def saveCajeroFromPersonal(personal: Personal, **atributos):
         """
         # Método que permite guardar un Promotor a partir de un personal existente
         # :param personal: Personal existente
@@ -282,43 +194,23 @@ class Cajero(CreacionModificacionFechaCajeroMixin, Personal, models.Model):
         # :return: Objeto Promotor creado
         """
 
-        personalink = Cajero._meta.parents.get(personal.__class__, None)
-
-        if personalink is None:
-            raise ValidationError(str("A %s no puede ser padre de %s" % (
-                personal.__class__.__name__, self.__name__)))
-
-        atributos[personalink.name] = personal
-
-        for field in personal._meta.fields:
-            try:
-                atributos[field.name] = getattr(personal, field.name)
-            except:
-                pass
-
-        cajero = Cajero(**atributos)
-        cajero.save()
-
-        return cajero
+        return insert_child(personal, Cajero, **atributos)
 
     class Meta:
         managed = False
         db_table = 'cajero'
 
 
-class Director(CreacionModificacionFechaDirectorMixin, Personal, models.Model):
+class Director(CreacionModificacionUserDirectorMixin, CreacionModificacionFechaDirectorMixin, Personal, models.Model):
     """
     Clase para el Director
     """
     id_director = models.AutoField(primary_key=True)
     personaldirector = models.OneToOneField(Personal, models.DO_NOTHING, parent_link=True, )
     activo_director = models.BooleanField(default=True, db_column="activo")
-    # fecha_creacion_director = models.DateField(db_column="fecha_creacion")
-    # fecha_modificacion_director = models.DateField(db_column="fecha_modificacion")
-    usuario_creacion_director = models.CharField(max_length=10, db_column="usuario_creacion")
-    usuario_modificacion_director = models.CharField(max_length=10, db_column="usuario_modificacion")
 
-    def saveDirectorFromPersonal(self, personal: Personal, **atributos):
+    @staticmethod
+    def saveDirectorFromPersonal(personal: Personal, **atributos):
         """
         # Método que permite guardar un Promotor a partir de un personal existente
         # :param personal: Personal existente
@@ -326,24 +218,7 @@ class Director(CreacionModificacionFechaDirectorMixin, Personal, models.Model):
         # :return: Objeto Promotor creado
         """
 
-        personalink = Director._meta.parents.get(personal.__class__, None)
-
-        if personalink is None:
-            raise ValidationError(str("A %s no puede ser padre de %s" % (
-                personal.__class__.__name__, self.__name__)))
-
-        atributos[personalink.name] = personal
-
-        for field in personal._meta.fields:
-            try:
-                atributos[field.name] = getattr(personal, field.name)
-            except:
-                pass
-
-        director = Director(**atributos)
-        director.save()
-
-        return director
+        return insert_child(personal, Director, **atributos)
 
     class Meta:
         managed = False
@@ -361,4 +236,3 @@ class PersonalColegio(ActivoMixin, CreacionModificacionUserMixin, CreacionModifi
     class Meta:
         managed = False
         db_table = 'personal_colegio'
-        # unique_together = (("apoderado", "alumno"),)

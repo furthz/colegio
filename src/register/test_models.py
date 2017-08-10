@@ -65,7 +65,7 @@ class PersonaModelTest(TestCase):
         self.tipo = TipoDocumento(descripcion="DNI", activo=True)
         self.tipo.save()
 
-        print("idpersonainicio: " + str(self.persona.id_profile))
+        print("idpersonainicio: " + str(self.persona.id_persona))
 
     def test_PersonaAddApoderado(self):
         apo = Apoderado()
@@ -89,7 +89,9 @@ class PersonaModelTest(TestCase):
     def test_personal(self):
         self.personal = Personal()
 
+        #self.personal = self.personal.savePersonalFromPersona(persona=self.persona, activo_personal=True)
         self.personal = self.personal.savePersonalFromPersona(persona=self.persona, activo_personal=True)
+
         print("fecha creacion personal: " + str(self.personal.fecha_creacion_personal))
 
         self.assertEquals(self.personal.nombre, self.personal.persona.nombre)
