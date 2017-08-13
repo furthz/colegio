@@ -640,6 +640,9 @@ class TipoSexo(ActivoMixin, models.Model):
     id_sexo = models.AutoField(primary_key=True)
     descripcion = models.CharField(max_length=10)
 
+    def __str__(self):
+        return self.descripcion
+
     class Meta:
         managed = False
         db_table = 'tipo_sexo'

@@ -12,9 +12,9 @@ TEMPLATE_DEBUG = False
 
 # Cache the templates in memory for speed-up
 loaders = [
-    ('django.template.loaders.cached.Loader', [
-        'django.template.loaders.filesystem.Loader',
-        'django.template.loaders.app_directories.Loader',
+    ('django.templates.loaders.cached.Loader', [
+        'django.templates.loaders.filesystem.Loader',
+        'django.templates.loaders.app_directories.Loader',
     ]),
 ]
 

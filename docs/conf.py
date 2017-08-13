@@ -114,7 +114,7 @@ html_theme = 'alabaster'
 html_static_path = ['_static']
 
 # Custom sidebar templates, must be a dictionary that maps document names
-# to template names.
+# to templates names.
 #
 # This is required for the alabaster theme
 # refs: http://alabaster.readthedocs.io/en/latest/installation.html#sidebars

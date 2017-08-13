@@ -1,4 +1,6 @@
 from __future__ import unicode_literals
+
+from django.urls import reverse
 from django.utils.functional import cached_property
 from datetime import datetime
 from django.utils.encoding import python_2_unicode_compatible
@@ -28,9 +30,9 @@ class BaseProfile(CreacionModificacionFechaProfileMixin, CreacionModificacionUse
     apellido_pa = models.CharField(max_length=50, null=True, blank=True)
     apellido_ma = models.CharField(max_length=50, blank=True, null=True)
     tipo_documento = models.IntegerField(null=True)
-    numerodocumento = models.CharField(max_length=15,null=True)
+    numero_documento = models.CharField(max_length=15, null=True, db_column='numerodocumento')
     sexo = models.IntegerField(null=True)
-    correo = models.CharField(max_length=100, blank=True, null=True)
+    correo = models.EmailField(max_length=100, blank=True, null=True)
     fecha_nac = models.DateField(null=True)
     # fecha_creacion_persona = models.DateField()
     # fecha_modificacion_persona = models.DateField()
@@ -54,11 +56,9 @@ class BaseProfile(CreacionModificacionFechaProfileMixin, CreacionModificacionUse
         :return: La cantidad de años de la persona
         """
 
-        edad = datetime.now().date() - self.fecha_nac
+        edad = datetime.now().date().year - self.fecha_nac.year
 
-        diasedad = edad.days
-
-        años = diasedad / 365
+        años = edad
 
         return años
 
@@ -99,6 +99,32 @@ class BaseProfile(CreacionModificacionFechaProfileMixin, CreacionModificacionUse
 @python_2_unicode_compatible
 class Profile(BaseProfile):
     id_persona = models.AutoField(primary_key=True)
+
+    def get_absolute_url(self):
+        """
+        Redirecciona las views que usan como modelo esta clase
+        :return: url de detalles de la persona
+        """
+        return reverse('registers:persona_detail', kwargs={'pk': self.pk})
+
+    def full_detail(self):
+        """
+        Da una descripcion detallada de la informacion del Tipo de Servicio
+        :return: lista de todos los atributos de la clase
+        """
+        detalle_completo = ["Nombres y Apellidos: {0}".format(self.getNombreCompleto),
+                            "Tipo Documento: {0}".format(self.getTipoDocumento),
+                            "Número Documento: {0}".format(self.numero_documento),
+                            "Sexo: {0}".format(self.getSexo),
+                            "Correo: {0}".format(self.correo),
+                            "Edad: {0}".format(self.getEdad),
+                            "Usuario creacion: {0}".format(self.usuario_creacion_persona),
+                            "Fecha creacion: {0}".format(self.fecha_creacion_persona),
+                            "Usuario modificacion: {0}".format(self.usuario_modificacion_persona),
+                            "Fecha modificacion: {0}".format(self.fecha_modificacion_persona)
+                            ]
+        return detalle_completo
+
     def __str__(self):
         return "{}'s profile". format(self.user)
 

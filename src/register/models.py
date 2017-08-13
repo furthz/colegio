@@ -68,6 +68,9 @@ class Telefono(ActivoMixin, CreacionModificacionUserMixin, CreacionModificacionF
     numero = models.IntegerField()
     tipo = models.CharField(max_length=10)
 
+    def __str__(self):
+        return str(self.numero)
+
     class Meta:
         managed = False
         db_table = 'telefono'

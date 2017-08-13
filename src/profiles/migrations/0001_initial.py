@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
                 ('apellido_pa', models.CharField(max_length=50, null=True)),
                 ('apellido_ma', models.CharField(blank=True, max_length=50, null=True)),
                 ('tipo_documento', models.IntegerField(null=True)),
-                ('numerodocumento', models.CharField(max_length=15, null=True)),
+                ('numero_documento', models.CharField(max_length=15, null=True)),
                 ('sexo', models.IntegerField(null=True)),
                 ('correo', models.CharField(blank=True, max_length=100, null=True)),
                 ('fecha_nac', models.DateField(null=True)),
