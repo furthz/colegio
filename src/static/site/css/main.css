@@ -270,3 +270,23 @@ body>.navbar-transparent {
 	display: block;
 	width: 100%;
 }
+.skin-green-light .main-header .logo {
+    background-color: #fff;
+    color: #fff;
+    border-bottom: 1px solid #00A65A;
+}
+.skin-green-light .main-header .logo:hover {
+    background-color: #f4f4f4;
+}
+.skin-green-light .main-header .navbar .nav>li>a{
+    height: 55px;
+}
+.main-header .logo{
+    min-height: 55px;
+}
+.main-sidebar{
+    padding-top: 55px;
+}
+.main-header .sidebar-toggle{
+    padding: 17px 17px;
+}
