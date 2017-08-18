@@ -177,3 +177,116 @@ body>.navbar-transparent {
 .form-box form .form-control:focus {
   z-index: 2;
 }
+
+/* CSS THEMES */
+.actions{
+  padding: 20px;
+}
+.table-header{
+	background-color: #f5f5f5;
+}
+.table td .checkbox{
+	text-align: center;
+}
+.detalle .dl-horizontal dt,
+.detalle .dl-horizontal dd{
+	padding-bottom: 5px;
+	padding-top: 5px;
+}
+.detalle .dl-horizontal dt{
+	padding-right: 10px;
+}
+.detalle .border-detalle{
+	border: 1px solid #CCC;
+	padding: 20px;
+	margin-bottom: 20px;
+	display: inline-block;
+	width: 100%;
+	border-radius: 5px;
+}
+.detalle .logotipo{
+	border: 1px solid #CDCDCD;
+	padding: 5%;
+	background-color: #f4f4f4;
+}
+.table.table-total{
+
+}
+.table .table-bold{
+	font-weight: bold;
+	font-size: 16px;
+	background: #f5f5f5;
+	text-align: right;
+}
+.table .table-bold-print{
+	font-weight: bold;
+	font-size: 16px;
+	text-align: right;
+}
+.table .table-price{
+	font-size: 16px;
+}
+.table .table-price-print{
+	font-size: 16px;
+}
+.registro-total{
+	margin-top: 10px;
+	margin-bottom: 10px;
+	border-top: 1px solid #CCC;
+	border-bottom: 1px solid #CCC;
+}
+.registro-total .table{
+	margin-bottom: 0;
+}
+.toolbar-header, .toolbar-footer{
+	padding: 5px 0;
+	margin-bottom: 10px;
+}
+.toolbar-search{
+	padding: 10px;
+	border: 1px solid #d2d6de;
+	margin-bottom: 20px;
+}
+.toolbar-search .form-group{
+	margin-right: 10px;
+}
+.toolbar-search label{
+	margin-right: 20px;
+}
+.search-actions{
+	padding-top: 25px;
+}
+/* Alertas */
+.alert-success {
+    color: #3c763d !important;
+    background-color: #dff0d8 !important;
+    border-color: #d6e9c6 !important;
+}
+.panel-body .panel-group .pull-right{
+	top: -24px;
+	position: relative;
+}
+.panel-body .panel-group .panel-title a{
+	display: block;
+	width: 100%;
+}
+.skin-green-light .main-header .logo {
+    background-color: #fff;
+    color: #fff;
+    border-bottom: 1px solid #00A65A;
+}
+.skin-green-light .main-header .logo:hover {
+    background-color: #f4f4f4;
+}
+.skin-green-light .main-header .navbar .nav>li>a{
+    height: 55px;
+}
+.main-header .logo{
+    min-height: 55px;
+}
+.main-sidebar{
+    padding-top: 55px;
+}
+.main-header .sidebar-toggle{
+    padding: 17px 17px;
+}

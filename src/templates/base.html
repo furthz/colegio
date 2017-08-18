@@ -9,13 +9,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="{% block description %}{% endblock description %}">
     <meta name="author" content="Mundo Pixel">
-    <link rel="shortcut icon" href="{% static 'site/ico/favicon.ico' %}">
-
     <title>{% block title %}{% include "_brandname.html" %} :: {% endblock %}</title>
-
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{% static 'site/ico/favicon.ico' %}">
     <!-- Bootstrap core CSS -->
-    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-
+    <link rel="stylesheet" href="{% static 'components/bootstrap/dist/css/bootstrap.css' %}" >
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{% static 'components/font-awesome/css/font-awesome.min.css' %}">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{% static 'site/css/AdminLTE.min.css' %}">
+    <!-- Morris chart -->
+    <link rel="stylesheet" href="{% static 'components/morris.js/morris.css' %}">
+    <!-- Date Picker -->
+    <link rel="stylesheet" href="{% static 'components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css' %}">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="{% static 'components/bootstrap-daterangepicker/daterangepicker.css' %}">
+    <!-- Jquery UI -->
+    <link rel="stylesheet" href="{% static 'components/jquery-ui/themes/base/jquery-ui.css' %}">
     <!-- Custom styles for this site -->
     {% block styles %}
     <link href="{% static 'site/css/main.css' %}" rel="stylesheet">
@@ -129,8 +139,8 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'components/jquery/dist/jquery.min.js' %}"></script>
+    <script src="{% static 'components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
     {% block scripts %}
     {% endblock scripts %}
   </body>
