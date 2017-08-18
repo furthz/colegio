@@ -9,10 +9,10 @@ from django.views.generic.edit import (
 from .models import Remesa
 from .forms import RemesaForm
 
-
+#RemesaListView
 class RemesaListView(ListView):
     model = Remesa
-    #template_name = 'remesas/remesa_list.html'
+    template_name = 'cash_list.html'
 
 
 class RemesaDetailView(DetailView):
