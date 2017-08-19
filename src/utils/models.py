@@ -140,8 +140,8 @@ class CreacionModificacionUserMixin(models.Model):
         # creacion
         if not self.pk:
             self.usuario_creacion = iduser
-        else:  # modificación
-            self.usuario_modificacion = iduser
+
+        self.usuario_modificacion = iduser
 
         super(CreacionModificacionUserMixin, self).save(*args, **kwargs)
 
@@ -173,8 +173,8 @@ class CreacionModificacionUserProfileMixin(models.Model):
         # creacion
         if not self.pk:
             self.usuario_creacion_persona = iduser
-        else:  # modificación
-            self.usuario_modificacion_persona = iduser
+
+        self.usuario_modificacion_persona = iduser
 
         super(CreacionModificacionUserProfileMixin, self).save(*args, **kwargs)
 
@@ -207,8 +207,8 @@ class CreacionModificacionUserPersonalMixin(models.Model):
         # creacion
         if not self.pk:
             self.usuario_creacion_personal = iduser
-        else:  # modificación
-            self.usuario_modificacion_personal = iduser
+
+        self.usuario_modificacion_personal = iduser
 
         super(CreacionModificacionUserPersonalMixin, self).save(*args, **kwargs)
 
@@ -242,8 +242,8 @@ class CreacionModificacionUserApoderadoMixin(models.Model):
         # creacion
         if not self.pk:
             self.usuario_creacion_apoderado = iduser
-        else:  # modificación
-            self.usuario_modificacion_apoderado = iduser
+
+        self.usuario_modificacion_apoderado = iduser
 
         super(CreacionModificacionUserApoderadoMixin, self).save(*args, **kwargs)
 
@@ -277,8 +277,8 @@ class CreacionModificacionUserAlumnoMixin(models.Model):
         # creacion
         if not self.pk:
             self.usuario_creacion_alumno = iduser
-        else:  # modificación
-            self.usuario_modificacion_alumno = iduser
+
+        self.usuario_modificacion_alumno = iduser
 
         super(CreacionModificacionUserAlumnoMixin, self).save(*args, **kwargs)
 
@@ -312,8 +312,8 @@ class CreacionModificacionUserPromotorMixin(models.Model):
         # creacion
         if not self.pk:
             self.usuario_creacion_promotor = iduser
-        else:  # modificación
-            self.usuario_modificacion_promotor = iduser
+
+        self.usuario_modificacion_promotor = iduser
 
         super(CreacionModificacionUserPromotorMixin, self).save(*args, **kwargs)
 
@@ -347,8 +347,8 @@ class CreacionModificacionUserCajeroMixin(models.Model):
         # creacion
         if not self.pk:
             self.usuario_creacion_cajero = iduser
-        else:  # modificación
-            self.usuario_modificacion_cajero = iduser
+
+        self.usuario_modificacion_cajero = iduser
 
         super(CreacionModificacionUserCajeroMixin, self).save(*args, **kwargs)
 
@@ -382,8 +382,8 @@ class CreacionModificacionUserDirectorMixin(models.Model):
         # creacion
         if not self.pk:
             self.usuario_creacion_director = iduser
-        else:  # modificación
-            self.usuario_modificacion_director = iduser
+
+        self.usuario_modificacion_director = iduser
 
         super(CreacionModificacionUserDirectorMixin, self).save(*args, **kwargs)
 
