@@ -69,7 +69,7 @@ class AsignColegioForm(forms.Form):
 
         self.fields['colegios'].queryset=colegios
 
-        self.helper.add_input(Submit('submit', 'Asignar',  css_class="btn btn-lg btn-primary btn-block"))
+        self.helper.add_input(Submit('submit', 'Asignar', css_class="btn btn-lg btn-primary btn-block"))
 
 
 class SignupForm(authtoolsforms.UserCreationForm):

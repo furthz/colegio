@@ -6,7 +6,10 @@ Autor: Raul Talledo <raul.talledo@technancial.com.pe>
 Fecha: 23/07/2017
 
 """
+from django.core.exceptions import ValidationError
 from django.db import models
+from django.db.models import Model
+from django.urls import reverse
 
 from utils.misc import insert_child
 from utils.models import CreacionModificacionUserMixin, CreacionModificacionFechaPersonalMixin, \
@@ -31,8 +34,9 @@ class Personal(CreacionModificacionUserPersonalMixin, CreacionModificacionFechaP
     activo_personal = models.BooleanField(db_column="activo", default=True)
 
     @staticmethod
-    def savePersonalFromPersona(persona: Profile, **atributos):
-        return insert_child(persona, Personal, **atributos)
+    def saveFromPersona(per: Profile, **atributos):
+
+        return insert_child(obj=per, child_model=Personal, **atributos)
 
     class Meta:
         managed = False
@@ -104,14 +108,14 @@ class Apoderado(CreacionModificacionUserApoderadoMixin, CreacionModificacionFech
     persona = models.OneToOneField(Profile, models.DO_NOTHING, parent_link=True, )
 
     @staticmethod
-    def saveApoderadoFromPersona(persona: Profile, **atributos):
+    def saveFromPersona(per: Profile, **atributos):
         """
         Método que permite guardar un Apoderado a partir de una persona existente
         :param persona: Persona existente
         :param atributos: Nuevos atributos propios de Apoderado
         :return: Objeto Apoderado creado
         """
-        return insert_child(persona, Apoderado, **atributos)
+        return insert_child(obj=per, child_model=Apoderado, **atributos)
 
     class Meta:
         managed = False
@@ -124,18 +128,27 @@ class Alumno(CreacionModificacionUserAlumnoMixin, CreacionModificacionFechaAlumn
     """
     id_alumno = models.AutoField(primary_key=True)
     codigoint = models.CharField(max_length=15, blank=True, null=True)
-    persona = models.OneToOneField(Profile, models.DO_NOTHING, parent_link=True)
+    persona = models.OneToOneField(Profile, models.DO_NOTHING, parent_link=True, unique=True)
     apoderados = models.ManyToManyField(Apoderado, through='ApoderadoAlumno', related_name='alumnos', null=True)
 
+    def get_absolute_url(self):
+        """
+        Redirecciona las views que usan como modelo esta clase
+        :return: url de detalles de la persona
+        """
+        return reverse('registers:alumno_detail', kwargs={'pk': self.pk})
+
+
     @staticmethod
-    def saveAlumnoFromPersona(persona: Profile, **atributos):
+    def saveFromPersona(per: Profile, **atributos):
         """
         Método que permite guardar un Apoderado a partir de una persona existente
         :param persona: Persona existente
         :param atributos: Nuevos atributos propios de Apoderado
         :return: Objeto Alumno creado
         """
-        return insert_child(persona, Alumno, **atributos)
+        return insert_child(obj=per, child_model=Alumno, **atributos)
+
 
     class Meta:
         managed = False
@@ -165,7 +178,7 @@ class Promotor(CreacionModificacionUserPromotorMixin, CreacionModificacionFechaP
     activo_promotor = models.BooleanField(default=True, db_column="activo")
 
     @staticmethod
-    def savePromotorFromPersonal(personal: Personal, **atributos):
+    def saveFromPersonal(per: Personal, **atributos):
         """
         # Método que permite guardar un Promotor a partir de un personal existente
         # :param personal: Personal existente
@@ -173,7 +186,7 @@ class Promotor(CreacionModificacionUserPromotorMixin, CreacionModificacionFechaP
         # :return: Objeto Promotor creado
         """
 
-        return insert_child(personal, Promotor, **atributos)
+        return insert_child(obj=per, child_model=Personal, **atributos)
 
     class Meta:
         managed = False
@@ -189,7 +202,7 @@ class Cajero(CreacionModificacionUserCajeroMixin, CreacionModificacionFechaCajer
     activo_cajero = models.BooleanField(default=True, db_column="activo")
 
     @staticmethod
-    def saveCajeroFromPersonal(personal: Personal, **atributos):
+    def saveFromPersonal(per: Personal, **atributos):
         """
         # Método que permite guardar un Promotor a partir de un personal existente
         # :param personal: Personal existente
@@ -197,7 +210,7 @@ class Cajero(CreacionModificacionUserCajeroMixin, CreacionModificacionFechaCajer
         # :return: Objeto Promotor creado
         """
 
-        return insert_child(personal, Cajero, **atributos)
+        return insert_child(obj=per, child_model=Personal, **atributos)
 
     class Meta:
         managed = False
@@ -213,15 +226,14 @@ class Director(CreacionModificacionUserDirectorMixin, CreacionModificacionFechaD
     activo_director = models.BooleanField(default=True, db_column="activo")
 
     @staticmethod
-    def saveDirectorFromPersonal(personal: Personal, **atributos):
+    def saveFromPersonal(per: Personal, **atributos):
         """
         # Método que permite guardar un Promotor a partir de un personal existente
         # :param personal: Personal existente
         # :param atributos: Nuevos atributos propios de Apoderado
-        # :return: Objeto Promotor creado
-        """
+        # :return: Objeto Promotor creado        """
 
-        return insert_child(personal, Director, **atributos)
+        return insert_child(obj=per, child_model=Director, **atributos)
 
     class Meta:
         managed = False

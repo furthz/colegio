@@ -69,7 +69,7 @@ class PersonaModelTest(TestCase):
 
     def test_PersonaAddApoderado(self):
         apo = Apoderado()
-        apo = apo.saveApoderadoFromPersona(persona=self.persona, parentesco="Padre")
+        apo = apo.saveFromPersona(persona=self.persona, parentesco="Padre")
 
         self.assertEquals(apo.nombre, self.persona.nombre)
 
@@ -90,19 +90,19 @@ class PersonaModelTest(TestCase):
         self.personal = Personal()
 
         #self.personal = self.personal.savePersonalFromPersona(persona=self.persona, activo_personal=True)
-        self.personal = self.personal.savePersonalFromPersona(persona=self.persona, activo_personal=True)
+        self.personal = self.personal.saveFromPersona(persona=self.persona, activo_personal=True)
 
         print("fecha creacion personal: " + str(self.personal.fecha_creacion_personal))
 
         self.assertEquals(self.personal.nombre, self.personal.persona.nombre)
 
-        promotor = Promotor().savePromotorFromPersonal(personal=self.personal, activo_promotor=True)
+        promotor = Promotor().saveFromPersonal(personal=self.personal, activo_promotor=True)
         self.assertEquals(promotor.nombre, promotor.persona.nombre)
 
-        cajero = Cajero().saveCajeroFromPersonal(personal=self.personal, activo_cajero=True)
+        cajero = Cajero().saveFromPersonal(personal=self.personal, activo_cajero=True)
         self.assertEquals(cajero.nombre, cajero.persona.nombre)
 
-        director = Director().saveDirectorFromPersonal(personal=self.personal, activo_director=True)
+        director = Director().saveFromPersonal(personal=self.personal, activo_director=True)
         self.assertEquals(director.nombre, director.persona.nombre)
 
 

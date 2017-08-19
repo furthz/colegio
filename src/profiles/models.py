@@ -30,9 +30,9 @@ class BaseProfile(CreacionModificacionFechaProfileMixin, CreacionModificacionUse
     apellido_pa = models.CharField(max_length=50, null=True, blank=True)
     apellido_ma = models.CharField(max_length=50, blank=True, null=True)
     tipo_documento = models.IntegerField(null=True)
-    numero_documento = models.CharField(max_length=15, null=True, db_column='numerodocumento')
+    numero_documento = models.CharField(db_index=True, max_length=15, null=True, db_column='numerodocumento')
     sexo = models.IntegerField(null=True)
-    correo = models.EmailField(max_length=100, blank=True, null=True)
+    correo = models.EmailField(db_index= True, max_length=100, blank=True, null=True)
     fecha_nac = models.DateField(null=True)
     # fecha_creacion_persona = models.DateField()
     # fecha_modificacion_persona = models.DateField()
@@ -94,7 +94,7 @@ class BaseProfile(CreacionModificacionFechaProfileMixin, CreacionModificacionUse
 
     class Meta:
         abstract = True
-
+        #unique_together = (("tipo_documento", "numero_documento"),)
 
 @python_2_unicode_compatible
 class Profile(BaseProfile):
