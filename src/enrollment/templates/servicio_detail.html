@@ -1,3 +1,8 @@
+{% extends "page.html" %}
+
+{% block title %}{{ block.super }}Matricula{% endblock %}
+
+{% block container %}
 <h1>Detalle Completo</h1>
 <ul>
 {% for detalles in servicio.full_detail %}
@@ -9,3 +14,4 @@
 <form action="..">
     <input type="submit" value="Volver">
 </form>
+{% endblock container %}

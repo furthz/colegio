@@ -142,7 +142,7 @@ class Servicio(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, mo
         db_table = 'servicio'
 
 
-class Matricula(CreacionModificacionUserMixin, CreacionModificacionFechaMixin, models.Model):
+class Matricula( CreacionModificacionUserMixin, CreacionModificacionFechaMixin, models.Model):
     """
 
     """

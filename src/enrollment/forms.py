@@ -17,6 +17,11 @@ class TipoServicioForm(ModelForm):
     class Meta:
         model = TipoServicio
         fields = ['is_ordinario','nivel','grado','extra','codigo_modular']
+        widgets = {
+            'nivel': forms.RadioSelect(attrs={'class':'form-control'}),
+                   }
+
+
     def ChoiceNiveles(self):
         MY_CHOICES = (
             ('1', 'Inicial'),
@@ -44,6 +49,9 @@ class TipoServicioForm(ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['nivel'] = forms.ChoiceField(choices=self.ChoiceNiveles(),initial=1)
         self.fields['grado'] = forms.ChoiceField(choices=self.ChoiceGrados())
+        self.fields['nivel'].widget.attrs.update({'class': 'form-control'})
+        self.fields['grado'].widget.attrs.update({'class': 'form-control'})
+        self.fields['extra'].widget.attrs.update({'class': 'form-control'})
 
 
 class ServicioForm(ModelForm):
@@ -66,6 +74,7 @@ class ServicioForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['nombre'] = forms.ChoiceField(choices=self.ChoiceServicios())
+        self.h
 
 
 class MatriculaForm(ModelForm):
@@ -73,12 +82,7 @@ class MatriculaForm(ModelForm):
         model = Matricula
         fields = ['alumno','tipo_servicio']
 
-    def ChoiceServicios(self):
-        MY_CHOICES = (
-            ('Matricula', 'Matricula'),
-            ('Pension', 'Pensión'),
-        )
-        return MY_CHOICES
+
 
     #def __init__(self, *args, **kwargs):
         #super().__init__(*args, **kwargs)

@@ -1,7 +1,15 @@
+{% extends "page.html" %}
+
+{% block title %}{{ block.super }}Matricula{% endblock %}
+
+{% block container %}
 {% load crispy_forms_tags %}
 
-<form action="" method="POST">{% csrf_token %}
-    {% csrf_token %}
-    {{ form.as_table }}
-    <input type="submit" value="Submit">
-</form>
+        <form action="" method="POST" class="form-horizontal">{% csrf_token %}
+        {% csrf_token %}
+        {{ form.as_table }}
+        <input type="submit" value="Submit">
+        </form>
+
+
+{% endblock container %}

@@ -406,6 +406,7 @@ class CreacionModificacionFechaMixin(models.Model):
         # creación
         if not self.pk:
             self.fecha_creacion = timezone_now()
+            self.fecha_modificacion = timezone_now()
         else:  # modificacion
             if not self.fecha_creacion:
                 self.fecha_creacion = timezone_now()
