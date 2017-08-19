@@ -138,7 +138,7 @@ class CreacionModificacionUserMixin(models.Model):
             iduser = -1
 
         # creacion
-        if not self:
+        if not self.pk:
             self.usuario_creacion = iduser
         else:  # modificación
             self.usuario_modificacion = iduser
@@ -171,7 +171,7 @@ class CreacionModificacionUserProfileMixin(models.Model):
             iduser = -1
 
         # creacion
-        if not self:
+        if not self.pk:
             self.usuario_creacion_persona = iduser
         else:  # modificación
             self.usuario_modificacion_persona = iduser
@@ -205,7 +205,7 @@ class CreacionModificacionUserPersonalMixin(models.Model):
             iduser = -1
 
         # creacion
-        if not self:
+        if not self.pk:
             self.usuario_creacion_personal = iduser
         else:  # modificación
             self.usuario_modificacion_personal = iduser
@@ -240,7 +240,7 @@ class CreacionModificacionUserApoderadoMixin(models.Model):
             iduser = -1
 
         # creacion
-        if not self:
+        if not self.pk:
             self.usuario_creacion_apoderado = iduser
         else:  # modificación
             self.usuario_modificacion_apoderado = iduser
@@ -275,7 +275,7 @@ class CreacionModificacionUserAlumnoMixin(models.Model):
             iduser = -1
 
         # creacion
-        if not self:
+        if not self.pk:
             self.usuario_creacion_alumno = iduser
         else:  # modificación
             self.usuario_modificacion_alumno = iduser
@@ -310,7 +310,7 @@ class CreacionModificacionUserPromotorMixin(models.Model):
             iduser = -1
 
         # creacion
-        if not self:
+        if not self.pk:
             self.usuario_creacion_promotor = iduser
         else:  # modificación
             self.usuario_modificacion_promotor = iduser
@@ -345,7 +345,7 @@ class CreacionModificacionUserCajeroMixin(models.Model):
             iduser = -1
 
         # creacion
-        if not self:
+        if not self.pk:
             self.usuario_creacion_cajero = iduser
         else:  # modificación
             self.usuario_modificacion_cajero = iduser
@@ -380,7 +380,7 @@ class CreacionModificacionUserDirectorMixin(models.Model):
             iduser = -1
 
         # creacion
-        if not self:
+        if not self.pk:
             self.usuario_creacion_director = iduser
         else:  # modificación
             self.usuario_modificacion_director = iduser

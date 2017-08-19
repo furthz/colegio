@@ -46,7 +46,7 @@ class SaveGeneric:
         if padre is Profile:
 
             if persona_registrada is not None:
-                # SaveGeneric().copiarVal(child=hijo, parent=padre)
+                copiarVal(child=hijo, parent=persona_registrada)
                 rpta = hijo().saveFromPersona(per=persona_registrada, **atributos)
                 return rpta
             else:
@@ -57,7 +57,7 @@ class SaveGeneric:
         elif padre is Personal:
 
             if persona_registrada is not None:
-                # SaveGeneric().copiarVal(child=hijo, parent=padre)
+                copiarVal(child=hijo, parent=persona_registrada)
                 rpta = hijo().saveFromPersonal(per=persona_registrada, **atributos)
                 return rpta
             else:
