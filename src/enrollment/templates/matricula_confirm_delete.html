@@ -1,3 +1,8 @@
+{% extends "page.html" %}
+
+{% block title %}{{ block.super }}Matricula{% endblock %}
+
+{% block container %}
 {% load crispy_forms_tags %}
 
 <form action="" method="POST">{% csrf_token %}
@@ -5,3 +10,5 @@
     {{ tiposervicio }}
     <input type="submit" value="Borrar">
 </form>
+
+{% endblock container %}

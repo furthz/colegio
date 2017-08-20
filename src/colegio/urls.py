@@ -14,7 +14,7 @@ urlpatterns = [
     url(r'^users/', include(profiles.urls, namespace='profiles')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^', include(accounts.urls, namespace='accounts')),
-    url(r'^servicios/', include(enrollment.urls, namespace='enrollments')),
+    url(r'^enrollments/', include(enrollment.urls, namespace='enrollments')),
     url(r'^registers/', include(register.urls, namespace='registers')),
 ]
 

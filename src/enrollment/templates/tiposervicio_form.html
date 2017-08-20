@@ -1,7 +1,35 @@
-{% load crispy_forms_tags %}
+{% extends "page.html" %}
 
-<form action="" method="POST">{% csrf_token %}
-    {% csrf_token %}
-    {{ form.as_table }}
-    <input type="submit" value="Submit">
-</form>
+{% block title %}{{ block.super }}Matricula{% endblock %}
+
+{% block container %}
+{% load crispy_forms_tags %}
+<h2>Nuevo Servicio Regular</h2>
+    <div class="box-body">
+        <form action="" method="POST" class="form-horizontal" id="1">{% csrf_token %}
+            {% csrf_token %}
+            {{ form.as_p}}
+        </form>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <a class="btn btn-default" href="{% url 'enrollments:tiposervicio_list' %}">Cancelar</a><
+                <button type="submit" class="btn btn-success" form="1">Crear servicio</button>
+            </div>
+        </div>
+
+    </div>
+<h2>Nuevo Servicio Extracurricular</h2>
+    <div class="box-body">
+        <form action="" method="POST" class="form-horizontal" id="1">{% csrf_token %}
+            {% csrf_token %}
+            {{ form.as_p}}
+        </form>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <a class="btn btn-default" href="{% url 'enrollments:tiposervicio_list' %}">Cancelar</a>
+                <button type="submit" class="btn btn-success" form="1">Crear servicio</button>
+            </div>
+        </div>
+
+    </div>
+{% endblock container %}

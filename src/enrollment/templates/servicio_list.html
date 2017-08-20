@@ -1,3 +1,8 @@
+{% extends "page.html" %}
+
+{% block title %}{{ block.super }}Matricula{% endblock %}
+
+{% block container %}
 <h1>Servicio</h1>
 <ul>
     <form >
@@ -15,5 +20,6 @@
 </ul>
 <form >
     <input type="submit" formaction="../listservicios/create/" value="Crear Servicio">
-    <input type="submit" formaction="/servicios/impdates/list/" value="Volver">
+    <input type="submit" formaction="/servicios/list/" value="Volver">
 </form>
+{% endblock container %}

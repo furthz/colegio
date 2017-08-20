@@ -10,7 +10,7 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 
 from django.core.urlresolvers import reverse_lazy
 from os.path import dirname, join, exists, os, sys
-from utils.misc import get_git_changeset
+
 
 # Build paths inside the project like this: join(BASE_DIR, "directory")
 
@@ -93,14 +93,14 @@ INSTALLED_APPS = (
     'crispy_forms',
     'easy_thumbnails',
 
-
+    'utils',
     'accounts',
     'cash',
     'enrollment',
     'income',
     'profiles',
     'register',
-    'utils',
+
 
 )
 

@@ -1,15 +1,7 @@
-{% extends "page.html" %}
-
-{% block title %}{{ block.super }}Matricula{% endblock %}
-
-{% block container %}
-
 <h1>Matricula</h1>
-<form action="create/end/" method="POST">{% csrf_token %}
+<form action="../servicios/matricula/list/create/" method="POST">{% csrf_token %}
     {{ form.tipo_servicio }}
     <input type="text" value="{{ alumno.nombre }}" name="gato" id="gato_alumno" disabled>
     <input hidden type="text" value="{{ alumno.id_alumno }}" name="alumno" id="id_alumno">
     <input type="submit" value="Matricular">
 </form>
-
-{% endblock container %}

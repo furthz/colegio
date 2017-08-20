@@ -5,20 +5,23 @@
 {% block container %}
 <h1>Matricula</h1>
 <ul>
-    <form >
-        {% for matricula in object_list %}
-            <li>
-                {{matricula}}
-                <input type="submit" formaction="../list/{{ matricula.id_matricula }}" value="Ver">
-                <input type="submit" formaction="../list/{{ matricula.id_matricula }}/update" value="Modificar">
-                <input type="submit" formaction="../list/{{ matricula.id_matricula }}/delete" value="Borrar">
-            </li>
-        {% empty %}
-            <li>No hay ningun alumno matriculado </li>
-        {% endfor %}
-    </form>
+    {% for matricula in object_list %}
+        <li>
+            {{matricula}}
+            <form id="{{ matricula.id_matricula}}" > {% csrf_token %}
+                <input hidden  value="{{ matricula.id_matricula}}" name="matricula">
+            </form>
+            <form id="1"></form>
+            <button type="submit" formaction="{% url 'enrollments:matricula_detail' matricula.id_matricula %}" value="Ver" form="1"> Ver </button>
+            <button type="submit" formaction="{% url 'enrollments:matricula_update' %}" value="Modificar" formmethod="post" form = "{{ matricula.id_matricula}}"> Modificar</button>
+            <button type="submit" formaction="{% url 'enrollments:matricula_delete' %}" value="Borrar" formmethod="post" form="{{ matricula.id_matricula}}"> Borrar </button>
+        </li>
+    {% empty %}
+        <li>No hay ningun alumno matriculado </li>
+    {% endfor %}
 </ul>
-<form action="../list/create">
+<form action="{% url 'enrollments:filtrar_alumno' %} }">
     <input type="submit" value="Nueva Matricula">
 </form>
+
 {% endblock container %}

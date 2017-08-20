@@ -1,6 +1,30 @@
-<h1>Alumno</h1>
-<form action="" method="POST">{% csrf_token %}
-    {% csrf_token %}
-    {{ form.as_table }}
-    <input type="submit" value="Continuar">
+{%  extends "page.html" %}
+
+{% block title %}{{ block.super }} ALGUN NOMBRE {% endblock %}
+{% block container %}
+
+<h1>Relacion de Alumnos</h1>
+<form action="../filter/" method="post">{% csrf_token %}
+    Apellido Paterno:<input type="text" name="apellido_pa">
+    Nombre:<input type="text" name="nombre">
+    <input type="submit" value="Filtrar">
 </form>
+
+{% for alumno in object_list %}
+    <form action="create/" method="post">{% csrf_token %}
+        <li>
+
+            {{alumno.persona.nombre}}
+            {{alumno.persona.apellido_pa}}
+            <input hidden type= "text" value="{{ alumno.id_alumno}}" name="alumno">
+            <input type="submit" value="Matricula">
+
+        </li>
+    </form>
+{% empty %}
+    <li>
+        No hay Alumnos
+        <input type="button" value="Registrar Alumno Nuevo" >
+    </li>
+{% endfor %}
+{% endblock container %}

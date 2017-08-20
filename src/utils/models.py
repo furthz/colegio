@@ -138,10 +138,10 @@ class CreacionModificacionUserMixin(models.Model):
             iduser = -1
 
         # creacion
-        if not self:
+        if not self.pk:
             self.usuario_creacion = iduser
-        else:  # modificación
-            self.usuario_modificacion = iduser
+
+        self.usuario_modificacion = iduser
 
         super(CreacionModificacionUserMixin, self).save(*args, **kwargs)
 
@@ -171,10 +171,10 @@ class CreacionModificacionUserProfileMixin(models.Model):
             iduser = -1
 
         # creacion
-        if not self:
+        if not self.pk:
             self.usuario_creacion_persona = iduser
-        else:  # modificación
-            self.usuario_modificacion_persona = iduser
+
+        self.usuario_modificacion_persona = iduser
 
         super(CreacionModificacionUserProfileMixin, self).save(*args, **kwargs)
 
@@ -205,10 +205,10 @@ class CreacionModificacionUserPersonalMixin(models.Model):
             iduser = -1
 
         # creacion
-        if not self:
+        if not self.pk:
             self.usuario_creacion_personal = iduser
-        else:  # modificación
-            self.usuario_modificacion_personal = iduser
+
+        self.usuario_modificacion_personal = iduser
 
         super(CreacionModificacionUserPersonalMixin, self).save(*args, **kwargs)
 
@@ -240,10 +240,10 @@ class CreacionModificacionUserApoderadoMixin(models.Model):
             iduser = -1
 
         # creacion
-        if not self:
+        if not self.pk:
             self.usuario_creacion_apoderado = iduser
-        else:  # modificación
-            self.usuario_modificacion_apoderado = iduser
+
+        self.usuario_modificacion_apoderado = iduser
 
         super(CreacionModificacionUserApoderadoMixin, self).save(*args, **kwargs)
 
@@ -275,12 +275,46 @@ class CreacionModificacionUserAlumnoMixin(models.Model):
             iduser = -1
 
         # creacion
-        if not self:
+        if not self.pk:
             self.usuario_creacion_alumno = iduser
-        else:  # modificación
-            self.usuario_modificacion_alumno = iduser
+
+        self.usuario_modificacion_alumno = iduser
 
         super(CreacionModificacionUserAlumnoMixin, self).save(*args, **kwargs)
+
+    save.alters_data = True
+
+    class Meta:
+        abstract = True
+
+class CreacionModificacionUserTesoreroMixin(models.Model):
+    """
+    Clase abstracta para poder especificar los usuario:
+        - Creacion
+        - Modificacion
+    """
+    usuario_creacion_tesorero = models.CharField('Usuario_Creacion', null=True, blank=True, max_length=10,
+                                                 db_column='usuario_creacion')
+    usuario_modificacion_tesorero = models.CharField('Usuario_Modificacion', null=True, blank=True, max_length=10,
+                                                     db_column='usuario_modificacion')
+
+    def save(self, *args, **kwargs):
+        from utils.middleware import get_current_user
+
+        usuario = get_current_user()
+
+        if usuario is not None:
+            iduser = usuario.id
+        else:
+            iduser = -1
+
+        # creacion
+        if not self.pk:
+            self.usuario_creacion_tesorero = iduser
+
+        self.usuario_modificacion_tesorero = iduser
+
+        super(CreacionModificacionUserTesoreroMixin, self).save(*args, **kwargs)
 
     save.alters_data = True
 
@@ -310,10 +344,10 @@ class CreacionModificacionUserPromotorMixin(models.Model):
             iduser = -1
 
         # creacion
-        if not self:
+        if not self.pk:
             self.usuario_creacion_promotor = iduser
-        else:  # modificación
-            self.usuario_modificacion_promotor = iduser
+
+        self.usuario_modificacion_promotor = iduser
 
         super(CreacionModificacionUserPromotorMixin, self).save(*args, **kwargs)
 
@@ -345,10 +379,10 @@ class CreacionModificacionUserCajeroMixin(models.Model):
             iduser = -1
 
         # creacion
-        if not self:
+        if not self.pk:
             self.usuario_creacion_cajero = iduser
-        else:  # modificación
-            self.usuario_modificacion_cajero = iduser
+
+        self.usuario_modificacion_cajero = iduser
 
         super(CreacionModificacionUserCajeroMixin, self).save(*args, **kwargs)
 
@@ -380,10 +414,10 @@ class CreacionModificacionUserDirectorMixin(models.Model):
             iduser = -1
 
         # creacion
-        if not self:
+        if not self.pk:
             self.usuario_creacion_director = iduser
-        else:  # modificación
-            self.usuario_modificacion_director = iduser
+
+        self.usuario_modificacion_director = iduser
 
         super(CreacionModificacionUserDirectorMixin, self).save(*args, **kwargs)
 
@@ -406,6 +440,7 @@ class CreacionModificacionFechaMixin(models.Model):
         # creación
         if not self.pk:
             self.fecha_creacion = timezone_now()
+            self.fecha_modificacion = timezone_now()
         else:  # modificacion
             if not self.fecha_creacion:
                 self.fecha_creacion = timezone_now()
@@ -548,6 +583,33 @@ class CreacionModificacionFechaPromotorMixin(models.Model):
             self.fecha_modificacion_promotor = timezone_now()
 
         super(CreacionModificacionFechaPromotorMixin, self).save(*args, **kwargs)
+
+    save.alters_data = True
+
+    class Meta:
+        abstract = True
+
+
+class CreacionModificacionFechaTesoreroMixin(models.Model):
+    """
+    Clase abstracta para definir las fechas de:
+     - Fecha_creacion
+     - Fecha_modificacion
+    """
+    fecha_creacion_tesorero = models.DateTimeField(blank=True, null=True, db_column="fecha_creacion")
+    fecha_modificacion_tesorero = models.DateTimeField(blank=True, null=True, db_column="fecha_modificacion")
+
+    def save(self, *args, **kwargs):
+        # creación
+        if not self.pk:
+            self.fecha_creacion_tesorero = timezone_now()
+        else:  # modificacion
+            if not self.fecha_creacion_tesorero:
+                self.fecha_creacion_tesorero = timezone_now()
+
+            self.fecha_modificacion_tesorero = timezone_now()
+
+        super(CreacionModificacionFechaTesoreroMixin, self).save(*args, **kwargs)
 
     save.alters_data = True
 
