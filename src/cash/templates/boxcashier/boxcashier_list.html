@@ -1,0 +1,23 @@
+{% extends "page.html" %}
+{% block title %}{{ block.super }}Remesas{% endblock %}
+
+{% block container %}
+
+    <!--Comienza el contenido!!!!!!!!!!!!!!!!!!!-->
+Remesa List
+
+<p>
+    <a href="{% url "cash:new" %}">Agregar cash</a>
+</p>
+
+<ul>
+    {% for remesas in object_list %}
+        <li>
+            <p>{{ remesas.personal_colegio }}</p>
+
+    {% endfor %}
+</ul>
+
+    <!--Fin del contenido!!!!!!!!!!!-->
+
+{% endblock container %}

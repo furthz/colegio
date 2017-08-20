@@ -1,0 +1,53 @@
+{% extends "page.html" %}
+{% block title %}{{ block.super }}Remesas{% endblock %}
+
+{% block container %}
+
+    <!--Comienza el contenido!!!!!!!!!!!!!!!!!!!-->
+Remesa List
+
+<p>
+    <a href="{% url "cash:consignment_create" %}">Agregar cash</a>
+</p>
+
+
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+    </head>
+    <body>
+        <table>
+            <tr>
+                <th>Persona Encargada</th>
+                <th>Cajero</th>
+                <th>Monto</th>
+                <th>Fecha</th>
+            </tr>
+            {% for remesas in object_list %}
+            <tr>
+                <td>{{ remesas.personal_colegio }}</td>
+                <td>{{ remesas.movimiento }}</td>
+                <td>{{ remesas.monto }}</td>
+                <td>{{ remesas.fechacreacion }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </body>
+
+    <!--Fin del contenido!!!!!!!!!!!-->
+
+{% endblock container %}
