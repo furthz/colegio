@@ -445,7 +445,7 @@ class CreacionModificacionFechaMixin(models.Model):
             if not self.fecha_creacion:
                 self.fecha_creacion = timezone_now()
 
-            self.fecha_modificacion = timezone_now()
+        self.fecha_modificacion = timezone_now()
 
         super(CreacionModificacionFechaMixin, self).save(*args, **kwargs)
 
@@ -472,7 +472,7 @@ class CreacionModificacionFechaProfileMixin(models.Model):
             if not self.fecha_creacion_persona:
                 self.fecha_creacion_persona = timezone_now()
 
-            self.fecha_modificacion_persona = timezone_now()
+        self.fecha_modificacion_persona = timezone_now()
 
         super(CreacionModificacionFechaProfileMixin, self).save(*args, **kwargs)
 
@@ -499,7 +499,7 @@ class CreacionModificacionFechaPersonalMixin(models.Model):
             if not self.fecha_creacion_personal:
                 self.fecha_creacion_personal = timezone_now()
 
-            self.fecha_modificacion_personal = timezone_now()
+        self.fecha_modificacion_personal = timezone_now()
 
         super(CreacionModificacionFechaPersonalMixin, self).save(*args, **kwargs)
 
@@ -526,7 +526,7 @@ class CreacionModificacionFechaApoderadoMixin(models.Model):
             if not self.fecha_creacion_apoderado:
                 self.fecha_creacion_apoderado = timezone_now()
 
-            self.fecha_modificacion_apoderado = timezone_now()
+        self.fecha_modificacion_apoderado = timezone_now()
 
         super(CreacionModificacionFechaApoderadoMixin, self).save(*args, **kwargs)
 
@@ -553,7 +553,7 @@ class CreacionModificacionFechaAlumnoMixin(models.Model):
             if not self.fecha_creacion_alumno:
                 self.fecha_creacion_alumno = timezone_now()
 
-            self.fecha_modificacion_alumno = timezone_now()
+        self.fecha_modificacion_alumno = timezone_now()
 
         super(CreacionModificacionFechaAlumnoMixin, self).save(*args, **kwargs)
 
@@ -580,7 +580,7 @@ class CreacionModificacionFechaPromotorMixin(models.Model):
             if not self.fecha_creacion_promotor:
                 self.fecha_creacion_promotor = timezone_now()
 
-            self.fecha_modificacion_promotor = timezone_now()
+        self.fecha_modificacion_promotor = timezone_now()
 
         super(CreacionModificacionFechaPromotorMixin, self).save(*args, **kwargs)
 
@@ -607,7 +607,7 @@ class CreacionModificacionFechaTesoreroMixin(models.Model):
             if not self.fecha_creacion_tesorero:
                 self.fecha_creacion_tesorero = timezone_now()
 
-            self.fecha_modificacion_tesorero = timezone_now()
+        self.fecha_modificacion_tesorero = timezone_now()
 
         super(CreacionModificacionFechaTesoreroMixin, self).save(*args, **kwargs)
 
@@ -634,7 +634,7 @@ class CreacionModificacionFechaCajeroMixin(models.Model):
             if not self.fecha_creacion_cajero:
                 self.fecha_creacion_cajero = timezone_now()
 
-            self.fecha_modificacion_cajero = timezone_now()
+        self.fecha_modificacion_cajero = timezone_now()
 
         super(CreacionModificacionFechaCajeroMixin, self).save(*args, **kwargs)
 
@@ -661,7 +661,7 @@ class CreacionModificacionFechaDirectorMixin(models.Model):
             if not self.fecha_creacion_director:
                 self.fecha_creacion_director = timezone_now()
 
-            self.fecha_modificacion_director = timezone_now()
+        self.fecha_modificacion_director = timezone_now()
 
         super(CreacionModificacionFechaDirectorMixin, self).save(*args, **kwargs)
 

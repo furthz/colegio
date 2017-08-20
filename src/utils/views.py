@@ -36,41 +36,54 @@ class SaveGeneric:
         try:
             persona_registrada = Profile.objects.get(numero_documento=form.cleaned_data["numero_documento"],
                                                      tipo_documento=form.cleaned_data["tipo_documento"])
-
             logger.debug("Persona ya registrada en la tabla Profile con ID: " + str(persona_registrada.id_persona))
 
         except Profile.DoesNotExist:
             persona_registrada = None
 
-
         if padre is Profile:
 
             if persona_registrada is not None:
-                copiarVal(child=hijo, parent=persona_registrada)
-                rpta = hijo().saveFromPersona(per=persona_registrada, **atributos)
+                copiarVal(form=form, parent=persona_registrada)
+                rpta = hijo().saveFromPersona(per=persona_registrada, parentesco=form.cleaned_data["parentesco"])
+                logger.debug("Se guardó un registró a partir de la persona existente")
                 return rpta
             else:
                 instance = form.save()
                 instance.save()
+                logger.debug("Se creó un nuevo registro")
                 return instance
 
         elif padre is Personal:
 
             if persona_registrada is not None:
-                copiarVal(child=hijo, parent=persona_registrada)
+                copiarVal(child=form, parent=persona_registrada)
                 rpta = hijo().saveFromPersonal(per=persona_registrada, **atributos)
+                logger.debug("se creó un personal a partir de la persona")
                 return rpta
             else:
                 instance = form.save()
                 instance.save()
+                logger.debug("Se creó un nuevo personal")
                 return instance
 
 
-def copiarVal(child, parent: Profile):
-    parent.nombre = child.nombre
-    parent.segundo_nombre = child.segundo_nombre
-    parent.apellido_pa = child.apellido_pa
-    parent.apellido_ma = child.apellido_ma
-    parent.correo = child.correo
+def copiarVal(form, parent: Profile):
+
+    parent.nombre = form.cleaned_data["nombre"]
+    logger.debug("se modificó nombre: " + form.cleaned_data["nombre"])
+
+    parent.segundo_nombre = form.cleaned_data["segundo_nombre"]
+    logger.debug("Se modificó el segundo_nombre: " + form.cleaned_data["segundo_nombre"])
+
+    parent.apellido_pa = form.cleaned_data["apellido_pa"]
+    logger.debug("Se modificó el apellido_pa: " + form.cleaned_data["apellido_pa"])
+
+    parent.apellido_ma = form.cleaned_data["apellido_ma"]
+    logger.debug("Se modificó apellido_pa: " + form.cleaned_data["apellido_ma"])
+
+    parent.correo = form.cleaned_data["correo"]
+    logger.debug("Se modificó correo: " + form.cleaned_data["correo"])
 
     parent.save()
+    logger.debug("actualizado los campos del profile")

@@ -25,8 +25,8 @@ class Migration(migrations.Migration):
                 ('ruc', models.CharField(max_length=11)),
                 ('ugel', models.CharField(max_length=100)),
                 ('activo', models.BooleanField(default=True)),
-                ('fecha_creacion', models.DateField(null=True)),
-                ('fecha_modificacion', models.DateField(null=True)),
+                ('fecha_creacion', models.DateTimeField(null=True)),
+                ('fecha_modificacion', models.DateTimeField(null=True)),
                 ('usuario_creacion', models.CharField(max_length=10, null=True)),
                 ('usuario_modificacion', models.CharField(max_length=10, null=True))
             ],
@@ -86,8 +86,8 @@ class Migration(migrations.Migration):
                 ('codigoint', models.CharField(blank=True, max_length=15, null=True)),
                 ('persona', models.OneToOneField(on_delete=django.db.models.deletion.DO_NOTHING,
                                                  parent_link=True, to='profiles.Profile')),
-                ('fecha_creacion', models.DateField(null=True)),
-                ('fecha_modificacion', models.DateField(null=True)),
+                ('fecha_creacion', models.DateTimeField(null=True)),
+                ('fecha_modificacion', models.DateTimeField(null=True)),
                 ('usuario_creacion', models.CharField(max_length=10, null=True)),
                 ('usuario_modificacion', models.CharField(max_length=10, null=True))
 
@@ -105,8 +105,8 @@ class Migration(migrations.Migration):
                 ('parentesco', models.CharField(max_length=30)),
                 ('persona', models.OneToOneField(on_delete=django.db.models.deletion.DO_NOTHING,
                                                  parent_link=True, to='profiles.Profile')),
-                ('fecha_creacion', models.DateField(null=True)),
-                ('fecha_modificacion', models.DateField(null=True)),
+                ('fecha_creacion', models.DateTimeField(null=True)),
+                ('fecha_modificacion', models.DateTimeField(null=True)),
                 ('usuario_creacion', models.CharField(max_length=10, null=True)),
                 ('usuario_modificacion', models.CharField(max_length=10, null=True))
             ],
@@ -124,8 +124,8 @@ class Migration(migrations.Migration):
                 ('alumno', models.ForeignKey(db_column='id_alumno', to='register.Alumno')),
                 ('apoderado', models.ForeignKey(db_column='id_apoderado', to='register.Apoderado')),
                 ('activo', models.BooleanField(default=True)),
-                ('fecha_creacion', models.DateField(null=True)),
-                ('fecha_modificacion', models.DateField(null=True)),
+                ('fecha_creacion', models.DateTimeField(null=True)),
+                ('fecha_modificacion', models.DateTimeField(null=True)),
                 ('usuario_creacion', models.CharField(max_length=10, null=True)),
                 ('usuario_modificacion', models.CharField(max_length=10, null=True))
 
@@ -144,8 +144,8 @@ class Migration(migrations.Migration):
                 ('persona', models.OneToOneField(on_delete=django.db.models.deletion.DO_NOTHING,
                                                  parent_link=True, to='profiles.Profile')),
                 ('activo', models.BooleanField(default=True)),
-                ('fecha_creacion', models.DateField(null=True)),
-                ('fecha_modificacion', models.DateField(null=True)),
+                ('fecha_creacion', models.DateTimeField(null=True)),
+                ('fecha_modificacion', models.DateTimeField(null=True)),
                 ('usuario_creacion', models.CharField(max_length=10, null=True)),
                 ('usuario_modificacion', models.CharField(max_length=10, null=True))
             ],
@@ -161,8 +161,8 @@ class Migration(migrations.Migration):
                 ('personalprom', models.OneToOneField(on_delete=django.db.models.deletion.DO_NOTHING,
                                                   parent_link=True, to='register.Personal')),
                 ('activo', models.BooleanField(default=True)),
-                ('fecha_creacion', models.DateField(null=True)),
-                ('fecha_modificacion', models.DateField(null=True)),
+                ('fecha_creacion', models.DateTimeField(null=True)),
+                ('fecha_modificacion', models.DateTimeField(null=True)),
                 ('usuario_creacion', models.CharField(max_length=10, null=True)),
                 ('usuario_modificacion', models.CharField(max_length=10, null=True))
             ],
@@ -178,8 +178,8 @@ class Migration(migrations.Migration):
                 ('personalcajero', models.OneToOneField(on_delete=django.db.models.deletion.DO_NOTHING,
                                                       parent_link=True, to='register.Personal')),
                 ('activo', models.BooleanField(default=True)),
-                ('fecha_creacion', models.DateField(null=True)),
-                ('fecha_modificacion', models.DateField(null=True)),
+                ('fecha_creacion', models.DateTimeField(null=True)),
+                ('fecha_modificacion', models.DateTimeField(null=True)),
                 ('usuario_creacion', models.CharField(max_length=10, null=True)),
                 ('usuario_modificacion', models.CharField(max_length=10, null=True))
             ],
@@ -195,8 +195,8 @@ class Migration(migrations.Migration):
                 ('personaltesorero', models.OneToOneField(on_delete=django.db.models.deletion.DO_NOTHING,
                                                         parent_link=True, to='register.Personal')),
                 ('activo', models.BooleanField(default=True)),
-                ('fecha_creacion', models.DateField(null=True)),
-                ('fecha_modificacion', models.DateField(null=True)),
+                ('fecha_creacion', models.DateTimeField(null=True)),
+                ('fecha_modificacion', models.DateTimeField(null=True)),
                 ('usuario_creacion', models.CharField(max_length=10, null=True)),
                 ('usuario_modificacion', models.CharField(max_length=10, null=True))
             ],
@@ -212,8 +212,8 @@ class Migration(migrations.Migration):
                 ('personaldirector', models.OneToOneField(on_delete=django.db.models.deletion.DO_NOTHING,
                                                         parent_link=True, to='register.Personal')),
                 ('activo', models.BooleanField(default=True)),
-                ('fecha_creacion', models.DateField(null=True)),
-                ('fecha_modificacion', models.DateField(null=True)),
+                ('fecha_creacion', models.DateTimeField(null=True)),
+                ('fecha_modificacion', models.DateTimeField(null=True)),
                 ('usuario_creacion', models.CharField(max_length=10, null=True)),
                 ('usuario_modificacion', models.CharField(max_length=10, null=True))
             ],
@@ -230,8 +230,8 @@ class Migration(migrations.Migration):
                 ('personal', models.ForeignKey(db_column='id_personal', to='register.Personal')),
                 ('colegio', models.ForeignKey(db_column='id_colegio', to='register.Colegio')),
                 ('activo', models.BooleanField(default=True)),
-                ('fecha_creacion', models.DateField(null=True)),
-                ('fecha_modificacion', models.DateField(null=True)),
+                ('fecha_creacion', models.DateTimeField(null=True)),
+                ('fecha_modificacion', models.DateTimeField(null=True)),
                 ('usuario_creacion', models.CharField(max_length=10, null=True)),
                 ('usuario_modificacion', models.CharField(max_length=10, null=True))
 

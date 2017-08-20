@@ -6,9 +6,8 @@ Autor: Raul Talledo <raul.talledo@technancial.com.pe>
 Fecha: 23/07/2017
 
 """
-from django.core.exceptions import ValidationError
+
 from django.db import models
-from django.db.models import Model
 from django.urls import reverse
 
 from utils.misc import insert_child
@@ -36,7 +35,6 @@ class Personal(CreacionModificacionUserPersonalMixin, CreacionModificacionFechaP
 
     @staticmethod
     def saveFromPersona(per: Profile, **atributos):
-
         return insert_child(obj=per, child_model=Personal, **atributos)
 
     class Meta:
@@ -108,15 +106,31 @@ class Apoderado(CreacionModificacionUserApoderadoMixin, CreacionModificacionFech
     parentesco = models.CharField(max_length=30)
     persona = models.OneToOneField(Profile, models.DO_NOTHING, parent_link=True, )
 
+    def full_detail(self):
+        lista = Profile.full_detail(self)
+        lista.append("parentesco: {0}".format(self.parentesco))
+        return lista
+
+    def get_absolute_url(self):
+        """
+        Redirecciona las views que usan como modelo esta clase
+        :return: url de detalles de la persona
+        """
+        return reverse('registers:apoderado_detail', kwargs={'pk': self.pk})
+
     @staticmethod
     def saveFromPersona(per: Profile, **atributos):
         """
         Método que permite guardar un Apoderado a partir de una persona existente
-        :param persona: Persona existente
+        :param per: Persona base
         :param atributos: Nuevos atributos propios de Apoderado
         :return: Objeto Apoderado creado
         """
-        return insert_child(obj=per, child_model=Apoderado, **atributos)
+        try:
+            apoderado = Apoderado.objects.get(persona=per)
+            return apoderado
+        except Apoderado.DoesNotExist:
+            return insert_child(obj=per, child_model=Apoderado, **atributos)
 
     class Meta:
         managed = False
@@ -132,6 +146,7 @@ class Alumno(CreacionModificacionUserAlumnoMixin, CreacionModificacionFechaAlumn
     persona = models.OneToOneField(Profile, models.DO_NOTHING, parent_link=True, unique=True)
     apoderados = models.ManyToManyField(Apoderado, through='ApoderadoAlumno', related_name='alumnos', null=True)
 
+
     def get_absolute_url(self):
         """
         Redirecciona las views que usan como modelo esta clase
@@ -139,17 +154,19 @@ class Alumno(CreacionModificacionUserAlumnoMixin, CreacionModificacionFechaAlumn
         """
         return reverse('registers:alumno_detail', kwargs={'pk': self.pk})
 
-
     @staticmethod
     def saveFromPersona(per: Profile, **atributos):
         """
         Método que permite guardar un Apoderado a partir de una persona existente
-        :param persona: Persona existente
+        :param per: Persona existente
         :param atributos: Nuevos atributos propios de Apoderado
         :return: Objeto Alumno creado
         """
-        return insert_child(obj=per, child_model=Alumno, **atributos)
-
+        try:
+            alu = Alumno.objects.get(persona=per)
+            return alu
+        except Alumno.DoesNotExist:
+            return insert_child(obj=per, child_model=Alumno, **atributos)
 
     class Meta:
         managed = False
@@ -170,7 +187,7 @@ class ApoderadoAlumno(ActivoMixin, CreacionModificacionFechaMixin, CreacionModif
         unique_together = (("apoderado", "alumno"),)
 
 
-#POR ARREGLAR
+# POR ARREGLAR
 class Tesorero(CreacionModificacionUserTesoreroMixin, CreacionModificacionFechaTesoreroMixin, Personal, models.Model):
     id_tesorero = models.AutoField(primary_key=True)
     personaltesorero = models.OneToOneField(Personal, models.DO_NOTHING, parent_link=True, )
@@ -190,6 +207,7 @@ class Tesorero(CreacionModificacionUserTesoreroMixin, CreacionModificacionFechaT
     class Meta:
         managed = False
         db_table = 'tesorero'
+
 
 class Promotor(CreacionModificacionUserPromotorMixin, CreacionModificacionFechaPromotorMixin, Personal, models.Model):
     """

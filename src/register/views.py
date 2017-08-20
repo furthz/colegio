@@ -10,8 +10,8 @@ from django.shortcuts import render
 # Create your views here.
 from django.views.generic import CreateView
 
-from register.forms import PersonaForm, AlumnoForm
-from register.models import Alumno
+from register.forms import PersonaForm, AlumnoForm, ApoderadoForm
+from register.models import Alumno, Apoderado
 from utils.views import SaveGeneric
 
 logger = logging.getLogger("project")
@@ -41,6 +41,7 @@ class AlumnoCreateView(CreateView):
         logger.debug("Alumno a crear con DNI: " + form.cleaned_data["numero_documento"])
 
         alu = SaveGeneric().saveGeneric(padre=Profile, form=form, hijo=Alumno)
+        logger.debug("Se creó el alumno en la vista")
 
         return HttpResponseRedirect(alu.get_absolute_url())
 
@@ -48,3 +49,23 @@ class AlumnoCreateView(CreateView):
 class AlumnoDetail(DetailView):
     model = Alumno
     template_name = "alumno_detail.html"
+
+
+class ApoderadoCreateView(CreateView):
+    model = Apoderado
+    form_class = ApoderadoForm
+    template_name = "apoderado_create.html"
+
+    def form_valid(self, form):
+        logger.debug("Apoderado a crear con DNI: " + form.cleaned_data["numero_documento"])
+
+        apoderado = SaveGeneric().saveGeneric(padre=Profile, form=form, hijo=Apoderado)
+        logger.debug("Se creó el apoderado en la vista")
+
+        return HttpResponseRedirect(apoderado.get_absolute_url())
+
+
+class ApoderadoDetailView(DetailView):
+    model = Apoderado
+    template_name = "apoderado_detail.html"
+
