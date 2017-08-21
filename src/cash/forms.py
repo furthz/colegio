@@ -2,7 +2,7 @@ from django import forms
 from .models import Caja, CajaCajero, Remesa
 
 
-class CajaForm(forms.ModelForm):
+class CashierForm(forms.ModelForm):
     class Meta:
         model = Caja
 
@@ -38,7 +38,7 @@ class CajaForm(forms.ModelForm):
         }
 
 
-class CajaCajeroForm(forms.ModelForm):
+class BoxCashierForm(forms.ModelForm):
     class Meta:
         model = CajaCajero
 
@@ -83,7 +83,7 @@ class CajaCajeroForm(forms.ModelForm):
         }
 
 
-class RemesaForm(forms.ModelForm):
+class ConsignmentForm(forms.ModelForm):
     class Meta:
         model = Remesa
 

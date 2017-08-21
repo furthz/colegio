@@ -287,6 +287,40 @@ class CreacionModificacionUserAlumnoMixin(models.Model):
     class Meta:
         abstract = True
 
+class CreacionModificacionUserTesoreroMixin(models.Model):
+    """
+    Clase abstracta para poder especificar los usuario:
+        - Creacion
+        - Modificacion
+    """
+    usuario_creacion_tesorero = models.CharField('Usuario_Creacion', null=True, blank=True, max_length=10,
+                                                 db_column='usuario_creacion')
+    usuario_modificacion_tesorero = models.CharField('Usuario_Modificacion', null=True, blank=True, max_length=10,
+                                                     db_column='usuario_modificacion')
+
+    def save(self, *args, **kwargs):
+        from utils.middleware import get_current_user
+
+        usuario = get_current_user()
+
+        if usuario is not None:
+            iduser = usuario.id
+        else:
+            iduser = -1
+
+        # creacion
+        if not self.pk:
+            self.usuario_creacion_tesorero = iduser
+
+        self.usuario_modificacion_tesorero = iduser
+
+        super(CreacionModificacionUserTesoreroMixin, self).save(*args, **kwargs)
+
+    save.alters_data = True
+
+    class Meta:
+        abstract = True
+
 
 class CreacionModificacionUserPromotorMixin(models.Model):
     """
@@ -549,6 +583,33 @@ class CreacionModificacionFechaPromotorMixin(models.Model):
             self.fecha_modificacion_promotor = timezone_now()
 
         super(CreacionModificacionFechaPromotorMixin, self).save(*args, **kwargs)
+
+    save.alters_data = True
+
+    class Meta:
+        abstract = True
+
+
+class CreacionModificacionFechaTesoreroMixin(models.Model):
+    """
+    Clase abstracta para definir las fechas de:
+     - Fecha_creacion
+     - Fecha_modificacion
+    """
+    fecha_creacion_tesorero = models.DateTimeField(blank=True, null=True, db_column="fecha_creacion")
+    fecha_modificacion_tesorero = models.DateTimeField(blank=True, null=True, db_column="fecha_modificacion")
+
+    def save(self, *args, **kwargs):
+        # creación
+        if not self.pk:
+            self.fecha_creacion_tesorero = timezone_now()
+        else:  # modificacion
+            if not self.fecha_creacion_tesorero:
+                self.fecha_creacion_tesorero = timezone_now()
+
+            self.fecha_modificacion_tesorero = timezone_now()
+
+        super(CreacionModificacionFechaTesoreroMixin, self).save(*args, **kwargs)
 
     save.alters_data = True
 

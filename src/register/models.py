@@ -18,7 +18,8 @@ from utils.models import CreacionModificacionUserMixin, CreacionModificacionFech
     CreacionModificacionFechaDirectorMixin, \
     CreacionModificacionUserPersonalMixin, CreacionModificacionUserApoderadoMixin, \
     CreacionModificacionUserAlumnoMixin, \
-    CreacionModificacionUserPromotorMixin, CreacionModificacionUserCajeroMixin, CreacionModificacionUserDirectorMixin
+    CreacionModificacionUserPromotorMixin, CreacionModificacionUserCajeroMixin, CreacionModificacionUserDirectorMixin, \
+    CreacionModificacionUserTesoreroMixin, CreacionModificacionFechaTesoreroMixin
 from utils.models import CreacionModificacionFechaMixin
 from utils.models import ActivoMixin
 
@@ -169,6 +170,27 @@ class ApoderadoAlumno(ActivoMixin, CreacionModificacionFechaMixin, CreacionModif
         unique_together = (("apoderado", "alumno"),)
 
 
+#POR ARREGLAR
+class Tesorero(CreacionModificacionUserTesoreroMixin, CreacionModificacionFechaTesoreroMixin, Personal, models.Model):
+    id_tesorero = models.AutoField(primary_key=True)
+    personaltesorero = models.OneToOneField(Personal, models.DO_NOTHING, parent_link=True, )
+    activo_tesorero = models.BooleanField(default=True, db_column="activo")
+
+    @staticmethod
+    def saveFromPersonal(per: Personal, **atributos):
+        """
+        # Método que permite guardar un Promotor a partir de un personal existente
+        # :param personal: Personal existente
+        # :param atributos: Nuevos atributos propios de Apoderado
+        # :return: Objeto Promotor creado
+        """
+
+        return insert_child(obj=per, child_model=Tesorero, **atributos)
+
+    class Meta:
+        managed = False
+        db_table = 'tesorero'
+
 class Promotor(CreacionModificacionUserPromotorMixin, CreacionModificacionFechaPromotorMixin, Personal, models.Model):
     """
     Clase para el Promotor
@@ -186,7 +208,7 @@ class Promotor(CreacionModificacionUserPromotorMixin, CreacionModificacionFechaP
         # :return: Objeto Promotor creado
         """
 
-        return insert_child(obj=per, child_model=Personal, **atributos)
+        return insert_child(obj=per, child_model=Promotor, **atributos)
 
     class Meta:
         managed = False
@@ -210,7 +232,7 @@ class Cajero(CreacionModificacionUserCajeroMixin, CreacionModificacionFechaCajer
         # :return: Objeto Promotor creado
         """
 
-        return insert_child(obj=per, child_model=Personal, **atributos)
+        return insert_child(obj=per, child_model=Cajero, **atributos)
 
     class Meta:
         managed = False
