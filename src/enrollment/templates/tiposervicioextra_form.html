@@ -1,25 +1,45 @@
 {% extends "page.html" %}
 
 {% block title %}{{ block.super }}Matricula{% endblock %}
-
+{% block breadcrumb %}
+<h1>
+        Actualización de Servicios
+        <small>Modúlo Matricula</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+        <li>Modúlo Matricula</li>
+          <li>Lista de servicios</li>
+        <li class="active">Actualización de servicios</li>
+      </ol>
+{% endblock %}
 
 {% block container %}
 {% load crispy_forms_tags %}
+<section class="content">
+      <div class="row">
+          <div class="col-md-12">
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Actualización de Servicio Extracurricular</h3>
+                </div>
 
-<h2>Actualización de Servicio Extracurricular</h2>
-    <div class="box-body">
-        <form action="" method="POST" class="form-horizontal" id="2">{% csrf_token %}
-            {% csrf_token %}
-            {{ form.as_p }}
-        </form>
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <a class="btn btn-default" href="{% url 'enrollments:tiposervicio_list' %}">Cancelar</a>
-                <button type="submit" formaction="{% url 'enrollments:tiposervicioextraend_update' idtipo%}" class="btn btn-success" form="2">Actualizar servicio</button>
-            </div>
-        </div>
+                <div class="box-body">
+                    <form action="" method="POST" class="form-horizontal" id="2">{% csrf_token %}
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                    </form>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <a class="btn btn-default" href="{% url 'enrollments:tiposervicio_list' %}">Cancelar</a>
+                            <button type="submit" formaction="{% url 'enrollments:tiposervicioextraend_update' idtipo%}" class="btn btn-success" form="2">Actualizar servicio</button>
+                        </div>
+                    </div>
 
-    </div>
-
+                </div>
+              </div>
+          </div>
+      </div>
+</section>
 
 {% endblock container %}

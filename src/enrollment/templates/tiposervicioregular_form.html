@@ -2,21 +2,44 @@
 
 {% block title %}{{ block.super }}Matricula{% endblock %}
 
-
+{% block breadcrumb %}
+<h1>
+        Actualización de Servicios
+        <small>Modúlo Matricula</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+        <li>Modúlo Matricula</li>
+          <li>Lista de servicios</li>
+        <li class="active">Actualización de servicios</li>
+      </ol>
+{% endblock %}
 {% block container %}
 {% load crispy_forms_tags %}
-<h2>Actualización de Servicio Regular</h2>
-    <div class="box-body">
-        <form action="" method="POST" class="form-horizontal" id="1">{% csrf_token %}
-            {% csrf_token %}
-            {{ form.as_p}}
-        </form>
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <a class="btn btn-default" href="{% url 'enrollments:tiposervicio_list' %}">Cancelar</a>
-                <button type="submit" class="btn btn-success" formaction="{% url 'enrollments:tiposervicioregularend_update' idtipo %}" form="1" formmethod="post">Actualizar servicio</button>
-            </div>
-        </div>
 
-    </div>
+    <section class="content">
+      <div class="row">
+          <div class="col-md-12">
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Actualización de Servicio Regular</h3>
+                </div>
+                <div class="box-body">
+                    <form action="" method="POST" class="form-horizontal" id="1">{% csrf_token %}
+                        {% csrf_token %}
+                        {{ form.as_p}}
+                    </form>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <a class="btn btn-default" href="{% url 'enrollments:tiposervicio_list' %}">Cancelar</a>
+                            <button type="submit" class="btn btn-success" formaction="{% url 'enrollments:tiposervicioregularend_update' idtipo %}" form="1" formmethod="post">Actualizar servicio</button>
+                        </div>
+                    </div>
+
+                </div>
+
+              </div>
+          </div>
+      </div>
+    </section>
 {% endblock container %}
