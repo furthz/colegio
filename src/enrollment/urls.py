@@ -14,7 +14,10 @@ from enrollment.views import ServicioListView
 from enrollment.views import ServicioRegularCreateView
 from enrollment.views import ServicioExtraCreateView
 from enrollment.views import ServicioDeleteView
-from enrollment.views import ServicioUpdateView
+from enrollment.views import ServicioExtraEndUpdateView
+from enrollment.views import ServicioRegularEndUpdateView
+from enrollment.views import ServicioExtraUpdateView
+from enrollment.views import ServicioRegularUpdateView
 from enrollment.views import ServicioDetailView
 
 from enrollment.views import MatriculaCreateView
@@ -47,7 +50,10 @@ urlpatterns = [
     url(r'^service/create/regular/$', ServicioRegularCreateView.as_view(), name="servicioregular_create"),
     url(r'^service/create/extra/$', ServicioExtraCreateView.as_view(), name="servicioextra_create"),
     url(r'^service/detail/(?P<pk>\d+)/$', ServicioDetailView.as_view(), name='servicio_detail'),
-    url(r'^service/update/$', ServicioUpdateView.as_view(), name="servicio_update"),
+    url(r'^service/update/end1/$', ServicioRegularEndUpdateView.as_view(), name="servicioregularend_update"),
+    url(r'^service/update/end2/$', ServicioExtraEndUpdateView.as_view(), name="servicioextraend_update"),
+    url(r'^service/update/regular', ServicioRegularUpdateView.as_view(), name="servicioregular_update"),
+    url(r'^service/update/extra', ServicioExtraUpdateView.as_view(), name="servicioextra_update"),
     url(r'^service/delete/$', ServicioDeleteView.as_view(), name="servicio_delete"),
     url(r'^service/$', ServicioListView.as_view(), name="servicio_list"),
 

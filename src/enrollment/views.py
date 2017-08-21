@@ -247,7 +247,7 @@ class ServicioRegularCreateView(MyLoginRequiredMixin, CreateView):
 
     def get(self, request, *args, **kwargs):
         return render(request,template_name=self.template_name,context={
-            'tiposervicio':TipoServicio.objects.filter(is_ordinario=True),
+            'tiposervicio':TipoServicio.objects.filter(is_ordinario=True, activo=True).order_by("nivel","grado"),
             'form': self.form_class,
         })
 
@@ -270,22 +270,98 @@ class ServicioExtraCreateView(MyLoginRequiredMixin, CreateView):
 
     def get(self, request, *args, **kwargs):
         return render(request,template_name=self.template_name,context={
-            'tiposervicio':TipoServicio.objects.filter(is_ordinario=False),
+            'tiposervicio':TipoServicio.objects.filter(is_ordinario=False, activo=True).order_by("nivel","grado"),
             'form': self.form_class,
         })
 
 
-class ServicioUpdateView(MyLoginRequiredMixin, UpdateView):
+class ServicioRegularEndUpdateView(MyLoginRequiredMixin, TemplateView):
     """
 
     """
     model = Servicio
     form_class = ServicioRegularForm
-    template_name = "servicioregular_form.html"
+    template_name = "servicioregular_update_form.html"
 
-    def form_valid(self, form):
-        form.instance.fecha_modificacion = date.today()
-        return super(ServicioUpdateView, self).form_valid(form)
+    def get_success_url(self):
+        return reverse_lazy('enrollments:tiposervicio_list')
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        logger.info("En el POST")
+        logger.info(request.POST)
+        if form.is_valid():
+            data_form = form.cleaned_data
+            servicio = self.model.objects.get(pk=request.POST['idser'])
+            servicio.cuotas = data_form['cuotas']
+            servicio.nombre = data_form['nombre']
+            servicio.fecha_facturar = data_form['fecha_facturar']
+            servicio.precio = data_form['precio']
+            servicio.save()
+            logger.info("El formulario es valido")
+            return HttpResponseRedirect(reverse('enrollments:tiposervicio_list'))
+        return HttpResponseRedirect(reverse('enrollments:tiposervicio_list'))
+
+
+class ServicioRegularUpdateView(MyLoginRequiredMixin, TemplateView):
+    template_name = "servicioregular_update_form.html"
+    model = Servicio
+    form_class = ServicioRegularForm
+
+    def post(self, request, *args, **kwargs):
+
+        servicio = self.model.objects.get(pk=request.POST["idser"])
+        form = self.form_class(instance=servicio)
+        return render(request, template_name=self.template_name, context={
+            'tiposervicio': servicio.tipo_servicio,
+            'form': form,
+            'idser':int(request.POST['idser']),
+        })
+
+
+class ServicioExtraEndUpdateView(MyLoginRequiredMixin, TemplateView):
+    """
+
+    """
+    model = Servicio
+    form_class = ServicioExtraForm
+    template_name = "servicioextra_update_form.html"
+    def get_success_url(self):
+        return reverse_lazy('enrollments:tiposervicio_list')
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        logger.info("En el POST")
+        logger.info(request.POST)
+        if form.is_valid():
+            data_form = form.cleaned_data
+            servicio = self.model.objects.get(pk=request.POST['idser'])
+            servicio.cuotas = data_form['cuotas']
+            servicio.nombre = data_form['nombre']
+            servicio.fecha_facturar = data_form['fecha_facturar']
+            servicio.precio = data_form['precio']
+            servicio.save()
+            logger.info("El formulario es valido")
+            return HttpResponseRedirect(reverse('enrollments:tiposervicio_list'))
+        return HttpResponseRedirect(reverse('enrollments:tiposervicio_list'))
+
+
+class ServicioExtraUpdateView(MyLoginRequiredMixin, TemplateView):
+
+    model = Servicio
+    form_class = ServicioExtraForm
+    template_name = "servicioextra_update_form.html"
+
+
+    def post(self, request, *args, **kwargs):
+
+        servicio = self.model.objects.get(pk=request.POST["idser"])
+        form = self.form_class(instance=servicio)
+        return render(request, template_name=self.template_name, context={
+            'tiposervicio': servicio.tipo_servicio,
+            'form': form,
+            'idser':(request.POST['idser']),
+        })
+
 
 
 class ServicioDeleteView(MyLoginRequiredMixin, TemplateView):
@@ -296,15 +372,17 @@ class ServicioDeleteView(MyLoginRequiredMixin, TemplateView):
     template_name = "servicio_confirm_delete.html"
 
     def get(self, request, *args, **kwargs):
-        servicio = self.model.objects.get(pk = request.GET['idservicio'])
+
+        servicio = self.model.objects.get(pk = request.GET['idser'])
         servicio.activo = False
         servicio.save()
         return HttpResponseRedirect(reverse('enrollments:tiposervicio_list'))
 
     def post(self, request, *args, **kwargs):
-
+        logger.info(request.POST)
+        logger.info(request.POST['idser'])
         return render(request, template_name=self.template_name, context={
-            'idservicio': request.POST['idservicio'],
+            'idser': int(request.POST['idser']),
         })
 
 

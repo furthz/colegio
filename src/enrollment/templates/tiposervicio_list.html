@@ -102,8 +102,8 @@
                                             <tbody>
 
                                                 {% for servicio in tiposervicio.getServiciosAsociados %}
-                                                    <form id="{{ servicio.id_servicio }}">{% csrf_token %}
-                                                        <input hidden value="{{ servicio.id_servicio }}" name="idservicio">
+                                                    <form id="{{ servicio }}">{% csrf_token %}
+                                                        <input hidden value="{{ servicio.id_servicio }}" name="idser">
                                                     </form>
                                                   <tr>
                                                     <th scope="row">1</th>
@@ -111,13 +111,13 @@
                                                     <td>s/. {{ servicio.precio }}</td>
                                                     <td>
                                                       <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                                                        <button title="Editar" href="#" class="btn btn-default">
-                                                          <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                        <button type="submit" form="{{ servicio }}" formmethod="post" formaction="{% url 'enrollments:servicioregular_update' %}" title="Editar" class="btn btn-default">
+                                                            <i class="fa fa-pencil" aria-hidden="true"></i>
                                                         </button>
                                                         <a title="Detalle" href="{% url 'enrollments:servicio_detail' servicio.id_servicio %}" class="btn btn-default">
                                                           <i class="fa fa-info-circle" aria-hidden="true"></i>
                                                         </a>
-                                                        <button form="{{ servicio.id_servicio }}" formmethod="post" formaction="{% url 'enrollments:servicio_delete' %}" title="Eliminar" class="btn btn-default">
+                                                        <button form="{{ servicio }}" formmethod="post" formaction="{% url 'enrollments:servicio_delete' %}" title="Eliminar" class="btn btn-default">
                                                           <i class="fa fa-trash" aria-hidden="true"></i>
                                                         </button>
                                                       </div>
@@ -181,8 +181,8 @@
                                     </thead>
                                     <tbody>
                                     {% for servicio in tiposervicio.getServiciosAsociados %}
-                                        <form id="{{ servicio.id_servicio }}">{% csrf_token %}
-                                            <input hidden value="{{ servicio.id_servicio }}" name="idservicio">
+                                        <form id="{{ servicio }}">{% csrf_token %}
+                                            <input hidden value="{{ servicio.id_servicio }}" name="idser">
                                         </form>
                                       <tr>
                                         <th scope="row">1</th>
@@ -190,13 +190,13 @@
                                         <td>S/. {{ servicio.precio }}</td>
                                         <td>
                                           <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                                            <button title="Editar" href="#" class="btn btn-default">
+                                            <button type="submit" form="{{ servicio }}" formmethod="post" formaction="{% url 'enrollments:servicioextra_update' %}" title="Editar" class="btn btn-default">
                                               <i class="fa fa-pencil" aria-hidden="true"></i>
                                             </button>
                                             <a title="Detalle" href="{% url 'enrollments:servicio_detail' servicio.id_servicio %}" class="btn btn-default">
                                               <i class="fa fa-info-circle" aria-hidden="true"></i>
                                             </a>
-                                            <button form="{{ servicio.id_servicio }}" formmethod="post" formaction="{% url 'enrollments:servicio_delete' %}" title="Eliminar" class="btn btn-default">
+                                            <button type="submit" form="{{ servicio }}" formmethod="post" formaction="{% url 'enrollments:servicio_delete' %}" title="Eliminar" class="btn btn-default">
                                               <i class="fa fa-trash" aria-hidden="true"></i>
                                             </button>
                                           </div>

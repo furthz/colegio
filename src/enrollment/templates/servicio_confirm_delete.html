@@ -5,9 +5,10 @@
 {% block container %}
 {% load crispy_forms_tags %}
 
-<form action="" method="GET">{% csrf_token %}
-    <input hidden value="{{ idservicio }}" name="idservicio">
-    <input type="submit" value="Borrar">
+<form action="" method="GET" class="form-horizontal">{% csrf_token %}
+    <input hidden value="{{ idser }}" name="idser">
+    <a href="{% url 'enrollments:tiposervicio_list' %}" class="btn btn-default">Cancelar</a>
+    <input type="submit" value="Borrar" class="btn btn-success">
 </form>
 
 {% endblock container %}
