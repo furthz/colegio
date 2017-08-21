@@ -11,13 +11,13 @@
 </form>
 
 {% for alumno in object_list %}
-    <form action="create/" method="post">{% csrf_token %}
+    <form id="alum" action="{% url 'enrollments:matricula_create' %}" method="post">{% csrf_token %}
         <li>
 
             {{alumno.persona.nombre}}
             {{alumno.persona.apellido_pa}}
             <input hidden type= "text" value="{{ alumno.id_alumno}}" name="alumno">
-            <input type="submit" value="Matricula">
+            <input type="submit" value="Matricula" form="alum">
 
         </li>
     </form>

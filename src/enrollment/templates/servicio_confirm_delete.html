@@ -5,9 +5,8 @@
 {% block container %}
 {% load crispy_forms_tags %}
 
-<form action="" method="POST">{% csrf_token %}
-    {% csrf_token %}
-    {{ servicio }}
+<form action="" method="GET">{% csrf_token %}
+    <input hidden value="{{ idservicio }}" name="idservicio">
     <input type="submit" value="Borrar">
 </form>
 
