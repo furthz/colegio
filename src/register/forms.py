@@ -17,7 +17,7 @@ class PersonaForm(ModelForm):
     distrito = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-control'}), label="Distrito")
     tipo_cel = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-control'}), label="Tipo Movil", required=False)
     celular = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control'}), label="Celular", required=False)
-    celulares = forms.MultipleChoiceField(widget=forms.SelectMultiple(attrs={'class': 'form-control'}), label="Números", required=False)
+    celulares = forms.MultipleChoiceField(widget=forms.SelectMultiple(attrs={'class': 'form-control'}), label="Números")
 
     @property
     def ChoiceTipoDocumento(self):
