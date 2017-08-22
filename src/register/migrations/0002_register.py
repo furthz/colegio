@@ -7,7 +7,9 @@ import django.db.models.deletion
 from django.conf import settings
 import uuid
 
+
 class Migration(migrations.Migration):
+
     initial = True
 
     dependencies = [
@@ -68,6 +70,7 @@ class Migration(migrations.Migration):
                 ('id_direccion', models.AutoField(primary_key=True, serialize=False)),
                 ('calle', models.CharField(max_length=100, null=True)),
                 ('dpto', models.CharField(max_length=15, null=True)),
+                ('provincia', models.CharField(max_length=15, null=True)),
                 ('distrito', models.CharField(max_length=100, null=True)),
                 ('numero', models.CharField(max_length=6, null=True)),
                 ('referencia', models.CharField(max_length=500, null=True)),
@@ -158,7 +161,7 @@ class Migration(migrations.Migration):
             name='Promotor',
             fields=[
                 ('id_promotor', models.AutoField(auto_created=True, primary_key=True, serialize=False)),
-                ('personalprom', models.OneToOneField(on_delete=django.db.models.deletion.DO_NOTHING,
+                ('empleado', models.OneToOneField(on_delete=django.db.models.deletion.DO_NOTHING,
                                                   parent_link=True, to='register.Personal')),
                 ('activo', models.BooleanField(default=True)),
                 ('fecha_creacion', models.DateTimeField(null=True)),
@@ -175,7 +178,7 @@ class Migration(migrations.Migration):
             name='Cajero',
             fields=[
                 ('id_cajero', models.AutoField(auto_created=True, primary_key=True, serialize=False)),
-                ('personalcajero', models.OneToOneField(on_delete=django.db.models.deletion.DO_NOTHING,
+                ('empleado', models.OneToOneField(on_delete=django.db.models.deletion.DO_NOTHING,
                                                       parent_link=True, to='register.Personal')),
                 ('activo', models.BooleanField(default=True)),
                 ('fecha_creacion', models.DateTimeField(null=True)),
@@ -192,7 +195,7 @@ class Migration(migrations.Migration):
             name='Tesorero',
             fields=[
                 ('id_tesorero', models.AutoField(auto_created=True, primary_key=True, serialize=False)),
-                ('personaltesorero', models.OneToOneField(on_delete=django.db.models.deletion.DO_NOTHING,
+                ('empleado', models.OneToOneField(on_delete=django.db.models.deletion.DO_NOTHING,
                                                         parent_link=True, to='register.Personal')),
                 ('activo', models.BooleanField(default=True)),
                 ('fecha_creacion', models.DateTimeField(null=True)),
@@ -209,7 +212,7 @@ class Migration(migrations.Migration):
             name='Director',
             fields=[
                 ('id_director', models.AutoField(auto_created=True, primary_key=True, serialize=False)),
-                ('personaldirector', models.OneToOneField(on_delete=django.db.models.deletion.DO_NOTHING,
+                ('empleado', models.OneToOneField(on_delete=django.db.models.deletion.DO_NOTHING,
                                                         parent_link=True, to='register.Personal')),
                 ('activo', models.BooleanField(default=True)),
                 ('fecha_creacion', models.DateTimeField(null=True)),
@@ -245,3 +248,5 @@ class Migration(migrations.Migration):
         ),
 
     ]
+
+

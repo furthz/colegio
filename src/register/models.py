@@ -33,12 +33,27 @@ class Personal(CreacionModificacionUserPersonalMixin, CreacionModificacionFechaP
     persona = models.OneToOneField(Profile, models.DO_NOTHING, parent_link=True)
     activo_personal = models.BooleanField(db_column="activo", default=True)
 
+    def get_absolute_url(self):
+        """
+        Redirecciona las views que usan como modelo esta clase
+        :return: url de detalles de la persona
+        """
+        return reverse('registers:personal_detail', kwargs={'pk': self.pk})
+
     @staticmethod
     def saveFromPersona(per: Profile, **atributos):
-        return insert_child(obj=per, child_model=Personal, **atributos)
+
+        try:
+            personal = Personal.objects.get(persona=per)
+            return personal
+        except Alumno.DoesNotExist:
+            return insert_child(obj=per, child_model=Personal, **atributos)
+
+    def __str__(self):
+        return "Personal ID: {0}".format(self.id_personal)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'personal'
 
 
@@ -56,7 +71,7 @@ class Colegio(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionU
         return self.nombre
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'colegio'
 
 
@@ -75,7 +90,7 @@ class Telefono(ActivoMixin, CreacionModificacionUserMixin, CreacionModificacionF
         return str(self.numero)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'telefono'
 
 
@@ -89,12 +104,13 @@ class Direccion(CreacionModificacionUserMixin, CreacionModificacionFechaMixin, m
     colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column='id_colegio', related_name="direcciones")
     calle = models.CharField(max_length=100)
     dpto = models.CharField(max_length=15)
+    provincia = models.CharField(max_length=15)
     distrito = models.CharField(max_length=100)
     numero = models.CharField(max_length=6, blank=True, null=True)
     referencia = models.CharField(max_length=500, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'direccion'
 
 
@@ -133,7 +149,7 @@ class Apoderado(CreacionModificacionUserApoderadoMixin, CreacionModificacionFech
             return insert_child(obj=per, child_model=Apoderado, **atributos)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'apoderado'
 
 
@@ -169,7 +185,7 @@ class Alumno(CreacionModificacionUserAlumnoMixin, CreacionModificacionFechaAlumn
             return insert_child(obj=per, child_model=Alumno, **atributos)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'alumno'
 
 
@@ -182,7 +198,7 @@ class ApoderadoAlumno(ActivoMixin, CreacionModificacionFechaMixin, CreacionModif
     alumno = models.ForeignKey(Alumno, models.DO_NOTHING, db_column='id_alumno')
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'apoderado_alumno'
         unique_together = (("apoderado", "alumno"),)
 
@@ -190,8 +206,18 @@ class ApoderadoAlumno(ActivoMixin, CreacionModificacionFechaMixin, CreacionModif
 # POR ARREGLAR
 class Tesorero(CreacionModificacionUserTesoreroMixin, CreacionModificacionFechaTesoreroMixin, Personal, models.Model):
     id_tesorero = models.AutoField(primary_key=True)
-    personaltesorero = models.OneToOneField(Personal, models.DO_NOTHING, parent_link=True, )
+    empleado = models.OneToOneField(Personal, models.DO_NOTHING, parent_link=True)
     activo_tesorero = models.BooleanField(default=True, db_column="activo")
+
+    def __str__(self):
+        return "Id Tesorero: {0}".format(self.id_tesorero)
+
+    def get_absolute_url(self):
+        """
+        Redirecciona las views que usan como modelo esta clase
+        :return: url de detalles de la persona
+        """
+        return reverse('registers:tesorero_detail', kwargs={'pk': self.pk})
 
     @staticmethod
     def saveFromPersonal(per: Personal, **atributos):
@@ -201,11 +227,14 @@ class Tesorero(CreacionModificacionUserTesoreroMixin, CreacionModificacionFechaT
         # :param atributos: Nuevos atributos propios de Apoderado
         # :return: Objeto Promotor creado
         """
-
-        return insert_child(obj=per, child_model=Tesorero, **atributos)
+        try:
+            tesorero = Tesorero.objects.get(persona=per)
+            return tesorero
+        except Alumno.DoesNotExist:
+            return insert_child(obj=per, child_model=Tesorero, **atributos)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'tesorero'
 
 
@@ -214,8 +243,18 @@ class Promotor(CreacionModificacionUserPromotorMixin, CreacionModificacionFechaP
     Clase para el Promotor
     """
     id_promotor = models.AutoField(primary_key=True)
-    personalprom = models.OneToOneField(Personal, models.DO_NOTHING, parent_link=True, )
+    empleado = models.OneToOneField(Personal, models.DO_NOTHING, parent_link=True)
     activo_promotor = models.BooleanField(default=True, db_column="activo")
+
+    def __str__(self):
+        return "Id Promotor: {0}".format(self.id_promotor)
+
+    def get_absolute_url(self):
+        """
+        Redirecciona las views que usan como modelo esta clase
+        :return: url de detalles de la persona
+        """
+        return reverse('registers:promotor_detail', kwargs={'pk': self.pk})
 
     @staticmethod
     def saveFromPersonal(per: Personal, **atributos):
@@ -225,11 +264,14 @@ class Promotor(CreacionModificacionUserPromotorMixin, CreacionModificacionFechaP
         # :param atributos: Nuevos atributos propios de Apoderado
         # :return: Objeto Promotor creado
         """
-
-        return insert_child(obj=per, child_model=Promotor, **atributos)
+        try:
+            promotor = Promotor.objects.get(persona=per)
+            return promotor
+        except Alumno.DoesNotExist:
+            return insert_child(obj=per, child_model=Promotor, **atributos)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'promotor'
 
 
@@ -238,8 +280,18 @@ class Cajero(CreacionModificacionUserCajeroMixin, CreacionModificacionFechaCajer
     Clase para el Cajero
     """
     id_cajero = models.AutoField(primary_key=True)
-    personalcajero = models.OneToOneField(Personal, models.DO_NOTHING, parent_link=True, )
+    empleado = models.OneToOneField(Personal, models.DO_NOTHING, parent_link=True)
     activo_cajero = models.BooleanField(default=True, db_column="activo")
+
+    def __str__(self):
+        return "Id Cajero: {0}".format(self.id_cajero)
+
+    def get_absolute_url(self):
+        """
+        Redirecciona las views que usan como modelo esta clase
+        :return: url de detalles de la persona
+        """
+        return reverse('registers:cajero_detail', kwargs={'pk': self.pk})
 
     @staticmethod
     def saveFromPersonal(per: Personal, **atributos):
@@ -249,11 +301,14 @@ class Cajero(CreacionModificacionUserCajeroMixin, CreacionModificacionFechaCajer
         # :param atributos: Nuevos atributos propios de Apoderado
         # :return: Objeto Promotor creado
         """
-
-        return insert_child(obj=per, child_model=Cajero, **atributos)
+        try:
+            cajero = Cajero.objects.get(persona=per)
+            return cajero
+        except Alumno.DoesNotExist:
+            return insert_child(obj=per, child_model=Cajero, **atributos)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'cajero'
 
 
@@ -262,8 +317,18 @@ class Director(CreacionModificacionUserDirectorMixin, CreacionModificacionFechaD
     Clase para el Director
     """
     id_director = models.AutoField(primary_key=True)
-    personaldirector = models.OneToOneField(Personal, models.DO_NOTHING, parent_link=True, )
+    empleado = models.OneToOneField(Personal, models.DO_NOTHING, parent_link=True, )
     activo_director = models.BooleanField(default=True, db_column="activo")
+
+    def __str__(self):
+        return "Id Director: {0}".format(self.id_director)
+
+    def get_absolute_url(self):
+        """
+        Redirecciona las views que usan como modelo esta clase
+        :return: url de detalles de la persona
+        """
+        return reverse('registers:director_detail', kwargs={'pk': self.pk})
 
     @staticmethod
     def saveFromPersonal(per: Personal, **atributos):
@@ -272,11 +337,14 @@ class Director(CreacionModificacionUserDirectorMixin, CreacionModificacionFechaD
         # :param personal: Personal existente
         # :param atributos: Nuevos atributos propios de Apoderado
         # :return: Objeto Promotor creado        """
-
-        return insert_child(obj=per, child_model=Director, **atributos)
+        try:
+            alu = Director.objects.get(persona=per)
+            return alu
+        except Alumno.DoesNotExist:
+            return insert_child(obj=per, child_model=Director, **atributos)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'director'
 
 
@@ -289,5 +357,5 @@ class PersonalColegio(ActivoMixin, CreacionModificacionUserMixin, CreacionModifi
     colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column="id_colegio")
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'personal_colegio'

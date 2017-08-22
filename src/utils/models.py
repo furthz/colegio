@@ -287,6 +287,7 @@ class CreacionModificacionUserAlumnoMixin(models.Model):
     class Meta:
         abstract = True
 
+
 class CreacionModificacionUserTesoreroMixin(models.Model):
     """
     Clase abstracta para poder especificar los usuario:
@@ -756,3 +757,46 @@ class TiposNivel(ActivoMixin, models.Model):
     class Meta:
         managed = False
         db_table = 'tipos_nivel'
+
+
+class Departamento(ActivoMixin, models.Model):
+    """
+    Clase para definir los departamentos
+    """
+
+    id_departamento = models.AutoField(primary_key=True)
+    descripcion = models.CharField(max_length=100)
+
+    class Meta:
+        managed = False
+        db_table = 'departamento'
+
+
+class Provincia(ActivoMixin, models.Model):
+    """
+    Clase para definir las provincias
+    """
+
+    id_provincia = models.AutoField(primary_key=True)
+    descripcion = models.CharField(max_length=100)
+    departamento = models.ForeignKey(Departamento, models.DO_NOTHING, db_column='id_departamento',
+                                     related_name="provincias")
+
+    class Meta:
+        managed = False
+        db_table = 'provincia'
+
+
+class Distrito(ActivoMixin, models.Model):
+    """
+    Clase para definir los distritos
+    """
+
+    id_distrito = models.AutoField(primary_key=True)
+    descripcion = models.CharField(max_length=200)
+    provincia = models.ForeignKey(Departamento, models.DO_NOTHING, db_column='id_provincia', related_name="distritos")
+
+    class Meta:
+        managed = False
+        db_table = 'distrito'
+
