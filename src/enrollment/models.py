@@ -2,12 +2,13 @@ from django.db import models
 from django.urls import reverse
 from register.models import Colegio
 from register.models import Alumno
+from profiles.models import Profile
 from utils.models import ActivoMixin
 from utils.models import CreacionModificacionFechaMixin
 from utils.models import CreacionModificacionUserMixin
 # Create your models here.
 
-class TipoServicio(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
+class TipoServicio(ActivoMixin,CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
     """
     isordinario:        indica si el servicio es ordinario (1er grado, 2do grado, etc.)
                         o extra (curso de verano, danza, etc.)
@@ -22,28 +23,39 @@ class TipoServicio(CreacionModificacionFechaMixin, CreacionModificacionUserMixin
     nivel = models.IntegerField(blank=True, null=True)
     grado = models.IntegerField(blank=True, null=True)
     extra = models.CharField(max_length=50, blank=True, null=True)
-    codigo_modular = models.CharField(max_length=10)
+    codigo_modular = models.CharField(max_length=10, blank=True, null=True)
 
     def __str__(self):
         """
         Solo retorna informacion de la clase como string
         :return: nombre del servicio
         """
-        return "nivel: {0}   grado: {1}   extra: {2}".format(self.getTipoNivel,self.getTipoGrado,self.extra)
+        if self.extra is not None:
+            return "{0}".format(self.extra)
+        else:
+            return "{1} de {0} ".format(self.getTipoNivel, self.getTipoGrado)
 
     def full_detail(self):
         """
         Da una descripcion detallada de la informacion del Tipo de Servicio
         :return: lista de todos los atributos de la clase
         """
+        if self.extra is not None:
+            extra = self.extra
+            codigo_modular = "--"
+        else:
+            codigo_modular = self.codigo_modular
+            extra = "--"
+        user_create = Profile.objects.get(pk=self.usuario_creacion)
+        user_update = Profile.objects.get(pk=self.usuario_modificacion)
         detalle_completo = ["Nivel: {0}".format(self.getTipoNivel),
                             "Grado: {0}".format(self.getTipoGrado),
-                            "Extra: {0}".format(self.extra),
-                            "Codigo modular: {0}".format(self.codigo_modular),
+                            "Extra: {0}".format(extra),
+                            "Codigo modular: {0}".format(codigo_modular),
                             "Fecha creacion: {0}".format(self.fecha_creacion),
                             "Fecha modificacion: {0}".format(self.fecha_modificacion),
-                            "Usuario creacion: {0}".format(self.usuario_creacion),
-                            "Usuario modificacion: {0}".format(self.usuario_modificacion)
+                            "Usuario creacion: {0}".format(user_create.getNombreCompleto),
+                            "Usuario modificacion: {0}".format(user_update.getNombreCompleto)
                             ]
         return detalle_completo
 
@@ -65,10 +77,11 @@ class TipoServicio(CreacionModificacionFechaMixin, CreacionModificacionUserMixin
         from utils.models import TiposNivel
 
         idtipo = self.nivel
-
-        tipodoc = TiposNivel.objects.get(pk=idtipo)
-
-        return tipodoc.descripcion
+        if idtipo is not None:
+            tipodoc = TiposNivel.objects.get(pk=idtipo)
+            return tipodoc.descripcion
+        else:
+            return "--"
 
     @property
     def getTipoGrado(self):
@@ -80,17 +93,21 @@ class TipoServicio(CreacionModificacionFechaMixin, CreacionModificacionUserMixin
         from utils.models import TiposGrados
 
         idtipo = self.grado
+        if idtipo is not None:
+            tipodoc = TiposGrados.objects.get(pk=idtipo)
+            return tipodoc.descripcion
+        else:
+            return "--"
 
-        tipodoc = TiposGrados.objects.get(pk=idtipo)
-
-        return tipodoc.descripcion
+    def getServiciosAsociados(self):
+        return Servicio.objects.filter(tipo_servicio_id=self.id_tipo_servicio, activo=True)
 
     class Meta:
         managed = False
         db_table = 'tipo_servicio'
         #unique_together = (('id_tipo_servicio', 'colegio'),)
 
-class Servicio(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
+class Servicio(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
     """
     nombre:         nombre del servicio
     precio:         precio del servicio
@@ -118,14 +135,16 @@ class Servicio(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, mo
         Da una descripcion detallada de la informacion del servicio
         :return: lista de todos los atributos de la clase
         """
+        user_create = Profile.objects.get(pk=self.usuario_creacion)
+        user_update = Profile.objects.get(pk=self.usuario_modificacion)
         detalle_completo = ["Descripcion: {0}".format(self.nombre),
                             "Precio: {0}".format(self.precio),
                             "Fecha Facturacion: {0}".format(self.fecha_facturar),
                             "Cuotas: {0}".format(self.cuotas),
                             "Fecha creacion: {0}".format(self.fecha_creacion),
                             "Fecha modificacion: {0}".format(self.fecha_modificacion),
-                            "Usuario creacion: {0}".format(self.usuario_creacion),
-                            "Usuario modificacion: {0}".format(self.usuario_modificacion)
+                            "Usuario creacion: {0}".format(user_create.getNombreCompleto),
+                            "Usuario modificacion: {0}".format(user_update.getNombreCompleto)
                             ]
         return detalle_completo
 
@@ -142,7 +161,7 @@ class Servicio(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, mo
         db_table = 'servicio'
 
 
-class Matricula( CreacionModificacionUserMixin, CreacionModificacionFechaMixin, models.Model):
+class Matricula(ActivoMixin, CreacionModificacionUserMixin, CreacionModificacionFechaMixin, models.Model):
     """
 
     """
@@ -169,7 +188,7 @@ class Matricula( CreacionModificacionUserMixin, CreacionModificacionFechaMixin, 
         managed = False
         db_table = 'matricula'
 
-class Cuentascobrar(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
+class Cuentascobrar(ActivoMixin,CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
     """
 
     """

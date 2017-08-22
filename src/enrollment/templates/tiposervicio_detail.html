@@ -2,16 +2,48 @@
 
 {% block title %}{{ block.super }}Matricula{% endblock %}
 
+{% block breadcrumb %}
+<h1>
+        Detalles del Servicio
+        <small>Modúlo Matricula</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+        <li>Modúlo Matricula</li>
+        <li>Lista de servicios</li>
+        <li class="active">Detalle del Servicio</li>
+      </ol>
+{% endblock %}
+
 {% block container %}
-<h1>Detalle Completo</h1>
-<ul>
-{% for detalles in tiposervicio.full_detail %}
-    <li>{{detalles}}</li>
-{% empty %}
-    <li>No hay tipos de servicio</li>
-{% endfor %}
-</ul>
-<form action="/enrollments/typeservice">
-    <input type="submit" value="Volver">
-</form>
+<section class="content">
+      <div class="row">
+          <div class="col-md-12">
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Detalles del Servicio</h3>
+                </div>
+
+
+                    {% for detalles in tiposervicio.full_detail %}
+                        <li>{{detalles}}</li>
+                    {% empty %}
+                        <li>No hay tipos de servicio</li>
+                    {% endfor %}
+
+                    <form action="{% url 'enrollments:tiposervicio_list' %}">
+                        <input type="submit" value="Volver" class="btn btn-default">
+                    </form>
+
+                </div>
+
+
+              </div>
+          </div>
+      </section>
+
+
+
+
+
 {% endblock container %}
