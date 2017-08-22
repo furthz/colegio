@@ -1,0 +1,96 @@
+{% extends "page.html" %}
+
+{% block title %}{{ block.super }}Matricula{% endblock %}
+
+{% block container %}
+{% load crispy_forms_tags %}
+
+
+    <section class="content">
+      <div class="row">
+          <div class="col-md-12">
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Servicios</h3>
+                </div>
+                <div class="box-body">
+                  <div class="col-md-9">
+                    <div class="box-body">
+                        <!-- BAR CHART -->
+                        <div class="box box-success">
+                          <div class="box-header with-border">
+                            <h3 class="box-title">Asociar pago a servicio</h3>
+                          </div>
+                          <div class="box-body">
+
+                            <form action="" method="POST" class="form-horizontal" id="1">{% csrf_token %}
+                              <div class="form-group">
+                                <label class="col-sm-2 control-label"for="id_tipo_servicio">Nivel/Grado:</label>
+                                <div class="col-sm-10">
+                                  <select name="tipo_servicio" required="" id="id_tipo_servicio" class="form-control">
+                                            <option value="{{ tiposervicio.id_tipo_servicio }}">{{ tiposervicio }} </option>
+                                  </select>
+                                </div>
+                              </div>
+
+                              <div class="form-group">
+                                  <label for="id_nombre" class="col-sm-2 control-label">Concepto de Pago:</label>
+                                <div class="col-sm-10">
+                                  {{ form.nombre }}
+                                </div>
+                              </div>
+
+                              <div class="form-group">
+                                  <label for="id_precio" class="col-sm-2 control-label">Precio:</label>
+
+                                <div class="col-sm-10">
+                                  {{ form.precio }}
+                                </div>
+                              </div>
+
+                              <div class="form-group">
+                                <label for="id_cuotas" class="col-sm-2 control-label">N° de meses</label>
+                                <div class="col-sm-10">
+                                  {{ form.cuotas }}
+                                </div>
+                              </div>
+
+                              <div class="form-group">
+                                <label for="id_fecha_facturar" class="col-sm-2 control-label">Dia generacion de deuda</label>
+                                <div class="col-sm-10">
+                                  {{ form.fecha_facturar }}
+                                </div>
+                              </div>
+
+                              <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <input hidden value="{{ idser }}" name="idser">
+                                  <a href="{% url 'enrollments:tiposervicio_list' %}" class="btn btn-default">Cancelar</a>
+                                  <button type="submit" formaction="{% url 'enrollments:servicioregularend_update' %}" form="1" class="btn btn-success">Asignar precio</button>
+                                </div>
+                              </div>
+                            </form>
+
+                          </div>
+                        </div>
+                        <!-- BAR CHART -->
+
+
+                    </div>
+
+                    </div>
+                    </div>
+
+
+                  </div>
+                  <div class="col-md-3"></div>
+
+                </div>
+
+
+
+              </div>
+          </section>
+
+
+{% endblock container %}

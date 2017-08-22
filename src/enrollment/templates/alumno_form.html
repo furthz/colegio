@@ -1,30 +1,85 @@
 {%  extends "page.html" %}
 
 {% block title %}{{ block.super }} ALGUN NOMBRE {% endblock %}
+{% block breadcrumb %}
+<h1>
+        Relación de Alumnos
+        <small>Modúlo Matricula</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+        <li>Modúlo Matricula</li>
+        <li class="active">Lista de alumnos</li>
+      </ol>
+{% endblock %}
+
 {% block container %}
+<section class="content">
+      <div class="row">
+          <div class="col-md-12">
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Lista de servicios</h3>
+                </div>
+                <div class="box-body">
+                  <div class="col-md-9">
+                    <div class="panel-page">
 
-<h1>Relacion de Alumnos</h1>
-<form action="../filter/" method="post">{% csrf_token %}
-    Apellido Paterno:<input type="text" name="apellido_pa">
-    Nombre:<input type="text" name="nombre">
-    <input type="submit" value="Filtrar">
-</form>
 
-{% for alumno in object_list %}
-    <form action="create/" method="post">{% csrf_token %}
-        <li>
+                     <div class="toolbar-search">
+                        <form action="{% url 'enrollments:filtrar_alumno' %}" method="post" class="form-inline" id="filtro">{% csrf_token %}
+                             <div class="form-group">
+                              Apellido Paterno:<input type="text" name="apellido_pa" class="form-control">
+                                Nombre:<input type="text" name="nombre" class="form-control">
+                              <button form="filtro" formmethod="post" type="submit" class="btn btn-default"><i class="fa fa-filter" aria-hidden="true"></i> Filtrar</button>
+                            </div>
 
-            {{alumno.persona.nombre}}
-            {{alumno.persona.apellido_pa}}
-            <input hidden type= "text" value="{{ alumno.id_alumno}}" name="alumno">
-            <input type="submit" value="Matricula">
+                        </form>
+                      <!-- FIN DE LA BARRA DE FILTRO -->
 
-        </li>
-    </form>
-{% empty %}
-    <li>
-        No hay Alumnos
-        <input type="button" value="Registrar Alumno Nuevo" >
-    </li>
-{% endfor %}
+                      </div>
+
+                        <div  role="tabpanel" >
+                            <div class="panel-body">
+                                <table class="table">
+                                    <thead>
+                                      <tr>
+                                        <th>Nombre</th>
+                                        <th>Apellido</th>
+                                        <th>Acciones</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                            {% for alumno in object_list %}
+                                <form id="alum" action="{% url 'enrollments:matricula_create' %}" method="post" class="form-horizontal">{% csrf_token %}
+
+                                        <tr>
+                                        <td>{{alumno.persona.nombre}}</td>
+                                        <td>{{alumno.persona.apellido_pa}}</td>
+                                        <td><div class="pull-center">
+                                                    <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                                                        <input hidden type= "text" value="{{ alumno.id_alumno}}" name="alumno">
+                                                        <input type="submit" value="Matricula" form="alum" class="btn btn-success">
+                                                    </div>
+                                        </div></td>
+                                        </tr>
+                                </form>
+                            {% empty %}
+                                <li>
+                                    No hay Alumnos
+                                    <input type="button" value="Registrar Alumno Nuevo" class="btn btn-sucess">
+                                </li>
+                            {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+      </div>
+</section>
+
 {% endblock container %}

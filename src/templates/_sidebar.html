@@ -33,6 +33,23 @@
         <li class="treeview">
           <a href="#">
             <i class="fa fa-book"></i>
+            <span>Modulo Registro</span>
+            <span class="pull-right-container">
+              <span class="label label-primary pull-right"></span>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{% url 'registers:alumno_create' %}"><i class="fa fa-circle-o"></i> Alumno</a></li>
+            <li><a href="{% url 'registers:apoderado_create' %}"><i class="fa fa-circle-o"></i> Apoderado</a></li>
+            <li><a href="{% url 'registers:promotor_create' %}"><i class="fa fa-circle-o"></i> Promotor</a></li>
+            <li><a href="{% url 'registers:director_create' %}"><i class="fa fa-circle-o"></i> Director</a></li>
+            <li><a href="{% url 'registers:tesorero_create' %}"><i class="fa fa-circle-o"></i> Tesorero</a></li>
+            <li><a href="{% url 'registers:cajero_create' %}"><i class="fa fa-circle-o"></i> Cajero</a></li>
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-book"></i>
             <span>Modulo Academico</span>
             <span class="pull-right-container">
               <span class="label label-primary pull-right"></span>

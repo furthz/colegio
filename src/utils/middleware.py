@@ -11,6 +11,18 @@ def get_current_user():
     if request:
         return getattr(request, "user", None)
 
+
+def get_current_colegio():
+    return getattr(_thread_locals, "request", None)
+
+
+def get_current_colegio():
+    request = get_current_request()
+    if request.session.get('colegio'):
+        id = request.session.get('colegio')
+        return id
+
+
 class ThreadLocalMiddleware(object):
     """ Middleware that adds the HttpRequest object
         to thread local storage """
