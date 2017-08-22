@@ -95,7 +95,8 @@ class Migration(migrations.Migration):
                 ('activo', models.BooleanField()),
                 ('id_provincia', models.AutoField(primary_key=True, serialize=False)),
                 ('descripcion', models.CharField(max_length=100)),
-                ('id_departamento', models.ForeignKey(Departamento)),
+                ('id_departamento', models.ForeignKey(db_column='id_departamento', to='utils.Departamento', null=True)),
+
             ],
             options={
                 'db_table': 'provincia',
@@ -108,7 +109,8 @@ class Migration(migrations.Migration):
                 ('activo', models.BooleanField()),
                 ('id_distrito', models.AutoField(primary_key=True, serialize=False)),
                 ('descripcion', models.CharField(max_length=200)),
-                ('id_provincia', models.ForeignKey(Provincia)),
+                ('id_provincia', models.ForeignKey(db_column='id_provincia', to='utils.Provincia', null=True)),
+                
             ],
             options={
                 'db_table': 'distrito',
