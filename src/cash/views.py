@@ -1,4 +1,5 @@
 from django.core.urlresolvers import reverse_lazy
+from django.shortcuts import render
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import (
@@ -118,3 +119,12 @@ class ConsignmentDeleteView(DeleteView):
     model = Remesa
     success_url = reverse_lazy('cash:consignment_list')
     template_name = 'consignment/consignment_confirm_delete.html'
+
+#################################################
+#####          FILTRADO                     #####
+#################################################
+
+
+class FiltrarPersonalColegioView(ListView):
+    model = Remesa
+    template_name = 'consignment/consignment_filterlist.html'

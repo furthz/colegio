@@ -4,49 +4,121 @@
 {% block container %}
 
     <!--Comienza el contenido!!!!!!!!!!!!!!!!!!!-->
-Remesa List
 
-<p>
-    <a href="{% url "cash:consignment_create" %}">Agregar cash</a>
-</p>
+    <div class="content-wrapper">
+    <!-- HEADER INFO PAGE UBICACION -->
+    <section class="content-header">
+        <h1>
+            Lista de remesas
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li>Modúlo de facturación</li>
+            <li class="active">Lista de remesas</li>
+        </ol>
+    </section>
+        <!-- FIN DE INFO PAGE UBICACION -->
+        <!-- INICIO DE CONTENIDO -->
+        <section class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Lista de remesas</h3>
+                        </div>
+                        <form role="form" name="search" action="" class="form-horizontal">
+                            <div class="box-body">
+                                <div class="col-md-9">
+                                    <div class="panel-page">
+                                        <div class="toolbar-header">
+                                            <a class="btn btn-success" href="{% url "cash:consignment_create" %}"><i class="fa fa-plus" aria-hidden="true"></i>  Crear remesa</a>
+                                        </div>
+                                        <div class="toolbar-search">
+                                            <div class="box-body">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Fecha de remesa:</label>
+                                                        <div class="input-group date">
+                                                            <div class="input-group-addon">
+                                                                <i class="fa fa-calendar"></i>
+                                                            </div>
+                                                            <input type="text" class="form-control pull-right datepicker">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <form id="FilterList" action="../filterPC/" method="post">
+                                                <input type="text" name="personal_colegio">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Encargado de remesa:</label>
+                                                        <select class="form-control">
+                                                            <option>------</option>
+                                                            {% for remesa in object_list %}
+                                                                <option value="{{remesa.personal_colegio}}"{% if remesa == current_remesa %}selected="selected"{% endif %}>{{remesa.personal_colegio|capfirst}}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                                <div class="col-md-4">
+                                                    <div class="search-actions">
+                                                        <button type="submit" class="btn btn-primary" form="FilterList">
+                                                            <i class="fa fa-search" aria-hidden="true"></i>
+                                                            Buscar remesa
+                                                        </button>
+                                                    </div>
+                                                </div>
 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <table class="table table-hover">
+                                        <tr class="table-header">
+                                            <th>Item</th>
+                                            <th>Encargo de remesa</th>
+                                            <th>Monto S/.</th>
+                                            <th>Comentario</th>
+                                            <th>Fecha</th>
+                                            <th class="text-center">Acciones</th>
+                                        </tr>
+                                        <div id="Lista">
+                                        {% for remesa in object_list %}
+                                            <tr>
+                                                <td>{{ forloop.counter }}</td>
+                                                <td>{{ remesa.personal_colegio }}</td>
+                                                <td>S/ {{ remesa.monto }}</td>
+                                                <td>{{ remesa.comentario }}</td>
+                                                <td>{{ remesa.fechacreacion }}</td>
+                                                <td class="text-center">
+                                                    <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                                                        <a href="{% url "cash:consignment_detail" remesa.id_remesa %}" class="btn btn-default">
+                                                            <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </div>
+                                    </table>
+                                </div>
+                            </div>
+                            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+                            <script>
+                                $(document).ready(function(){
+                                    $("button").click(function(){
+                                        $("#ListFilter").load("demo_test.txt");
+                                    });
+                                });
+                            </script>
+                    </form>
+                </div>
+            </div>
+    </div>
+    </section>
+    <!-- /.FIN DE CONTENIDO -->
+  </div>
+  <!-- /.FIN DE CONTENEDOR DE FORMULARIO  -->
 
-    <style>
-        table {
-            font-family: arial, sans-serif;
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        td, th {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
-
-        tr:nth-child(even) {
-            background-color: #dddddd;
-        }
-    </style>
-    </head>
-    <body>
-        <table>
-            <tr>
-                <th>Persona Encargada</th>
-                <th>Cajero</th>
-                <th>Monto</th>
-                <th>Fecha</th>
-            </tr>
-            {% for remesas in object_list %}
-            <tr>
-                <td>{{ remesas.personal_colegio }}</td>
-                <td>{{ remesas.movimiento }}</td>
-                <td>{{ remesas.monto }}</td>
-                <td>{{ remesas.fechacreacion }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-    </body>
 
     <!--Fin del contenido!!!!!!!!!!!-->
 

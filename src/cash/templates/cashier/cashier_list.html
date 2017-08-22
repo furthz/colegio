@@ -4,10 +4,10 @@
 {% block container %}
 
     <!--Comienza el contenido!!!!!!!!!!!!!!!!!!!-->
-Remesa List
+Cashier List
 
 <p>
-    <a href="{% url "cash:remesa_create" %}">Agregar cash</a>
+    <a href="{% url "cash:cashier_create" %}">Agregar cash</a>
 </p>
 
 
@@ -32,17 +32,23 @@ Remesa List
     <body>
         <table>
             <tr>
-                <th>Persona Encargada</th>
-                <th>Cajero</th>
-                <th>Monto</th>
-                <th>Fecha</th>
+                <th>Colegio</th>
+                <th>N° de Caja</th>
+                <th>Descripción</th>
+                <th>Fecha Creación</th>
+                <th>Fecha Modificación</th>
+                <th>Usuario Creación</th>
+                <th>Usuario Modificación</th>
             </tr>
-            {% for remesas in object_list %}
+            {% for cashier in object_list %}
             <tr>
-                <td>{{ remesas.personal_colegio }}</td>
-                <td>{{ remesas.movimiento }}</td>
-                <td>{{ remesas.monto }}</td>
-                <td>{{ remesas.fechacreacion }}</td>
+                <td>{{ cashier.colegio }}</td>
+                <td>{{ cashier.numero }}</td>
+                <td>{{ cashier.descripcion }}</td>
+                <td>{{ cashier.fecha_creacion }}</td>
+                <td>{{ cashier.fecha_modificacion }}</td>
+                <td>{{ cashier.usuario_creacion }}</td>
+                <td>{{ cashier.usuario_modificacion }}</td>
             </tr>
             {% endfor %}
         </table>
