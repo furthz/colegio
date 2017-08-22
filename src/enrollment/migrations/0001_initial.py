@@ -25,11 +25,12 @@ class Migration(migrations.Migration):
                 ('nivel', models.IntegerField(blank=True, null=True)),
                 ('grado', models.IntegerField(blank=True, null=True)),
                 ('extra', models.CharField(blank=True, max_length=50, null=True)),
-                ('codigo_modular', models.CharField(max_length=10)),
+                ('codigo_modular', models.CharField(max_length=10,blank=True, null=True)),
                 ('fecha_creacion', models.DateField()),
                 ('fecha_modificacion', models.DateField()),
                 ('usuario_creacion', models.CharField(max_length=10,null=True)),
                 ('usuario_modificacion', models.CharField(max_length=10,null=True)),
+                ('activo', models.BooleanField()),
             ],
             options={
                 'db_table': 'tipo_servicio',
@@ -51,6 +52,7 @@ class Migration(migrations.Migration):
                 ('usuario_creacion', models.CharField(max_length=10,null=True)),
                 ('usuario_modificacion', models.CharField(max_length=10,null=True)),
                 ('tipo_servicio', models.ForeignKey(db_column='id_tipo_servicio', to='enrollment.TipoServicio')),
+                ('activo', models.BooleanField()),
             ],
             options={
                 'db_table': 'servicio',
@@ -69,6 +71,7 @@ class Migration(migrations.Migration):
                 ('fecha_modificacion', models.DateField()),
                 ('usuario_creacion', models.CharField(max_length=10, null=True)),
                 ('usuario_modificacion', models.CharField(max_length=10, null=True)),
+                ('activo', models.BooleanField()),
             ],
             options={
                 'db_table': 'matricula',
@@ -91,6 +94,7 @@ class Migration(migrations.Migration):
                 ('fecha_modificacion', models.DateField()),
                 ('usuario_creacion', models.CharField(max_length=10, null=True)),
                 ('usuario_modificacion', models.CharField(max_length=10, null=True)),
+                ('activo', models.BooleanField()),
             ],
             options={
                 'db_table': 'cuentascobrar',
@@ -99,3 +103,4 @@ class Migration(migrations.Migration):
             },
         ),
     ]
+

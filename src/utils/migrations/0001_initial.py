@@ -5,6 +5,8 @@ from __future__ import unicode_literals
 from django.db import migrations, models
 from django.conf import settings
 
+from utils.models import Departamento, Provincia
+
 
 class Migration(migrations.Migration):
 
@@ -72,6 +74,44 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'tipos_nivel',
+                'managed': settings.IS_TESTING,
+            },
+        ),
+        migrations.CreateModel(
+            name='Departamento',
+            fields=[
+                ('activo', models.BooleanField()),
+                ('id_departamento', models.AutoField(primary_key=True, serialize=False)),
+                ('descripcion', models.CharField(max_length=100)),
+            ],
+            options={
+                'db_table': 'departamennto',
+                'managed': settings.IS_TESTING,
+            },
+        ),
+        migrations.CreateModel(
+            name='Provincia',
+            fields=[
+                ('activo', models.BooleanField()),
+                ('id_provincia', models.AutoField(primary_key=True, serialize=False)),
+                ('descripcion', models.CharField(max_length=100)),
+                ('id_departamento', models.ForeignKey(Departamento)),
+            ],
+            options={
+                'db_table': 'provincia',
+                'managed': settings.IS_TESTING,
+            },
+        ),
+        migrations.CreateModel(
+            name='Distrito',
+            fields=[
+                ('activo', models.BooleanField()),
+                ('id_distrito', models.AutoField(primary_key=True, serialize=False)),
+                ('descripcion', models.CharField(max_length=200)),
+                ('id_provincia', models.ForeignKey(Provincia)),
+            ],
+            options={
+                'db_table': 'distrito',
                 'managed': settings.IS_TESTING,
             },
         ),

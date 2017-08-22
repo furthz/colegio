@@ -1,9 +1,8 @@
 {% extends "page.html" %}
-
 {% block container %}
 <h1>Detalle Completo</h1>
 <ul>
-{% for detalles in alumno.full_detail %}
+{% for detalles in promotor.full_detail %}
     <li>{{detalles}}</li>
 {% empty %}
     <li>No hay tipos de servicio</li>
@@ -12,5 +11,4 @@
 <form action="..">
     <input type="submit" value="Volver">
 </form>
-
 {% endblock %}
