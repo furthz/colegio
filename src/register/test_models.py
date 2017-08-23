@@ -8,7 +8,7 @@ from utils.models import TipoSexo
 from utils.models import TipoDocumento
 
 from django.contrib.auth import REDIRECT_FIELD_NAME, get_user_model, SESSION_KEY
-from .models import Apoderado
+from .models import Apoderado, Tesorero
 from .models import Telefono
 from .models import Alumno
 from .models import ApoderadoAlumno
@@ -44,7 +44,7 @@ class PersonaModelTest(TestCase):
                                apellido_ma='Carrasco',
                                apellido_pa="Bermudez",
                                tipo_documento="1",
-                               numerodocumento="3344955",
+                               numero_documento="3344955",
                                sexo="1",
                                correo="sasa",
                                fecha_nac=date.today(),
@@ -69,7 +69,7 @@ class PersonaModelTest(TestCase):
 
     def test_PersonaAddApoderado(self):
         apo = Apoderado()
-        apo = apo.saveApoderadoFromPersona(persona=self.persona, parentesco="Padre")
+        apo = apo.saveFromPersona(per=self.persona, parentesco="Padre")
 
         self.assertEquals(apo.nombre, self.persona.nombre)
 
@@ -90,19 +90,19 @@ class PersonaModelTest(TestCase):
         self.personal = Personal()
 
         #self.personal = self.personal.savePersonalFromPersona(persona=self.persona, activo_personal=True)
-        self.personal = self.personal.savePersonalFromPersona(persona=self.persona, activo_personal=True)
+        self.personal = self.personal.saveFromPersona(per=self.persona, activo_personal=True)
 
         print("fecha creacion personal: " + str(self.personal.fecha_creacion_personal))
 
         self.assertEquals(self.personal.nombre, self.personal.persona.nombre)
 
-        promotor = Promotor().savePromotorFromPersonal(personal=self.personal, activo_promotor=True)
+        promotor = Promotor().saveFromPersonal(per=self.personal, activo_promotor=True)
         self.assertEquals(promotor.nombre, promotor.persona.nombre)
 
-        cajero = Cajero().saveCajeroFromPersonal(personal=self.personal, activo_cajero=True)
+        cajero = Cajero().saveFromPersonal(per=self.personal, activo_cajero=True)
         self.assertEquals(cajero.nombre, cajero.persona.nombre)
 
-        director = Director().saveDirectorFromPersonal(personal=self.personal, activo_director=True)
+        director = Director().saveFromPersonal(per=self.personal, activo_director=True)
         self.assertEquals(director.nombre, director.persona.nombre)
 
 
@@ -118,7 +118,7 @@ class ApoderadoModelTest(TestCase):
                                    apellido_ma='Carrasco',
                                    apellido_pa="Bermudez",
                                    tipo_documento="1",
-                                   numerodocumento="3344955",
+                                   numero_documento="3344955",
                                    sexo="1",
                                    correo="sas",
                                    fecha_nac=date.today(),
@@ -176,7 +176,7 @@ class AlumnoModelTest(TestCase):
                              apellido_ma='Carrasco',
                              apellido_pa="Bermudez",
                              tipo_documento="1",
-                             numerodocumento="3344955",
+                             numero_documento="3344955",
                              sexo="1",
                              correo="sas",
                              fecha_nac=date.today(),
@@ -194,7 +194,7 @@ class AlumnoModelTest(TestCase):
                               apellido_ma='Carrasco',
                               apellido_pa="Bermudez",
                               tipo_documento="1",
-                              numerodocumento="3344955",
+                              numero_documento="3344955",
                               sexo="1",
                               correo="sas",
                               fecha_nac=date.today(),
@@ -255,7 +255,7 @@ class ColegioModelTest(TestCase):
                         apellido_ma='Carrasco',
                         apellido_pa="Bermudez",
                         tipo_documento="1",
-                        numerodocumento="3344955",
+                        numero_documento="3344955",
                         sexo="1",
                         correo="sas",
                         fecha_nac=date.today(),
@@ -265,6 +265,8 @@ class ColegioModelTest(TestCase):
                         usuario_creacion_persona="raul"
                         )
         pers.save()
+
+        tesorero = Tesorero(personaltesorero=pers)
 
         persocole = PersonalColegio(personal=pers, colegio=self.colegio, activo=True)
         persocole.save()

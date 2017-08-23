@@ -1,0 +1,15 @@
+{% extends "page.html" %}
+{% block title %}{{ block.super }}Remesas{% endblock %}
+
+{% block container %}
+
+    <!--Comienza el contenido!!!!!!!!!!!!!!!!!!!-->
+    <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit" />
+    </form>
+
+    <!--Fin del contenido!!!!!!!!!!!-->
+
+{% endblock container %}

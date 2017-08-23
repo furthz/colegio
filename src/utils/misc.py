@@ -14,6 +14,7 @@ from datetime import datetime
 # Copyright 2009-2016 Luc Saffre
 # License: BSD (see file COPYING for details)
 
+
 """
 A collection of tools around :doc:`multi-table inheritance </dev/mti>`.
 """
@@ -185,6 +186,7 @@ def insert_child(obj, child_model, full_clean=False, **attrs):
     # ~ logger.info("20120830 insert_child %s",obj2str(new_obj))
 
     new_obj.save()
+
     # on_add_child.send(sender=obj, child=new_obj)
     if full_clean:
         try:
@@ -238,4 +240,5 @@ def get_git_changeset(absolute_path):
         return ""
     changeset = timestamp.strftime('%Y%m%d%H%M%S')
     return changeset
+
 

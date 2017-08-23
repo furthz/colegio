@@ -1,0 +1,137 @@
+{% extends "page.html" %}
+{% block title %}{{ block.super }}Remesas{% endblock %}
+
+{% block container %}
+
+    <!--Comienza el contenido!!!!!!!!!!!!!!!!!!!-->
+
+    <!-- INICIA CONTENDOR DE FORMULARIOS -->
+    <div class="content-wrapper">
+        <!-- HEADER INFO PAGE UBICACION -->
+        <section class="content-header">
+            <h1>
+                Generar nueva remesa
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+                <li>Modúlo de facturación</li>
+                <li class="active">Generar remesa</li>
+            </ol>
+        </section>
+        <!-- FIN DE INFO PAGE UBICACION -->
+        <!-- INICIO DE CONTENIDO -->
+        <section class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Generar remesas</h3>
+                        </div>
+                        <div id="search" class="form-horizontal">
+                            <div class="box-body">
+                                <div class="col-md-9">
+                                    <div class="panel-page">
+                                        <!-- COMIENZA EL FORM!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+                                        <form id="myform" method="post">
+                                            {% csrf_token %}
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Encargado de remesa</label>
+                                                <div class="col-sm-10">
+                                                    {{ form.personal_colegio }}
+                                                    <p>Cajero :  {{ form.movimiento }}</p>
+                                                </div>
+                                            </div>
+                                            {{ form.fechacreacion }}
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Monto S/.</label>
+                                                <div class="col-sm-10">
+                                                    <script type="text/javascript">
+                                                        //Solo permite ingresar numeros.
+                                                            <!--
+                                                                function soloNumeros(e){
+                                                                var key = window.Event ? e.which : e.keyCode
+                                                                return (key >= 48 && key <= 57)}
+                                                             -->
+                                                    </script>
+                                                    {{ form.monto }}
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Comentario:</label>
+                                                <div class="col-sm-10">
+                                                    {{ form.comentario }}
+                                                </div>
+                                            </div>
+                                            <script type="text/javascript">
+                                                /* Para obtener el texto */
+                                                <!--
+                                                    function personaSelect(){
+                                                    var combo = document.getElementById("personaTxt");
+                                                    var selected = combo.options[combo.selectedIndex].text;
+                                                    document.getElementById("selecPerso").innerHTML = selected}
+                                                 -->
+                                                    </script>
+                                        </form>
+                                        <div class="form-group">
+                                            <div class="col-sm-offset-2 col-sm-10">
+                                                <a href="cash:consignment_list" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i>
+                                                    Regresar a la lista
+                                                </a>
+                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">
+                                                    <i class="fa fa-plus" aria-hidden="true"></i> Generar remesa</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- /.FIN DE CONTENIDO -->
+        <!-- INICIO DE MODAL -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Confirmación de remesa</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Encargado de remesa:</label>
+                            <div class="input-group">
+                                <div class="input-group">
+                                    <li id="selecPerso"></li>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Monto Total:</label>
+                                <div class="input-group">
+                                    <li id="monto"></li>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Confirmar Contranseña:</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" placeholder="Ingrese contraseña">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary" form="myform">Confirmar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- FIN DE MODAL -->
+        </div>
+        <!-- /.FIN DE CONTENEDOR DE FORMULARIO  -->
+
+    <!--Fin del contenido!!!!!!!!!!!-->
+
+{% endblock container %}

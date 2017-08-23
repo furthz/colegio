@@ -6,7 +6,9 @@ Autor: Raul Talledo <raul.talledo@technancial.com.pe>
 Fecha: 23/07/2017
 
 """
+
 from django.db import models
+from django.urls import reverse
 
 from utils.misc import insert_child
 from utils.models import CreacionModificacionUserMixin, CreacionModificacionFechaPersonalMixin, \
@@ -15,7 +17,8 @@ from utils.models import CreacionModificacionUserMixin, CreacionModificacionFech
     CreacionModificacionFechaDirectorMixin, \
     CreacionModificacionUserPersonalMixin, CreacionModificacionUserApoderadoMixin, \
     CreacionModificacionUserAlumnoMixin, \
-    CreacionModificacionUserPromotorMixin, CreacionModificacionUserCajeroMixin, CreacionModificacionUserDirectorMixin
+    CreacionModificacionUserPromotorMixin, CreacionModificacionUserCajeroMixin, CreacionModificacionUserDirectorMixin, \
+    CreacionModificacionUserTesoreroMixin, CreacionModificacionFechaTesoreroMixin
 from utils.models import CreacionModificacionFechaMixin
 from utils.models import ActivoMixin
 
@@ -30,12 +33,27 @@ class Personal(CreacionModificacionUserPersonalMixin, CreacionModificacionFechaP
     persona = models.OneToOneField(Profile, models.DO_NOTHING, parent_link=True)
     activo_personal = models.BooleanField(db_column="activo", default=True)
 
+    def get_absolute_url(self):
+        """
+        Redirecciona las views que usan como modelo esta clase
+        :return: url de detalles de la persona
+        """
+        return reverse('registers:personal_detail', kwargs={'pk': self.pk})
+
     @staticmethod
-    def savePersonalFromPersona(persona: Profile, **atributos):
-        return insert_child(persona, Personal, **atributos)
+    def saveFromPersona(per: Profile, **atributos):
+
+        try:
+            personal = Personal.objects.get(persona=per)
+            return personal
+        except Alumno.DoesNotExist:
+            return insert_child(obj=per, child_model=Personal, **atributos)
+
+    def __str__(self):
+        return "Personal ID: {0}".format(self.id_personal)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'personal'
 
 
@@ -53,7 +71,7 @@ class Colegio(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionU
         return self.nombre
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'colegio'
 
 
@@ -72,7 +90,7 @@ class Telefono(ActivoMixin, CreacionModificacionUserMixin, CreacionModificacionF
         return str(self.numero)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'telefono'
 
 
@@ -86,12 +104,13 @@ class Direccion(CreacionModificacionUserMixin, CreacionModificacionFechaMixin, m
     colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column='id_colegio', related_name="direcciones")
     calle = models.CharField(max_length=100)
     dpto = models.CharField(max_length=15)
+    provincia = models.CharField(max_length=15)
     distrito = models.CharField(max_length=100)
     numero = models.CharField(max_length=6, blank=True, null=True)
     referencia = models.CharField(max_length=500, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'direccion'
 
 
@@ -103,18 +122,34 @@ class Apoderado(CreacionModificacionUserApoderadoMixin, CreacionModificacionFech
     parentesco = models.CharField(max_length=30)
     persona = models.OneToOneField(Profile, models.DO_NOTHING, parent_link=True, )
 
+    def full_detail(self):
+        lista = Profile.full_detail(self)
+        lista.append("parentesco: {0}".format(self.parentesco))
+        return lista
+
+    def get_absolute_url(self):
+        """
+        Redirecciona las views que usan como modelo esta clase
+        :return: url de detalles de la persona
+        """
+        return reverse('registers:apoderado_detail', kwargs={'pk': self.pk})
+
     @staticmethod
-    def saveApoderadoFromPersona(persona: Profile, **atributos):
+    def saveFromPersona(per: Profile, **atributos):
         """
         Método que permite guardar un Apoderado a partir de una persona existente
-        :param persona: Persona existente
+        :param per: Persona base
         :param atributos: Nuevos atributos propios de Apoderado
         :return: Objeto Apoderado creado
         """
-        return insert_child(persona, Apoderado, **atributos)
+        try:
+            apoderado = Apoderado.objects.get(persona=per)
+            return apoderado
+        except Apoderado.DoesNotExist:
+            return insert_child(obj=per, child_model=Apoderado, **atributos)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'apoderado'
 
 
@@ -124,24 +159,36 @@ class Alumno(CreacionModificacionUserAlumnoMixin, CreacionModificacionFechaAlumn
     """
     id_alumno = models.AutoField(primary_key=True)
     codigoint = models.CharField(max_length=15, blank=True, null=True)
-    persona = models.OneToOneField(Profile, models.DO_NOTHING, parent_link=True)
+    persona = models.OneToOneField(Profile, models.DO_NOTHING, parent_link=True, unique=True)
     apoderados = models.ManyToManyField(Apoderado, through='ApoderadoAlumno', related_name='alumnos', null=True)
 
+
+    def get_absolute_url(self):
+        """
+        Redirecciona las views que usan como modelo esta clase
+        :return: url de detalles de la persona
+        """
+        return reverse('registers:alumno_detail', kwargs={'pk': self.pk})
+
     @staticmethod
-    def saveAlumnoFromPersona(persona: Profile, **atributos):
+    def saveFromPersona(per: Profile, **atributos):
         """
         Método que permite guardar un Apoderado a partir de una persona existente
-        :param persona: Persona existente
+        :param per: Persona existente
         :param atributos: Nuevos atributos propios de Apoderado
         :return: Objeto Alumno creado
         """
-        return insert_child(persona, Alumno, **atributos)
+        try:
+            alu = Alumno.objects.get(persona=per)
+            return alu
+        except Alumno.DoesNotExist:
+            return insert_child(obj=per, child_model=Alumno, **atributos)
 
     def __str__(self):
         return self.getNombreCompleto
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'alumno'
 
 
@@ -154,9 +201,44 @@ class ApoderadoAlumno(ActivoMixin, CreacionModificacionFechaMixin, CreacionModif
     alumno = models.ForeignKey(Alumno, models.DO_NOTHING, db_column='id_alumno')
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'apoderado_alumno'
         unique_together = (("apoderado", "alumno"),)
+
+
+# POR ARREGLAR
+class Tesorero(CreacionModificacionUserTesoreroMixin, CreacionModificacionFechaTesoreroMixin, Personal, models.Model):
+    id_tesorero = models.AutoField(primary_key=True)
+    empleado = models.OneToOneField(Personal, models.DO_NOTHING, parent_link=True)
+    activo_tesorero = models.BooleanField(default=True, db_column="activo")
+
+    def __str__(self):
+        return "Id Tesorero: {0}".format(self.id_tesorero)
+
+    def get_absolute_url(self):
+        """
+        Redirecciona las views que usan como modelo esta clase
+        :return: url de detalles de la persona
+        """
+        return reverse('registers:tesorero_detail', kwargs={'pk': self.pk})
+
+    @staticmethod
+    def saveFromPersonal(per: Personal, **atributos):
+        """
+        # Método que permite guardar un Promotor a partir de un personal existente
+        # :param personal: Personal existente
+        # :param atributos: Nuevos atributos propios de Apoderado
+        # :return: Objeto Promotor creado
+        """
+        try:
+            tesorero = Tesorero.objects.get(persona=per)
+            return tesorero
+        except Alumno.DoesNotExist:
+            return insert_child(obj=per, child_model=Tesorero, **atributos)
+
+    class Meta:
+        managed = True
+        db_table = 'tesorero'
 
 
 class Promotor(CreacionModificacionUserPromotorMixin, CreacionModificacionFechaPromotorMixin, Personal, models.Model):
@@ -164,22 +246,35 @@ class Promotor(CreacionModificacionUserPromotorMixin, CreacionModificacionFechaP
     Clase para el Promotor
     """
     id_promotor = models.AutoField(primary_key=True)
-    personalprom = models.OneToOneField(Personal, models.DO_NOTHING, parent_link=True, )
+    empleado = models.OneToOneField(Personal, models.DO_NOTHING, parent_link=True)
     activo_promotor = models.BooleanField(default=True, db_column="activo")
 
+    def __str__(self):
+        return "Id Promotor: {0}".format(self.id_promotor)
+
+    def get_absolute_url(self):
+        """
+        Redirecciona las views que usan como modelo esta clase
+        :return: url de detalles de la persona
+        """
+        return reverse('registers:promotor_detail', kwargs={'pk': self.pk})
+
     @staticmethod
-    def savePromotorFromPersonal(personal: Personal, **atributos):
+    def saveFromPersonal(per: Personal, **atributos):
         """
         # Método que permite guardar un Promotor a partir de un personal existente
         # :param personal: Personal existente
         # :param atributos: Nuevos atributos propios de Apoderado
         # :return: Objeto Promotor creado
         """
-
-        return insert_child(personal, Promotor, **atributos)
+        try:
+            promotor = Promotor.objects.get(persona=per)
+            return promotor
+        except Alumno.DoesNotExist:
+            return insert_child(obj=per, child_model=Promotor, **atributos)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'promotor'
 
 
@@ -188,22 +283,35 @@ class Cajero(CreacionModificacionUserCajeroMixin, CreacionModificacionFechaCajer
     Clase para el Cajero
     """
     id_cajero = models.AutoField(primary_key=True)
-    personalcajero = models.OneToOneField(Personal, models.DO_NOTHING, parent_link=True, )
+    empleado = models.OneToOneField(Personal, models.DO_NOTHING, parent_link=True)
     activo_cajero = models.BooleanField(default=True, db_column="activo")
 
+    def __str__(self):
+        return "Id Cajero: {0}".format(self.id_cajero)
+
+    def get_absolute_url(self):
+        """
+        Redirecciona las views que usan como modelo esta clase
+        :return: url de detalles de la persona
+        """
+        return reverse('registers:cajero_detail', kwargs={'pk': self.pk})
+
     @staticmethod
-    def saveCajeroFromPersonal(personal: Personal, **atributos):
+    def saveFromPersonal(per: Personal, **atributos):
         """
         # Método que permite guardar un Promotor a partir de un personal existente
         # :param personal: Personal existente
         # :param atributos: Nuevos atributos propios de Apoderado
         # :return: Objeto Promotor creado
         """
-
-        return insert_child(personal, Cajero, **atributos)
+        try:
+            cajero = Cajero.objects.get(persona=per)
+            return cajero
+        except Alumno.DoesNotExist:
+            return insert_child(obj=per, child_model=Cajero, **atributos)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'cajero'
 
 
@@ -212,22 +320,34 @@ class Director(CreacionModificacionUserDirectorMixin, CreacionModificacionFechaD
     Clase para el Director
     """
     id_director = models.AutoField(primary_key=True)
-    personaldirector = models.OneToOneField(Personal, models.DO_NOTHING, parent_link=True, )
+    empleado = models.OneToOneField(Personal, models.DO_NOTHING, parent_link=True, )
     activo_director = models.BooleanField(default=True, db_column="activo")
 
+    def __str__(self):
+        return "Id Director: {0}".format(self.id_director)
+
+    def get_absolute_url(self):
+        """
+        Redirecciona las views que usan como modelo esta clase
+        :return: url de detalles de la persona
+        """
+        return reverse('registers:director_detail', kwargs={'pk': self.pk})
+
     @staticmethod
-    def saveDirectorFromPersonal(personal: Personal, **atributos):
+    def saveFromPersonal(per: Personal, **atributos):
         """
         # Método que permite guardar un Promotor a partir de un personal existente
         # :param personal: Personal existente
         # :param atributos: Nuevos atributos propios de Apoderado
-        # :return: Objeto Promotor creado
-        """
-
-        return insert_child(personal, Director, **atributos)
+        # :return: Objeto Promotor creado        """
+        try:
+            alu = Director.objects.get(persona=per)
+            return alu
+        except Alumno.DoesNotExist:
+            return insert_child(obj=per, child_model=Director, **atributos)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'director'
 
 
@@ -240,5 +360,5 @@ class PersonalColegio(ActivoMixin, CreacionModificacionUserMixin, CreacionModifi
     colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column="id_colegio")
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'personal_colegio'

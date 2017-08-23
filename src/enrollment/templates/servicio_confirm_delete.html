@@ -1,7 +1,14 @@
+{% extends "page.html" %}
+
+{% block title %}{{ block.super }}Matricula{% endblock %}
+
+{% block container %}
 {% load crispy_forms_tags %}
 
-<form action="" method="POST">{% csrf_token %}
-    {% csrf_token %}
-    {{ servicio }}
-    <input type="submit" value="Borrar">
+<form action="" method="GET" class="form-horizontal">{% csrf_token %}
+    <input hidden value="{{ idser }}" name="idser">
+    <a href="{% url 'enrollments:tiposervicio_list' %}" class="btn btn-default">Cancelar</a>
+    <input type="submit" value="Borrar" class="btn btn-success">
 </form>
+
+{% endblock container %}

@@ -1,0 +1,59 @@
+{% extends "page.html" %}
+{% block title %}{{ block.super }}Remesas{% endblock %}
+
+{% block container %}
+
+    <!--Comienza el contenido!!!!!!!!!!!!!!!!!!!-->
+Cashier List
+
+<p>
+    <a href="{% url "cash:cashier_create" %}">Agregar cash</a>
+</p>
+
+
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+    </head>
+    <body>
+        <table>
+            <tr>
+                <th>Colegio</th>
+                <th>N° de Caja</th>
+                <th>Descripción</th>
+                <th>Fecha Creación</th>
+                <th>Fecha Modificación</th>
+                <th>Usuario Creación</th>
+                <th>Usuario Modificación</th>
+            </tr>
+            {% for cashier in object_list %}
+            <tr>
+                <td>{{ cashier.colegio }}</td>
+                <td>{{ cashier.numero }}</td>
+                <td>{{ cashier.descripcion }}</td>
+                <td>{{ cashier.fecha_creacion }}</td>
+                <td>{{ cashier.fecha_modificacion }}</td>
+                <td>{{ cashier.usuario_creacion }}</td>
+                <td>{{ cashier.usuario_modificacion }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </body>
+
+    <!--Fin del contenido!!!!!!!!!!!-->
+
+{% endblock container %}

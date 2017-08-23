@@ -1,0 +1,67 @@
+{% extends "page.html" %}
+{% block title %}{{ block.super }}Remesas{% endblock %}
+
+{% block container %}
+
+    <!--Comienza el contenido!!!!!!!!!!!!!!!!!!!-->
+BoxCashier List
+
+<p>
+    <a href="{% url "cash:boxcashier_create" %}">Agregar cash</a>
+</p>
+
+
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+    </head>
+    <body>
+        <table>
+            <tr>
+                <th>Cajero</th>
+                <th>N° de Caja</th>
+                <th>Saldo</th>
+                <th>Monto de Apertura</th>
+                <th>Monto de Cierre</th>
+                <th>Estado</th>
+                <th>Saldo</th>
+                <th>Fecha Creación</th>
+                <th>Fecha Modificación</th>
+                <th>Usuario Creación</th>
+                <th>Usuario Modificación</th>
+            </tr>
+            {% for remesas in object_list %}
+            <tr>
+                <td>{{ remesas.personal_colegio }}</td>
+                <td>{{ remesas.caja }}</td>
+                <td>{{ remesas.saldo }}</td>
+                <td>{{ remesas.monto_apertura }}</td>
+                <td>{{ remesas.monto_cierre }}</td>
+                <td>{{ remesas.estado }}</td>
+                <td>{{ cashier.fecha_creacion }}</td>
+                <td>{{ cashier.fecha_modificacion }}</td>
+                <td>{{ cashier.usuario_creacion }}</td>
+                <td>{{ cashier.usuario_modificacion }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </body>
+
+
+    <!--Fin del contenido!!!!!!!!!!!-->
+
+{% endblock container %}

@@ -4,6 +4,9 @@ __pycache__/
 
 *.iml
 
+#directories to ignore
+.idea/
+
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt

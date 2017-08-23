@@ -1,6 +1,22 @@
 <h1>Persona</h1>
-<form action="" method="POST">{% csrf_token %}
-    {% csrf_token %}
-    {{ form.as_table }}
+<form action="../test" method="post">{% csrf_token %}
+    Apellido: <input type="text" name="gato">
     <input type="submit" value="Continuar">
+
+
+{% for alumno in object_list %}
+            <li>
+                {{alumno.persona.nombre}}
+                {{alumno.persona.apellido_pa}}
+            </li>
+        {% empty %}
+            <li>No hay tipos de servicio</li>
+        {% endfor %}
+
+<li>
+    {% if gato != None %}
+                {{gato}}
+                {{hola}}
+    {% endif %}
+            </li>
 </form>

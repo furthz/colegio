@@ -1,7 +1,4 @@
-{% load crispy_forms_tags %}
+<form action="" method="POST" class="form-horizontal" id="1">{% csrf_token %}
+            {{ form1.as_p}}
+        </form>
 
-<form action="" method="POST">{% csrf_token %}
-    {% csrf_token %}
-    {{ form.as_table }}
-    <input type="submit" value="Submit">
-</form>

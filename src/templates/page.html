@@ -42,17 +42,14 @@
         <!-- END SITE SIDEBAR -->
         <div class="content-wrapper">
             <section class="content-header">
-              <h1>
-                Lista de servicios
-              </h1>
-                <!-- INICIO BREADCRUMB -->
-                  {% block breadcrumb %}
+              {% block titulo %}
+              {% endblock %}
                       <ol class="breadcrumb">
                         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
                         <li>Modúlo de facturación</li>
-                        <li class="active">Lista de servicios</li>
+                        <!--<li class="active">Lista de servicios</li>-->
                       </ol>
-                  {% endblock %}
+
                 <!-- FIN BREADCRUMB -->
             </section>
             <section class="content">
@@ -83,6 +80,7 @@
     <script src="{% static 'components/jquery-ui/jquery-ui.js' %}"></script>
     <script src="{% static 'components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'components/morris.js/morris.min.js' %}"></script>
+    <script src="{% static 'components/chart.js/dist/Chart.min.js' %}"></script>
     <script src="{% static 'components/moment/min/moment.min.js' %}"></script>
     <script src="{% static 'components/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
     <script src="{% static 'components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js' %}"></script>
