@@ -169,6 +169,14 @@ class Matricula(CreacionModificacionUserMixin, CreacionModificacionFechaMixin, m
         managed = False
         db_table = 'matricula'
 
+
+class dCuentasManager(models.Manager):
+    fecha_inicio = models.DateField
+    fecha_final = models.DateField
+    def get_queryset(self):
+        return super(dCuentasManager, self).get_queryset()
+
+
 class Cuentascobrar(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
     """
 
@@ -182,8 +190,18 @@ class Cuentascobrar(CreacionModificacionFechaMixin, CreacionModificacionUserMixi
     precio = models.FloatField()
     deuda = models.FloatField()
 
+    objetos = dCuentasManager()
+
     class Meta:
         managed = False
         db_table = 'cuentascobrar'
 
+    @property
+    def getMonto(self):
+        """
+        Método que calcula los años de una persona
+        :return: La cantidad de años de la persona
+        """
+        monto = self.precio - self.deuda
 
+        return monto
