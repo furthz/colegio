@@ -137,6 +137,9 @@ class Alumno(CreacionModificacionUserAlumnoMixin, CreacionModificacionFechaAlumn
         """
         return insert_child(persona, Alumno, **atributos)
 
+    def __str__(self):
+        return self.getNombreCompleto
+
     class Meta:
         managed = False
         db_table = 'alumno'
