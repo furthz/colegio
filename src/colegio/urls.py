@@ -5,6 +5,7 @@ from django.conf.urls.static import static
 import profiles.urls
 import accounts.urls
 import enrollment.urls
+import income.urls
 import register.urls
 import income.urls
 from . import views
@@ -16,6 +17,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^', include(accounts.urls, namespace='accounts')),
     url(r'^enrollments/', include(enrollment.urls, namespace='enrollments')),
+    url(r'^income/', include(income.urls, namespace='income')),
     url(r'^registers/', include(register.urls, namespace='registers')),
     url(r'^income/', include(income.urls, namespace='income')),
 ]

@@ -184,6 +184,9 @@ class Alumno(CreacionModificacionUserAlumnoMixin, CreacionModificacionFechaAlumn
         except Alumno.DoesNotExist:
             return insert_child(obj=per, child_model=Alumno, **atributos)
 
+    def __str__(self):
+        return self.getNombreCompleto
+
     class Meta:
         managed = True
         db_table = 'alumno'
