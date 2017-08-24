@@ -110,7 +110,7 @@ class Migration(migrations.Migration):
                 ('id_distrito', models.AutoField(primary_key=True, serialize=False)),
                 ('descripcion', models.CharField(max_length=200)),
                 ('id_provincia', models.ForeignKey(db_column='id_provincia', to='utils.Provincia', null=True)),
-                
+
             ],
             options={
                 'db_table': 'distrito',

@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('profiles', '0001_initial'),
-        ('register', '0001_initial'),
+        #('register', '0001_initial'),
     ]
 
     operations = [
@@ -40,18 +40,18 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Telefono',
             fields=[
-                ('usuario_creacion',
-                 models.CharField(blank=True, max_length=10, null=True, verbose_name='Usuario_Creacion')),
-                ('usuario_modificacion',
-                 models.CharField(blank=True, max_length=10, null=True, verbose_name='Usuario_Modificacion')),
-                ('fecha_creacion', models.DateTimeField(blank=True, null=True)),
-                ('fecha_modificacion', models.DateTimeField(blank=True, null=True)),
                 ('id_telefono', models.AutoField(primary_key=True, serialize=False)),
                 ('numero', models.IntegerField()),
                 ('tipo', models.CharField(max_length=10)),
                 ('activo', models.BooleanField(default=True)),
                 ('id_persona', models.ForeignKey(db_column='id_persona', to='profiles.Profile', null=True, blank=True)),
-                ('id_colegio', models.ForeignKey(db_column='id_colegio', to='register.Colegio', null=True, blank=True))
+                ('id_colegio', models.ForeignKey(db_column='id_colegio', to='register.Colegio', null=True, blank=True)),
+                ('usuario_creacion',
+                 models.CharField(blank=True, max_length=10, null=True, verbose_name='Usuario_Creacion')),
+                ('usuario_modificacion',
+                 models.CharField(blank=True, max_length=10, null=True, verbose_name='Usuario_Modificacion')),
+                ('fecha_creacion', models.DateTimeField(blank=True, null=True)),
+                ('fecha_modificacion', models.DateTimeField(blank=True, null=True))
             ],
             options={
                 'db_table': 'telefono',
@@ -61,12 +61,6 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Direccion',
             fields=[
-                ('usuario_creacion',
-                 models.CharField(blank=True, max_length=10, null=True, verbose_name='Usuario_Creacion')),
-                ('usuario_modificacion',
-                 models.CharField(blank=True, max_length=10, null=True, verbose_name='Usuario_Modificacion')),
-                ('fecha_creacion', models.DateTimeField(blank=True, null=True)),
-                ('fecha_modificacion', models.DateTimeField(blank=True, null=True)),
                 ('id_direccion', models.AutoField(primary_key=True, serialize=False)),
                 ('calle', models.CharField(max_length=100, null=True)),
                 ('dpto', models.CharField(max_length=15, null=True)),
@@ -75,7 +69,13 @@ class Migration(migrations.Migration):
                 ('numero', models.CharField(max_length=6, null=True)),
                 ('referencia', models.CharField(max_length=500, null=True)),
                 ('id_persona', models.ForeignKey(db_column='id_persona', to='profiles.Profile', null=True, blank=True)),
-                ('id_colegio', models.ForeignKey(db_column='id_colegio', to='register.Colegio', null=True, blank=True))
+                ('id_colegio', models.ForeignKey(db_column='id_colegio', to='register.Colegio', null=True, blank=True)),
+                ('usuario_creacion',
+                 models.CharField(blank=True, max_length=10, null=True, verbose_name='Usuario_Creacion')),
+                ('usuario_modificacion',
+                 models.CharField(blank=True, max_length=10, null=True, verbose_name='Usuario_Modificacion')),
+                ('fecha_creacion', models.DateTimeField(blank=True, null=True)),
+                ('fecha_modificacion', models.DateTimeField(blank=True, null=True))
             ],
             options={
                 'db_table': 'direccion',
