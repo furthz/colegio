@@ -1,6 +1,13 @@
+from datetime import date
+from enrollment.models import Cuentascobrar
+from income.forms import CuentasCobrarPromotorForm, CuentasCobrarPadresForm, CuentasCobrarPromotorDetalleForm
+from django.db.models import Q
+import logging
+from income.models import calculo_ingresos_promotor, obtener_mes, calculo_ingresos_alumno, calculo_por_nivel_promotor
+from django.views.generic import FormView
 
 from django.views.generic import TemplateView
-from django.db.models import Q
+
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.core.urlresolvers import reverse_lazy
@@ -8,8 +15,6 @@ from django.core.urlresolvers import reverse_lazy
 from enrollment.models import Cuentascobrar
 from register.models import Colegio
 from register.models import Cajero
-from income.models import calculo_ingresos_promotor, obtener_mes, calculo_ingresos_alumno, calculo_por_nivel_promotor
-from django.views.generic import FormView
 
 from profiles.models import Profile
 from register.models import Personal
@@ -159,6 +164,9 @@ class RegistrarPagoListView(MyLoginRequiredMixin, TemplateView):
             cuenta.save()
 
         return cobranza_actual
+
+
+
 
 """
 PADRES: PAGOS REALIZADOS POR HIJO, AÑO, MES Y ESTADO

@@ -1,13 +1,12 @@
 from django.db import models
-from datetime import datetime, date
-from django.db.models import Q
-# Create your models here.
-
 from enrollment.models import Cuentascobrar
 from cash.models import CajaCajero
 from utils.models import CreacionModificacionUserMixin
 from utils.models import CreacionModificacionFechaMixin
 from utils.models import CreacionModificacionUserCajeroMixin
+from datetime import datetime, date
+from django.db.models import Q
+
 
 class Cobranza(CreacionModificacionUserMixin, CreacionModificacionFechaMixin, models.Model):
     id_cobranza = models.AutoField(primary_key=True)
