@@ -1,0 +1,186 @@
+{%  extends "page.html" %}
+
+{% block title %}{{ block.super }} Modulo de Facturación {% endblock %}
+
+{% block breadcrumb %}
+<h1>
+        Registrar pago de ingreso
+        <small>Modúlo de facturación</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+        <li>Modúlo de facturación</li>
+        <li class="active">Registrar pago de ingreso</li>
+      </ol>
+{% endblock %}
+
+{% block container %}
+<section class="content">
+      <div class="row">
+          <div class="col-md-12">
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Registrar pago de ingreso</h3>
+                </div>
+                <div class="box-body">
+                  <div class="col-md-9">
+                    <div class="panel-page">
+                      <div class="toolbar-search">
+
+                        <form id="filtro" role="form" name="search" action="" class="form-horizontal">
+                          <div class="form-group">
+                              <label class="col-sm-3 control-label">Criterio de Búsqueda</label>
+                              <div class="col-sm-9">
+                                <div class="radio">
+                                  <label>
+                                    <input name="filter" id="optionsRadios1" value="DNI" checked="" type="radio">
+                                    Por DNI Alumno
+                                  </label>
+                                </div>
+                                <div class="radio">
+                                  <label>
+                                    <input name="filter" id="optionsRadios1" value="Apellido" checked="" type="radio">
+                                    Por Apellidos Alumno
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-sm-3 control-label"></label>
+                              <div class="col-sm-9">
+                                <div class="input-group">
+                                  <input id="dato" name="dato" class="form-control" type="text" placeholder="Escriba el DNI o Apellido a buscar">
+                                    <span class="input-group-btn">
+                                      <button type="submit" form="filtro" formmethod="get" class="btn btn-success">
+                                      <i class="fa fa-plus" aria-hidden="true"></i> Asignar</button>
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+
+                        </form>
+
+                      </div>
+                      <div class="panel-body">
+                                <table class="table table-hover">
+                                  <tr class="table-header">
+                                    <th class="text-center">Acciones</th>
+                                    <th>ID</th>
+                                    <th>Descripción Producto</th>
+                                    <th>Monto Total</th>
+                                    <th>Pago Completo</th>
+                                    <th>Pago en Abonos</th>
+                                  </tr>
+                                    <form id="ListaPagos">{% csrf_token %}
+
+                                        <input hidden name="persona" value="{{ pknum }}">
+                                    {% for cuentas in cuentascobrar %}
+
+                                          <tr>
+                                            <td>
+                                              <div class="checkbox">
+                                                <label>
+                                                  <input id="check{{ cuentas.id_cuentascobrar }}" name="seleccionado{{ cuentas.id_cuentascobrar }}" type="checkbox"  onChange="calculototal(this.checked,eleccion1{{ cuentas.id_cuentascobrar }}.checked,montototal{{ cuentas.id_cuentascobrar }}.value,montoparcial{{ cuentas.id_cuentascobrar }}.value,subtotal.value,total.value,subtotal,total)">
+                                                </label>
+                                              </div>
+                                            </td>
+                                            <td>{{ cuentas.id_cuentascobrar }}</td>
+                                            <td>{{ cuentas.servicio.nombre  }} de {{ cuentas.servicio.tipo_servicio }}</td>
+                                            <td>{{ cuentas.precio }}</td>
+                                            <td>
+                                              <div class="radio">
+                                                <label>
+                                                  <input type="radio" name="optionsRadios{{ cuentas.id_cuentascobrar }}" id="eleccion1{{ cuentas.id_cuentascobrar }}" value="1" checked>
+                                                  <input hidden type="text" name="montototal{{ cuentas.id_cuentascobrar }}" id="montototal{{ cuentas.id_cuentascobrar }}" value="{{ cuentas.precio }}">
+                                                </label>
+                                              </div>
+                                            </td>
+                                            <td>
+                                              <div class="radio">
+                                                <label>
+                                                  <input type="radio" name="optionsRadios{{ cuentas.id_cuentascobrar }}" id="eleccion2{{ cuentas.id_cuentascobrar }}" value="2" checked>
+                                                  <input type="text" class="form-control"  name="montoparcial{{ cuentas.id_cuentascobrar }}" id="montoparcial{{ cuentas.id_cuentascobrar }}"  value="0" placeholder="Ingresar monto">
+                                                </label>
+                                              </div>
+                                            </td>
+                                          </tr>
+                                    {% empty %}
+                                        <a>Seleccionar un criterio de busqueda</a>
+                                    {% endfor %}
+                                    </form>
+
+
+
+                                   <tr>
+                                    <td colspan="5" class="table-bold-print">Sub Total</td>
+                                    <td class="table-price-print">S/.<input type="text" id="subtotal" value="0" disabled class="form-control"></td>
+                                    <td>&nbsp;</td>
+                                  </tr>
+                                  <tr>
+                                    <td colspan="5" class="table-bold-print">Descuento</td>
+                                    <td class="table-price-print">S/.0.00</td>
+                                    <td>&nbsp;</td>
+                                  </tr>
+                                  <tr>
+                                    <td colspan="5" class="table-bold-print">Total</td>
+                                    <td class="table-price-print">S/.<input type="text" id="total" value="0" disabled class="form-control"></td>
+                                    <td>&nbsp;</td>
+                                  </tr>
+                                </table>
+
+                                <div class="form-group">
+                                <div class="col-md-12">
+                                  <div class="pull-right">
+                                    <button type="button" class="btn btn-default">Cancelar</button>
+                                    <button type="submit" form="ListaPagos" formmethod="post" class="btn btn-success"><i class="fa fa-check" aria-hidden="true"></i> Registrar Ingreso</button>
+                                  </div>
+                                </div>
+                                </div>
+                            </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+
+                  </div>
+                </div>
+              </div>
+          </div>
+      </div>
+</section>
+
+<script language="Javascript">
+function calculototal(seleccionado,opciontotal,montototal,montoparcial,subtotal,total,inputtext,totaltext) {
+
+    // Calculo del subtotal
+    if (seleccionado) {
+        if(opciontotal) {
+            subtotal_actual = subtotal;
+            inputtext.value = parseFloat(subtotal_actual) + parseFloat(montototal);
+
+            //Calculo del total
+            total_actual = total;
+            totaltext.value = parseFloat(total) + parseFloat(montototal);
+        }
+        else{
+            subtotal_actual = subtotal;
+            inputtext.value = parseFloat(subtotal_actual)+parseFloat(montoparcial);
+
+            //Calculo del total
+            total_actual = total;
+            totaltext.value = parseFloat(total) + parseFloat(montoparcial);
+        }
+    }
+    else{
+        totaltext.value = eval(totaltext.value);
+    }
+}
+</script>
+<script>
+function seleccion(id) {
+    var x = document.getElementById(id).checked;
+    return x;
+}
+</script>
+
+
+{% endblock %}

@@ -12,7 +12,6 @@ class Caja(CreacionModificacionFechaMixin, CreacionModificacionUserMixin,models.
     colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column='id_colegio')
     numero = models.IntegerField()
     descripcion = models.CharField(max_length=500, blank=True, null=True)
-    activo = models.BooleanField(default=True)
     #fecha_creacion = models.DateField(blank=True, null=True)
     #fecha_modificacion = models.DateField(blank=True, null=True)
     #usuario_creacion = models.CharField(max_length=10, blank=True, null=True)
