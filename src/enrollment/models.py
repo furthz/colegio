@@ -8,7 +8,7 @@ from utils.models import CreacionModificacionFechaMixin
 from utils.models import CreacionModificacionUserMixin
 # Create your models here.
 
-class TipoServicio(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
+class TipoServicio(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
     """
     isordinario:        indica si el servicio es ordinario (1er grado, 2do grado, etc.)
                         o extra (curso de verano, danza, etc.)
@@ -107,7 +107,7 @@ class TipoServicio(CreacionModificacionFechaMixin, CreacionModificacionUserMixin
         db_table = 'tipo_servicio'
         #unique_together = (('id_tipo_servicio', 'colegio'),)
 
-class Servicio(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
+class Servicio(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
     """
     nombre:         nombre del servicio
     precio:         precio del servicio
@@ -161,7 +161,7 @@ class Servicio(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, mo
         db_table = 'servicio'
 
 
-class Matricula(CreacionModificacionUserMixin, CreacionModificacionFechaMixin, models.Model):
+class Matricula(ActivoMixin, CreacionModificacionUserMixin, CreacionModificacionFechaMixin, models.Model):
     """
 
     """
@@ -195,7 +195,7 @@ class dCuentasManager(models.Manager):
         return super(dCuentasManager, self).get_queryset()
 
 
-class Cuentascobrar(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
+class Cuentascobrar(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
     """
 
     """
