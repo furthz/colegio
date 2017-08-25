@@ -3,7 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from django import forms
 from django.forms import ModelForm, SelectDateWidget
 
-from register.models import Alumno, Apoderado, Personal, Promotor, Director, Cajero, Tesorero
+from register.models import Alumno, Apoderado, Personal, Promotor, Director, Cajero, Tesorero, Telefono
 from utils.forms import ValidProfileFormMixin
 from utils.models import TipoDocumento, TipoSexo, Departamento, Provincia, Distrito
 
@@ -17,7 +17,7 @@ class PersonaForm(ModelForm):
     distrito = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-control'}), label="Distrito")
     tipo_cel = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-control'}), label="Tipo Movil", required=False)
     celular = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control'}), label="Celular", required=False)
-    celulares = forms.MultipleChoiceField(widget=forms.SelectMultiple(attrs={'class': 'form-control'}), label="Números")
+    celulares = forms.MultipleChoiceField(widget=forms.SelectMultiple(attrs={'class': 'form-control'}), label="Números", required=False)
 
     @property
     def ChoiceTipoDocumento(self):

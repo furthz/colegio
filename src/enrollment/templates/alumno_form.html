@@ -51,7 +51,7 @@
                                     </thead>
                                     <tbody>
                             {% for alumno in object_list %}
-                                <form id="alum" action="{% url 'enrollments:matricula_create' %}" method="post" class="form-horizontal">{% csrf_token %}
+                                <form id="{{ alumno.id_alumno }}" action="{% url 'enrollments:matricula_create' %}" method="post" class="form-horizontal">{% csrf_token %}
 
                                         <tr>
                                         <td>{{alumno.persona.nombre}}</td>
@@ -59,7 +59,7 @@
                                         <td><div class="pull-center">
                                                     <div class="btn-group btn-group-sm" role="group" aria-label="...">
                                                         <input hidden type= "text" value="{{ alumno.id_alumno}}" name="alumno">
-                                                        <input type="submit" value="Matricula" form="alum" class="btn btn-success">
+                                                        <input type="submit" value="Matricula" form="{{ alumno.id_alumno }}" class="btn btn-success">
                                                     </div>
                                         </div></td>
                                         </tr>

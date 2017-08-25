@@ -19,6 +19,23 @@
 {% endblock %}
 
 {% block container %}
+
+<script language="Javascript">
+function confirmDel()
+{
+  var agree=confirm("¿Realmente desea eliminarlo? ");
+  if (agree)
+    return true ;
+  else
+    return false ;
+}
+</script>
+
+
+
+
+
+
 <section class="content">
       <div class="row">
           <div class="col-md-12">
@@ -81,7 +98,7 @@
                                                 <a title="Detalle" href="{% url 'enrollments:tiposervicio_detail' tiposervicio.id_tipo_servicio %}" class="btn btn-default">
                                                     <i class="fa fa-info-circle" aria-hidden="true"></i>
                                                 </a>
-                                                <button type="submit" title="Eliminar" formaction="{% url 'enrollments:tiposervicio_delete' %}" formmethod="post" class="btn btn-default" form="{{ tiposervicio.id_tipo_servicio }}">
+                                                <button type="submit" onclick="return confirmDel();" title="Eliminar" formaction="{% url 'enrollments:tiposervicio_delete' %}" formmethod="get" form="{{ tiposervicio.id_tipo_servicio }}" class="btn btn-default" >
                                                     <i class="fa fa-trash" aria-hidden="true"></i>
                                                 </button>
                                             </div>
@@ -117,7 +134,7 @@
                                                         <a title="Detalle" href="{% url 'enrollments:servicio_detail' servicio.id_servicio %}" class="btn btn-default">
                                                           <i class="fa fa-info-circle" aria-hidden="true"></i>
                                                         </a>
-                                                        <button form="{{ servicio }}" formmethod="post" formaction="{% url 'enrollments:servicio_delete' %}" title="Eliminar" class="btn btn-default">
+                                                        <button form="{{ servicio }}" onclick="return confirmDel();" formmethod="get" formaction="{% url 'enrollments:servicio_delete' %}" title="Eliminar" class="btn btn-default">
                                                           <i class="fa fa-trash" aria-hidden="true"></i>
                                                         </button>
                                                       </div>
@@ -161,7 +178,7 @@
                                       <a title="Detalle" href="{% url 'enrollments:tiposervicio_detail' tiposervicio.id_tipo_servicio %}" class="btn btn-default">
                                             <i class="fa fa-info-circle" aria-hidden="true"></i>
                                       </a>
-                                      <button type="submit" title="Eliminar" formaction="{% url 'enrollments:tiposervicio_delete' %}" formmethod="post" class="btn btn-default" form="{{ tiposervicio.id_tipo_servicio }}">
+                                      <button type="submit" onclick="return confirmDel();" title="Eliminar" formaction="{% url 'enrollments:tiposervicio_delete' %}" formmethod="get" class="btn btn-default" form="{{ tiposervicio.id_tipo_servicio }}">
                                                     <i class="fa fa-trash" aria-hidden="true"></i>
                                       </button>
                                     </div>
@@ -196,7 +213,7 @@
                                             <a title="Detalle" href="{% url 'enrollments:servicio_detail' servicio.id_servicio %}" class="btn btn-default">
                                               <i class="fa fa-info-circle" aria-hidden="true"></i>
                                             </a>
-                                            <button type="submit" form="{{ servicio }}" formmethod="post" formaction="{% url 'enrollments:servicio_delete' %}" title="Eliminar" class="btn btn-default">
+                                            <button type="submit" onclick="return confirmDel();" form="{{ servicio }}" formmethod="get" formaction="{% url 'enrollments:servicio_delete' %}" title="Eliminar" class="btn btn-default">
                                               <i class="fa fa-trash" aria-hidden="true"></i>
                                             </button>
                                           </div>

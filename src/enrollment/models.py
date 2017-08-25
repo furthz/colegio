@@ -8,7 +8,7 @@ from utils.models import CreacionModificacionFechaMixin
 from utils.models import CreacionModificacionUserMixin
 # Create your models here.
 
-class TipoServicio(ActivoMixin,CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
+class TipoServicio(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
     """
     isordinario:        indica si el servicio es ordinario (1er grado, 2do grado, etc.)
                         o extra (curso de verano, danza, etc.)
@@ -188,7 +188,14 @@ class Matricula(ActivoMixin, CreacionModificacionUserMixin, CreacionModificacion
         managed = False
         db_table = 'matricula'
 
-class Cuentascobrar(ActivoMixin,CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
+class dCuentasManager(models.Manager):
+    fecha_inicio = models.DateField
+    fecha_final = models.DateField
+    def get_queryset(self):
+        return super(dCuentasManager, self).get_queryset()
+
+
+class Cuentascobrar(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
     """
 
     """
@@ -201,8 +208,18 @@ class Cuentascobrar(ActivoMixin,CreacionModificacionFechaMixin, CreacionModifica
     precio = models.FloatField()
     deuda = models.FloatField()
 
+    objetos = dCuentasManager()
+
     class Meta:
         managed = False
         db_table = 'cuentascobrar'
 
+    @property
+    def getMonto(self):
+        """
+        Método que calcula los años de una persona
+        :return: La cantidad de años de la persona
+        """
+        monto = self.precio - self.deuda
+        return monto
 
