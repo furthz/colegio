@@ -7,7 +7,10 @@
 BoxCashier List
 
 <p>
-    <a href="{% url "cash:boxcashier_create" %}">Agregar cash</a>
+    <a href="{% url "cash:boxcashier_AperturarCaja" %}">Aperturar Caja</a>
+     <!--<a href="{ url "cash:boxcashier_CerrarCaja" %}">Cerrar Caja</a>                PARA CERRAR CAJA ANTES DEBE DE HABER UNA APERTURA DE CAJA
+            DENTRO DE LA LÓGICA DE CERRAR CAJA AL MOMENTO DE DARLE CERRAR CAJA ES UN UPDATE DE LA TABLA CAJACAJERO DONDE SE CAMBIÁN CIERTOS VALORES, PERO SE DEBE INGRESAR LA LLAVE PRIMARIA
+            QUE SE DEBE MODIFICAR POR ESO SALE EL ERROR -->
 </p>
 
 
@@ -30,8 +33,10 @@ BoxCashier List
     </style>
     </head>
     <body>
+
         <table>
             <tr>
+                <th>Item</th>
                 <th>Cajero</th>
                 <th>N° de Caja</th>
                 <th>Saldo</th>
@@ -43,19 +48,31 @@ BoxCashier List
                 <th>Fecha Modificación</th>
                 <th>Usuario Creación</th>
                 <th>Usuario Modificación</th>
+                <th>Comentario</th>
+                <th></th>
             </tr>
-            {% for remesas in object_list %}
+            {% for cajacajero in object_list %}
             <tr>
-                <td>{{ remesas.personal_colegio }}</td>
-                <td>{{ remesas.caja }}</td>
-                <td>{{ remesas.saldo }}</td>
-                <td>{{ remesas.monto_apertura }}</td>
-                <td>{{ remesas.monto_cierre }}</td>
-                <td>{{ remesas.estado }}</td>
-                <td>{{ cashier.fecha_creacion }}</td>
-                <td>{{ cashier.fecha_modificacion }}</td>
-                <td>{{ cashier.usuario_creacion }}</td>
-                <td>{{ cashier.usuario_modificacion }}</td>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ cajacajero.personal_colegio }}</td>
+                <td>{{ cajacajero.caja }}</td>
+                <td>{{ cajacajero.saldo }}</td>
+                <td>{{ cajacajero.monto_apertura }}</td>
+                <td>{{ cajacajero.monto_cierre }}</td>
+                <td>{{ cajacajero.estado }}</td>
+                <td>{{ cajacajero.saldo }}</td>
+                <td>{{ cajacajero.fecha_creacion }}</td>
+                <td>{{ cajacajero.fecha_modificacion }}</td>
+                <td>{{ cajacajero.usuario_creacion }}</td>
+                <td>{{ cajacajero.usuario_modificacion }}</td>
+                <td>{{ cajacajero.comentario }}</td>
+                <td class="text-center">
+                    <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                        <a href="{% url "cash:boxcashier_CerrarCaja" cajacajero.id_movimiento %}" class="btn btn-default">
+                            <i class="fa fa-info-circle" aria-hidden="true"></i> Cerrar Caja
+                        </a>
+                    </div>
+                </td>
             </tr>
             {% endfor %}
         </table>

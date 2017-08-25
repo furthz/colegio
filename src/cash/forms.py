@@ -18,7 +18,7 @@ class CashierForm(forms.ModelForm):
         ]
 
         labels = {
-            'colegio': 'Colegio',
+            'colegio': '',
             'numero': 'Número de Caja',
             'descripcion': 'Descripción',
             'activo' :'Activo',
@@ -30,7 +30,7 @@ class CashierForm(forms.ModelForm):
 
         widgets = {
 
-            'colegio': forms.Select(attrs={'class': 'form-control'}),
+            'colegio': forms.Select(attrs={'class': 'hidden'}),
             'numero': forms.TextInput(attrs={'class': 'form-control'}),
             'descripcion': forms.TextInput(attrs={'class': 'form-control'}),
             'activo': forms.CheckboxInput(attrs={'class': 'hidden'}),
@@ -52,6 +52,7 @@ class BoxCashierForm(forms.ModelForm):
             'monto_apertura',
             'monto_cierre',
             'estado',
+            'comentario',
             'fecha_creacion',
             'fecha_modificacion',
             'usuario_creacion',
@@ -65,6 +66,7 @@ class BoxCashierForm(forms.ModelForm):
             'monto_apertura': 'Monto de Apertura',
             'monto_cierre': 'Monto de Cierre',
             'estado': 'Estado',
+            'comentario': 'Comentario',
             'fecha_creacion': 'Fecha de Creación',
             'fecha_modificacion': 'Fecha de Modificación',
             'usuario_creacion': 'Usuario de Creación',
@@ -73,12 +75,13 @@ class BoxCashierForm(forms.ModelForm):
 
         widgets = {
 
-            'personal_colegio': forms.Select(attrs={'class': 'form-control'}),
+            'personal_colegio': forms.Select(attrs={'class': 'hidden'}),
             'caja': forms.Select(attrs={'class': 'form-control'}),
             'saldo': forms.TextInput(attrs={'class': 'form-control'}),
             'monto_apertura': forms.TextInput(attrs={'class': 'form-control'}),
             'monto_cierre': forms.TextInput(attrs={'class': 'form-control'}),
-            'estado': forms.CheckboxInput(attrs={'class': 'hidden'}),
+            'estado': forms.CheckboxInput(attrs={'id': 'Uncheck'}),
+            'comentario': forms.Textarea(attrs={'class': 'form-control', 'rows': '3'}),
             'fecha_creacion': forms.HiddenInput(attrs={'class': 'form-control'}),
             'fecha_modificacion': forms.HiddenInput(attrs={'class': 'form-control'}),
             'usuario_creacion': forms.HiddenInput(attrs={'class': 'form-control'}),

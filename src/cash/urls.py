@@ -25,8 +25,10 @@ urlpatterns = [
     # URL's del CRUD de CAJACAJERO
     url(r'^boxcashier/$', BoxCashierListView.as_view(), name='boxcashier_list'),
     url(r'^boxcashier/(?P<pk>\d+)$', BoxCashierDetailView.as_view(), name='boxcashier_detail'),
-    url(r'^boxcashier/create$', BoxCashierCreationView.as_view(), name='boxcashier_create'),
-    url(r'^boxcashier/update/(?P<pk>\d+)$', BoxCashierUpdateView.as_view(), name='boxcashier_edit'),
+
+    url(r'^boxcashier/Aperturar$', BoxCashierCreationView.as_view(), name='boxcashier_AperturarCaja'),
+    url(r'^boxcashier/Cerrar/(?P<pk>\d+)$', BoxCashierUpdateView.as_view(), name='boxcashier_CerrarCaja'),
+
     url(r'^boxcashier/delete/(?P<pk>\d+)$', BoxCashierDeleteView.as_view(), name='boxcashier_delete'),
 
     # URL's del CRUD de Remesas

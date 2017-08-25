@@ -43,6 +43,7 @@ class Migration(migrations.Migration):
                 ('saldo', models.FloatField()),
                 ('monto_apertura', models.FloatField()),
                 ('monto_cierre', models.FloatField()),
+                ('comentario', models.CharField(blank=True, max_length=500, null=True)),
                 ('estado', models.BooleanField(default=True)),
                 ('fecha_creacion', models.DateField(blank=True, null=True)),
                 ('fecha_modificacion', models.DateField(blank=True, null=True)),

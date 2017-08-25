@@ -1,13 +1,16 @@
 {% extends "page.html" %}
-{% block title %}{{ block.super }}Remesas{% endblock %}
+{% block title %}{{ block.super }}Caja{% endblock %}
 
 {% block container %}
 
     <!--Comienza el contenido!!!!!!!!!!!!!!!!!!!-->
+    {{ cashier.id_caja }}
+    {{ cashier.numero }}
 
-    ESTAMOS DENTRO DE REMESA DETAIL
 
-    
+
+    <!-- /.FIN DE CONTENEDOR DE FORMULARIO  -->
+
     <!--Fin del contenido!!!!!!!!!!!-->
 
 {% endblock container %}

@@ -1,58 +1,81 @@
 {% extends "page.html" %}
 {% block title %}{{ block.super }}Remesas{% endblock %}
-
 {% block container %}
 
     <!--Comienza el contenido!!!!!!!!!!!!!!!!!!!-->
-Cashier List
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Registrar Caja</h3>
+                        <div class="box-body">
+                            <div class="col-md-9">
+                                <div class="panel-page">
+                                    <div class="toolbar-header">
+                                            <a class="btn btn-success" href="{% url "cash:cashier_create" %}"><i class="fa fa-plus" aria-hidden="true"></i>  Crear cajero</a>
+                                        </div>
 
-<p>
-    <a href="{% url "cash:cashier_create" %}">Agregar cash</a>
-</p>
 
 
-    <style>
-        table {
-            font-family: arial, sans-serif;
-            border-collapse: collapse;
-            width: 100%;
-        }
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">Lista de Cajas</h3>
+                                    </div>
+                                    <div class="box-body">
+                                        <div class="table-responsive no-padding">
+                                            <table class="table table-hover">
+                                                <tbody>
+                                                <tr>
+                                                    <th>Item</th>
+                                                    <th>Numero de Caja</th>
+                                                    <th>Descripcion</th>
+                                                    <th>Estado</th>
+                                                    <th>Acciones</th>
+                                                </tr>
+                                                {% for cashier in object_list %}
+                                                <tr>
+                                                    <td>{{ forloop.counter }}</td>
+                                                    <td>{{ cashier.numero }}</td>
+                                                    <td>{{ cashier.descripcion }}</td>
+                                                    <td>
+                                                        {% if cashier.activo == 1 %}
+                                                            <span class="label label-success">Activo</span>
+                                                        {% else %}
+                                                            <span class="label label-danger">Desactivado</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                                                            <a title="Editar" href="{% url "cash:cashier_edit" cashier.id_caja %}" class="btn btn-default">
+                                                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                            </a>
+                                                            <a title="Detalle" href="{% url "cash:cashier_detail" cashier.id_caja %}" class="btn btn-default">
+                                                                <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                                            </a>
+                                                            <a title="Eliminar" href="#" class="btn btn-default">
+                                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                                            </a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- /.FIN DE CONTENIDO -->
+    <!-- /.FIN DE CONTENEDOR DE FORMULARIO  -->
 
-        td, th {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
 
-        tr:nth-child(even) {
-            background-color: #dddddd;
-        }
-    </style>
-    </head>
-    <body>
-        <table>
-            <tr>
-                <th>Colegio</th>
-                <th>N° de Caja</th>
-                <th>Descripción</th>
-                <th>Fecha Creación</th>
-                <th>Fecha Modificación</th>
-                <th>Usuario Creación</th>
-                <th>Usuario Modificación</th>
-            </tr>
-            {% for cashier in object_list %}
-            <tr>
-                <td>{{ cashier.colegio }}</td>
-                <td>{{ cashier.numero }}</td>
-                <td>{{ cashier.descripcion }}</td>
-                <td>{{ cashier.fecha_creacion }}</td>
-                <td>{{ cashier.fecha_modificacion }}</td>
-                <td>{{ cashier.usuario_creacion }}</td>
-                <td>{{ cashier.usuario_modificacion }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-    </body>
 
     <!--Fin del contenido!!!!!!!!!!!-->
 
