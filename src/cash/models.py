@@ -99,3 +99,4 @@ class Remesa(models.Model):
     class Meta:
         managed = False
         db_table = 'remesa'
+

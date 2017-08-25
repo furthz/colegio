@@ -41,4 +41,5 @@ urlpatterns = [
     # URL'S de Filtrado
     url(r'^filterPC', FiltrarPersonalColegioView.as_view(), name="filtrar_PersonalColegio"),
 
+
 ]

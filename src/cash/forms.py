@@ -121,3 +121,4 @@ class ConsignmentForm(forms.ModelForm):
                        "onchange": "document.getElementById('monto').innerHTML = montodine = this.value"}),
             'comentario': forms.Textarea(attrs={'class': 'form-control', 'rows': '3'}),
         }
+
