@@ -85,7 +85,7 @@ class Migration(migrations.Migration):
                 ('descripcion', models.CharField(max_length=100)),
             ],
             options={
-                'db_table': 'departamennto',
+                'db_table': 'departamento',
                 'managed': settings.IS_TESTING,
             },
         ),
