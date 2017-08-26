@@ -10,9 +10,9 @@ from income.views import ControlIngresosPromotorDetallesView
 
 urlpatterns = [
 
-    url(r'^cuentas_cobrar_padres/filter', ControlIngresosPadresView.as_view(), name="cuentas_cobrar_padres/filter"),
+    url(r'^cuentas_cobrar_padres/filter', ControlIngresosPadresView.as_view(), name="cuentas_cobrar_padres"),
 
-    url(r'^cuentas_cobrar_promotor/filter', ControlIngresosPromotorView.as_view(), name="cuentas_cobrar_promotor/filter"),
+    url(r'^cuentas_cobrar_promotor/filter', ControlIngresosPromotorView.as_view(), name="cuentas_cobrar_promotor"),
 
-    url(r'^cuentas_cobrar_promotor_detalle/filter', ControlIngresosPromotorDetallesView.as_view(), name="cuentas_cobrar_promotor_detalle/filter"),
+    url(r'^cuentas_cobrar_promotor_detalle/filter', ControlIngresosPromotorDetallesView.as_view(), name="cuentas_cobrar_promotor_detalle"),
 ]
