@@ -18,7 +18,9 @@ from utils.models import CreacionModificacionUserMixin, CreacionModificacionFech
     CreacionModificacionUserPersonalMixin, CreacionModificacionUserApoderadoMixin, \
     CreacionModificacionUserAlumnoMixin, \
     CreacionModificacionUserPromotorMixin, CreacionModificacionUserCajeroMixin, CreacionModificacionUserDirectorMixin, \
-    CreacionModificacionUserTesoreroMixin, CreacionModificacionFechaTesoreroMixin
+    CreacionModificacionUserTesoreroMixin, CreacionModificacionFechaTesoreroMixin, \
+    CreacionModificacionUserAdministrativoMixin, CreacionModificacionFechaAdministrativoMixin, \
+    CreacionModificacionUserProveedorMixin, CreacionModificacionFechaProveedorMixin
 from utils.models import CreacionModificacionFechaMixin
 from utils.models import ActivoMixin
 
@@ -46,7 +48,7 @@ class Personal(CreacionModificacionUserPersonalMixin, CreacionModificacionFechaP
         try:
             personal = Personal.objects.get(persona=per)
             return personal
-        except Alumno.DoesNotExist:
+        except Personal.DoesNotExist:
             return insert_child(obj=per, child_model=Personal, **atributos)
 
     def __str__(self):
@@ -233,7 +235,7 @@ class Tesorero(CreacionModificacionUserTesoreroMixin, CreacionModificacionFechaT
         try:
             tesorero = Tesorero.objects.get(persona=per)
             return tesorero
-        except Alumno.DoesNotExist:
+        except Tesorero.DoesNotExist:
             return insert_child(obj=per, child_model=Tesorero, **atributos)
 
     class Meta:
@@ -270,7 +272,7 @@ class Promotor(CreacionModificacionUserPromotorMixin, CreacionModificacionFechaP
         try:
             promotor = Promotor.objects.get(persona=per)
             return promotor
-        except Alumno.DoesNotExist:
+        except Promotor.DoesNotExist:
             return insert_child(obj=per, child_model=Promotor, **atributos)
 
     class Meta:
@@ -307,7 +309,7 @@ class Cajero(CreacionModificacionUserCajeroMixin, CreacionModificacionFechaCajer
         try:
             cajero = Cajero.objects.get(persona=per)
             return cajero
-        except Alumno.DoesNotExist:
+        except Cajero.DoesNotExist:
             return insert_child(obj=per, child_model=Cajero, **atributos)
 
     class Meta:
@@ -343,7 +345,7 @@ class Director(CreacionModificacionUserDirectorMixin, CreacionModificacionFechaD
         try:
             alu = Director.objects.get(persona=per)
             return alu
-        except Alumno.DoesNotExist:
+        except Director.DoesNotExist:
             return insert_child(obj=per, child_model=Director, **atributos)
 
     class Meta:
@@ -362,3 +364,82 @@ class PersonalColegio(ActivoMixin, CreacionModificacionUserMixin, CreacionModifi
     class Meta:
         managed = True
         db_table = 'personal_colegio'
+
+class Administrativo(CreacionModificacionUserAdministrativoMixin, CreacionModificacionFechaAdministrativoMixin,
+                     Personal, models.Model):
+
+    """
+    Clase que parmite crear el rol de administrativos
+    """
+    id_administrativo = models.AutoField(primary_key=True)
+    empleado = models.OneToOneField(Personal, models.DO_NOTHING, parent_link=True)
+    activo_administrativo = models.BooleanField(default=True, db_column="activo")
+
+    def __str__(self):
+        return "Id Administrativo: {0}".format(self.id_tesorero)
+
+    def get_absolute_url(self):
+        """
+        Redirecciona las views que usan como modelo esta clase
+        :return: url de detalles de la persona
+        """
+        return reverse('registers:administrativo_detail', kwargs={'pk': self.pk})
+
+    @staticmethod
+    def saveFromPersonal(per: Personal, **atributos):
+        """
+        # Método que permite guardar un Promotor a partir de un personal existente
+        # :param personal: Personal existente
+        # :param atributos: Nuevos atributos propios de Apoderado
+        # :return: Objeto Promotor creado
+        """
+        try:
+            admin = Administrativo.objects.get(persona=per)
+            return admin
+        except Administrativo.DoesNotExist:
+            return insert_child(obj=per, child_model=Administrativo, **atributos)
+
+    class Meta:
+        managed = True
+        db_table = 'administrativo'
+
+
+class Proveedor(CreacionModificacionUserProveedorMixin, CreacionModificacionFechaProveedorMixin, Profile,
+                models.Model):
+    """
+    Clase para identificar a los proveedores
+    """
+    id_proveedor = models.AutoField(primary_key=True)
+    razon_social = models.CharField(max_length=100)
+    persona = models.OneToOneField(Profile, models.DO_NOTHING, parent_link=True, )
+
+    def full_detail(self):
+        lista = Profile.full_detail(self)
+        lista.append("razon social: {0}".format(self.parentesco))
+        return lista
+
+    def get_absolute_url(self):
+        """
+        Redirecciona las views que usan como modelo esta clase
+        :return: url de detalles de la persona
+        """
+        return reverse('registers:proveedor_detail', kwargs={'pk': self.pk})
+
+    @staticmethod
+    def saveFromPersona(per: Profile, **atributos):
+        """
+        Método que permite guardar un Apoderado a partir de una persona existente
+        :param per: Persona base
+        :param atributos: Nuevos atributos propios de Apoderado
+        :return: Objeto Apoderado creado
+        """
+        try:
+            proveedor = Proveedor.objects.get(persona=per)
+            return proveedor
+        except Proveedor.DoesNotExist:
+            return insert_child(obj=per, child_model=Proveedor, **atributos)
+
+    class Meta:
+        managed = True
+        db_table = 'proveedor'
+
