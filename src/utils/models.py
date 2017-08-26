@@ -834,23 +834,6 @@ class TipoSexo(ActivoMixin, models.Model):
         db_table = 'tipo_sexo'
 
 
-class TiposGrados(ActivoMixin, models.Model):
-    """
-    Clase para definir los tipos de grados
-    Campos:
-        - id_tipo_grado: identificador
-        - descripición: nombre del tipo de grado
-        - activo: identificador para ver si el registro está habilitado
-    """
-    id_tipo_grado = models.AutoField(primary_key=True)
-    descripcion = models.CharField(max_length=20)
-    nivel = models.ForeignKey(TiposNivel, models.DO_NOTHING, db_column='id_tipo_nivel',related_name="grados")
-
-    class Meta:
-        managed = True
-        db_table = 'tipos_grados'
-
-
 class TiposMedioPago(ActivoMixin, models.Model):
     """
     Clase para definir el catalogo de los medios de pago
@@ -881,6 +864,23 @@ class TiposNivel(ActivoMixin, models.Model):
     class Meta:
         managed = True
         db_table = 'tipos_nivel'
+
+
+class TiposGrados(ActivoMixin, models.Model):
+    """
+    Clase para definir los tipos de grados
+    Campos:
+        - id_tipo_grado: identificador
+        - descripición: nombre del tipo de grado
+        - activo: identificador para ver si el registro está habilitado
+    """
+    id_tipo_grado = models.AutoField(primary_key=True)
+    descripcion = models.CharField(max_length=20)
+    nivel = models.ForeignKey(TiposNivel, models.DO_NOTHING, db_column='id_tipo_nivel',related_name="grados")
+
+    class Meta:
+        managed = True
+        db_table = 'tipos_grados'
 
 
 class Departamento(ActivoMixin, models.Model):
