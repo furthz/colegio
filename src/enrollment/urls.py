@@ -63,7 +63,7 @@ urlpatterns = [
     url(r'^detail/(?P<pk>\d+)/$', MatriculaDetailView.as_view(), name='matricula_detail'),
     url(r'^update/end', MatriculaUpdateView.as_view(), name="matricula_update_end"),
     url(r'^update', CargarMatriculaUpdateView.as_view(), name="matricula_update"),
-    url(r'^delete/$', MatriculaDeleteView.as_view(), name="matricula_delete"),
+    url(r'^delete/', MatriculaDeleteView.as_view(), name="matricula_delete"),
     url(r'^list/$', MatriculaListView.as_view(), name="matricula_list"),
 
     # URL para filtrar y crear matriculas

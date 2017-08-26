@@ -1,4 +1,4 @@
-from django.shortcuts import render
+
 # from . import forms
 from datetime import date
 from enrollment.models import Servicio
@@ -184,7 +184,7 @@ class TipoServicioDeleteView(MyLoginRequiredMixin, TemplateView):
     template_name = "tiposervicio_confirm_delete.html"
 
     def get(self, request, *args, **kwargs):
-        tiposervicio = self.model.objects.get(pk = request.GET['idtipo'])
+        tiposervicio = self.model.objects.get(pk = int(request.GET['tiposervicio']))
         for servicio in tiposervicio.getServiciosAsociados():
             servicio.activo = False
             servicio.save()
@@ -607,9 +607,11 @@ class CargarMatriculaCreateView(TemplateView):
     model = Alumno
     form_class = MatriculaForm
     def post(self, request, *args, **kwargs):
+        tipos_de_servicios = TipoServicio.objects.filter(colegio__id_colegio=self.request.session.get('colegio'), activo=True).order_by("nivel", "grado")
 
         return render(request, template_name=self.template_name, context={
                 'alumno': self.model.objects.get(pk = request.POST["alumno"]),
+                'tiposervicio': tipos_de_servicios,
                 'form': self.form_class,
             })
 

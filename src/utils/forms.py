@@ -4,9 +4,17 @@ from profiles.models import Profile
 
 
 class ValidProfileFormMixin():
+
+
+
     def is_valid(self):
 
         valid = super(ModelForm, self).is_valid()
+
+        #if self.errors['celulares']:
+        #    valid = True
+        #    del self.errors['celulares']
+
 
         try:
             persona_registrada = Profile.objects.get(numero_documento=self.cleaned_data["numero_documento"],

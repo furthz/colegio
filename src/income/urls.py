@@ -6,9 +6,12 @@ from . import views
 
 from income.views import ControlIngresosPadresView, ControlIngresosPromotorView
 from income.views import ControlIngresosPromotorDetallesView
+from enrollment.views import TipoServicioRegularCreateView
+from income.views import RegistrarPagoListView
 
 
 urlpatterns = [
+    url(r'^register/$', RegistrarPagoListView.as_view(), name="register"),
 
     url(r'^cuentas_cobrar_padres/filter', ControlIngresosPadresView.as_view(), name="cuentas_cobrar_padres"),
 

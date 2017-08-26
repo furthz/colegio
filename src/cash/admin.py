@@ -6,3 +6,4 @@ from .models import Caja, CajaCajero, Remesa
 admin.site.register(Caja)
 admin.site.register(CajaCajero)
 admin.site.register(Remesa)
+

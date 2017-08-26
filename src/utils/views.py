@@ -1,7 +1,7 @@
 import logging
 
 from profiles.models import Profile
-from register.models import Personal, Colegio, PersonalColegio, Direccion
+from register.models import Personal, Colegio, PersonalColegio, Direccion, Telefono
 from utils.middleware import get_current_colegio
 
 logger = logging.getLogger("project")
@@ -47,6 +47,12 @@ class SaveGeneric(MyLoginRequiredMixin):
         direccion.distrito = form.cleaned_data["distrito"]
 
         # obtener los telefonos que vienen en el formulario
+        celulares = form.data['nros']
+        lst_celulares = celulares.split(',')
+        lista_numeros=[]
+        for cel in lst_celulares:
+            telef = Telefono(numero=cel, tipo="Celular")
+            lista_numeros.append(telef)
 
         if padre is Profile:
 
@@ -59,6 +65,11 @@ class SaveGeneric(MyLoginRequiredMixin):
                 direccion.save()
                 logger.debug("Se creo la direccion")
 
+                for t in lista_numeros:
+                    t.persona = rpta.persona
+                    t.save()
+                logger.debug("Se guardaron los numeros de telefono")
+
                 return rpta
             else:
                 instance = form.save()
@@ -69,6 +80,11 @@ class SaveGeneric(MyLoginRequiredMixin):
 
                 instance.save()
                 logger.debug("Se creó un nuevo registro")
+
+                for t in lista_numeros:
+                    t.persona = instance.persona
+                    t.save()
+                logger.debug("Se guardaron los numeros de telefono")
 
                 return instance
 
@@ -88,6 +104,11 @@ class SaveGeneric(MyLoginRequiredMixin):
                 #agregar la dirección
                 direccion.persona = rpta.personal.persona
                 direccion.save()
+
+                for t in lista_numeros:
+                    t.persona = rpta.personal.persona
+                    t.save()
+                logger.debug("Se guardaron los numeros de telefono")
                 
                 # Verificar que no exista la relación del personal con el colegio previamente
                 try:
@@ -114,6 +135,11 @@ class SaveGeneric(MyLoginRequiredMixin):
                 direccion.persona = instance.personal.persona
                 direccion.save()
                 logger.debug("se guardo la direccion")
+
+                for t in lista_numeros:
+                    t.persona = instance.personal.persona
+                    t.save()
+                logger.debug("Se guardaron los numeros de telefono")
 
                 # Crear la relación del personal con el colegio logueado
                 personal_colegio = PersonalColegio()

@@ -14,6 +14,28 @@
             <div class="box-body">
 
                 <script type="text/javascript">
+                    function enviarTelefono() {
+                        var cadena = "";
+                        var sw = true;
+                        $('input[name^="nros"]').each( function() {
+
+                            this.remove();
+
+                        });
+
+                        $('input[name^="telefono"]').each( function() {
+
+                                if (!sw) {
+                                    cadena += ","
+                                }else{
+                                    sw = false
+                                }
+
+                                cadena += this.value;
+                            });
+
+                        $('<input hidden/>').attr({ type: 'text', name: 'nros', value: cadena}).appendTo('#registro');
+                    }
                     function agregarTelefono()
                     {
                         var telefono = $('#id_celular').val();
@@ -29,14 +51,31 @@
                         }
 
                         $('#id_celular').val("");
+
+                        $('<input hidden/>').attr({ type: 'text', name: 'telefono[]', value: telefono}).appendTo('#registro');
                     }
 
                     function eliminarTelefono()
                     {
                         $('#id_celulares').find('> :selected').each(function() {
+                            var telefono = this.value;
                             $(this).remove();
+                            $('input[name^="telefono"]').each( function() {
+
+                                if (telefono == this.value){
+                                    this.remove();
+                                }
+
+                            });
                         });
                     }
+
+                    function seleccionarMultiselect() {
+                        $('#id_celulares option').prop('selected', true);
+
+                    }
+
+
                 </script>
                         {% if form.errors %}
                             {% for field in form %}
@@ -53,7 +92,7 @@
                             {% endfor %}
                         {% endif %}
 
-                        <form action="" method="POST" class="form-horizontal">
+                        <form id="registro" name="registro" action="" method="POST" class="form-horizontal">
                             {% csrf_token %}
 
                             <!-- DATOS PERSONALES -->
@@ -216,6 +255,7 @@
                                         <div class="form-group">
                                             <label class="col-sm-5 control-label"></label>
                                             <div class="col-sm-7">
+                                                <!--<select multiple="multiple" required id=id_celulares name="celulares" class="form-control"></select>-->
                                                 {{ form.celulares }}
                                             </div>
                                         </div>
@@ -239,12 +279,12 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 col-md-offset-3">
-                                        <button type="button" class="btn btn-primary">
+                                        <button type="reset" class="btn btn-primary">
                                             <i class="glyphicon glyphicon-remove-sign" aria-hidden="true">
                                                 Cancelar
                                             </i>
                                         </button>
-                                        <button type="submit" class="btn btn-primary">
+                                        <button type="submit" class="btn btn-primary"  onclick="enviarTelefono()">
                                             <i class="glyphicon glyphicon-plus-sign" aria-hidden="true">
                                                 Agregar
                                             </i>

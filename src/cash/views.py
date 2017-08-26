@@ -69,14 +69,14 @@ class BoxCashierCreationView(CreateView):
     model = CajaCajero
     form_class = BoxCashierForm
     success_url = reverse_lazy('cash:boxcashier_list')
-    template_name = 'boxcashier/boxcashier_form.html'
+    template_name = 'boxcashier/boxcashier_formApertura.html'
 
 
 class BoxCashierUpdateView(UpdateView):
     model = CajaCajero
     form_class = BoxCashierForm
     success_url = reverse_lazy('cash:boxcashier_list')
-    template_name = 'boxcashier/boxcashier_form.html'
+    template_name = 'boxcashier/boxcashier_formCierre.html'
     # fields = ['id_remesa', 'id_persona', 'id_movimiento', 'fechacreacion', 'monto', 'comentario']
 
 

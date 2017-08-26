@@ -33,3 +33,10 @@ class ThreadLocalMiddleware(object):
         if hasattr(_thread_locals, 'request'):
             del _thread_locals.request
         return response
+
+def get_current_userID():
+    request = get_current_request()
+    if request.session.get('user'):
+        iduser = request.session.get('user')
+        return iduser
+

@@ -1,0 +1,87 @@
+{% extends "page.html" %}
+{% block title %}{{ block.super }}Remesas{% endblock %}
+
+
+{% block container %}
+
+    <!--Comienza el contenido!!!!!!!!!!!!!!!!!!!-->
+    <!-- INICIA CONTENDOR DE FORMULARIOS -->
+    <div class="content-wrapper">
+        <!-- HEADER INFO PAGE UBICACION -->
+        <section class="content-header">
+            <h1>
+                Control de Caja
+                <small>Modúlo de facturación</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+                <li>Modúlo de facturación</li>
+                <li class="active">Control de Caja</li>
+            </ol>
+        </section>
+        <!-- FIN DE INFO PAGE UBICACION -->
+        <!-- INICIO DE CONTENIDO -->
+        <section class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Apertura de Caja</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="col-md-9">
+                                <div class="box-body">
+                                    <!-- BAR CHART -->
+                                    <div class="box-body">
+                                        <form class="form-horizontal" method="post">
+                                            {% csrf_token %}
+                                            <div style="display: none;">
+                                                {{ form.saldo }}
+                                                {{ form.monto_cierre }}
+                                                {{ form.estado }}
+                                            </div>
+                                            {{ form.personal_colegio }}
+                                            <div class="form-group">
+                                                <label  class="col-sm-3 control-label">Caja</label>
+                                                <div class="col-sm-9">
+                                                    {{ form.caja }}
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+
+                                                <label  class="col-sm-3 control-label">Monto de Apertura</label>
+                                                <label  class="col-sm-1 control-label" ><strong>S/.</strong></label>
+                                                <div class="col-sm-8">
+                                                   {{ form.monto_apertura }}
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label  class="col-sm-3 control-label">Comentario</label>
+                                                <div class="col-sm-9">
+                                                    {{ form.comentario }}
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-sm-offset-3 col-sm-9">
+                                                    <a href="{% url 'cash:boxcashier_list'  %}" class="btn btn-default" >Cancelar</a>
+                                                    <button type="submit" class="btn btn-success">Aperturar Caja</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <!-- BAR CHART -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+            </div>
+    </section>
+    <!-- /.FIN DE CONTENIDO -->
+    </div>
+    <!-- /.FIN DE CONTENEDOR DE FORMULARIO  -->
+
+    <!--Fin del contenido!!!!!!!!!!!-->
+
+{% endblock container %}
