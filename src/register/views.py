@@ -44,6 +44,7 @@ class AlumnoCreateView(CreateView):
         alu = SaveGeneric().saveGeneric(padre=Profile, form=form, hijo=Alumno)
         logger.debug("Se creó el alumno en la vista")
 
+        logger.info("Se creó el alumno")
         return HttpResponseRedirect(alu.get_absolute_url())
 
 
@@ -63,6 +64,7 @@ class ApoderadoCreateView(CreateView):
         apoderado = SaveGeneric().saveGeneric(padre=Profile, form=form, hijo=Apoderado)
         logger.debug("Se creó el apoderado en la vista")
 
+        logger.debug("Se creó el apoderado")
         return HttpResponseRedirect(apoderado.get_absolute_url())
 
 
@@ -82,6 +84,7 @@ class PersonalCreateView(CreateView):
         personal = SaveGeneric().saveGeneric(padre=Profile, form=form, hijo=Personal)
         logger.debug("Se creó el personal en la vista")
 
+        logger.info("Se creó el personal")
         return HttpResponseRedirect(personal.get_absolute_url())
 
 
@@ -101,6 +104,7 @@ class PromotorCreateView(CreateView):
         personal = SaveGeneric().saveGeneric(padre=Personal, form=form, hijo=Promotor)
         logger.debug("Se creó el promotor en la vista")
 
+        logger.info("Se creó el promotor")
         return HttpResponseRedirect(personal.get_absolute_url())
 
 
@@ -122,6 +126,7 @@ class DirectorCreateView(CreateView):
         personal = SaveGeneric().saveGeneric(padre=Personal, form=form, hijo=Director)
         logger.debug("Se creó el director en la vista")
 
+        logger.info("Se creó el director")
         return HttpResponseRedirect(personal.get_absolute_url())
 
 
@@ -142,6 +147,7 @@ class CajeroCreateView(CreateView):
         personal = SaveGeneric().saveGeneric(padre=Personal, form=form, hijo=Cajero)
         logger.debug("Se creó el cajero en la vista")
 
+        logger.info("Se creó el Cajero")
         return HttpResponseRedirect(personal.get_absolute_url())
 
 
@@ -160,8 +166,9 @@ class TesoreroCreateView(CreateView):
         logger.debug("Tesorero a crear con DNI: " + form.cleaned_data["numero_documento"])
 
         personal = SaveGeneric().saveGeneric(padre=Personal, form=form, hijo=Tesorero)
-        logger.debug("Se creó el cajero en la vista")
+        logger.debug("Se creó el tesorero en la vista")
 
+        logger.info("Se creó el tesorero")
         return HttpResponseRedirect(personal.get_absolute_url())
 
 

@@ -10,8 +10,9 @@ from authtools import forms as authtoolsforms
 from django.contrib.auth import forms as authforms
 from django.core.urlresolvers import reverse
 
+from enrollment.models import Matricula
 from profiles.models import Profile
-from register.models import Personal
+from register.models import Personal, Apoderado, Colegio
 
 import logging
 
@@ -51,17 +52,44 @@ class AsignColegioForm(forms.Form):
 
         super(AsignColegioForm, self).__init__(*args, **kwargs)
 
-        user = self.user
-        logger.debug("Usuario: " + user.name)
+        try:
+            user = self.user
+            logger.debug("Usuario: " + user.name)
 
-        profile = Profile.objects.get(user=user)
-        logger.debug("profile: " + str(profile.id_persona))
+            profile = Profile.objects.get(user=user)
+            logger.debug("profile: " + str(profile.id_persona))
 
-        personal = Personal.objects.get(persona=profile)
-        logger.debug("personal: " + str(personal.id_personal))
+            logger.info("Se logueo el usuario: " + str(user))
 
-        colegios = personal.Colegios.all()
-        logger.debug("colegios: " + str(colegios.count()))
+        except Profile.DoesNotExist:
+            logger.error("Perfil no existe para el usuario: " + str(user))
+            raise ValueError("No existe los datos del usuario vinculados a una Persona")
+
+        try:
+            personal = Personal.objects.get(persona=profile)
+            logger.debug("personal: " + str(personal.id_personal))
+
+            colegios = personal.Colegios.all()
+            logger.debug("colegios: " + str(colegios.count()))
+
+        except Personal.DoesNotExist:
+            logger.info("El usuario no es un personal")
+
+            #Verificar que sea un apoderado
+            apoderado = Apoderado.objects.get(persona=profile)
+            logger.debug("Apoderado: " + str(apoderado.id_apoderado))
+
+            alumnos = apoderado.alumnos.all()
+            logger.debug("Se obtienen los alumnos: " + str(alumnos.count()))
+
+            coles = []
+            for alu in alumnos:
+                mat = Matricula.objects.get(alumno=alu)
+                logger.debug("Matrícula recuperada: " + str(mat.id_matricula))
+                coles.append(mat.colegio.id_colegio)
+
+            colegios = Colegio.objects.filter(pk__in=coles).all()
+            logger.debug("Se consultaron los colegios: " + str(colegios))
 
         self.helper = FormHelper()
         self.helper.form_id = "idcolegios"
@@ -71,6 +99,7 @@ class AsignColegioForm(forms.Form):
 
         self.helper.add_input(Submit('submit', 'Asignar', css_class="btn btn-lg btn-primary btn-block"))
 
+        logger.info("Se asignaron los colegios para ser logueados")
 
 class SignupForm(authtoolsforms.UserCreationForm):
     def __init__(self, *args, **kwargs):

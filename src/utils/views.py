@@ -65,10 +65,14 @@ class SaveGeneric(MyLoginRequiredMixin):
                 direccion.save()
                 logger.debug("Se creo la direccion")
 
-                for t in lista_numeros:
-                    t.persona = rpta.persona
-                    t.save()
-                logger.debug("Se guardaron los numeros de telefono")
+                try:
+                    for t in lista_numeros:
+                        t.persona = rpta.persona
+                        t.save()
+                    logger.debug("Se guardaron los numeros de telefono")
+                except:
+                    logger.debug("error")
+                    pass
 
                 return rpta
             else:
@@ -81,10 +85,14 @@ class SaveGeneric(MyLoginRequiredMixin):
                 instance.save()
                 logger.debug("Se creó un nuevo registro")
 
-                for t in lista_numeros:
-                    t.persona = instance.persona
-                    t.save()
-                logger.debug("Se guardaron los numeros de telefono")
+                try:
+                    for t in lista_numeros:
+                        t.persona = instance.persona
+                        t.save()
+                    logger.debug("Se guardaron los numeros de telefono")
+                except:
+                    logger.debug("error")
+                    pass
 
                 return instance
 
@@ -105,11 +113,15 @@ class SaveGeneric(MyLoginRequiredMixin):
                 direccion.persona = rpta.personal.persona
                 direccion.save()
 
-                for t in lista_numeros:
-                    t.persona = rpta.personal.persona
-                    t.save()
-                logger.debug("Se guardaron los numeros de telefono")
-                
+                try:
+                    for t in lista_numeros:
+                        t.persona = rpta.personal.persona
+                        t.save()
+                        logger.debug("Se guardaron los numeros de telefono")
+                except:
+                    logger.debug("error")
+                    pass
+
                 # Verificar que no exista la relación del personal con el colegio previamente
                 try:
                     per_col = PersonalColegio.objects.get(personal=rpta)
@@ -136,10 +148,14 @@ class SaveGeneric(MyLoginRequiredMixin):
                 direccion.save()
                 logger.debug("se guardo la direccion")
 
-                for t in lista_numeros:
-                    t.persona = instance.personal.persona
-                    t.save()
-                logger.debug("Se guardaron los numeros de telefono")
+                try:
+                    for t in lista_numeros:
+                        t.persona = instance.personal.persona
+                        t.save()
+                    logger.debug("Se guardaron los numeros de telefono")
+                except:
+                    logger.debug("Error")
+                    pass
 
                 # Crear la relación del personal con el colegio logueado
                 personal_colegio = PersonalColegio()

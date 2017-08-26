@@ -74,6 +74,8 @@ class AsignColegioView(LoginRequiredMixin, View):
             logger.debug("Colegio seleccionado: " + str(colegios.id_colegio))
             request.session['colegio'] = colegios.id_colegio
 
+        logger.info("Usuario Logueado")
+
         return HttpResponseRedirect('/users/me')
 
 
