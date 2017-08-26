@@ -60,6 +60,20 @@
             <li><a href="#"><i class="fa fa-circle-o"></i> Opción 2</a></li>
           </ul>
         </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-book"></i>
+            <span>Modulo Controlar Ingresos</span>
+            <span class="pull-right-container">
+              <span class="label label-primary pull-right"></span>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{% url 'income:cuentas_cobrar_padres' %}"><i class="fa fa-circle-o"></i> Padres</a></li>
+            <li><a href="{% url 'income:cuentas_cobrar_promotor' %}"><i class="fa fa-circle-o"></i> Promotor</a></li>
+            <li><a href="{% url 'income:cuentas_cobrar_promotor_detalle' %}"><i class="fa fa-circle-o"></i> Promotor detalle</a></li>
+          </ul>
+        </li>
       </ul>
     </section>
     <!-- FIN SIDEBAR -->
