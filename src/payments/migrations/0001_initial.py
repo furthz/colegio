@@ -11,6 +11,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
+        #('register','0002_register'),
         #('register', '0003_auto_20170826_1717'),
     ]
 

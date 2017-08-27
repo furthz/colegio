@@ -79,7 +79,7 @@ class Remesa(models.Model):
     """
     Clase para la Remesa
     """
-    movimientoid = CajaCajero.objects.latest('id_movimiento')
+    movimientoid = 1 #CajaCajero.objects.latest('id_movimiento')
 
     id_remesa = models.AutoField(primary_key=True)
     personal_colegio = models.ForeignKey(PersonalColegio, models.DO_NOTHING, db_column="id_personal_colegio")
