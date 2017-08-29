@@ -26,6 +26,7 @@ class Eliminar(models.Model):
         abstract = True
 
 
+
 class Caja(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, Eliminar, models.Model):
     """
     Clase para la Caja

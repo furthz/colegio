@@ -2,6 +2,7 @@ from django import forms
 from .models import Caja, CajaCajero, Remesa
 
 
+
 class CashierForm(forms.ModelForm):
     class Meta:
         model = Caja

@@ -7,3 +7,4 @@ admin.site.register(Caja)
 admin.site.register(CajaCajero)
 admin.site.register(Remesa)
 
+
