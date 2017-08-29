@@ -100,7 +100,7 @@ INSTALLED_APPS = (
     'income',
     'profiles',
     'register',
-
+    'payments',
 
 )
 

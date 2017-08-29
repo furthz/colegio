@@ -253,6 +253,41 @@ class CreacionModificacionUserApoderadoMixin(models.Model):
         abstract = True
 
 
+class CreacionModificacionUserProveedorMixin(models.Model):
+    """
+    Clase abstracta para poder especificar los usuario:
+        - Creacion
+        - Modificacion
+    """
+    usuario_creacion_proveedor = models.CharField('Usuario_Creacion', null=True, blank=True, max_length=10,
+                                                  db_column='usuario_creacion')
+    usuario_modificacion_proveedor = models.CharField('Usuario_Modificacion', null=True, blank=True, max_length=10,
+                                                      db_column='usuario_modificacion')
+
+    def save(self, *args, **kwargs):
+        from utils.middleware import get_current_user
+
+        usuario = get_current_user()
+
+        if usuario is not None:
+            iduser = usuario.id
+        else:
+            iduser = -1
+
+        # creacion
+        if not self.pk:
+            self.usuario_creacion_proveedor = iduser
+
+        self.usuario_modificacion_proveedor = iduser
+
+        super(CreacionModificacionUserProveedorMixin, self).save(*args, **kwargs)
+
+    save.alters_data = True
+
+    class Meta:
+        abstract = True
+
+
 class CreacionModificacionUserAlumnoMixin(models.Model):
     """
     Clase abstracta para poder especificar los usuario:
@@ -316,6 +351,41 @@ class CreacionModificacionUserTesoreroMixin(models.Model):
         self.usuario_modificacion_tesorero = iduser
 
         super(CreacionModificacionUserTesoreroMixin, self).save(*args, **kwargs)
+
+    save.alters_data = True
+
+    class Meta:
+        abstract = True
+
+
+class CreacionModificacionUserAdministrativoMixin(models.Model):
+    """
+    Clase abstracta para poder especificar los usuario:
+        - Creacion
+        - Modificacion
+    """
+    usuario_creacion_administrativo = models.CharField('Usuario_Creacion', null=True, blank=True, max_length=10,
+                                                 db_column='usuario_creacion')
+    usuario_modificacion_administrativo = models.CharField('Usuario_Modificacion', null=True, blank=True, max_length=10,
+                                                     db_column='usuario_modificacion')
+
+    def save(self, *args, **kwargs):
+        from utils.middleware import get_current_user
+
+        usuario = get_current_user()
+
+        if usuario is not None:
+            iduser = usuario.id
+        else:
+            iduser = -1
+
+        # creacion
+        if not self.pk:
+            self.usuario_creacion_administrativo = iduser
+
+        self.usuario_modificacion_administrativo = iduser
+
+        super(CreacionModificacionUserAdministrativoMixin, self).save(*args, **kwargs)
 
     save.alters_data = True
 
@@ -537,6 +607,32 @@ class CreacionModificacionFechaApoderadoMixin(models.Model):
         abstract = True
 
 
+class CreacionModificacionFechaProveedorMixin(models.Model):
+    """
+    Clase abstracta para definir las fechas de:
+     - Fecha_creacion
+     - Fecha_modificacion
+    """
+    fecha_creacion_proveedor = models.DateTimeField(blank=True, null=True, db_column="fecha_creacion")
+    fecha_modificacion_proveedor = models.DateTimeField(blank=True, null=True, db_column="fecha_modificacion")
+
+    def save(self, *args, **kwargs):
+        # creación
+        if not self.pk:
+            self.fecha_creacion_proveedor = timezone_now()
+        else:  # modificacion
+            if not self.fecha_creacion_proveedor:
+                self.fecha_creacion_proveedor = timezone_now()
+
+        self.fecha_modificacion_proveedor = timezone_now()
+
+        super(CreacionModificacionFechaProveedorMixin, self).save(*args, **kwargs)
+
+    save.alters_data = True
+
+    class Meta:
+        abstract = True
+
 class CreacionModificacionFechaAlumnoMixin(models.Model):
     """
     Clase abstracta para definir las fechas de:
@@ -618,6 +714,33 @@ class CreacionModificacionFechaTesoreroMixin(models.Model):
         abstract = True
 
 
+class CreacionModificacionFechaAdministrativoMixin(models.Model):
+    """
+    Clase abstracta para definir las fechas de:
+     - Fecha_creacion
+     - Fecha_modificacion
+    """
+    fecha_creacion_administrativo = models.DateTimeField(blank=True, null=True, db_column="fecha_creacion")
+    fecha_modificacion_administrativo = models.DateTimeField(blank=True, null=True, db_column="fecha_modificacion")
+
+    def save(self, *args, **kwargs):
+        # creación
+        if not self.pk:
+            self.fecha_creacion_administrativo = timezone_now()
+        else:  # modificacion
+            if not self.fecha_creacion_administrativo:
+                self.fecha_creacion_administrativo = timezone_now()
+
+        self.fecha_modificacion_administrativo = timezone_now()
+
+        super(CreacionModificacionFechaAdministrativoMixin, self).save(*args, **kwargs)
+
+    save.alters_data = True
+
+    class Meta:
+        abstract = True
+
+
 class CreacionModificacionFechaCajeroMixin(models.Model):
     """
     Clase abstracta para definir las fechas de:
@@ -685,7 +808,7 @@ class TipoDocumento(ActivoMixin, models.Model):
     descripcion = models.CharField(max_length=25)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'tipo_documento'
 
     def __str__(self):
@@ -707,24 +830,8 @@ class TipoSexo(ActivoMixin, models.Model):
         return self.descripcion
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'tipo_sexo'
-
-
-class TiposGrados(ActivoMixin, models.Model):
-    """
-    Clase para definir los tipos de grados
-    Campos:
-        - id_tipo_grado: identificador
-        - descripición: nombre del tipo de grado
-        - activo: identificador para ver si el registro está habilitado
-    """
-    id_tipo_grado = models.AutoField(primary_key=True)
-    descripcion = models.CharField(max_length=20)
-
-    class Meta:
-        managed = False
-        db_table = 'tipos_grados'
 
 
 class TiposMedioPago(ActivoMixin, models.Model):
@@ -739,7 +846,7 @@ class TiposMedioPago(ActivoMixin, models.Model):
     descripcion = models.CharField(max_length=15)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'tipos_medio_pago'
 
 
@@ -755,8 +862,25 @@ class TiposNivel(ActivoMixin, models.Model):
     descripcion = models.CharField(max_length=15)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'tipos_nivel'
+
+
+class TiposGrados(ActivoMixin, models.Model):
+    """
+    Clase para definir los tipos de grados
+    Campos:
+        - id_tipo_grado: identificador
+        - descripición: nombre del tipo de grado
+        - activo: identificador para ver si el registro está habilitado
+    """
+    id_tipo_grado = models.AutoField(primary_key=True)
+    descripcion = models.CharField(max_length=20)
+    nivel = models.ForeignKey(TiposNivel, models.DO_NOTHING, db_column='id_tipo_nivel',related_name="grados")
+
+    class Meta:
+        managed = True
+        db_table = 'tipos_grados'
 
 
 class Departamento(ActivoMixin, models.Model):
@@ -768,7 +892,7 @@ class Departamento(ActivoMixin, models.Model):
     descripcion = models.CharField(max_length=100)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'departamento'
 
 
@@ -783,7 +907,7 @@ class Provincia(ActivoMixin, models.Model):
                                      related_name="provincias")
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'provincia'
 
 
@@ -797,6 +921,6 @@ class Distrito(ActivoMixin, models.Model):
     provincia = models.ForeignKey(Departamento, models.DO_NOTHING, db_column='id_provincia', related_name="distritos")
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'distrito'
 

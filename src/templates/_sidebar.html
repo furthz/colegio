@@ -45,6 +45,10 @@
             <li><a href="{% url 'registers:director_create' %}"><i class="fa fa-circle-o"></i> Director</a></li>
             <li><a href="{% url 'registers:tesorero_create' %}"><i class="fa fa-circle-o"></i> Tesorero</a></li>
             <li><a href="{% url 'registers:cajero_create' %}"><i class="fa fa-circle-o"></i> Cajero</a></li>
+            <li><a href="{% url 'enrollments:matricula_list' %}"><i class="fa fa-circle-o"></i> Matricula</a></li>
+            <li><a href="{% url 'enrollments:tiposervicio_list' %}"><i class="fa fa-circle-o"></i> Servicios</a></li>
+            <li><a href="{% url 'income:register' %}"><i class="fa fa-circle-o"></i> Registro de pagos</a></li>
+
           </ul>
         </li>
         <li class="treeview">
@@ -58,6 +62,20 @@
           <ul class="treeview-menu">
             <li><a href="#"><i class="fa fa-circle-o"></i> Opción 1</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i> Opción 2</a></li>
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-book"></i>
+            <span>Modulo Controlar Ingresos</span>
+            <span class="pull-right-container">
+              <span class="label label-primary pull-right"></span>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{% url 'income:cuentas_cobrar_padres' %}"><i class="fa fa-circle-o"></i> Padres</a></li>
+            <li><a href="{% url 'income:cuentas_cobrar_promotor' %}"><i class="fa fa-circle-o"></i> Promotor</a></li>
+            <li><a href="{% url 'income:cuentas_cobrar_promotor_detalle' %}"><i class="fa fa-circle-o"></i> Promotor detalle</a></li>
           </ul>
         </li>
       </ul>
