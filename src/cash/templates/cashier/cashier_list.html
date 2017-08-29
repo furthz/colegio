@@ -1,5 +1,5 @@
 {% extends "page.html" %}
-{% block title %}{{ block.super }}Remesas{% endblock %}
+{% block title %}{{ block.super }}Cajeros{% endblock %}
 {% block container %}
 
     <!--Comienza el contenido!!!!!!!!!!!!!!!!!!!-->
@@ -13,7 +13,7 @@
                             <div class="col-md-9">
                                 <div class="panel-page">
                                     <div class="toolbar-header">
-                                            <a class="btn btn-success" href="{% url "cash:cashier_create" %}"><i class="fa fa-plus" aria-hidden="true"></i>  Crear cajero</a>
+                                            <a class="btn btn-success" href='{% url "cash:cashier_create" %}'><i class="fa fa-plus" aria-hidden="true"></i>  Crear cajero</a>
                                         </div>
 
 
@@ -23,20 +23,28 @@
                                     </div>
                                     <div class="box-body">
                                         <div class="table-responsive no-padding">
+
                                             <table class="table table-hover">
                                                 <tbody>
                                                 <tr>
                                                     <th>Item</th>
                                                     <th>Numero de Caja</th>
                                                     <th>Descripcion</th>
-                                                    <th>Estado</th>
+                                                    <!-- <th>Estado</th>
+                                                    <th>Eliminado</th> -->
                                                     <th>Acciones</th>
+
                                                 </tr>
                                                 {% for cashier in object_list %}
                                                 <tr>
+                                                    {% if cashier.eliminado == 1 %}
+                                                    {% else %}
                                                     <td>{{ forloop.counter }}</td>
                                                     <td>{{ cashier.numero }}</td>
                                                     <td>{{ cashier.descripcion }}</td>
+
+                                                    <!--
+
                                                     <td>
                                                         {% if cashier.activo == 1 %}
                                                             <span class="label label-success">Activo</span>
@@ -44,20 +52,24 @@
                                                             <span class="label label-danger">Desactivado</span>
                                                         {% endif %}
                                                     </td>
+                                                    <td>{{ cashier.eliminado }}</td> -->
+
                                                     <td>
                                                         <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                                                            <a title="Editar" href="{% url "cash:cashier_edit" cashier.id_caja %}" class="btn btn-default">
+                                                         <!--    <a title="Editar" href='{% url "cash:cashier_edit" cashier.id_caja %}' class="btn btn-default">
                                                                 <i class="fa fa-pencil" aria-hidden="true"></i>
                                                             </a>
-                                                            <a title="Detalle" href="{% url "cash:cashier_detail" cashier.id_caja %}" class="btn btn-default">
+                                                         -->
+                                                            <a title="Detalle" href='{% url "cash:cashier_detail" cashier.id_caja %}' class="btn btn-default">
                                                                 <i class="fa fa-info-circle" aria-hidden="true"></i>
                                                             </a>
-                                                            <a title="Eliminar" href="#" class="btn btn-default">
+                                                            <a title="Eliminar" href="{% url 'cash:cashier_delete' cashier.id_caja %}" class="btn btn-default">
                                                                 <i class="fa fa-trash" aria-hidden="true"></i>
                                                             </a>
                                                         </div>
                                                     </td>
                                                 </tr>
+                                                {% endif %}
                                                 {% endfor %}
                                                 </tbody>
                                             </table>
@@ -72,6 +84,7 @@
             </div>
         </div>
     </section>
+
     <!-- /.FIN DE CONTENIDO -->
     <!-- /.FIN DE CONTENEDOR DE FORMULARIO  -->
 

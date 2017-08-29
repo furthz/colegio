@@ -4,7 +4,29 @@ from register.models import Colegio, PersonalColegio
 from utils.models import CreacionModificacionFechaMixin, CreacionModificacionUserMixin
 from utils.middleware import get_current_colegio, get_current_userID
 
-class Caja(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
+class Eliminar(models.Model):
+    """
+    Clase para cambiar de estado automaticamente segun guardado o update
+    """
+    eliminado = models.BooleanField()
+
+    def save(self, *args, **kwargs):
+        # creación
+        if not self.pk:
+            self.eliminado = False
+
+        else:  # modificacion
+            self.eliminado = True
+
+        super(Eliminar, self).save(*args, **kwargs)
+
+    save.alters_data = True
+
+    class Meta:
+        abstract = True
+
+
+class Caja(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, Eliminar, models.Model):
     """
     Clase para la Caja
     """
@@ -13,6 +35,7 @@ class Caja(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models
     numero = models.IntegerField()
     descripcion = models.CharField(max_length=500, blank=True, null=True)
     activo = models.BooleanField(default=True)
+
 
     def __str__(self):
         """
@@ -24,7 +47,9 @@ class Caja(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models
 
     class Meta:
         managed = False
+        ordering = ["id_caja"]
         db_table = 'caja'
+
 
 class EstadoCambio(models.Model):
     """
@@ -58,7 +83,8 @@ class CajaCajero(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, 
     saldo = models.FloatField(default=0.0)  # Sobrante o Faltante al Final de la caja
     monto_apertura = models.FloatField(default=0.0)  # Caja Inicial
     monto_cierre = models.FloatField(default=0.0)  # Caja Final
-    comentario = models.CharField(max_length=500, blank=True, null=True)
+    comentario_apertura = models.CharField(max_length=500, blank=True, null=True)
+    comentario_cierre = models.CharField(max_length=500, blank=True, null=True)
 
     def __str__(self):
         """
@@ -73,17 +99,27 @@ class CajaCajero(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, 
         db_table = 'caja_cajero'
 
 
-
+def cajeroExist():
+    """
+    Verifica la existencia de un registro en CajaCajero
+    :return: 
+    """
+    try:
+        movimientoid = CajaCajero.objects.latest('id_movimiento')
+    except CajaCajero.DoesNotExist:
+        movimientoid = None
+        pass
+    return movimientoid
 
 class Remesa(models.Model):
     """
     Clase para la Remesa
     """
-    movimientoid = CajaCajero.objects.latest('id_movimiento')
+
 
     id_remesa = models.AutoField(primary_key=True)
     personal_colegio = models.ForeignKey(PersonalColegio, models.DO_NOTHING, db_column="id_personal_colegio")
-    movimiento = models.ForeignKey(CajaCajero, models.DO_NOTHING, db_column='id_movimiento', default=movimientoid)
+    movimiento = models.ForeignKey(CajaCajero, models.DO_NOTHING, db_column='id_movimiento', default=cajeroExist)
     fechacreacion = models.DateTimeField(default=timezone.now)
     monto = models.FloatField()
     comentario = models.CharField(max_length=500, blank=True, null=True)

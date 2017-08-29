@@ -31,7 +31,7 @@
                                 <div class="col-md-9">
                                     <div class="panel-page">
                                         <div class="toolbar-header">
-                                            <a class="btn btn-success" href="{% url "cash:consignment_create" %}"><i class="fa fa-plus" aria-hidden="true"></i>  Crear remesa</a>
+                                            <a class="btn btn-success" href='{% url "cash:consignment_create" %}'><i class="fa fa-plus" aria-hidden="true"></i>  Crear remesa</a>
                                         </div>
                                         <div class="toolbar-search">
                                             <div class="box-body">
@@ -54,7 +54,7 @@
                                                         <select class="form-control">
                                                             <option>------</option>
                                                             {% for remesa in object_list %}
-                                                                <option value="{{remesa.personal_colegio}}"{% if remesa == current_remesa %}selected="selected"{% endif %}>{{remesa.personal_colegio|capfirst}}</option>
+                                                                <option value='{{remesa.personal_colegio}}'{% if remesa == current_remesa %}selected="selected"{% endif %}>{{remesa.personal_colegio|capfirst}}</option>
                                                             {% endfor %}
                                                         </select>
                                                     </div>
@@ -91,7 +91,7 @@
                                                 <td>{{ remesa.fechacreacion }}</td>
                                                 <td class="text-center">
                                                     <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                                                        <a href="{% url "cash:consignment_detail" remesa.id_remesa %}" class="btn btn-default">
+                                                        <a href='{% url "cash:consignment_detail" remesa.id_remesa %}' class="btn btn-default">
                                                             <i class="fa fa-info-circle" aria-hidden="true"></i>
                                                         </a>
                                                     </div>
