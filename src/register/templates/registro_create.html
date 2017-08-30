@@ -166,15 +166,24 @@
                                                 </div>
                                             </div>
 
+
                                             <div class="form-group">
+                                                <!-- atributo parentesco sólo para el apoderado -->
                                                 {% if form.parentesco %}
                                                     <label class="col-sm-5 control-label">{{ form.parentesco.label }}</label>
                                                     <div class="col-sm-7">
                                                         {{ form.parentesco }}
                                                     </div>
                                                 {% endif %}
-                                            </div>
 
+                                                <!-- atributo razon social para el proveedor-->
+                                                {% if form.razon_social %}
+                                                    <label class="col-sm-5 control-label">{{ form.razon_social.label }}</label>
+                                                    <div class="col-sm-7">
+                                                        {{ form.razon_social }}
+                                                    </div>
+                                                {% endif %}
+                                            </div>
 
                                         </div>
                                     </div>
