@@ -24,7 +24,6 @@ from utils.models import CreacionModificacionUserMixin, CreacionModificacionFech
     CreacionModificacionUserProveedorMixin, CreacionModificacionFechaProveedorMixin
 from utils.models import CreacionModificacionFechaMixin
 from utils.models import ActivoMixin
-
 from profiles.models import Profile
 
 
@@ -405,21 +404,20 @@ class Administrativo(CreacionModificacionUserAdministrativoMixin, CreacionModifi
         db_table = 'administrativo'
 
 
-class Proveedor(CreacionModificacionUserProveedorMixin, CreacionModificacionFechaProveedorMixin, Profile,
-                models.Model):
+class Proveedor(CreacionModificacionUserProveedorMixin, CreacionModificacionFechaProveedorMixin,models.Model):
     """
     Clase para identificar a los proveedores
     """
     id_proveedor = models.AutoField(primary_key=True)
     razon_social = models.CharField(max_length=100)
-    persona = models.OneToOneField(Profile, models.DO_NOTHING, parent_link=True, )
+    ruc = models.CharField(max_length=15)
 
     def __str__(self):
         return self.razon_social
 
     def full_detail(self):
         lista = Profile.full_detail(self)
-        lista.append("razon social: {0}".format(self.parentesco))
+        lista.append("razon social: {0}".format(self.razon_social))
         return lista
 
     def get_absolute_url(self):
@@ -429,20 +427,19 @@ class Proveedor(CreacionModificacionUserProveedorMixin, CreacionModificacionFech
         """
         return reverse('registers:proveedor_detail', kwargs={'pk': self.pk})
 
-    @staticmethod
-    def saveFromPersona(per: Profile, **atributos):
-        """
-        Método que permite guardar un Apoderado a partir de una persona existente
-        :param per: Persona base
-        :param atributos: Nuevos atributos propios de Apoderado
-        :return: Objeto Apoderado creado
-        """
-        try:
-            proveedor = Proveedor.objects.get(persona=per)
-            return proveedor
-        except Proveedor.DoesNotExist:
-            return insert_child(obj=per, child_model=Proveedor, **atributos)
 
     class Meta:
         managed = True
         db_table = 'proveedor'
+
+class ProvedorColegio(ActivoMixin,CreacionModificacionUserProveedorMixin, CreacionModificacionFechaProveedorMixin,models.Model):
+    """
+    Proveedor Colegio
+    """
+    id_proveedor_colegio = models.AutoField(primary_key=True)
+    proveedor = models.ForeignKey(Proveedor, models.DO_NOTHING, db_column="id_proveedor")
+    colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column="id_colegio")
+
+    class Meta:
+        managed = True
+        db_table = 'proveedor_colegio'

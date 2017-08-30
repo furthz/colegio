@@ -2,7 +2,8 @@ from django.conf.urls import url
 
 from register.views import CreatePersonaView, PersonaDetail, AlumnoCreateView, AlumnoDetail, ApoderadoCreateView, \
     ApoderadoDetailView, PersonalDetailView, PersonalCreateView, PromotorCreateView, PromotorDetailView, \
-    DirectorDetailView, DirectorCreateView, CajeroCreateView, CajeroDetailView, TesoreroCreateView, TesoreroDetailView
+    DirectorDetailView, DirectorCreateView, CajeroCreateView, CajeroDetailView, TesoreroCreateView, TesoreroDetailView, \
+    ProveedorCreateView, ProveedorDetailView
 from . import views
 
 urlpatterns = [
@@ -30,5 +31,8 @@ urlpatterns = [
 
     url(r'^tesoreros/create/$',TesoreroCreateView.as_view(), name="tesorero_create"),
     url(r'^tesoreros/(?P<pk>\d+)/$',TesoreroDetailView.as_view(), name='tesorero_detail'),
+
+    url(r'^proveedores/create/$',ProveedorCreateView.as_view(), name="proveedor_create"),
+    url(r'^proveedores/(?P<pk>\d+)/$',ProveedorDetailView.as_view(), name='proveedor_detail'),
 
 ]

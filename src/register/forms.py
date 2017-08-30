@@ -3,7 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from django import forms
 from django.forms import ModelForm, SelectDateWidget
 
-from register.models import Alumno, Apoderado, Personal, Promotor, Director, Cajero, Tesorero, Telefono
+from register.models import Alumno, Apoderado, Personal, Promotor, Director, Cajero, Tesorero, Telefono, Proveedor
 from utils.forms import ValidProfileFormMixin
 from utils.models import TipoDocumento, TipoSexo, Departamento, Provincia, Distrito
 
@@ -124,6 +124,17 @@ class PersonalForm(ValidProfileFormMixin, PersonaForm):
         model = Personal
         fields = ['nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento', 'numero_documento',
                   'sexo', 'correo', 'fecha_nac']
+        labels = {
+            'nombre': _('Nombre'),
+            'segundo_nombre': _('Segundo Nombre'),
+            'apellido_ma': _('Apellido Materno'),
+            'apellido_pa': _('Apellido Paterno'),
+            'tipo_documento': _('Tipo Documento'),
+            'numero_documento': _('Número Documento'),
+            'sexo': _('Sexo'),
+            'correo': _('Correo'),
+            'fecha_nac': _('Fecha Nac.'),
+        }
 
 
 class PromotorForm(ValidProfileFormMixin, PersonaForm):
@@ -157,6 +168,17 @@ class DirectorForm(ValidProfileFormMixin, PersonaForm):
         model = Director
         fields = ['nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento', 'numero_documento',
                   'sexo', 'correo', 'fecha_nac']
+        labels = {
+            'nombre': _('Nombre'),
+            'segundo_nombre': _('Segundo Nombre'),
+            'apellido_ma': _('Apellido Materno'),
+            'apellido_pa': _('Apellido Paterno'),
+            'tipo_documento': _('Tipo Documento'),
+            'numero_documento': _('Número Documento'),
+            'sexo': _('Sexo'),
+            'correo': _('Correo'),
+            'fecha_nac': _('Fecha Nac.'),
+        }
 
 
 class CajeroForm(ValidProfileFormMixin, PersonaForm):
@@ -167,6 +189,17 @@ class CajeroForm(ValidProfileFormMixin, PersonaForm):
         model = Cajero
         fields = ['nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento', 'numero_documento',
                   'sexo', 'correo', 'fecha_nac']
+        labels = {
+            'nombre': _('Nombre'),
+            'segundo_nombre': _('Segundo Nombre'),
+            'apellido_ma': _('Apellido Materno'),
+            'apellido_pa': _('Apellido Paterno'),
+            'tipo_documento': _('Tipo Documento'),
+            'numero_documento': _('Número Documento'),
+            'sexo': _('Sexo'),
+            'correo': _('Correo'),
+            'fecha_nac': _('Fecha Nac.'),
+        }
 
 
 class TesoreroForm(ValidProfileFormMixin, PersonaForm):
@@ -177,3 +210,40 @@ class TesoreroForm(ValidProfileFormMixin, PersonaForm):
         model = Tesorero
         fields = ['nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento', 'numero_documento',
                   'sexo', 'correo', 'fecha_nac']
+        labels = {
+            'nombre': _('Nombre'),
+            'segundo_nombre': _('Segundo Nombre'),
+            'apellido_ma': _('Apellido Materno'),
+            'apellido_pa': _('Apellido Paterno'),
+            'tipo_documento': _('Tipo Documento'),
+            'numero_documento': _('Número Documento'),
+            'sexo': _('Sexo'),
+            'correo': _('Correo'),
+            'fecha_nac': _('Fecha Nac.'),
+        }
+
+
+class ProveedorForm(forms.Form):
+
+    title = forms.CharField(label="Registrar Proveedor", required=False)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['razon_social'].widget.attrs.update({'class': 'form-control'})
+
+    class Meta:
+        model = Proveedor
+        fields = ['nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento', 'numero_documento',
+                  'sexo', 'correo', 'fecha_nac', 'razon_social']
+        labels = {
+            'nombre': _('Nombre'),
+            'segundo_nombre': _('Segundo Nombre'),
+            'apellido_ma': _('Apellido Materno'),
+            'apellido_pa': _('Apellido Paterno'),
+            'tipo_documento': _('Tipo Documento'),
+            'numero_documento': _('Número Documento'),
+            'sexo': _('Sexo'),
+            'correo': _('Correo'),
+            'fecha_nac': _('Fecha Nac.'),
+            'razon_social': _('Razón Social'),
+        }

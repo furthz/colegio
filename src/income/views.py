@@ -1,42 +1,19 @@
-from datetime import date
-from enrollment.models import Cuentascobrar
+from datetime import date, datetime
 from income.forms import CuentasCobrarPromotorForm, CuentasCobrarPadresForm, CuentasCobrarPromotorDetalleForm
 from django.db.models import Q
-import logging
 from income.models import calculo_ingresos_promotor, obtener_mes, calculo_ingresos_alumno, calculo_por_nivel_promotor
-from django.views.generic import FormView
-
-from django.views.generic import TemplateView
-
-from django.http import HttpResponseRedirect
+from django.views.generic import FormView, TemplateView
 from django.shortcuts import render
-from django.core.urlresolvers import reverse_lazy
-
 from enrollment.models import Cuentascobrar
-from register.models import Colegio
-from register.models import Cajero
-
+from register.models import Colegio, Alumno
 from profiles.models import Profile
-from register.models import Personal
-from register.models import Alumno
-from register.models import PersonalColegio
-from enrollment.models import Matricula
-from enrollment.models import Servicio
-from enrollment.models import TipoServicio
-from income.models import Cobranza
-from income.models import DetalleCobranza
-
-from cash.models import Caja
+from income.models import Cobranza, DetalleCobranza
 from cash.models import CajaCajero
 
 from utils.views import MyLoginRequiredMixin
+
 import logging
-
-from datetime import datetime
-from datetime import date
-
 logger = logging.getLogger("project")
-
 
 class RegistrarPagoListView(MyLoginRequiredMixin, TemplateView):
     """
@@ -185,9 +162,13 @@ class ControlIngresosPadresView(FormView):
     def post(self, request, *args, **kwargs):
 
         alumno = request.POST["alumno"]
+        logger.info("El alumno ingresado es {0}".format(alumno))
         anio = request.POST["anio"]
+        logger.debug("El año ingresado es {0}".format(anio))
         mes = request.POST["mes"]
+        logger.debug("El mes ingresado es {0}".format(mes))
         estado = request.POST["estado"]
+        logger.debug("El tipo o estado ingresado es {0}".format(estado))
 
         # Validación de hijos asociados a un apoderado
         alumno = int(alumno)
