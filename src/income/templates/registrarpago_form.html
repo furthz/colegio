@@ -187,6 +187,7 @@ function nombre() {
     alert("Hola");
     var temp = 0;
     var arrayoptions = [];
+    var arraymontos = [];
     $('input[name^="check"]').each(function () {
        if(this.checked){
            arrayoptions.push(true)
@@ -197,10 +198,13 @@ function nombre() {
     });
 
     $('input[name^="montototal"]').each(function () {
-
-        temp += parseInt(this.value);
+        arraymontos.push(parseInt(this.value));
     });
-
+    for (i = 0; i < arrayoptions.length; i++) {
+        if(arrayoptions[i]){
+            temp += arraymontos[i];
+        }
+    }
     alert(temp);
     gato.value = temp
 }
