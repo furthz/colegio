@@ -10,6 +10,7 @@ Fecha: 23/07/2017
 from django.db import models
 from django.urls import reverse
 
+from utils.middleware import get_current_colegio
 from utils.misc import insert_child
 from utils.models import CreacionModificacionUserMixin, CreacionModificacionFechaPersonalMixin, \
     CreacionModificacionFechaApoderadoMixin, CreacionModificacionFechaAlumnoMixin, \
@@ -68,6 +69,7 @@ class Colegio(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionU
     ruc = models.CharField(max_length=11)
     ugel = models.CharField(max_length=100)
     personales = models.ManyToManyField(Personal, through='PersonalColegio', related_name='Colegios', null=True)
+
 
     def __str__(self):
         return self.nombre
@@ -163,7 +165,6 @@ class Alumno(CreacionModificacionUserAlumnoMixin, CreacionModificacionFechaAlumn
     codigoint = models.CharField(max_length=15, blank=True, null=True)
     persona = models.OneToOneField(Profile, models.DO_NOTHING, parent_link=True, unique=True)
     apoderados = models.ManyToManyField(Apoderado, through='ApoderadoAlumno', related_name='alumnos', null=True)
-
 
     def get_absolute_url(self):
         """
@@ -365,9 +366,9 @@ class PersonalColegio(ActivoMixin, CreacionModificacionUserMixin, CreacionModifi
         managed = True
         db_table = 'personal_colegio'
 
+
 class Administrativo(CreacionModificacionUserAdministrativoMixin, CreacionModificacionFechaAdministrativoMixin,
                      Personal, models.Model):
-
     """
     Clase que parmite crear el rol de administrativos
     """
@@ -445,4 +446,3 @@ class Proveedor(CreacionModificacionUserProveedorMixin, CreacionModificacionFech
     class Meta:
         managed = True
         db_table = 'proveedor'
-

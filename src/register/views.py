@@ -12,7 +12,7 @@ from django.views.generic import CreateView
 
 from register.forms import PersonaForm, AlumnoForm, ApoderadoForm, PersonalForm, PromotorForm, DirectorForm, CajeroForm, \
     TesoreroForm
-from register.models import Alumno, Apoderado, Personal, Promotor, Director, Cajero, Tesorero
+from register.models import Alumno, Apoderado, Personal, Promotor, Director, Cajero, Tesorero, Colegio
 from utils.views import SaveGeneric
 
 logger = logging.getLogger("project")
@@ -43,6 +43,8 @@ class AlumnoCreateView(CreateView):
 
         alu = SaveGeneric().saveGeneric(padre=Profile, form=form, hijo=Alumno)
         logger.debug("Se creó el alumno en la vista")
+
+        als = Alumno.objects.all()
 
         logger.info("Se creó el alumno")
         return HttpResponseRedirect(alu.get_absolute_url())
