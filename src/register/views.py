@@ -11,8 +11,8 @@ from django.shortcuts import render
 from django.views.generic import CreateView
 
 from register.forms import PersonaForm, AlumnoForm, ApoderadoForm, PersonalForm, PromotorForm, DirectorForm, CajeroForm, \
-    TesoreroForm
-from register.models import Alumno, Apoderado, Personal, Promotor, Director, Cajero, Tesorero
+    TesoreroForm, ProveedorForm
+from register.models import Alumno, Apoderado, Personal, Promotor, Director, Cajero, Tesorero, Colegio, Proveedor
 from utils.views import SaveGeneric
 
 logger = logging.getLogger("project")
@@ -43,6 +43,8 @@ class AlumnoCreateView(CreateView):
 
         alu = SaveGeneric().saveGeneric(padre=Profile, form=form, hijo=Alumno)
         logger.debug("Se creó el alumno en la vista")
+
+        als = Alumno.objects.all()
 
         logger.info("Se creó el alumno")
         return HttpResponseRedirect(alu.get_absolute_url())
@@ -176,3 +178,23 @@ class TesoreroDetailView(DetailView):
     model = Tesorero
     template_name = "tesorero_detail.html"
 
+
+class ProveedorCreateView(CreateView):
+
+    model = Proveedor
+    form_class = ProveedorForm
+    template_name = "registro_create.html"
+
+    def form_valid(self, form):
+        logger.debug("Proveedor a crear con DNI: " + form.cleaned_data["numero_documento"])
+
+        personal = SaveGeneric().saveGeneric(padre=Profile, form=form, hijo=Proveedor)
+        logger.debug("Se creó el proveedor en la vista")
+
+        logger.info("Se creó el Proveedor")
+        return HttpResponseRedirect(personal.get_absolute_url())
+
+
+class ProveedorDetailView(DetailView):
+    model = Proveedor
+    template_name = "proveedor_detail.html"

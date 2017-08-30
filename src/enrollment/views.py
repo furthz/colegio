@@ -46,7 +46,7 @@ class TipoServicioListView(MyLoginRequiredMixin, ListView):
     """
 
     """
-    logger.info("Hola")
+    #logger.info("Hola")
     model = TipoServicio
     template_name = "tiposervicio_list.html"
 

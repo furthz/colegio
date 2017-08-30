@@ -68,7 +68,7 @@ BoxCashier List
                 <td>{{ cajacajero.comentario }}</td>
                 <td class="text-center">
                     <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                        <a href="{% url "cash:boxcashier_CerrarCaja" cajacajero.id_movimiento %}" class="btn btn-default">
+                        <a href='{% url "cash:boxcashier_CerrarCaja" cajacajero.id_movimiento %}' class="btn btn-default">
                             <i class="fa fa-info-circle" aria-hidden="true"></i> Cerrar Caja
                         </a>
                     </div>
@@ -82,3 +82,4 @@ BoxCashier List
     <!--Fin del contenido!!!!!!!!!!!-->
 
 {% endblock container %}
+

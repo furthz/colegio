@@ -20,7 +20,8 @@ class Migration(migrations.Migration):
             name='CajaChica',
             fields=[
                 ('id_caja_chica', models.AutoField(primary_key=True, serialize=False)),
-                ('presupuesto', models.DecimalField(decimal_places=10, max_digits=10)),
+                ('presupuesto', models.FloatField()),
+                ('saldo', models.FloatField()),
                 ('periodo', models.IntegerField()),
                 ('colegio', models.ForeignKey(db_column='id_colegio', on_delete=django.db.models.deletion.DO_NOTHING, related_name='caja_chica', to='register.Colegio')),
                 ('usuario_creacion',
@@ -40,7 +41,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id_pago', models.AutoField(primary_key=True, serialize=False)),
                 ('descripcion', models.CharField(max_length=200)),
-                ('monto', models.DecimalField(decimal_places=10, max_digits=10)),
+                ('monto', models.FloatField()),
                 ('fecha', models.DateTimeField()),
                 ('numero_comprobante', models.CharField(max_length=30)),
                 ('caja_chica', models.ForeignKey(db_column='id_caja_chica', on_delete=django.db.models.deletion.DO_NOTHING, related_name='pagos', to='payments.CajaChica')),
@@ -63,8 +64,9 @@ class Migration(migrations.Migration):
             fields=[
                 ('id_tipo_pago', models.AutoField(primary_key=True, serialize=False)),
                 ('descripcion', models.CharField(max_length=100)),
-                ('padre', models.ForeignKey(db_column='id_parent', on_delete=django.db.models.deletion.DO_NOTHING, to='payments.TipoPago')),
+                ('padre', models.ForeignKey(db_column='id_parent', on_delete=django.db.models.deletion.DO_NOTHING, to='payments.TipoPago', blank=True, null=True)),
                 ('activo', models.BooleanField(default=True)),
+                ('eliminado', models.BooleanField(default=False)),
             ],
             options={
                 'db_table': 'tipo_pago',

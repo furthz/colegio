@@ -31,8 +31,10 @@ class RegistrarPagoListView(MyLoginRequiredMixin, TemplateView):
         """
         #cuentas = Cuentascobrar.objects.all()
         logger.info("Estoy en income pagos")
-        cuentas_totales = Cuentascobrar.objects.filter(matricula__colegio__id_colegio=self.request.session.get('colegio'),estado=True)
+        cuentas_totales = Cuentascobrar.objects.filter(
+            matricula__colegio__id_colegio=self.request.session.get('colegio'), estado=True)
         try:
+
             logger.info("Ver si existe un GET")
             if request.GET['filter'] is 'DNI':
                 self.cuentas = cuentas_totales.filter(matricula__alumno__numero_documento=request.GET['dato']).order_by("fecha_ven")
