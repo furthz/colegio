@@ -3,7 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from django import forms
 from django.forms import ModelForm, SelectDateWidget
 
-from register.models import Alumno, Apoderado, Personal, Promotor, Director, Cajero, Tesorero, Telefono
+from register.models import Alumno, Apoderado, Personal, Promotor, Director, Cajero, Tesorero, Telefono, Proveedor
 from utils.forms import ValidProfileFormMixin
 from utils.models import TipoDocumento, TipoSexo, Departamento, Provincia, Distrito
 
@@ -175,5 +175,15 @@ class TesoreroForm(ValidProfileFormMixin, PersonaForm):
 
     class Meta:
         model = Tesorero
+        fields = ['nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento', 'numero_documento',
+                  'sexo', 'correo', 'fecha_nac']
+
+
+class ProveedorForm(ValidProfileFormMixin, PersonaForm):
+
+    title = forms.CharField(label="Registrar Proveedor", required=False)
+
+    class Meta:
+        model = Proveedor
         fields = ['nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento', 'numero_documento',
                   'sexo', 'correo', 'fecha_nac']

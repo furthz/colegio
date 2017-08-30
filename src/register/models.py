@@ -419,7 +419,7 @@ class Proveedor(CreacionModificacionUserProveedorMixin, CreacionModificacionFech
 
     def full_detail(self):
         lista = Profile.full_detail(self)
-        lista.append("razon social: {0}".format(self.parentesco))
+        lista.append("razon social: {0}".format(self.razon_social))
         return lista
 
     def get_absolute_url(self):
