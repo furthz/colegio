@@ -3,6 +3,7 @@ from django.db import models
 # Create your models here.
 from register.models import Proveedor, Colegio, PersonalColegio
 from utils.models import ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin
+from utils.middleware import get_current_colegio
 
 class Eliminar(models.Model):
     """
@@ -31,7 +32,9 @@ class TipoPago(ActivoMixin, Eliminar, models.Model):
     Clase para definir y organizar los tipos de pagos que realiza el colegio
     """
     id_tipo_pago = models.AutoField(primary_key=True)
+    colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column='id_colegio', default=get_current_colegio)
     descripcion = models.CharField(max_length=100)
+    tipo = models.IntegerField(blank=True, null=True)
     padre = models.ForeignKey("self", models.DO_NOTHING, db_column="id_parent", blank=True, null=True)
 
     def __str__(self):

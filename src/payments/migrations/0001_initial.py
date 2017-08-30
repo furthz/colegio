@@ -63,7 +63,9 @@ class Migration(migrations.Migration):
             name='TipoPago',
             fields=[
                 ('id_tipo_pago', models.AutoField(primary_key=True, serialize=False)),
+                ('colegio', models.ForeignKey(db_column='id_colegio', to='register.Colegio')),
                 ('descripcion', models.CharField(max_length=100)),
+                ('tipo', models.IntegerField(blank=True, null=True)),
                 ('padre', models.ForeignKey(db_column='id_parent', on_delete=django.db.models.deletion.DO_NOTHING, to='payments.TipoPago', blank=True, null=True)),
                 ('activo', models.BooleanField(default=True)),
                 ('eliminado', models.BooleanField(default=False)),

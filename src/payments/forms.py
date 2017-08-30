@@ -10,21 +10,27 @@ class TipoPagoForm(forms.ModelForm):
 
         fields = [
 
+            'colegio',
             'descripcion',
+            'tipo',
             'padre',
             'eliminado',
         ]
 
         labels = {
 
+            'colegio': 'Colegio',
             'descripcion': 'Descripción',
+            'tipo': 'Tipo',
             'padre': 'Padre',
             'eliminado': 'Eliminado',
         }
 
         widgets = {
 
+            'colegio': forms.Select(attrs={'class': 'hidden'}),
             'descripcion': forms.Textarea(attrs={'class': 'form-control', 'rows': '3'}),
+            'tipo': forms.TextInput(attrs={'class': 'hidden', 'id': 'describe', 'name': 'lname'}),
             'padre': forms.Select(attrs={'class': 'form-control'}),
             'eliminado': forms.CheckboxInput(),
         }
