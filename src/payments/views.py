@@ -31,21 +31,21 @@ class TipoPagoDetailView(DetailView):
 class TipoPagoCreationView(CreateView):
     model = TipoPago
     form_class = TipoPagoForm
-    success_url = reverse_lazy('payments:cashier_list')
+    success_url = reverse_lazy('payments:tipopago_list')
     template_name = 'TipoPago/tipopago_form.html'
 
 
 class TipoPagoUpdateView(UpdateView):
     model = TipoPago
     form_class = TipoPagoForm
-    success_url = reverse_lazy('payments:cashier_list')
+    success_url = reverse_lazy('payments:tipopago_list')
     template_name = 'TipoPago/tipopago_form.html'
 
 
 class TipoPagoDeleteView(UpdateView):
     model = TipoPago
     form_class = TipoPagoForm
-    success_url = reverse_lazy('payments:cashier_list')
+    success_url = reverse_lazy('payments:tipopago_list')
     template_name = 'TipoPago/tipopago_list.html'
 
 
