@@ -443,3 +443,6 @@ class ProvedorColegio(ActivoMixin,CreacionModificacionUserProveedorMixin, Creaci
     class Meta:
         managed = True
         db_table = 'proveedor_colegio'
+
+    def __str__(self):
+        return self.proveedor.razon_social

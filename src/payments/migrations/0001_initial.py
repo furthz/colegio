@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        #('register','0002_register'),
+        ('register','0002_register'),
         #('register', '0003_auto_20170826_1717'),
     ]
 
@@ -46,7 +46,7 @@ class Migration(migrations.Migration):
                 ('numero_comprobante', models.CharField(max_length=30)),
                 ('caja_chica', models.ForeignKey(db_column='id_caja_chica', on_delete=django.db.models.deletion.DO_NOTHING, related_name='pagos', to='payments.CajaChica')),
                 ('personal', models.ForeignKey(db_column='id_personal_colegio', on_delete=django.db.models.deletion.DO_NOTHING, related_name='pagos', to='register.PersonalColegio')),
-                ('proveedor', models.ForeignKey(db_column='id_proveedor', on_delete=django.db.models.deletion.DO_NOTHING, to='register.Proveedor')),
+                ('proveedor', models.ForeignKey(db_column='id_proveedor_colegio', on_delete=django.db.models.deletion.DO_NOTHING, to='register.ProveedorColegio')),
                 ('usuario_creacion',
                  models.CharField(blank=True, max_length=10, null=True, verbose_name='Usuario_Creacion')),
                 ('usuario_modificacion',
