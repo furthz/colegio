@@ -141,30 +141,35 @@ class ControlPagosPromotorView(FormView):
 
         anio = int(anio)
         if anio == date.today().year:
-            mes_rango = date.today().month
+            rango_mes = date.today().month
         else:
-            mes_rango = 12
-        logger.debug("El rango de meses es {0}".format(mes_rango))
+            rango_mes = 12
+        logger.debug("El rango de meses es {0}".format(rango_mes))
 
         # CALCULO DE MONTO TOTAL DE PAGOS POR MES SEGÚN AÑO ESCOGIDO
         monto_mes_total = []  # Lista de Montos totales por mes
-        for mes in range (0, mes_rango):
+        for mes in range (0, rango_mes):
             pagos_mes = pagos_colegio.filter(fecha__month=mes + 1)
             monto_mes_total.append(0)  # Declara las Montos totales iniciales de un mes como '0'
             for pagos in pagos_mes:
                 monto_mes_total[mes] = monto_mes_total[mes] + pagos.monto  # Cálculo de los montos totales del mes
+        logger.debug("El monto del año por mes es {0}".format(monto_mes_total))
 
         # CALCULO DE MONTO TOTAL DE PAGOS POR RANGO
         monto_total_rango = 0  # Lista de Montos totales por mes
         for pagos_1 in pagos_rango:
             monto_total_rango = monto_total_rango + pagos_1.monto  # Cálculo de los montos totales del mes
 
+        logger.debug("El monto total de los pagos para el rango de tiempo es {0}".format(monto_total_rango))
+
         # CALCULO DE MONTO POR MES PARA UN RANGO
-        mes_inicio = 1
-        mes_final = 5
+        #mes_inicio = fecha_inicio.month
+        #mes_final = fecha_final.month
+        mes_inicio = 3
+        mes_final = 8
         rango_mes = mes_final - mes_inicio
         monto_rango_mes = []
-        for mes in range(0, rango_mes):
+        for mes in range(0, rango_mes+1):
             monto_rango_mes.append(0)
             pagos_mes = pagos_colegio.filter(fecha__month=mes + mes_inicio)
             for pagos in pagos_mes:

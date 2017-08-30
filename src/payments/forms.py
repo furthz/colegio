@@ -3,6 +3,7 @@ from django.forms import ModelForm
 from payments.models import TipoPago
 from payments.models import Pago
 from django.utils.translation import ugettext_lazy as _
+from crispy_forms.helper import FormHelper
 
 class TipoPagoForm(forms.ModelForm):
     class Meta:
@@ -67,11 +68,15 @@ class ControlPagosPromotorForm(forms.Form):
     Nota:
         solo se añaden com campos los que son definidos por los usuarios
     """
+    tipo_pago = forms.ModelChoiceField(
+        label='Tipo_pago',
+        queryset=None,
+        required=False, )
 
     anio = forms.CharField()
     fecha_inicio = forms.DateField()
     fecha_final = forms.DateField()
-    tipo_pago = forms.CharField()
+    #tipo_pago = forms.CharField()
     numero_comprobante = forms.CharField()
 
     def ChoiceAnio(self):
@@ -88,3 +93,8 @@ class ControlPagosPromotorForm(forms.Form):
         self.fields['tipo_pago'].widget.attrs.update({'class': 'form-control'})
         self.fields['numero_comprobante'].widget.attrs.update({'class': 'form-control'})
         self.fields['numero_comprobante'].required = False
+
+        tipos = TipoPago.objects.all()
+        self.helper = FormHelper()
+        self.helper.form_method = "post"
+        self.fields['tipo_pago'].queryset = tipos

@@ -90,7 +90,7 @@ def calculo_pagos_total(anio, tipo_pago, numero_comprobante):
     pago_1 = Pago.objects.filter(fecha__year=anio)
 
     # Proceso de filtrado según el tipo de pago
-    if tipo_pago == "Todos":
+    if tipo_pago == "":
         pago_2 = pago_1
     else:
         pago_2 = pago_1.filter(tipo_pago=tipo_pago)
