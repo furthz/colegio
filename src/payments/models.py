@@ -1,7 +1,7 @@
 from django.db import models
 
 # Create your models here.
-from register.models import Proveedor, Colegio, PersonalColegio
+from register.models import Proveedor, Colegio, PersonalColegio, ProvedorColegio
 from utils.models import ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin
 
 class Eliminar(models.Model):
@@ -68,7 +68,7 @@ class Pago(CreacionModificacionFechaMixin, CreacionModificacionUserMixin):
     Clase para definir los pagos que el colegio realiza por los diferentes conceptos
     """
     id_pago = models.AutoField(primary_key=True)
-    proveedor = models.ForeignKey(Proveedor, models.DO_NOTHING, db_column="id_proveedor")
+    proveedor = models.ForeignKey(ProvedorColegio, models.DO_NOTHING, db_column="id_proveedor_colegio")
     caja_chica = models.ForeignKey(CajaChica, models.DO_NOTHING, db_column="id_caja_chica", related_name="pagos")
     personal = models.ForeignKey(PersonalColegio, models.DO_NOTHING, db_column="id_personal_colegio", related_name="pagos")
     tipo_pago = models.ForeignKey(TipoPago, models.DO_NOTHING, db_column="id_tipo_pago", related_name="pagos")

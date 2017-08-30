@@ -284,14 +284,32 @@ class Migration(migrations.Migration):
                  models.DateTimeField(blank=True, db_column='fecha_modificacion', null=True)),
                 ('id_proveedor', models.AutoField(primary_key=True, serialize=False)),
                 ('razon_social', models.CharField(max_length=100)),
-                ('persona', models.OneToOneField(on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True,
-                                                 to='profiles.Profile')),
+                ('ruc', models.CharField(max_length=15)),
             ],
             options={
                 'db_table': 'proveedor',
                 'managed': True,
             },
             bases=('profiles.profile', models.Model),
+        ),
+        migrations.CreateModel(
+            name='ProveedorColegio',
+            fields=[
+                ('id_proveedor_colegio', models.AutoField(auto_created=True, primary_key=True,
+                                                         serialize=False, verbose_name='ID')),
+                ('proveedor', models.ForeignKey(db_column='id_proveedor', to='register.Proveedor')),
+                ('colegio', models.ForeignKey(db_column='id_colegio', to='register.Colegio')),
+                ('activo', models.BooleanField(default=True)),
+                ('fecha_creacion', models.DateTimeField(null=True)),
+                ('fecha_modificacion', models.DateTimeField(null=True)),
+                ('usuario_creacion', models.CharField(max_length=10, null=True)),
+                ('usuario_modificacion', models.CharField(max_length=10, null=True))
+
+            ],
+            options={
+                'db_table': 'proveedor_colegio',
+                'managed': settings.IS_TESTING,
+            },
         ),
 
     ]
