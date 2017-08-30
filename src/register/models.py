@@ -427,19 +427,6 @@ class Proveedor(CreacionModificacionUserProveedorMixin, CreacionModificacionFech
         """
         return reverse('registers:proveedor_detail', kwargs={'pk': self.pk})
 
-    @staticmethod
-    def saveFromPersona(per: Profile, **atributos):
-        """
-        Método que permite guardar un Apoderado a partir de una persona existente
-        :param per: Persona base
-        :param atributos: Nuevos atributos propios de Apoderado
-        :return: Objeto Apoderado creado
-        """
-        try:
-            proveedor = Proveedor.objects.get(persona=per)
-            return proveedor
-        except Proveedor.DoesNotExist:
-            return insert_child(obj=per, child_model=Proveedor, **atributos)
 
     class Meta:
         managed = True

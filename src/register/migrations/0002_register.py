@@ -290,7 +290,6 @@ class Migration(migrations.Migration):
                 'db_table': 'proveedor',
                 'managed': True,
             },
-            bases=('profiles.profile', models.Model),
         ),
         migrations.CreateModel(
             name='ProveedorColegio',
