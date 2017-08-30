@@ -54,8 +54,9 @@ class CajaChica(CreacionModificacionFechaMixin, CreacionModificacionUserMixin):
     """
     id_caja_chica = models.AutoField(primary_key=True)
     colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column="id_colegio", related_name="caja_chica")
-    presupuesto = models.DecimalField(decimal_places=10, max_digits=10)
+    presupuesto = models.FloatField()
     periodo = models.IntegerField()
+    saldo = models.FloatField()
 
     class Meta:
         managed = True
@@ -72,7 +73,7 @@ class Pago(CreacionModificacionFechaMixin, CreacionModificacionUserMixin):
     personal = models.ForeignKey(PersonalColegio, models.DO_NOTHING, db_column="id_personal_colegio", related_name="pagos")
     tipo_pago = models.ForeignKey(TipoPago, models.DO_NOTHING, db_column="id_tipo_pago", related_name="pagos")
     descripcion = models.CharField(max_length=200)
-    monto = models.DecimalField(decimal_places=10, max_digits=10)
+    monto = models.FloatField()
     fecha = models.DateTimeField()
     numero_comprobante = models.CharField(max_length=30)
 

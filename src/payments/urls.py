@@ -4,6 +4,7 @@ from .views import (
     TipoPagoListView, TipoPagoDetailView, TipoPagoCreationView, TipoPagoUpdateView, TipoPagoDeleteView,
 
 )
+from payments.views import RegistrarPagoCreateView
 
 urlpatterns = [
     # URL's del CRUD de TipoPago
@@ -12,6 +13,7 @@ urlpatterns = [
     url(r'^tipo_pago/create$', TipoPagoCreationView.as_view(), name='tipopago_create'),
     url(r'^tipo_pago/update/(?P<pk>\d+)$', TipoPagoUpdateView.as_view(), name='tipopago_edit'),
     url(r'^tipo_pago/delete/(?P<pk>\d+)$', TipoPagoDeleteView.as_view(), name='tipopago_delete'),
+    url(r'^register/create/$', RegistrarPagoCreateView.as_view(), name='registrarpago_create'),
 
 ]
 
