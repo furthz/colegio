@@ -42,23 +42,11 @@
                                                     <td>{{ tipopago.padre }}</td>
 
 
-                                                    <!--
 
-                                                    <td>
-                                                        {% if cashier.activo == 1 %}
-                                                            <span class="label label-success">Activo</span>
-                                                        {% else %}
-                                                            <span class="label label-danger">Desactivado</span>
-                                                        {% endif %}
-                                                    </td>
-                                                    <td>{{ cashier.eliminado }}</td> -->
 
                                                     <td>
                                                         <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                                                         <!--    <a title="Editar" href='{% url "cash:cashier_edit" cashier.id_caja %}' class="btn btn-default">
-                                                                <i class="fa fa-pencil" aria-hidden="true"></i>
-                                                            </a>
-                                                         -->
+
                                                             <a title="Detalle" href='{% url "payments:tipopago_detail" tipopago.id_tipo_pago %}' class="btn btn-default">
                                                                 <i class="fa fa-info-circle" aria-hidden="true"></i>
                                                             </a>

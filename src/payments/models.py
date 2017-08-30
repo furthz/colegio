@@ -32,7 +32,7 @@ class TipoPago(ActivoMixin, Eliminar, models.Model):
     """
     id_tipo_pago = models.AutoField(primary_key=True)
     descripcion = models.CharField(max_length=100)
-    padre = models.ForeignKey("self", models.DO_NOTHING, db_column="id_parent")
+    padre = models.ForeignKey("self", models.DO_NOTHING, db_column="id_parent", blank=True, null=True)
 
     def __str__(self):
         """
