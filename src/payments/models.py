@@ -4,8 +4,29 @@ from django.db import models
 from register.models import Proveedor, Colegio, PersonalColegio
 from utils.models import ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin
 
+class Eliminar(models.Model):
+    """
+    Clase para cambiar de estado automaticamente segun guardado o update
+    """
+    eliminado = models.BooleanField()
 
-class TipoPago(ActivoMixin):
+    def save(self, *args, **kwargs):
+        # creación
+        if not self.pk:
+            self.eliminado = False
+
+        else:  # modificacion
+            self.eliminado = True
+
+        super(Eliminar, self).save(*args, **kwargs)
+
+    save.alters_data = True
+
+    class Meta:
+        abstract = True
+
+
+class TipoPago(ActivoMixin, Eliminar, models.Model):
     """
     Clase para definir y organizar los tipos de pagos que realiza el colegio
     """
@@ -13,8 +34,17 @@ class TipoPago(ActivoMixin):
     descripcion = models.CharField(max_length=100)
     padre = models.ForeignKey("self", models.DO_NOTHING, db_column="id_parent")
 
+    def __str__(self):
+        """
+        Devuelve la descripción del TIPOPAGO. Ejemplo :
+        :return Pago de agua
+        """
+
+        return "{0}".format(self.descripcion)
+
     class Meta:
         managed = True
+        ordering = ["id_tipo_pago"]
         db_table = 'tipo_pago'
 
 
