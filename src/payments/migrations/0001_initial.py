@@ -65,6 +65,7 @@ class Migration(migrations.Migration):
                 ('descripcion', models.CharField(max_length=100)),
                 ('padre', models.ForeignKey(db_column='id_parent', on_delete=django.db.models.deletion.DO_NOTHING, to='payments.TipoPago')),
                 ('activo', models.BooleanField(default=True)),
+                ('eliminado', models.BooleanField(default=False)),
             ],
             options={
                 'db_table': 'tipo_pago',

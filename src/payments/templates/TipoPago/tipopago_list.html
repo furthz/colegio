@@ -1,5 +1,5 @@
 {% extends "page.html" %}
-{% block title %}{{ block.super }}Cajeros{% endblock %}
+{% block title %}{{ block.super }}Tipo de Pago{% endblock %}
 {% block container %}
 
     <!--Comienza el contenido!!!!!!!!!!!!!!!!!!!-->
@@ -8,18 +8,16 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Registrar Caja</h3>
+                        <h3 class="box-title">Registrar Tipo de Pago</h3>
                         <div class="box-body">
                             <div class="col-md-9">
                                 <div class="panel-page">
                                     <div class="toolbar-header">
-                                            <a class="btn btn-success" href='{% url "cash:cashier_create" %}'><i class="fa fa-plus" aria-hidden="true"></i>  Crear cajero</a>
+                                            <a class="btn btn-success" href='{% url "payments:tipopago_create" %}'><i class="fa fa-plus" aria-hidden="true"></i>  Crear Tipo de Pago</a>
                                         </div>
 
-
-
                                     <div class="box-header with-border">
-                                        <h3 class="box-title">Lista de Cajas</h3>
+                                        <h3 class="box-title">Lista de Tipos de Pagos</h3>
                                     </div>
                                     <div class="box-body">
                                         <div class="table-responsive no-padding">
@@ -28,20 +26,21 @@
                                                 <tbody>
                                                 <tr>
                                                     <th>Item</th>
-                                                    <th>Numero de Caja</th>
                                                     <th>Descripcion</th>
+                                                    <th>Id Parent</th>
+
                                                     <!-- <th>Estado</th>
                                                     <th>Eliminado</th> -->
-                                                    <th>Acciones</th>
 
                                                 </tr>
-                                                {% for cashier in object_list %}
+                                                {% for tipopago in object_list %}
                                                 <tr>
-                                                    {% if cashier.eliminado == 1 %}
+                                                    {% if tipopago.eliminado == 1 %}
                                                     {% else %}
                                                     <td>{{ forloop.counter }}</td>
-                                                    <td>{{ cashier.numero }}</td>
-                                                    <td>{{ cashier.descripcion }}</td>
+                                                    <td>{{ tipopago.descripcion }}</td>
+                                                    <td>{{ tipopago.padre }}</td>
+
 
                                                     <!--
 
@@ -60,10 +59,10 @@
                                                                 <i class="fa fa-pencil" aria-hidden="true"></i>
                                                             </a>
                                                          -->
-                                                            <a title="Detalle" href='{% url "cash:cashier_detail" cashier.id_caja %}' class="btn btn-default">
+                                                            <a title="Detalle" href='{% url "payments:tipopago_detail" tipopago.id_tipo_pago %}' class="btn btn-default">
                                                                 <i class="fa fa-info-circle" aria-hidden="true"></i>
                                                             </a>
-                                                            <a title="Eliminar" href="{% url 'cash:cashier_delete' cashier.id_caja %}" class="btn btn-default">
+                                                            <a title="Eliminar" href="{% url 'payments:tipopago_delete' tipopago.id_tipo_pago %}" class="btn btn-default">
                                                                 <i class="fa fa-trash" aria-hidden="true"></i>
                                                             </a>
                                                         </div>
