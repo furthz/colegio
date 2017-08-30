@@ -36,6 +36,7 @@
                                                 <div style="display: none;">
                                                 {{ form.eliminado }}
                                                 {{ form.activo }}
+                                                {{ form.colegio }}
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-sm-3 control-label">Id Padre</label>
@@ -44,7 +45,25 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label class="col-sm-3 control-label">Descripcion</label>
+                                                    <label class="col-sm-3 control-label">Tipo</label>
+                                                    <div class="col-sm-9">
+                                                        <script type="text/javascript">
+                                                            function mostrar( obj ){
+                                                                var tuinput = document.getElementById("describe") ;
+                                                                tuinput.value = "" + obj[ obj.selectedIndex ].value ;
+                                                            }
+                                                            </script>
+                                                        <select class="form-control" name="prioridad" onchange="mostrar(this);" >
+                                                            <option>--------</option>
+                                                            <option value="0">Bienes</option>
+                                                            <option value="1">Servicios</option>
+                                                        </select>
+                                                        {{ form.tipo }}
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">Descripción</label>
                                                     <div class="col-sm-9">
                                                         {{ form.descripcion }}
                                                     </div>
@@ -73,4 +92,3 @@
     <!--Fin del contenido!!!!!!!!!!!-->
 
 {% endblock container %}
-

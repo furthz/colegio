@@ -58,7 +58,7 @@ class TipoPagoDeleteView(UpdateView):
     model = TipoPago
     form_class = TipoPagoForm
     success_url = reverse_lazy('payments:tipopago_list')
-    template_name = 'TipoPago/tipopago_list.html'
+    template_name = 'TipoPago/tipopago_confirm_delete.html'
 
 
 

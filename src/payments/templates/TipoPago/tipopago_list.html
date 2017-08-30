@@ -26,8 +26,10 @@
                                                 <tbody>
                                                 <tr>
                                                     <th>Item</th>
+                                                    <th>Tipo</th>
                                                     <th>Descripcion</th>
                                                     <th>Id Parent</th>
+                                                    <th>Colegio</th>
 
                                                     <!-- <th>Estado</th>
                                                     <th>Eliminado</th> -->
@@ -38,12 +40,14 @@
                                                     {% if tipopago.eliminado == 1 %}
                                                     {% else %}
                                                     <td>{{ forloop.counter }}</td>
+                                                    {% if tipopago.tipo == 0 %}
+                                                        <td>Bienes</td>
+                                                    {% else %}
+                                                        <td>Servicios</td>
+                                                    {% endif %}
                                                     <td>{{ tipopago.descripcion }}</td>
                                                     <td>{{ tipopago.padre }}</td>
-
-
-
-
+                                                    <td>{{ tipopago.colegio }}</td>
                                                     <td>
                                                         <div class="btn-group btn-group-sm" role="group" aria-label="...">
 

@@ -223,7 +223,7 @@ class TesoreroForm(ValidProfileFormMixin, PersonaForm):
         }
 
 
-class ProveedorForm(ValidProfileFormMixin, PersonaForm):
+class ProveedorForm(forms.Form):
 
     title = forms.CharField(label="Registrar Proveedor", required=False)
 
