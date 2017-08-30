@@ -10,9 +10,15 @@ from payments.models import Pago
 from register.models import PersonalColegio
 from payments.forms import TipoPagoForm
 from payments.forms import PagoForm
-from datetime import datetime
+#from datetime import datetime
+from django.utils.timezone import now as timezone_now
+import datetime
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+import logging
+
+logger = logging.getLogger("project")
+
 
 #################################################
 #####          CRUD DE TIPO PAGO            #####
@@ -75,19 +81,20 @@ class RegistrarPagoCreateView(CreateView):
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
-
+        logger.info(form)
         if form.is_valid():
             data_form = form.cleaned_data
+            logger.info(data_form)
             cajachica_actual = CajaChica.objects.get(colegio__id_colegio=self.request.session.get('colegio'))
             if (cajachica_actual.saldo - data_form['monto']) > 0:
 
                 pago = self.model(proveedor=data_form['proveedor'],
-                                  caja_chica=data_form['caja_chica'],
-                                  personal=data_form['personal'],
+                                  caja_chica=cajachica_actual,
+                                  personal=PersonalColegio.objects.get(personal__cajero__user=self.request.user),
                                   tipo_pago=data_form['tipo_pago'],
                                   descripcion=data_form['descripcion'],
                                   monto=data_form['monto'],
-                                  fecha=data_form['fecha'],
+                                  fecha=timezone_now(),
                                   numero_comprobante=data_form['numero_comprobante'])
                 pago.save()
 
