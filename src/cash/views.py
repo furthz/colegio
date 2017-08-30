@@ -13,7 +13,8 @@ from .forms import CashierForm, BoxCashierForm, ConsignmentForm
 
 
 def index(request):
-    return HttpResponse("Modulo Cash")
+    return render(request, 'cash/index.html')
+
 
 
 #################################################
@@ -24,11 +25,16 @@ class CashierListView(ListView):
     model = Caja
     template_name = 'cashier/cashier_list.html'
 
-
+"""
 class CashierDetailView(DetailView):
-    model = Caja
     template_name = 'cashier/cashier_detail.html'
+    model = Caja
+"""
 
+class CashierDetailView(UpdateView):
+    model = Caja
+    form_class = CashierForm
+    template_name = 'cashier/cashier_detail.html'
 
 class CashierCreationView(CreateView):
     model = Caja
@@ -44,11 +50,20 @@ class CashierUpdateView(UpdateView):
     template_name = 'cashier/cashier_form.html'
     # fields = ['id_remesa', 'id_persona', 'id_movimiento', 'fechacreacion', 'monto', 'comentario']
 
-
+"""
 class CashierDeleteView(DeleteView):
     model = Caja
     success_url = reverse_lazy('cash:cashier_list')
     template_name = 'cashier/cashier_confirm_delete.html'
+"""
+
+class CashierDeleteView(UpdateView):
+    model = Caja
+    form_class = CashierForm
+    success_url = reverse_lazy('cash:cashier_list')
+    template_name = 'cashier/cashier_confirm_delete.html'
+
+
 
 
 #################################################

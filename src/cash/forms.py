@@ -2,6 +2,7 @@ from django import forms
 from .models import Caja, CajaCajero, Remesa
 
 
+
 class CashierForm(forms.ModelForm):
     class Meta:
         model = Caja
@@ -11,6 +12,7 @@ class CashierForm(forms.ModelForm):
             'numero',
             'descripcion',
             'activo',
+            'eliminado',
             'fecha_creacion',
             'fecha_modificacion',
             'usuario_creacion',
@@ -18,10 +20,11 @@ class CashierForm(forms.ModelForm):
         ]
 
         labels = {
-            'colegio': '',
+            'colegio': 'Colegio',
             'numero': 'Número de Caja',
             'descripcion': 'Descripción',
-            'activo' :'Activo',
+            'activo': 'Activo',
+            'eliminado': 'Eliminado',
             'fecha_creacion': 'Fecha de Creación',
             'fecha_modificacion': 'Fecha de Modificación',
             'usuario_creacion': 'Usuario creación',
@@ -33,9 +36,10 @@ class CashierForm(forms.ModelForm):
             'colegio': forms.Select(attrs={'class': 'hidden'}),
             'numero': forms.TextInput(attrs={'class': 'form-control'}),
             'descripcion': forms.TextInput(attrs={'class': 'form-control'}),
-            'activo': forms.CheckboxInput(attrs={'class': 'hidden'}),
-            'fecha_creacion': forms.HiddenInput(attrs={'class': 'form-control'}),
-            'fecha_modificacion': forms.HiddenInput(attrs={'class': 'form-control'}),
+            'activo': forms.CheckboxInput(),
+            'eliminado': forms.CheckboxInput(),
+            'fecha_creacion': forms.TextInput(attrs={'class': 'form-control'}),
+            'fecha_modificacion': forms.TextInput(attrs={'class': 'form-control'}),
             'usuario_creacion': forms.HiddenInput(attrs={'class': 'form-control'}),
             'usuario_modificacion': forms.HiddenInput(attrs={'class': 'form-control'}),
         }
@@ -51,8 +55,9 @@ class BoxCashierForm(forms.ModelForm):
             'saldo',
             'monto_apertura',
             'monto_cierre',
+            'comentario_apertura',
+            'comentario_cierre',
             'estado',
-            'comentario',
             'fecha_creacion',
             'fecha_modificacion',
             'usuario_creacion',
@@ -65,8 +70,9 @@ class BoxCashierForm(forms.ModelForm):
             'saldo': 'Saldo',
             'monto_apertura': 'Monto de Apertura',
             'monto_cierre': 'Monto de Cierre',
+            'comentario_apertura': 'Comentario Apertura',
+            'comentario_cierre': 'Comentario Cierre',
             'estado': 'Estado',
-            'comentario': 'Comentario',
             'fecha_creacion': 'Fecha de Creación',
             'fecha_modificacion': 'Fecha de Modificación',
             'usuario_creacion': 'Usuario de Creación',
@@ -80,8 +86,9 @@ class BoxCashierForm(forms.ModelForm):
             'saldo': forms.TextInput(attrs={'class': 'form-control'}),
             'monto_apertura': forms.TextInput(attrs={'class': 'form-control'}),
             'monto_cierre': forms.TextInput(attrs={'class': 'form-control'}),
+            'comentario_apertura': forms.Textarea(attrs={'class': 'form-control', 'rows': '3'}),
+            'comentario_cierre': forms.Textarea(attrs={'class': 'form-control', 'rows': '3'}),
             'estado': forms.CheckboxInput(attrs={'id': 'Uncheck'}),
-            'comentario': forms.Textarea(attrs={'class': 'form-control', 'rows': '3'}),
             'fecha_creacion': forms.HiddenInput(attrs={'class': 'form-control'}),
             'fecha_modificacion': forms.HiddenInput(attrs={'class': 'form-control'}),
             'usuario_creacion': forms.HiddenInput(attrs={'class': 'form-control'}),
@@ -121,4 +128,3 @@ class ConsignmentForm(forms.ModelForm):
                        "onchange": "document.getElementById('monto').innerHTML = montodine = this.value"}),
             'comentario': forms.Textarea(attrs={'class': 'form-control', 'rows': '3'}),
         }
-

@@ -41,18 +41,7 @@ class Migration(migrations.Migration):
                 'managed': settings.IS_TESTING,
             },
         ),
-        migrations.CreateModel(
-            name='TiposGrados',
-            fields=[
-                ('activo', models.BooleanField()),
-                ('id_tipo_grado', models.AutoField(primary_key=True, serialize=False)),
-                ('descripcion', models.CharField(max_length=20)),
-            ],
-            options={
-                'db_table': 'tipos_grados',
-                'managed': settings.IS_TESTING,
-            },
-        ),
+
         migrations.CreateModel(
             name='TiposMedioPago',
             fields=[
@@ -74,6 +63,19 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'tipos_nivel',
+                'managed': settings.IS_TESTING,
+            },
+        ),
+        migrations.CreateModel(
+            name='TiposGrados',
+            fields=[
+                ('activo', models.BooleanField()),
+                ('id_tipo_grado', models.AutoField(primary_key=True, serialize=False)),
+                ('descripcion', models.CharField(max_length=20)),
+                ('nivel', models.ForeignKey(db_column='id_tipo_nivel', to='utils.TiposNivel')),
+            ],
+            options={
+                'db_table': 'tipos_grados',
                 'managed': settings.IS_TESTING,
             },
         ),

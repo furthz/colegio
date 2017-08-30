@@ -7,6 +7,8 @@ import accounts.urls
 import enrollment.urls
 import register.urls
 import income.urls
+import cash.urls
+import payments.urls
 from . import views
 
 urlpatterns = [
@@ -17,7 +19,9 @@ urlpatterns = [
     url(r'^', include(accounts.urls, namespace='accounts')),
     url(r'^enrollments/', include(enrollment.urls, namespace='enrollments')),
     url(r'^registers/', include(register.urls, namespace='registers')),
+    url(r'^cash/', include(cash.urls, namespace='cash')),
     url(r'^income/', include(income.urls, namespace='income')),
+    url(r'^payments/', include(payments.urls, namespace='payments')),
 ]
 
 # User-uploaded files like profile pics need to be served in development

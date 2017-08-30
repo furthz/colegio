@@ -414,6 +414,9 @@ class Proveedor(CreacionModificacionUserProveedorMixin, CreacionModificacionFech
     razon_social = models.CharField(max_length=100)
     persona = models.OneToOneField(Profile, models.DO_NOTHING, parent_link=True, )
 
+    def __str__(self):
+        return self.razon_social
+
     def full_detail(self):
         lista = Profile.full_detail(self)
         lista.append("razon social: {0}".format(self.parentesco))

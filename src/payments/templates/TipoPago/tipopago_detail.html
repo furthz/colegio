@@ -35,47 +35,25 @@
                                                 {% csrf_token %}
                                                 <fieldset disabled="disabled">
                                                 <div style="display: none;">
-                                                {{ form.colegio }}
-                                                {{ form.usuario_creacion }}
-                                                {{ form.usuario_modificacion }}
+                                                {{ tipopago.eliminado }}
+                                                {{ tipopago.usuario_modificacion }}
                                                 </div>
                                                 <div class="form-group">
-                                                    <label class="col-sm-3 control-label">Numero de Caja</label>
+                                                    <label class="col-sm-3 control-label">Id Padre</label>
                                                     <div class="col-sm-9">
-
-                                                             {{ form.numero }}
+                                                             {{ tipopago.padre }}
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-sm-3 control-label">Descripcion</label>
                                                     <div class="col-sm-9">
-                                                        {{ form.descripcion }}
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-sm-3 control-label">Estado</label>
-                                                    <div class="col-sm-9">
-                                                        {{ form.activo }}
-                                                    </div>
-                                                </div>
-                                                                                                            {{ form.eliminado }}
-
-                                                <div class="form-group">
-                                                    <label class="col-sm-3 control-label">Fecha de Creación</label>
-                                                    <div class="col-sm-9">
-                                                        {{ form.fecha_creacion }}
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-sm-3 control-label">Fecha de Modificación</label>
-                                                    <div class="col-sm-9">
-                                                        {{ form.fecha_modificacion }}
+                                                        {{ tipopago.descripcion }}
                                                     </div>
                                                 </div>
                                                 </fieldset>
                                                 <div class="form-group">
                                                     <div class="col-sm-offset-2 col-sm-10">
-                                                        <a href='{% url "cash:cashier_list" %}' class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i>
+                                                        <a href='{% url "payments:tipopago_list" %}' class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i>
                                                         Regresar a la lista
                                                         </a>
                                                     </div>

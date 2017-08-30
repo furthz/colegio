@@ -6,6 +6,7 @@ from django.db import migrations, models
 from django.conf import settings
 
 
+
 class Migration(migrations.Migration):
 
 
@@ -24,6 +25,7 @@ class Migration(migrations.Migration):
                 ('numero', models.IntegerField()),
                 ('descripcion', models.CharField(blank=True, max_length=500, null=True)),
                 ('activo', models.BooleanField(default=True)),
+                ('eliminado', models.BooleanField(default=False)),
                 ('fecha_creacion', models.DateField(blank=True, null=True)),
                 ('fecha_modificacion', models.DateField(blank=True, null=True)),
                 ('usuario_creacion', models.CharField(blank=True, max_length=10, null=True)),
@@ -43,7 +45,8 @@ class Migration(migrations.Migration):
                 ('saldo', models.FloatField()),
                 ('monto_apertura', models.FloatField()),
                 ('monto_cierre', models.FloatField()),
-                ('comentario', models.CharField(blank=True, max_length=500, null=True)),
+                ('comentario_apertura', models.CharField(blank=True, max_length=500, null=True)),
+                ('comentario_cierre', models.CharField(blank=True, max_length=500, null=True)),
                 ('estado', models.BooleanField(default=True)),
                 ('fecha_creacion', models.DateField(blank=True, null=True)),
                 ('fecha_modificacion', models.DateField(blank=True, null=True)),
