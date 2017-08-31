@@ -1,18 +1,55 @@
-{% extends "base.html" %}
-
+<html>
 {% load crispy_forms_tags %}
+{% load staticfiles %}
+    <head>
+          <meta charset="utf-8">
+          <meta http-equiv="X-UA-Compatible" content="IE=edge">
+          <title>Servicios</title>
+          <!-- Tell the browser to be responsive to screen width -->
+          <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+          <link rel="stylesheet" href="{% static 'components/bootstrap/dist/css/bootstrap.css' %}" >
+          <!-- Bootstrap 3.3.7 -->
+          <link rel="stylesheet" href="{%  static 'components/bootstrap/dist/css/bootstrap.min.css' %}">
+          <!-- Font Awesome -->
+          <link rel="stylesheet" href="{%  static 'components/font-awesome/css/font-awesome.min.css' %}">
+          <!-- Ionicons -->
+          <link rel="stylesheet" href="{%  static 'components/Ionicons/css/ionicons.min.css' %}">
+          <!-- Theme style -->
+          <link rel="stylesheet" href="{%  static 'site/css/AdminLTE.min.css' %}">
+          <!-- AdminLTE Skins. Choose a skin from the css/skins
+               folder instead of downloading all of them to reduce the load. -->
+          <link rel="stylesheet" href="{%  static 'site/css/skins/_all-skins.min.css' %}">
+          <!-- Morris chart -->
+          <link rel="stylesheet" href="{%  static 'site/css/style.css' %}">
 
-{% block navbar %}
-{% endblock %}
+          <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+          <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+          <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+          <![endif]-->
 
-{% block container %}
-<div class="container form-box">
-  <div class="text-center">
-    <h2>{% block form_heading %}{% endblock %}</h2>
-  </div>
-  {% block form %}
-  {% endblock %}
-</div>
+          <!-- Google Font -->
+          <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
-{% endblock container %}
+    </head>
+    <body class="hold-transition login-page">
+        <div class="login-box">
+            <div class="login-logo">
+                <a href="#">
+                  <img src="{% static 'site/img/logo_mundopixel_login.png' %}">
+                </a>
+            </div>
+            <!-- /.login-logo -->
+            <div class="login-box-body">
 
+                  {% block container %}
+
+                  {% endblock container %}
+            </div>
+        </div>
+    </body>
+    {% block scripts %}
+
+    {% endblock scripts %}
+</html>
