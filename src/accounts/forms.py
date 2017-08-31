@@ -98,8 +98,9 @@ class AsignColegioForm(forms.Form):
         self.helper.form_method = "post"
 
         self.fields['colegios'].queryset=colegios
+        self.fields['colegios'].widget.attrs.update({'class': 'form-control'})
 
-        self.helper.add_input(Submit('submit', 'Asignar', css_class="btn btn-lg btn-primary btn-block"))
+        #self.helper.add_input(Submit('submit', 'Asignar', css_class="btn btn-primary btn-block btn-flat"))
 
         logger.info("Se asignaron los colegios para ser logueados")
 

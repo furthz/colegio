@@ -273,6 +273,9 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Proveedor',
             fields=[
+                ('id_proveedor', models.AutoField(primary_key=True, serialize=False)),
+                ('razon_social', models.CharField(max_length=100)),
+                ('ruc', models.CharField(max_length=15)),
                 ('usuario_creacion_proveedor',
                  models.CharField(blank=True, db_column='usuario_creacion', max_length=10, null=True,
                                   verbose_name='Usuario_Creacion')),
@@ -282,9 +285,6 @@ class Migration(migrations.Migration):
                 ('fecha_creacion_proveedor', models.DateTimeField(blank=True, db_column='fecha_creacion', null=True)),
                 ('fecha_modificacion_proveedor',
                  models.DateTimeField(blank=True, db_column='fecha_modificacion', null=True)),
-                ('id_proveedor', models.AutoField(primary_key=True, serialize=False)),
-                ('razon_social', models.CharField(max_length=100)),
-                ('ruc', models.CharField(max_length=15)),
             ],
             options={
                 'db_table': 'proveedor',

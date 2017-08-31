@@ -8,6 +8,15 @@
 
 {% block container %}
     <p class="login-box-msg">Selecciona el Colegio al que te asignarás</p>
-    {% crispy form %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="form-group has-feedback">
+            {{ form.colegios }}
+        </div>
+        <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-block btn-flat">Asignar</button>
+        </div>
+    </form>
+
 {% endblock container %}
 
