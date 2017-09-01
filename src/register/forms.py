@@ -1,3 +1,6 @@
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit
+
 from profiles.models import Profile
 from django.utils.translation import gettext_lazy as _
 from django import forms
@@ -223,27 +226,21 @@ class TesoreroForm(ValidProfileFormMixin, PersonaForm):
         }
 
 
-class ProveedorForm(forms.Form):
-
-    title = forms.CharField(label="Registrar Proveedor", required=False)
+class ProveedorForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['razon_social'].widget.attrs.update({'class': 'form-control'})
+
+        self.helper = FormHelper()
+        self.helper.form_id = "idproveedor"
+        self.helper.form_method = "post"
+
+        self.helper.add_input(Submit('submit', 'Crear', css_class="btn btn-primary btn-block btn-flat"))
 
     class Meta:
         model = Proveedor
-        fields = ['nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento', 'numero_documento',
-                  'sexo', 'correo', 'fecha_nac', 'razon_social']
+        fields = ['razon_social', 'ruc']
         labels = {
-            'nombre': _('Nombre'),
-            'segundo_nombre': _('Segundo Nombre'),
-            'apellido_ma': _('Apellido Materno'),
-            'apellido_pa': _('Apellido Paterno'),
-            'tipo_documento': _('Tipo Documento'),
-            'numero_documento': _('Número Documento'),
-            'sexo': _('Sexo'),
-            'correo': _('Correo'),
-            'fecha_nac': _('Fecha Nac.'),
+            'ruc': _('RUC'),
             'razon_social': _('Razón Social'),
         }

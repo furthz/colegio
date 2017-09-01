@@ -416,9 +416,9 @@ class Proveedor(CreacionModificacionUserProveedorMixin, CreacionModificacionFech
         return self.razon_social
 
     def full_detail(self):
-        lista = Profile.full_detail(self)
-        lista.append("razon social: {0}".format(self.razon_social))
-        return lista
+        #lista = Profile.full_detail(self)
+        detalle_completo = ["razon social: {0}".format(self.razon_social)]
+        return detalle_completo
 
     def get_absolute_url(self):
         """
@@ -427,10 +427,10 @@ class Proveedor(CreacionModificacionUserProveedorMixin, CreacionModificacionFech
         """
         return reverse('registers:proveedor_detail', kwargs={'pk': self.pk})
 
-
     class Meta:
         managed = True
         db_table = 'proveedor'
+
 
 class ProvedorColegio(ActivoMixin,CreacionModificacionUserProveedorMixin, CreacionModificacionFechaProveedorMixin,models.Model):
     """
@@ -443,3 +443,6 @@ class ProvedorColegio(ActivoMixin,CreacionModificacionUserProveedorMixin, Creaci
     class Meta:
         managed = True
         db_table = 'proveedor_colegio'
+
+    def __str__(self):
+        return self.proveedor.razon_social

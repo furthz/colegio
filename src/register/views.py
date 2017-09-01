@@ -12,8 +12,9 @@ from django.views.generic import CreateView
 
 from register.forms import PersonaForm, AlumnoForm, ApoderadoForm, PersonalForm, PromotorForm, DirectorForm, CajeroForm, \
     TesoreroForm, ProveedorForm
-from register.models import Alumno, Apoderado, Personal, Promotor, Director, Cajero, Tesorero, Colegio, Proveedor
-from utils.views import SaveGeneric
+from register.models import Alumno, Apoderado, Personal, Promotor, Director, Cajero, Tesorero, Colegio, Proveedor, \
+    ProvedorColegio
+from utils.views import SaveGeneric, MyLoginRequiredMixin
 
 logger = logging.getLogger("project")
 
@@ -179,20 +180,25 @@ class TesoreroDetailView(DetailView):
     template_name = "tesorero_detail.html"
 
 
-class ProveedorCreateView(CreateView):
+class ProveedorCreateView(MyLoginRequiredMixin, CreateView):
 
     model = Proveedor
     form_class = ProveedorForm
-    template_name = "registro_create.html"
+    template_name = "proveedor_create.html"
 
     def form_valid(self, form):
-        logger.debug("Proveedor a crear con DNI: " + form.cleaned_data["numero_documento"])
 
-        personal = SaveGeneric().saveGeneric(padre=Profile, form=form, hijo=Proveedor)
-        logger.debug("Se creó el proveedor en la vista")
+        instance = form.save()
+        instance.save()
 
-        logger.info("Se creó el Proveedor")
-        return HttpResponseRedirect(personal.get_absolute_url())
+        prov_col = ProvedorColegio()
+        id_colegio = self.request.session.get('colegio')
+        cole = Colegio.objects.get(pk=id_colegio)
+        prov_col.colegio = cole
+        prov_col.proveedor = instance
+        prov_col.save()
+
+        return HttpResponseRedirect(instance.get_absolute_url())
 
 
 class ProveedorDetailView(DetailView):

@@ -1,18 +1,50 @@
 {% extends "accounts/auth_base.html" %}
 
 {% load crispy_forms_tags %}
+{% load staticfiles %}
 
-{% block title %}{{ block.super }}Log In{% endblock %}
+{% block container %}
+    <p class="login-box-msg">Ingresa tus credenciales para iniciar sesión</p>
+    <form action="" method="post">
+            {% csrf_token %}
+            <div class="form-group has-feedback">
+                {{ form.username }}
+                <span class="fa fa-address-card form-control-feedback" aria-hidden="true"></span>
+            </div>
+            <div class="form-group has-feedback">
+                {{ form.password }}
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="checkbox incheck">
+                        <label>
+                            {{ form.remember_me }} Recordarme
+                        </label>
+                    </div>
+                </div>
+                <!-- /.col -->
+                <div class="col-xs-6">
+                     <a class="forgot-password" href="#" title="Olvide contraseña">¿Olvide mi contraseña?</a>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-block btn-flat">Ingresar</button>
+            </div>
+        </form>
 
-{% block form_heading %}Please Log In{% endblock %}
+        <div class="form-message">
+            <p>
+                No tienes una cuenta? <a href="{% url 'accounts:signup' %}">Regístrate</a>.
+            </p>
+        </div>
 
-{% block form %}
-  {% crispy form %}
+{% endblock container %}
 
-  <div class="form-message">
-    <p>
-      Don't have an account? <a href="{% url 'accounts:signup' %}">Sign up</a>.
-    </p>
-  </div>
-{% endblock form %}
-
+{% block scripts %}
+    <!-- jQuery 3 -->
+<script src="{% static 'components/jquery/dist/jquery.min.js' %}"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="{% static 'components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+<!-- iCheck -->
+{% endblock scripts %}

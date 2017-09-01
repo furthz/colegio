@@ -6,7 +6,17 @@
 
 {% block form_heading %}Selecciona el Colegio{% endblock %}
 
-{% block form %}
-    {% crispy form %}
-{% endblock form %}
+{% block container %}
+    <p class="login-box-msg">Selecciona el Colegio al que te asignarás</p>
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="form-group has-feedback">
+            {{ form.colegios }}
+        </div>
+        <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-block btn-flat">Asignar</button>
+        </div>
+    </form>
+
+{% endblock container %}
 

@@ -53,8 +53,12 @@ class TipoServicioListView(MyLoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super(TipoServicioListView, self).get_context_data(**kwargs)
         tipos_de_servicios = self.model.objects.filter(colegio__id_colegio=self.request.session.get('colegio'))
-        regulares = tipos_de_servicios.filter(is_ordinario=True,activo=True).order_by("nivel","grado")
-        extra = tipos_de_servicios.filter(is_ordinario=False,activo=True).order_by("nivel","grado")
+        try:
+            regulares = tipos_de_servicios.filter(is_ordinario=True,activo=True).order_by("nivel","grado")
+            extra = tipos_de_servicios.filter(is_ordinario=False,activo=True).order_by("nivel","grado")
+        except:
+            regulares = []
+            extra = []
 
         context['serviciosregulares'] = regulares
         context['serviciosextra'] = extra
