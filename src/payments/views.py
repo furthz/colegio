@@ -117,7 +117,7 @@ PROMOTOR: PAGOS REALIZADOS POR HIJO, AÑO, MES Y ESTADO
 class ControlPagosPromotorView(FormView):
 
     model = Pago
-    template_name = "prueba.html"
+    template_name = "control_pagos_promotor.html"
     form_class = ControlPagosPromotorForm
 
     def get_queryset(self):
