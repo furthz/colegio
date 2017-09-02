@@ -160,18 +160,15 @@ class CuentasCobrarPadresForm(forms.Form):
         self.fields['mes'].widget.attrs.update({'class': 'form-control'})
         self.fields['estado'].widget.attrs.update({'class': 'form-control'})
 
-        """
         user = get_current_user()
         logger.debug("Usuario: " + user.name)
 
         profile = Profile.objects.get(user=user)
         logger.debug("profile: " + str(profile.id_persona))
 
-        apoderado = Apoderado.objects.get(apoderado=profile)
+        apoderado = Apoderado.objects.get(persona=profile)
         logger.debug("apoderado: " + str(apoderado.id_apoderado))
-        """
-        id_padre = 1
-        apoderado = Apoderado.objects.get(id_apoderado=id_padre)
+
         alumnos = apoderado.alumnos.all()
 
         self.helper = FormHelper()
