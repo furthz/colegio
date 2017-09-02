@@ -313,14 +313,15 @@ nav.navbar.navbar-static-top a{
     text-transform: uppercase;
     font-size: 12px;
     border-top: 1px solid #c2c2c2;
-    border-right: 1px solid #c2c2c2;
-    margin-right: 10px;
 }
 .sidebar-menu>li.header {
     color: #FFF;
     background: #1a2226;
 }
-
+.sidebar-menu li a {
+    padding: 12px 5px 12px 12px;
+    display: block;
+}
 .wrapper,
 .main-sidebar,
 .left-side {
@@ -377,6 +378,9 @@ nav.navbar.navbar-static-top a{
 }
 .sidebar-menu li.treeview:last-child{
   border: 1px solid #c2c2c2;
+}
+.sidebar-mini.sidebar-collapse:not(.sidebar-mini-expand-feature) .sidebar-menu > li:hover > a > span:not(.pull-right){
+    font-size: 14px;
 }
 /* CUSTOM */
 
