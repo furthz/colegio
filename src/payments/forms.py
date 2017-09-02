@@ -4,6 +4,7 @@ from payments.models import TipoPago
 from payments.models import Pago
 from django.utils.translation import ugettext_lazy as _
 from crispy_forms.helper import FormHelper
+from utils.middleware import get_current_colegio
 
 class TipoPagoForm(forms.ModelForm):
     class Meta:
@@ -117,7 +118,9 @@ class ControlPagosPromotorForm(forms.Form):
         self.fields['mes'].widget.attrs.update({'class': 'form-control'})
         self.fields['tipo_pago'].widget.attrs.update({'class': 'form-control'})
 
-        tipos = TipoPago.objects.all()
+        colegio = get_current_colegio()
+        tipos = TipoPago.objects.filter(colegio=colegio)
+
         self.helper = FormHelper()
         self.helper.form_method = "post"
         self.fields['tipo_pago'].queryset = tipos
