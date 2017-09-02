@@ -8,7 +8,7 @@ from utils.models import CreacionModificacionFechaMixin
 from utils.models import CreacionModificacionUserMixin
 # Create your models here.
 
-class TipoServicio(ActivoMixin,CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
+class TipoServicio(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
     """
     isordinario:        indica si el servicio es ordinario (1er grado, 2do grado, etc.)
                         o extra (curso de verano, danza, etc.)
@@ -161,7 +161,7 @@ class Servicio(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacion
         db_table = 'servicio'
 
 
-class Matricula(ActivoMixin,CreacionModificacionUserMixin, CreacionModificacionFechaMixin, models.Model):
+class Matricula(ActivoMixin, CreacionModificacionUserMixin, CreacionModificacionFechaMixin, models.Model):
     """
 
     """
