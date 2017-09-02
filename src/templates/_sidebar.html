@@ -15,27 +15,13 @@
       </div>
       <!-- FIN USER INFO -->
       <ul class="sidebar-menu" data-widget="tree">
-        <li class="active treeview">
+        <li class="header">MENÚ DE NAVEGACIÓN</li>
+        <li class="active treeview menu-open">
           <a href="#">
-            <i class="fa fa-laptop"></i> <span>Modúlo Facturación</span>
+            <img src="{% static 'site/img/svg/user.svg' %}" width="22px" height="22px"/>
+            <span>Registros</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li class="active"><a href="fac_registraringreso.html"><i class="fa fa-circle-o"></i> Registrar Ingreso</a></li>
-            <li><a href="fac_controlingresos.html"><i class="fa fa-circle-o"></i> Ingresos realizados</a></li>
-            <li><a href="fac_configuraringreso.html"><i class="fa fa-circle-o"></i> Configurar Ingreso</a></li>
-            <li><a href="fac_aperturacaja.html"><i class="fa fa-circle-o"></i> Apertura y cierre de caja</a></li>
-            <li><a href="fac_realizarremesas.html"><i class="fa fa-circle-o"></i> Realizar Remesa</a></li>
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-book"></i>
-            <span>Modulo Registro</span>
-            <span class="pull-right-container">
-              <span class="label label-primary pull-right"></span>
             </span>
           </a>
           <ul class="treeview-menu">
@@ -46,16 +32,14 @@
             <li><a href="{% url 'registers:tesorero_create' %}"><i class="fa fa-circle-o"></i> Tesorero</a></li>
             <li><a href="{% url 'registers:cajero_create' %}"><i class="fa fa-circle-o"></i> Cajero</a></li>
             <li><a href="{% url 'registers:proveedor_create' %}"><i class="fa fa-circle-o"></i> Proveedor</a></li>
-
-
           </ul>
         </li>
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-book"></i>
-            <span>Modulo Matricula</span>
+            <img src="{% static 'site/img/svg/notepad.svg' %}" width="22px" height="22px"/>
+            <span>Matricula</span>
             <span class="pull-right-container">
-              <span class="label label-primary pull-right"></span>
+              <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
@@ -65,10 +49,10 @@
         </li>
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-book"></i>
-            <span>Modulo Controlar Ingresos</span>
+            <img src="{% static 'site/img/svg/money.svg' %}" width="22px" height="22px"/>
+            <span>Controlar Ingresos</span>
             <span class="pull-right-container">
-              <span class="label label-primary pull-right"></span>
+              <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
