@@ -70,7 +70,7 @@ class PagoForm(ModelForm):
 
 class ControlPagosPromotorForm(forms.Form):
     """
-    Formulario para filtar los detalles de Control de ingresos
+    Formulario para filtar los detalles de Control de pagos
     Nota:
         solo se añaden com campos los que son definidos por los usuarios
     """
@@ -80,10 +80,9 @@ class ControlPagosPromotorForm(forms.Form):
         required=False, )
 
     anio = forms.CharField()
+    mes = forms.CharField()
     fecha_inicio = forms.DateField()
     fecha_final = forms.DateField()
-    #tipo_pago = forms.CharField()
-    numero_comprobante = forms.CharField()
 
     def ChoiceAnio(self):
         MY_CHOICES = (
@@ -92,13 +91,31 @@ class ControlPagosPromotorForm(forms.Form):
         )
         return MY_CHOICES
 
+    def ChoiceMes(self):
+        MY_CHOICES = (
+            ('Todos', 'Todos'),
+            ('Enero', 'Enero'),
+            ('Febrero', 'Febrero'),
+            ('Marzo', 'Marzo'),
+            ('Abril', 'Abril'),
+            ('Mayo', 'Mayo'),
+            ('Junio', 'Junio'),
+            ('Julio', 'Julio'),
+            ('Agosto', 'Agosto'),
+            ('Setiembre', 'Setiembre'),
+            ('Octubre', 'Octubre'),
+            ('Noviembre', 'Noviembre'),
+            ('Diciembre', 'Diciembre'),
+        )
+        return MY_CHOICES
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['anio'] = forms.ChoiceField(choices=self.ChoiceAnio())
         self.fields['anio'].widget.attrs.update({'class': 'form-control'})
+        self.fields['mes'] = forms.ChoiceField(choices=self.ChoiceMes())
+        self.fields['mes'].widget.attrs.update({'class': 'form-control'})
         self.fields['tipo_pago'].widget.attrs.update({'class': 'form-control'})
-        self.fields['numero_comprobante'].widget.attrs.update({'class': 'form-control'})
-        self.fields['numero_comprobante'].required = False
 
         tipos = TipoPago.objects.all()
         self.helper = FormHelper()

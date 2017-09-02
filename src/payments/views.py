@@ -6,7 +6,7 @@ from django.views.generic import TemplateView
 from utils.views import MyLoginRequiredMixin
 from payments.models import TipoPago
 from payments.models import CajaChica
-from payments.models import Pago
+from income.models import obtener_mes
 from register.models import PersonalColegio
 from payments.forms import TipoPagoForm
 from payments.forms import PagoForm
@@ -117,7 +117,7 @@ PROMOTOR: PAGOS REALIZADOS POR HIJO, AÑO, MES Y ESTADO
 class ControlPagosPromotorView(FormView):
 
     model = Pago
-    template_name = "control_pagos_promotor.html"
+    template_name = "prueba.html"
     form_class = ControlPagosPromotorForm
 
     def get_queryset(self):
@@ -129,15 +129,18 @@ class ControlPagosPromotorView(FormView):
         logger.debug("El año ingresado es {0}".format(anio))
         tipo_pago = request.POST["tipo_pago"]
         logger.debug("El tipo o estado ingresado es {0}".format(tipo_pago))
-        numero_comprobante = request.POST["numero_comprobante"]
-        logger.debug("El tipo o estado ingresado es {0}".format(numero_comprobante))
+        mes = request.POST["mes"]
+        logger.debug("El mes ingresado es {0}".format(mes))
 
         fecha_inicio = date.today()
         fecha_final = date.today()
 
-        pagos_colegio = calculo_pagos_total(anio, tipo_pago, numero_comprobante)
+        pagos_colegio = calculo_pagos_total(anio, tipo_pago, mes)
 
-        pagos_rango = pagos_colegio.filter(fecha__gte=fecha_inicio).filter(fecha__lte=fecha_final)
+        num_mes = obtener_mes(mes)
+
+        pagos_colegio_2 = calculo_pagos_total(anio, tipo_pago, "Todos")
+        pagos_rango = pagos_colegio_2.filter(fecha__gte=fecha_inicio).filter(fecha__lte=fecha_final)
 
         anio = int(anio)
         if anio == date.today().year:
@@ -177,14 +180,20 @@ class ControlPagosPromotorView(FormView):
 
         logger.debug("El monto de rango por mes es {0}".format(monto_rango_mes))
 
+        mes_labels = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Setiembre", "Octubre", "Noviembre", "Diciembre"]
+
         if len(pagos_colegio) != 0:
             return render(request, template_name=self.template_name, context={
-                'object_list': pagos_colegio,
+                'pagos_colegio': pagos_colegio,
+                'monto_mes_total': monto_mes_total,
+                'mes_labels': mes_labels,
                 'form': ControlPagosPromotorForm,
             })
         else:
             return render(request, template_name=self.template_name,context={
-                'object_list': [],
+                'pagos_colegio': [],
+                'monto_mes_total': [],
+                'mes_labels': mes_labels,
                 'form': ControlPagosPromotorForm,
             })
 
