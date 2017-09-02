@@ -312,7 +312,9 @@ nav.navbar.navbar-static-top a{
 .sidebar-menu .treeview{
     text-transform: uppercase;
     font-size: 12px;
-    border-top: 1px solid #e3ebf2;
+    border-top: 1px solid #c2c2c2;
+    border-right: 1px solid #c2c2c2;
+    margin-right: 10px;
 }
 .sidebar-menu>li.header {
     color: #FFF;
@@ -325,7 +327,7 @@ nav.navbar.navbar-static-top a{
   background-color: #f9fafc;
 }
 .main-sidebar {
-  border-right: 1px solid #d2d6de;
+  border-right: 1px solid #c2c2c2;
 }
 .sidebar-menu > li {
   -webkit-transition: border-left-color 0.3s ease;
@@ -355,6 +357,7 @@ nav.navbar.navbar-static-top a{
 .sidebar-menu > li > .treeview-menu {
   background: #fff9f7;
   text-transform: initial;
+  border-top: 1px solid #c2c2c2;
 }
 .sidebar a {
   color: #444444;
@@ -371,6 +374,9 @@ nav.navbar.navbar-static-top a{
 }
 .sidebar-menu .treeview-menu > li.active > a {
   font-weight: 600;
+}
+.sidebar-menu li.treeview:last-child{
+  border: 1px solid #c2c2c2;
 }
 /* CUSTOM */
 
