@@ -6,7 +6,7 @@ from django.views.generic import TemplateView
 from utils.views import MyLoginRequiredMixin
 from payments.models import TipoPago
 from payments.models import CajaChica
-from payments.models import Pago
+from income.models import obtener_mes
 from register.models import PersonalColegio
 from payments.forms import TipoPagoForm
 from payments.forms import PagoForm
@@ -129,42 +129,50 @@ class ControlPagosPromotorView(FormView):
         logger.debug("El año ingresado es {0}".format(anio))
         tipo_pago = request.POST["tipo_pago"]
         logger.debug("El tipo o estado ingresado es {0}".format(tipo_pago))
-        numero_comprobante = request.POST["numero_comprobante"]
-        logger.debug("El tipo o estado ingresado es {0}".format(numero_comprobante))
+        mes = request.POST["mes"]
+        logger.debug("El mes ingresado es {0}".format(mes))
 
         fecha_inicio = date.today()
         fecha_final = date.today()
 
-        pagos_colegio = calculo_pagos_total(anio, tipo_pago, numero_comprobante)
+        pagos_colegio = calculo_pagos_total(anio, tipo_pago, mes)
 
-        pagos_rango = pagos_colegio.filter(fecha__gte=fecha_inicio).filter(fecha__lte=fecha_final)
+        num_mes = obtener_mes(mes)
+
+        pagos_colegio_2 = calculo_pagos_total(anio, tipo_pago, "Todos")
+        pagos_rango = pagos_colegio_2.filter(fecha__gte=fecha_inicio).filter(fecha__lte=fecha_final)
 
         anio = int(anio)
         if anio == date.today().year:
-            mes_rango = date.today().month
+            rango_mes = date.today().month
         else:
-            mes_rango = 12
-        logger.debug("El rango de meses es {0}".format(mes_rango))
+            rango_mes = 12
+        logger.debug("El rango de meses es {0}".format(rango_mes))
 
         # CALCULO DE MONTO TOTAL DE PAGOS POR MES SEGÚN AÑO ESCOGIDO
         monto_mes_total = []  # Lista de Montos totales por mes
-        for mes in range (0, mes_rango):
+        for mes in range (0, rango_mes):
             pagos_mes = pagos_colegio.filter(fecha__month=mes + 1)
             monto_mes_total.append(0)  # Declara las Montos totales iniciales de un mes como '0'
             for pagos in pagos_mes:
                 monto_mes_total[mes] = monto_mes_total[mes] + pagos.monto  # Cálculo de los montos totales del mes
+        logger.debug("El monto del año por mes es {0}".format(monto_mes_total))
 
         # CALCULO DE MONTO TOTAL DE PAGOS POR RANGO
         monto_total_rango = 0  # Lista de Montos totales por mes
         for pagos_1 in pagos_rango:
             monto_total_rango = monto_total_rango + pagos_1.monto  # Cálculo de los montos totales del mes
 
+        logger.debug("El monto total de los pagos para el rango de tiempo es {0}".format(monto_total_rango))
+
         # CALCULO DE MONTO POR MES PARA UN RANGO
-        mes_inicio = 1
-        mes_final = 5
+        #mes_inicio = fecha_inicio.month
+        #mes_final = fecha_final.month
+        mes_inicio = 3
+        mes_final = 8
         rango_mes = mes_final - mes_inicio
         monto_rango_mes = []
-        for mes in range(0, rango_mes):
+        for mes in range(0, rango_mes+1):
             monto_rango_mes.append(0)
             pagos_mes = pagos_colegio.filter(fecha__month=mes + mes_inicio)
             for pagos in pagos_mes:
@@ -172,14 +180,20 @@ class ControlPagosPromotorView(FormView):
 
         logger.debug("El monto de rango por mes es {0}".format(monto_rango_mes))
 
+        mes_labels = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Setiembre", "Octubre", "Noviembre", "Diciembre"]
+
         if len(pagos_colegio) != 0:
             return render(request, template_name=self.template_name, context={
-                'object_list': pagos_colegio,
+                'pagos_colegio': pagos_colegio,
+                'monto_mes_total': monto_mes_total,
+                'mes_labels': mes_labels,
                 'form': ControlPagosPromotorForm,
             })
         else:
             return render(request, template_name=self.template_name,context={
-                'object_list': [],
+                'pagos_colegio': [],
+                'monto_mes_total': [],
+                'mes_labels': mes_labels,
                 'form': ControlPagosPromotorForm,
             })
 

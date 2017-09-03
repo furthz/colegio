@@ -231,6 +231,7 @@ class ControlIngresosPromotorView(FormView):
             "cobro_total": cobro_total,
             "deuda_total": deuda_total,
             "mes_labels": mes_labels,
+            'mes': mes,
             'form': CuentasCobrarPromotorForm,
         })
 
@@ -257,7 +258,8 @@ class ControlIngresosPromotorDetallesView(FormView):
         logger.info(alumno)
 
         # Proceso de filtrado según el alumno
-        por_cobrar1 = self.model.objetos.filter(Q(matricula__alumno__nombre=alumno) | Q(matricula__alumno__apellido_pa=alumno))
+        por_cobrar1 = self.model.objetos.filter(Q(matricula__alumno__nombre=alumno) | Q(matricula__alumno__apellido_pa=alumno) | Q(matricula__alumno__apellido_ma=alumno))
+
 
         # Proceso de filtrado según el año
         if anio == "Todos":

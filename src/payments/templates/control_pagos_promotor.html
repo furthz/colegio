@@ -54,7 +54,7 @@
           <div class="col-md-12">
               <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Control de ingresos</h3>
+                    <h3 class="box-title">Control de pagos</h3>
                 </div>
                 <div class="box-body">
                   <div class="col-md-9">
@@ -75,23 +75,29 @@
                                         {{ form.mes }}
                                       </div>
                                     </div>
+                                    <div class="col-md-4">
+                                      <div class="form-group">
+                                      <label>Tipo de pago</label>
+                                        {{ form.tipo_pago }}
+                                      </div>
+                                    </div>
                                     <div class="col-md-3">
                                         <div class="search-actions">
                                           <button type="submit" class="btn btn-primary btn-block">
                                           <i class="fa fa-search" aria-hidden="true"></i>
-                                           Consultar
+                                           Buscar
                                           </button>
                                         </div>
                                     </div>
                             </form>
                         </div>
-                    </div>
+                      </div>
 
-                    <div class="box-body">
+                      <div class="box-body">
                         <!-- BAR CHART -->
                         <div class="box box-success">
                           <div class="box-header with-border">
-                            <h3 class="box-title">Reporte de recaudación</h3>
+                            <h3 class="box-title">Reporte de gastos</h3>
                           </div>
                           <div class="box-body">
                             <div class="chart">
@@ -101,41 +107,52 @@
                         </div>
                         <!-- BAR CHART -->
 
-                        <!-- BAR CHART -->
                         <div class="box box-success">
                           <div class="box-header with-border">
-                            <h3 class="box-title">Monto recaudado por población mes de {{ mes }}</h3>
+                            <h3 class="box-title">Detalle de los gastos</h3>
                           </div>
                           <div class="box-body">
-                            <div class="chart">
-                              <canvas id="canvas2" style="height:230px"></canvas>
-                            </div>
+                            <table class="table table-hover">
+                                <tbody>
+                                    <tr>
+                                        <th>Proveedor</th>
+                                        <th>Fecha</th>
+                                        <th>Tipo de pago</th>
+                                        <th>Monto S/.</th>
+                                        <th>N° de comprobante</th>
+                                    </tr>
+
+                                    <tr>
+                                        {% for pago in pagos_colegio %}
+                                            {% if not pago.orderDate %}
+                                                <tr>
+                                                    <td>Proveedor</td>
+                                                    <td>{{ pago.fecha.date }}</td>
+                                                    <td>{{ pago.tipo_pago.descripcion}}</td>
+                                                    <td>S/.{{ pago.monto }}</td>
+                                                    <td>{{ pago.numero_comprobante }}</td>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </tr>
+                                </tbody>
+                            </table>
                           </div>
+
                         </div>
-                        <!-- BAR CHART -->
+                      </div>
                     </div>
-
-                    </div>
-                    </div>
-
 
                   </div>
-                  <div class="col-md-3"></div>
-
-                </div>
-
-
-
+                    </div>
               </div>
+              <div class="col-md-3"></div>
           </div>
       </div>
     </section>
     <!-- /.FIN DE CONTENIDO -->
 
-
-</div>
 <!-- ./wrapper -->
-
 
 <!-- jQuery 3 -->
 <script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
@@ -147,13 +164,12 @@
 <script src="{% static 'bower_components/chart.js/dist/Chart.min.js' %}"></script>
 
 <script>
-        
+
         var color = Chart.helpers.color;
         var barChartData = {
-            labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Setiembre", "Octubre",
-                 "Noviembre", "Diciembre"],
+            labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Setiembre", "Octubre", "Noviembre", "Diciembre"],
             datasets: [{
-                label: 'Recaudado',
+                label: 'Monto gastos',
                 backgroundColor:[
                   "rgba(255, 99, 132, 0.8)",
                   "rgba(255, 99, 132, 0.8)",
@@ -168,51 +184,11 @@
                   "rgba(255, 99, 132, 0.8)",
                   "rgba(255, 99, 132, 0.8)"
                   ],
-                data: {{ cobro_total }}
-            }, {
-                label: 'Total a recaudar',
-                backgroundColor: [
-                  "rgba(0, 120, 184, 0.2)",
-                  "rgba(0, 120, 184, 0.2)",
-                  "rgba(0, 120, 184, 0.2)",
-                  "rgba(0, 120, 184, 0.2)",
-                  "rgba(0, 120, 184, 0.2)",
-                  "rgba(0, 120, 184, 0.2)",
-                  "rgba(0, 120, 184, 0.2)",
-                  "rgba(0, 120, 184, 0.2)",
-                  "rgba(0, 120, 184, 0.2)",
-                  "rgba(0, 120, 184, 0.2)",
-                  "rgba(0, 120, 184, 0.2)",
-                  "rgba(0, 120, 184, 0.2)"
-                ],
-                data: {{ por_cobrar_total }}
+                data: {{ monto_mes_total }}
             }]
-
-        };
-        var pieChartData = {
-            labels: ["Inicial", "Primaria", "Secundaria"],
-            datasets: [{
-                label: 'Recaudado',
-                backgroundColor:[
-                  "rgba(100, 99, 255, 0.8)",
-                  "rgba(100, 99, 255, 0.8)",
-                  "rgba(100, 99, 255, 0.8)"
-                  ],
-                data: {{ cobro_total_nivel }}
-            }, {
-                label: 'Total a recaudar',
-                backgroundColor: [
-                  "rgba(0, 120, 184, 0.2)",
-                  "rgba(0, 120, 184, 0.2)",
-                  "rgba(0, 120, 184, 0.2)"
-                ],
-                data: {{ por_cobrar_nivel }}
-            }]
-
         };
         window.onload = function() {
             var ctx = document.getElementById("canvas").getContext("2d");
-            var ctx2 = document.getElementById("canvas2").getContext("2d");
             window.myBar = new Chart(ctx, {
                 type: 'bar',
                 data: barChartData,
@@ -223,30 +199,7 @@
                     },
                     title: {
                         display: true,
-                        text: 'Gráfico de recaudación por meses',
-                        fontSize: 22
-                    },
-                    scales: {
-                        xAxes: [{
-                            stacked: true,
-                        }],
-                        yAxes: [{
-                            stacked: false
-                        }]
-                    }
-                }
-            });
-            window.myBar2 = new Chart(ctx2, {
-                type: 'bar',
-                data: pieChartData,
-                options: {
-                    responsive: true,
-                    legend: {
-                        position: 'top',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Gráfico de recaudación por niveles',
+                        text: 'Gráfico de gastos por meses',
                         fontSize: 22
                     },
                     scales: {
