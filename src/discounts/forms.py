@@ -54,8 +54,35 @@ class SolicitarDescuentoForm(ModelForm):
         self.fields['matricula'].widget.attrs['editable'] = False
 
 
+class TipoDescuentForm(ModelForm):
+    """
+        Formulario de la clase Descuento
+        Nota:
+            solo se añade como campos los que son definidos por los usuarios
+        """
+
+    class Meta:
+        model = TipoDescuento
+        fields = [
+            'servicio',
+            'descripcion',
+            'porcentaje',
+        ]
+        labels = {
+            'servicio': _('Servicio'),
+            'descripcion': _('Descripción'),
+            'porcentaje': _('Porcentaje'),
+        }
 
 
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # self.fields['nivel'] = forms.ChoiceField(choices=self.ChoiceNiveles())
+        # self.fields['grado'] = forms.ChoiceField(choices=self.ChoiceGrados())
+        self.fields['servicio'].widget.attrs.update({'class': 'form-control'})
+        self.fields['descripcion'].widget.attrs.update({'class': 'form-control'})
+        self.fields['porcentaje'].widget.attrs.update({'class': 'form-control'})
 
 ##############################################################
 #       Aprobar Descuentos

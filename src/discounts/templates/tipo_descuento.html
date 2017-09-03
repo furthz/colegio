@@ -1,0 +1,53 @@
+{% extends "page.html" %}
+
+{% block title %}{{ block.super }}Matricula{% endblock %}
+
+
+{% block breadcrumb %}
+<h1>
+        Registrar pago de ingreso
+        <small>Modúlo de facturación</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+        <li>Modúlo de facturación</li>
+        <li class="active">Registrar pago de ingreso</li>
+      </ol>
+{% endblock %}
+
+{% block container %}
+<section class="content">
+      <div class="row">
+          <div class="col-md-12">
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Registrar pago</h3>
+                </div>
+                <div class="box-body">
+                  <div class="col-md-9">
+                    <div class="panel-page">
+                            <div class="box-body">
+
+                                <form action="" method="POST" class="form-horizontal" id="1">{% csrf_token %}
+                                    {{ form.as_p}}
+                                </form>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <a class="btn btn-default" href="{% url 'enrollments:matricula_list' %}">Cancelar</a>
+                                        <button type="submit" class="btn btn-success"  form="1">Registrar Tipo Descuento</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+      </div>
+</section>
+
+
+
+{% endblock container %}
+

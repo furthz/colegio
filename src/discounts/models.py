@@ -7,6 +7,7 @@ from register.models import PersonalColegio
 from utils.models import ActivoMixin
 from utils.models import CreacionModificacionFechaMixin
 from utils.models import CreacionModificacionUserMixin
+from utils.middleware import get_current_colegio, get_current_userID
 # Create your models here.
 
 class TipoDescuento(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
@@ -17,8 +18,8 @@ class TipoDescuento(ActivoMixin, CreacionModificacionFechaMixin, CreacionModific
     porcentaje:     porjentaje de descuento
     """
     id_tipo_descuento = models.AutoField(primary_key=True)
-    colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column='id_colegio')
-    servicio = models.ForeignKey(Servicio, models.DO_NOTHING, db_column='id_servicio')
+    colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column='id_colegio',default=get_current_colegio)
+    servicio = models.ForeignKey(Servicio, models.DO_NOTHING, db_column='id_servicio',default=get_current_colegio)
     descripcion = models.CharField(max_length = 50)
     porcentaje = models.DecimalField(max_digits=10, decimal_places=10)
 
@@ -45,12 +46,12 @@ class Descuento(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacio
     tipo_descuento:     tipo de descuento que se solicita
     numero_expediente:  nuemro del expediente fisico con los documentos del solicitante
     comentario:         comentario u observacion sobre la solicitud de descuento
-    estado:             estado de la solicitud (proceso, aprobado, denegado)
+    estado:             estado de la solicitud (1:proceso, 2:aprobado, 3:denegado)
     """
     id_descuento = models.AutoField(primary_key=True)
-    personal_colegio = models.ForeignKey(PersonalColegio, models.DO_NOTHING, db_column='id_persona_colegio')
-    matricula = models.ForeignKey(Matricula, models.DO_NOTHING, db_column='id_matricula')
-    tipo_descuento = models.ForeignKey(TipoDescuento, models.DO_NOTHING, db_column='id_tipo_descuento')
+    personal_colegio = models.ForeignKey(PersonalColegio, models.DO_NOTHING, db_column='id_persona_colegio', null= True, blank=True,default=get_current_colegio)
+    matricula = models.ForeignKey(Matricula, models.DO_NOTHING, db_column='id_matricula', default=get_current_colegio)
+    tipo_descuento = models.ForeignKey(TipoDescuento, models.DO_NOTHING, db_column='id_tipo_descuento', default=get_current_colegio)
     numero_expediente = models.IntegerField()
     comentario = models.CharField(max_length=200, null=True, blank=True)
     estado = models.IntegerField()
