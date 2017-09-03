@@ -1,26 +1,27 @@
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
+from django import forms
+from django.forms import ModelForm
 
 from profiles.models import Profile
-from django.utils.translation import gettext_lazy as _
-from django import forms
-from django.forms import ModelForm, SelectDateWidget
-
-from register.models import Alumno, Apoderado, Personal, Promotor, Director, Cajero, Tesorero, Telefono, Proveedor
+from register.models import Alumno, Apoderado, Personal, Promotor, Director, Cajero, Tesorero, Proveedor
 from utils.forms import ValidProfileFormMixin
 from utils.models import TipoDocumento, TipoSexo, Departamento, Provincia, Distrito
 
 
 class PersonaForm(ModelForm):
 
-    direccion = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}), label="Direccion")
-    referencia = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}), label="Referencia")
-    departamento = forms.ChoiceField(widget=forms.Select(attrs={'class':'form-control'}), label="Departamento")
+    direccion = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), label="Direccion")
+    referencia = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), label="Referencia")
+    departamento = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-control'}), label="Departamento")
     provincia = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-control'}), label="Provincia")
     distrito = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-control'}), label="Distrito")
-    tipo_cel = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-control'}), label="Tipo Movil", required=False)
-    celular = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control'}), label="Celular", required=False)
-    celulares = forms.MultipleChoiceField(widget=forms.SelectMultiple(attrs={'class': 'form-control'}), label="Números", required=False)
+    tipo_cel = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-control'}), label="Tipo Movil",
+                                 required=False)
+    celular = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control'}), label="Celular",
+                              required=False)
+    celulares = forms.MultipleChoiceField(widget=forms.SelectMultiple(attrs={'class': 'form-control'}), label="Números",
+                                          required=False)
 
     @property
     def ChoiceTipoDocumento(self):
@@ -50,9 +51,9 @@ class PersonaForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['tipo_documento'] = forms.ChoiceField(choices=self.ChoiceTipoDocumento,
-                                                          widget=forms.Select(attrs={'class':'form-control'}))
+                                                          widget=forms.Select(attrs={'class': 'form-control'}))
         self.fields['sexo'] = forms.ChoiceField(choices=self.ChoiceTipoSexo,
-                                                widget=forms.Select(attrs={'class':'form-control'}))
+                                                widget=forms.Select(attrs={'class': 'form-control'}))
         self.fields['departamento'] = forms.ChoiceField(choices = self.ChoiceDepartamento,
                                                         widget=forms.Select(attrs={'class': 'form-control'}))
         self.fields['provincia']= forms.ChoiceField(choices = self.ChoiceProvincia,
@@ -82,6 +83,7 @@ class AlumnoForm(ValidProfileFormMixin, PersonaForm):
         model = Alumno
         fields = ['nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento', 'numero_documento',
                   'sexo', 'correo', 'fecha_nac']
+        """
         labels = {
             'nombre': _('Nombre'),
             'segundo_nombre': _('Segundo Nombre'),
@@ -93,7 +95,7 @@ class AlumnoForm(ValidProfileFormMixin, PersonaForm):
             'correo': _('Correo'),
             'fecha_nac': _('Fecha Nac.'),
         }
-
+        """
 
 class ApoderadoForm(ValidProfileFormMixin, PersonaForm):
 
@@ -107,6 +109,7 @@ class ApoderadoForm(ValidProfileFormMixin, PersonaForm):
         model = Apoderado
         fields = ['nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'parentesco', 'tipo_documento',
                   'numero_documento', 'sexo', 'correo', 'fecha_nac']
+        """
         labels = {
             'nombre': _('Nombre'),
             'segundo_nombre': _('Segundo Nombre'),
@@ -119,6 +122,7 @@ class ApoderadoForm(ValidProfileFormMixin, PersonaForm):
             'correo': _('Correo'),
             'fecha_nac': _('Fecha Nac.'),
         }
+        """
 
 
 class PersonalForm(ValidProfileFormMixin, PersonaForm):
@@ -127,6 +131,7 @@ class PersonalForm(ValidProfileFormMixin, PersonaForm):
         model = Personal
         fields = ['nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento', 'numero_documento',
                   'sexo', 'correo', 'fecha_nac']
+        """
         labels = {
             'nombre': _('Nombre'),
             'segundo_nombre': _('Segundo Nombre'),
@@ -138,6 +143,7 @@ class PersonalForm(ValidProfileFormMixin, PersonaForm):
             'correo': _('Correo'),
             'fecha_nac': _('Fecha Nac.'),
         }
+        """
 
 
 class PromotorForm(ValidProfileFormMixin, PersonaForm):
@@ -148,7 +154,7 @@ class PromotorForm(ValidProfileFormMixin, PersonaForm):
         model = Promotor
         fields = ['nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento', 'numero_documento',
                   'sexo', 'correo', 'fecha_nac']
-
+        """
         labels = {
             'nombre': _('Nombre'),
             'segundo_nombre': _('Segundo Nombre'),
@@ -161,6 +167,7 @@ class PromotorForm(ValidProfileFormMixin, PersonaForm):
             'correo': _('Correo'),
             'fecha_nac': _('Fecha Nac.'),
         }
+        """
 
 
 class DirectorForm(ValidProfileFormMixin, PersonaForm):
@@ -171,6 +178,7 @@ class DirectorForm(ValidProfileFormMixin, PersonaForm):
         model = Director
         fields = ['nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento', 'numero_documento',
                   'sexo', 'correo', 'fecha_nac']
+        """
         labels = {
             'nombre': _('Nombre'),
             'segundo_nombre': _('Segundo Nombre'),
@@ -182,6 +190,7 @@ class DirectorForm(ValidProfileFormMixin, PersonaForm):
             'correo': _('Correo'),
             'fecha_nac': _('Fecha Nac.'),
         }
+        """
 
 
 class CajeroForm(ValidProfileFormMixin, PersonaForm):
@@ -192,6 +201,7 @@ class CajeroForm(ValidProfileFormMixin, PersonaForm):
         model = Cajero
         fields = ['nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento', 'numero_documento',
                   'sexo', 'correo', 'fecha_nac']
+        """
         labels = {
             'nombre': _('Nombre'),
             'segundo_nombre': _('Segundo Nombre'),
@@ -203,6 +213,7 @@ class CajeroForm(ValidProfileFormMixin, PersonaForm):
             'correo': _('Correo'),
             'fecha_nac': _('Fecha Nac.'),
         }
+        """
 
 
 class TesoreroForm(ValidProfileFormMixin, PersonaForm):
@@ -213,6 +224,7 @@ class TesoreroForm(ValidProfileFormMixin, PersonaForm):
         model = Tesorero
         fields = ['nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento', 'numero_documento',
                   'sexo', 'correo', 'fecha_nac']
+        """
         labels = {
             'nombre': _('Nombre'),
             'segundo_nombre': _('Segundo Nombre'),
@@ -224,6 +236,7 @@ class TesoreroForm(ValidProfileFormMixin, PersonaForm):
             'correo': _('Correo'),
             'fecha_nac': _('Fecha Nac.'),
         }
+        """
 
 
 class ProveedorForm(ModelForm):
@@ -240,7 +253,9 @@ class ProveedorForm(ModelForm):
     class Meta:
         model = Proveedor
         fields = ['razon_social', 'ruc']
+        """
         labels = {
             'ruc': _('RUC'),
             'razon_social': _('Razón Social'),
         }
+        """

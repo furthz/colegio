@@ -43,7 +43,7 @@ TEMPLATES = [
                 # list if you haven't customized them:
                 'django.contrib.auth.context_processors.auth',
                 'django.template.context_processors.debug',
-                'django.template.context_processors.i18n',
+                #'django.template.context_processors.i18n',
                 'django.template.context_processors.media',
                 'django.template.context_processors.static',
                 'django.template.context_processors.tz',
@@ -76,7 +76,7 @@ if exists(env_file):
 # Raises ImproperlyConfigured exception if SECRET_KEY not in os.environ
 SECRET_KEY = env('SECRET_KEY')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -101,8 +101,8 @@ INSTALLED_APPS = (
     'profiles',
     'register',
     'payments',
-    'discounts',
     'import_export',
+    'discounts',
 
 )
 
@@ -139,18 +139,18 @@ LANGUAGE_CODE = 'es-PE'
 
 TIME_ZONE = 'America/Lima'
 
-USE_I18N = True
+USE_I18N = False
 
-USE_L10N = True
+USE_L10N = False
 
-USE_TZ = True
+USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/dev/howto/static-files/
 
 STATIC_URL = '/static/' #% get_git_changeset(BASE_DIR)
 
-ALLOWED_HOSTS = []
+#ALLOWED_HOSTS = []
 
 # Crispy Form Theme - Bootstrap 3
 CRISPY_TEMPLATE_PACK = 'bootstrap3'

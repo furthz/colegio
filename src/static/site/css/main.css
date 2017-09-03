@@ -357,6 +357,12 @@ nav.navbar.navbar-static-top a{
 .sidebar-menu li.blue a{
   border-left-color: #6995e0;
 }
+.sidebar-menu li.purple a{
+  border-left-color: #6f3fe0;
+}
+.sidebar-menu li.yellow a{
+  border-left-color: #e0b700;
+}
 .sidebar-menu > li.active > a {
   font-weight: 600;
 }

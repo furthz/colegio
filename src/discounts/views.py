@@ -15,8 +15,12 @@ from utils.views import MyLoginRequiredMixin
 from discounts.models import Descuento
 from discounts.models import TipoDescuento
 from enrollment.models import Matricula
+from enrollment.models import Servicio
+from register.models import Colegio
 from register.models import PersonalColegio
 from discounts.forms import SolicitarDescuentoForm
+from discounts.forms import TipoDescuentForm
+from utils.middleware import get_current_colegio, get_current_userID
 import logging
 
 # Create your views here.
@@ -30,7 +34,7 @@ logger = logging.getLogger("project")
 #       Solicitar Descuentos
 #################################################
 
-class SolicitarDescuentoView(TemplateView):
+class SolicitarDescuentoView(MyLoginRequiredMixin,TemplateView):
     model = Descuento
     template_name = "solicitar_descuento.html"
     form_class = SolicitarDescuentoForm
@@ -41,14 +45,14 @@ class SolicitarDescuentoView(TemplateView):
             'form': form,
         })
 
-class CrearSolicitudView(TemplateView):
+class CrearSolicitudView(MyLoginRequiredMixin,TemplateView):
     model = Descuento
     form_class = SolicitarDescuentoForm
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         logger.info(form)
-        print('hola1')
+
         data_form = form.cleaned_data
         logger.info(data_form)
         solicitud = Descuento(
@@ -62,11 +66,26 @@ class CrearSolicitudView(TemplateView):
             fecha_aprobacion=date.today()
         )
         solicitud.save()
-        print('hola')
-
 
         return HttpResponseRedirect(reverse('enrollments:matricula_list'))
 
+class TipoDescuentoCreateView(MyLoginRequiredMixin,CreateView):
+    model = TipoDescuento
+    template_name = "tipo_descuento.html"
+    form_class = TipoDescuentForm
+    #success_url = reverse('enrollments:matricula_list')
+    def get_success_url(self):
+        return reverse_lazy('enrollments:matricula_list')
+
+    def form_valid(self, form):
+        form.instance.colegio = Colegio.objects.get(pk = self.request.session.get('colegio'))
+        return super(TipoDescuentoCreateView, self).form_valid(form)
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class(colegio=get_current_colegio())
+        return render(request, template_name=self.template_name, context={
+            'form': form,
+        })
 #################################################
 #       Aprobar Descuentos
 #################################################
