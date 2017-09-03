@@ -16,7 +16,7 @@ from os.path import dirname, join, exists, os, sys
 
 BASE_DIR = dirname(dirname(dirname(__file__)))
 
-EXTERNAL_LIBS_PATH = os.path.join(BASE_DIR, "externals", "libs")
+EXTERNAL_LIBS_PATH = os.path.join(BASE_DIR,"externals","libs")
 
 EXTERNAL_APPS_PATH = os.path.join(BASE_DIR, "externals", "apps")
 
@@ -88,7 +88,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    'django_extensions',
     'authtools',
     'crispy_forms',
     'easy_thumbnails',
@@ -101,6 +101,7 @@ INSTALLED_APPS = (
     'profiles',
     'register',
     'payments',
+    'discounts',
     'import_export',
     'discounts',
 

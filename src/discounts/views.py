@@ -88,3 +88,9 @@ class TipoDescuentoCreateView(MyLoginRequiredMixin,CreateView):
 #################################################
 #       Aprobar Descuentos
 #################################################
+
+class AprobarDescuentoView(ListView):
+
+    model = Descuento
+    template_name = "aprobar_descuento.html"
+ 
