@@ -62,6 +62,30 @@
             <li><a href="{% url 'income:cuentas_cobrar_promotor_detalle' %}"><i class="fa fa-circle-o"></i> Promotor detalle</a></li>
           </ul>
         </li>
+        <li class="treeview green">
+          <a href="#">
+            <img src="{% static 'site/img/svg/money.svg' %}" width="22px" height="22px"/>
+            <span>Descuentos</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{% url 'discounts:tipo_descuento_create' %}"><i class="fa fa-circle-o"></i> Tipo de Descuento</a></li>
+          </ul>
+        </li>
+        <li class="treeview green">
+          <a href="#">
+            <img src="{% static 'site/img/svg/money.svg' %}" width="22px" height="22px"/>
+            <span>Pagos</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{% url 'payments:registrarpago_create' %}"><i class="fa fa-circle-o"></i> Registrar Pago</a></li>
+          </ul>
+        </li>
       </ul>
     </section>
     <!-- FIN SIDEBAR -->
