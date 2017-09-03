@@ -4,6 +4,7 @@ from django.db import models
 from register.models import Proveedor, Colegio, PersonalColegio, ProvedorColegio
 from utils.models import ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin
 from utils.middleware import get_current_colegio
+from income.models import obtener_mes
 
 class Eliminar(models.Model):
     """
@@ -86,27 +87,24 @@ class Pago(CreacionModificacionFechaMixin, CreacionModificacionUserMixin):
 
 
 
-def calculo_pagos_total(anio, tipo_pago, numero_comprobante):
+def calculo_pagos_total(anio, tipo_pago, mes):
 
     # Proceso de filtrado según el año
     anio = int(anio)
     pago_1 = Pago.objects.filter(fecha__year=anio)
 
     # Proceso de filtrado según el tipo de pago
-    if tipo_pago == "Todos":
+    if tipo_pago == "":
         pago_2 = pago_1
     else:
         pago_2 = pago_1.filter(tipo_pago=tipo_pago)
 
     # Proceso de filtrado según el numero comprobante de pago
-    if numero_comprobante == "":
+    if mes == "Todos":
         pago_3 = pago_2
     else:
-        pago_3 = pago_2.filter(numero_comprobante__contains=numero_comprobante)
-
-    monto_total = 0
-    for pago in pago_3:
-        monto_total = monto_total + pago.monto
+        num_mes = obtener_mes(mes)
+        pago_3 = pago_2.filter(fecha__month=num_mes)
 
     return pago_3
 

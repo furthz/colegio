@@ -33,7 +33,7 @@
     {% endblock extrahead %}
   </head>
 
-<body class="hold-transition skin-green-light sidebar-mini">
+<body class="hold-transition sidebar-mini">
     <div class="wrapper">
         <!-- SITE HEADER -->
         {% include "_header.html" %}
@@ -43,15 +43,10 @@
         <!-- END SITE SIDEBAR -->
         <div class="content-wrapper">
             <section class="content-header">
-              {% block titulo %}
-              {% endblock %}
-                      <ol class="breadcrumb">
-                        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-                        <li>Modúlo de facturación</li>
-                        <!--<li class="active">Lista de servicios</li>-->
-                      </ol>
-
-                <!-- FIN BREADCRUMB -->
+                {% block titulo %}
+                {% endblock %}
+                {% block breadcrumb %}
+                {% endblock %}
             </section>
             <section class="content">
                 {% block messages %}
