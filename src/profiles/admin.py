@@ -6,6 +6,9 @@ from .models import Profile
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 
+from import_export.admin import ImportExportModelAdmin
+from import_export import resources
+
 
 User = get_user_model()
 
@@ -31,5 +34,21 @@ class NewUserAdmin(NamedUserAdmin):
         return '<a href="{}">{}</a>'.format(url, '\xb6')
     permalink.allow_tags = True
 
+
+class ProfileResource(resources.ModelResource):
+
+    class Meta:
+        model = Profile
+        exclude = ('id',)
+        import_id_fields = ('id_persona',)
+        skip_unchanged = True
+        fields = ['id_persona', 'email_verified', 'nombre', ]
+
+class ProfileAdmin(ImportExportModelAdmin):
+    resource_class = ProfileResource
+
 admin.site.unregister(User)
 admin.site.register(User, NewUserAdmin)
+admin.site.register(Profile, ProfileAdmin)
+
+
