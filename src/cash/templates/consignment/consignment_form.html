@@ -34,11 +34,13 @@
                                         <!-- COMIENZA EL FORM!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
                                         <form id="myform" method="post">
                                             {% csrf_token %}
+                                            <div style="display: none;">
+                                                {{ form.movimiento }}
+                                            </div>
                                             <div class="form-group">
                                                 <label class="col-sm-2 control-label">Encargado de remesa</label>
                                                 <div class="col-sm-10">
                                                     {{ form.personal_colegio }}
-                                                    <p>Cajero :  {{ form.movimiento }}</p>
                                                 </div>
                                             </div>
                                             {{ form.fechacreacion }}

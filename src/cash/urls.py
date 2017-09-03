@@ -35,7 +35,7 @@ urlpatterns = [
     url(r'^boxcashier/delete/(?P<pk>\d+)$', BoxCashierDeleteView.as_view(), name='boxcashier_delete'),
 
     # URL's del CRUD de Remesas
-        url(r'^consignment/$', ConsignmentListView.as_view(), name='consignment_list'),
+    url(r'^consignment/$', ConsignmentListView.as_view(), name='consignment_list'),
     url(r'^consignment/(?P<pk>\d+)$', ConsignmentDetailView.as_view(), name='consignment_detail'),
     url(r'^consignment/create$', ConsignmentCreationView.as_view(), name='consignment_create'),
     url(r'^consignment/update/(?P<pk>\d+)$', ConsignmentUpdateView.as_view(), name='consignment_edit'),
