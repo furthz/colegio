@@ -75,5 +75,4 @@ class AprobarDescuentoView(ListView):
 
     model = Descuento
     template_name = "aprobar_descuento.html"
-
  
