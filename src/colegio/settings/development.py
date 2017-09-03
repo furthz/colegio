@@ -60,6 +60,7 @@ LOGGING = {
         'proj_log_file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
+            'encoding': 'utf-8',
             'filename': join(LOGFILE_ROOT, 'project.log'),
             'formatter': 'verbose'
         },
