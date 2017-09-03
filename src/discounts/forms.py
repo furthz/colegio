@@ -4,7 +4,7 @@ from enrollment.models import TipoServicio
 from enrollment.models import Matricula
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
-from django.forms import ModelForm
+from django.forms import ModelForm, Form
 from utils.models import TiposNivel
 from django.utils.translation import ugettext_lazy as _
 from discounts.models import Descuento
@@ -60,5 +60,3 @@ class SolicitarDescuentoForm(ModelForm):
 ##############################################################
 #       Aprobar Descuentos
 ##############################################################
-
-
