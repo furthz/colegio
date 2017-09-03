@@ -39,16 +39,10 @@ BoxCashier List
                 <th>Item</th>
                 <th>Cajero</th>
                 <th>N° de Caja</th>
-                <th>Saldo</th>
                 <th>Monto de Apertura</th>
                 <th>Monto de Cierre</th>
-                <th>Estado</th>
                 <th>Saldo</th>
                 <th>Fecha Creación</th>
-                <th>Fecha Modificación</th>
-                <th>Usuario Creación</th>
-                <th>Usuario Modificación</th>
-                <th>Comentario</th>
                 <th></th>
             </tr>
             {% for cajacajero in object_list %}
@@ -56,22 +50,30 @@ BoxCashier List
                 <td>{{ forloop.counter }}</td>
                 <td>{{ cajacajero.personal_colegio }}</td>
                 <td>{{ cajacajero.caja }}</td>
-                <td>{{ cajacajero.saldo }}</td>
                 <td>{{ cajacajero.monto_apertura }}</td>
                 <td>{{ cajacajero.monto_cierre }}</td>
-                <td>{{ cajacajero.estado }}</td>
                 <td>{{ cajacajero.saldo }}</td>
                 <td>{{ cajacajero.fecha_creacion }}</td>
-                <td>{{ cajacajero.fecha_modificacion }}</td>
-                <td>{{ cajacajero.usuario_creacion }}</td>
-                <td>{{ cajacajero.usuario_modificacion }}</td>
-                <td>{{ cajacajero.comentario }}</td>
                 <td class="text-center">
+                    {% if cajacajero.estado == 1 %}
                     <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                        <a href='{% url "cash:boxcashier_detail" cajacajero.id_movimiento %}' class="btn btn-default">
+                            <i class="fa fa-info-circle" aria-hidden="true"></i> Detalles
+                        </a>
                         <a href='{% url "cash:boxcashier_CerrarCaja" cajacajero.id_movimiento %}' class="btn btn-default">
                             <i class="fa fa-info-circle" aria-hidden="true"></i> Cerrar Caja
                         </a>
                     </div>
+                    {% else %}
+                    <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                        <a href='{% url "cash:boxcashier_detail" cajacajero.id_movimiento %}' class="btn btn-default">
+                            <i class="fa fa-info-circle" aria-hidden="true"></i> Detalles
+                        </a>
+                        <a disabled class="btn btn-default">
+                            <i class="fa fa-info-circle" aria-hidden="true"></i> Cerrar Caja
+                        </a>
+                    </div>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}
