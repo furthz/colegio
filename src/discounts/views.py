@@ -75,4 +75,11 @@ class AprobarDescuentoView(ListView):
 
     model = Descuento
     template_name = "aprobar_descuento.html"
- 
+
+    def post(self, request, *args, **kwargs):
+        logger.info("Estoy en el POST")
+        logger.info(request.POST)
+
+        return render(request, template_name=self.template_name, context={
+        'object_list': [],
+        })
