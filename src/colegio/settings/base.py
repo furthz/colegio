@@ -102,6 +102,7 @@ INSTALLED_APPS = (
     'register',
     'payments',
     'discounts',
+    'import_export',
 
 )
 
