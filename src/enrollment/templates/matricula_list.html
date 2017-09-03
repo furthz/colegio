@@ -40,6 +40,9 @@
                         <button type="submit" formaction="{% url 'enrollments:matricula_delete'%}" value="Borrar" formmethod="post" class="btn btn-default" form="{{ matricula.id_matricula}}">
                             <i class="fa fa-trash" aria-hidden="true"></i>
                         </button>
+                        <button type="submit" formaction="{% url 'discounts:solicitar_descuento'%}" value="Solicitar" formmethod="post" class="btn btn-default" form="{{ matricula.id_matricula}}">
+                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                        </button>
                     </li>
                 {% empty %}
                     <li>No hay ningun alumno matriculado </li>
