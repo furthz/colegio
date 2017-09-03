@@ -6,3 +6,5 @@ django-admin-bootstrapped>=2.5.7
 django-authtools>=1.4.0
 easy-thumbnails>=2.4.1
 psycopg2>=2.7
+django-import-export>=0.5.1
+
