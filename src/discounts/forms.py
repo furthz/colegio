@@ -9,6 +9,7 @@ from utils.models import TiposNivel
 from django.utils.translation import ugettext_lazy as _
 from discounts.models import Descuento
 from discounts.models import TipoDescuento
+from utils.middleware import get_current_colegio, get_current_userID
 
 ##############################################################
 #       Solicitar Descuentos
@@ -60,7 +61,7 @@ class TipoDescuentForm(ModelForm):
         Nota:
             solo se añade como campos los que son definidos por los usuarios
         """
-
+    servicio = forms.ModelChoiceField(queryset=Servicio.objects.filter(activo=True))
     class Meta:
         model = TipoDescuento
         fields = [
@@ -77,12 +78,16 @@ class TipoDescuentForm(ModelForm):
 
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        colegio = kwargs.pop('colegio', None)
+        super(TipoDescuentForm, self).__init__(*args, **kwargs)
         # self.fields['nivel'] = forms.ChoiceField(choices=self.ChoiceNiveles())
         # self.fields['grado'] = forms.ChoiceField(choices=self.ChoiceGrados())
         self.fields['servicio'].widget.attrs.update({'class': 'form-control'})
         self.fields['descripcion'].widget.attrs.update({'class': 'form-control'})
         self.fields['porcentaje'].widget.attrs.update({'class': 'form-control'})
+
+        if colegio:
+            self.fields['servicio'].queryset = Servicio.objects.filter(activo=True,tipo_servicio__colegio__id_colegio=colegio)
 
 ##############################################################
 #       Aprobar Descuentos

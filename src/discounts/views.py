@@ -20,6 +20,7 @@ from register.models import Colegio
 from register.models import PersonalColegio
 from discounts.forms import SolicitarDescuentoForm
 from discounts.forms import TipoDescuentForm
+from utils.middleware import get_current_colegio, get_current_userID
 import logging
 
 # Create your views here.
@@ -81,7 +82,7 @@ class TipoDescuentoCreateView(MyLoginRequiredMixin,CreateView):
         return super(TipoDescuentoCreateView, self).form_valid(form)
 
     def get(self, request, *args, **kwargs):
-        form = self.form_class(initial={'servicio':Servicio.objects.filter(tipo_servicio__colegio__id_colegio=self.request.session.get('colegio'), activo=True)})
+        form = self.form_class(colegio=get_current_colegio())
         return render(request, template_name=self.template_name, context={
             'form': form,
         })

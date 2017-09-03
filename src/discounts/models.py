@@ -10,6 +10,7 @@ from utils.models import CreacionModificacionUserMixin
 from utils.middleware import get_current_colegio, get_current_userID
 # Create your models here.
 
+
 class TipoDescuento(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
     """
     colegio:        colegio al que le pertenece el tipo de descuento
@@ -19,10 +20,10 @@ class TipoDescuento(ActivoMixin, CreacionModificacionFechaMixin, CreacionModific
     """
     id_tipo_descuento = models.AutoField(primary_key=True)
     colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column='id_colegio',default=get_current_colegio)
-    servicio = models.ForeignKey(Servicio, models.DO_NOTHING, db_column='id_servicio',default=get_current_colegio)
+    servicio = models.ForeignKey(Servicio, models.DO_NOTHING, db_column='id_servicio')
     descripcion = models.CharField(max_length = 50)
     porcentaje = models.DecimalField(max_digits=10, decimal_places=10)
-
+    #objects = ActivoManager()
     def __str__(self):
 
         return self.descripcion
