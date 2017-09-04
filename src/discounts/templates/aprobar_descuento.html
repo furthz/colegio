@@ -38,7 +38,7 @@
                                 <form id="ListaDescuentos">{% csrf_token %}
                                 <tr>
                                     {% for descuento in object_list %}
-
+                                        {% if descuento.estado == 1 %}
                                             <tr>
                                                 <td>{{ descuento.matricula.alumno.getNombreCompleto }}</td>
                                                 <td>{{ descuento.fecha_solicitud }}</td>
@@ -60,13 +60,12 @@
                                                 <td>
                                                     <div class="check">
                                                         <label>
-                                                            <input type="checkbox" name="{{ descuento.id_descuento }}" id="eleccion1{{ descuento.id_descuento }}" checked>
-
+                                                            <input type="checkbox" name="{{ descuento.id_descuento }}" id="eleccion1{{ descuento.id_descuento }}">
                                                         </label>
                                                     </div>
                                                 </td>
                                             </tr>
-
+                                        {% endif %}
                                     {% endfor %}
                                     </form>
                                 </tr>
@@ -74,13 +73,29 @@
                             </div>
                         </table>
 
-                        <button type="submit" value="Aceptar" class="btn btn-default" form="ListaDescuentos" formmethod="post">
-                            <i class="fa fa-check-square" aria-hidden="true"></i>
-                            Aceptar
-                        </button>
 
+
+                        <div class="col-md-2">
+                            <div class="search-actions">
+                                <button type="submit" value="Aceptar" class="btn btn-default" form="ListaDescuentos" formmethod="post">
+                                    <i class="fa fa-check-square" aria-hidden="true"></i>
+                                    Aceptar
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="search-actions">
+                                <form action="{% url 'discounts:detalle_descuentos' %}">
+                                    <button type="submit" value="Detalle" class="btn btn-default">
+                                        <i class="fa fa-circle" aria-hidden="true"></i>
+                                        Detalle
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
               </div>
           </div>
       </div>
 </section>
 {% endblock container %}
+
