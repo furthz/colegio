@@ -32,7 +32,8 @@
                                 <th>Tipo de descuento</th>
                                 <th>N° expediente</th>
                                 <th>Estado</th>
-                                <th>Acciones</th>
+                                <th>Aprobar</th>
+                                <th>No Aprobar</th>
                             </tr>
                             <div id="div1">
                                 <form id="ListaDescuentos">{% csrf_token %}
@@ -58,11 +59,18 @@
                                                     </td>
                                                 {% endif %}
                                                 <td>
-                                                    <div class="check">
+
                                                         <label>
-                                                            <input type="checkbox" name="{{ descuento.id_descuento }}" id="eleccion1{{ descuento.id_descuento }}">
+                                                            <input type="radio" name="gender{{ descuento.id_descuento }}" value="aprobar">
                                                         </label>
-                                                    </div>
+
+                                                </td>
+                                                <td>
+
+                                                        <label>
+                                                            <input type="radio" name="gender{{ descuento.id_descuento }}" value="noaprobar">
+                                                        </label>
+
                                                 </td>
                                             </tr>
                                         {% endif %}

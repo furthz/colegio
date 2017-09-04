@@ -86,6 +86,7 @@ class TipoDescuentoCreateView(MyLoginRequiredMixin,CreateView):
         return render(request, template_name=self.template_name, context={
             'form': form,
         })
+
 #################################################
 #       Aprobar Descuentos
 #################################################
@@ -100,25 +101,29 @@ class AprobarDescuentoView(ListView):
         logger.info(request.POST)
         data_post = request.POST
         self.descuentos = Descuento.objects.filter(estado=1).order_by("id_descuento")
-
         logger.info(self.descuentos)
+
         for descuento in self.descuentos:
             try:
                 logger.info('Iniciando el Try')
-                descuento_id = "{0}".format(descuento.id_descuento)
+
+                descuento_id = "gender{0}".format(descuento.id_descuento)
                 logger.info("El dato de llegada es {0}".format(data_post[descuento_id]))
-                if descuento.id_descuento == int(descuento_id):
+
+                if data_post[descuento_id] == "aprobar":
                     descuento.estado = 2
                     descuento.comentario = "Aprobado"
                     descuento.save()
+                else:
+                    descuento.estado = 3
+                    descuento.comentario = "No aprobado"
+                    descuento.save()
             except:
-                logger.info("Cambiando los descuentos {0}".format(descuento.id_descuento))
-                descuento.estado = 3
-                descuento.comentario = "No aprobado"
-                descuento.save()
+                logger.info("No se realizan cambios")
+
 
         return render(request, template_name=self.template_name, context={
-        'object_list': self.descuentos,
+            'object_list': self.descuentos,
         })
 
 class DetalleDescuentoView(ListView):
