@@ -207,6 +207,7 @@ class Cuentascobrar(ActivoMixin, CreacionModificacionFechaMixin, CreacionModific
     estado = models.BooleanField()
     precio = models.FloatField()
     deuda = models.FloatField()
+    descuento = models.FloatField()
     objects = models.Manager()
     objetos = dCuentasManager()
 

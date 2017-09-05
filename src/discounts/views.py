@@ -16,7 +16,7 @@ from utils.views import MyLoginRequiredMixin
 from discounts.models import Descuento
 from discounts.models import TipoDescuento
 from enrollment.models import Matricula
-from enrollment.models import Servicio
+from enrollment.models import Cuentascobrar
 from income.models import obtener_mes
 from register.models import Colegio
 from register.models import PersonalColegio
@@ -101,22 +101,43 @@ class AprobarDescuentoView(ListView):
 
     def post(self, request, *args, **kwargs):
         logger.info("Estoy en el POST")
-        logger.info(request.POST)
+        logger.info("Los datos de llegada son {0}".format(request.POST))
         data_post = request.POST
         self.descuentos = Descuento.objects.filter(estado=1).order_by("id_descuento")
-        logger.info(self.descuentos)
-
+        n = 0
         for descuento in self.descuentos:
+            n = n + 1
             try:
-                logger.info('Iniciando el Try')
+                logger.info("Iniciando el Try por {0} vez".format(n))
 
                 descuento_id = "gender{0}".format(descuento.id_descuento)
-                logger.info("El dato de llegada es {0}".format(data_post[descuento_id]))
+                logger.info("El dato de llegada para {0} es {1}".format(descuento_id, data_post[descuento_id]))
 
                 if data_post[descuento_id] == "aprobar":
+                    # Guardar el estado de descuento como "Aprobado"
                     descuento.estado = 2
                     descuento.comentario = "Aprobado"
+                    descuento.fecha_aprobacion = date.today()
                     descuento.save()
+
+                    # Generando los descuentos en las cuentas por cobrar
+                    matricula_id = descuento.matricula.id_matricula
+                    logger.debug("La matrícula asociada al descuento es {0}".format(matricula_id))
+                    porcentaje_descuento = float(descuento.tipo_descuento.porcentaje)
+                    logger.debug("El porcentaje de descuento es {0}".format(porcentaje_descuento))
+                    servicio_id = descuento.tipo_descuento.servicio.id_servicio
+                    logger.debug("El servicio asociado al descuento tiene id = {0}".format(servicio_id))
+                    cuenta_descuento1 = Cuentascobrar.objects.filter(matricula__id_matricula=matricula_id)
+                    cuenta_descuento2 = cuenta_descuento1.filter(servicio__id_servicio=servicio_id)
+                    cuenta_descuento = cuenta_descuento2.filter(fecha_ven__year=date.today().year) #Se realizan descuentos para el presente año
+
+                    for cuenta in cuenta_descuento:
+                        if cuenta.estado == False:
+                            cuenta.descuento = cuenta.precio*porcentaje_descuento
+                            cuenta.precio = cuenta.precio - cuenta.descuento
+                            cuenta.deuda = cuenta.deuda - cuenta.descuento
+                            cuenta.save()
+
                 else:
                     descuento.estado = 3
                     descuento.comentario = "No aprobado"
@@ -146,7 +167,7 @@ class DetalleDescuentoView(FormView):
         numero_expediente = request.POST["numero_expediente"]
         estado = request.POST["estado"]
 
-        logger.info(alumno)
+        logger.info("Los datos de llegada son {0}".format(request.POST))
 
         # Proceso de filtrado según el alumno
         if alumno == "":
@@ -157,7 +178,7 @@ class DetalleDescuentoView(FormView):
         # Proceso de filtrado según el año
         descuentos_2 = descuentos_1.filter(fecha_modificacion__year=anio)
 
-        # Proceso de filtrado según el mes
+        # Proceso de filtrado según el número de expediente
         if numero_expediente == "":
             descuentos_3 = descuentos_2
         else:
