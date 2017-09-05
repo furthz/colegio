@@ -92,3 +92,40 @@ class TipoDescuentForm(ModelForm):
 ##############################################################
 #       Aprobar Descuentos
 ##############################################################
+
+class DetalleDescuentosForm(forms.Form):
+    """
+    Formulario para filtar los detalles de Control de ingresos
+    Nota:
+        solo se añaden com campos los que son definidos por los usuarios
+    """
+
+    alumno = forms.CharField(required=False)
+    anio = forms.CharField()
+    numero_expediente = forms.CharField(required=False)
+    estado = forms.CharField()
+
+    def ChoiceAnio(self):
+        MY_CHOICES = (
+            ('2017', '2017'),
+            ('2016', '2016'),
+        )
+        return MY_CHOICES
+
+    def ChoiceEstado(self):
+        MY_CHOICES = (
+            ('Todos', 'Todos'),
+            ('Aprobado', 'Aprobado'),
+            ('No_aprobado', 'No aprobado'),
+            ('Pendiente', 'Pendiente'),
+        )
+        return MY_CHOICES
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['anio'] = forms.ChoiceField(choices=self.ChoiceAnio())
+        self.fields['estado'] = forms.ChoiceField(choices=self.ChoiceEstado())
+        self.fields['alumno'].widget.attrs.update({'class': 'form-control'})
+        self.fields['anio'].widget.attrs.update({'class': 'form-control'})
+        self.fields['numero_expediente'].widget.attrs.update({'class': 'form-control'})
+        self.fields['estado'].widget.attrs.update({'class': 'form-control'})

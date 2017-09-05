@@ -8,6 +8,7 @@ from django.views.generic import ListView
 from django.views.generic import FormView
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.db.models import Q
 from django.views import View
 from django.core.urlresolvers import reverse_lazy
 from django.urls import reverse
@@ -16,10 +17,12 @@ from discounts.models import Descuento
 from discounts.models import TipoDescuento
 from enrollment.models import Matricula
 from enrollment.models import Servicio
+from income.models import obtener_mes
 from register.models import Colegio
 from register.models import PersonalColegio
 from discounts.forms import SolicitarDescuentoForm
 from discounts.forms import TipoDescuentForm
+from discounts.forms import DetalleDescuentosForm
 from utils.middleware import get_current_colegio, get_current_userID
 import logging
 
@@ -126,7 +129,57 @@ class AprobarDescuentoView(ListView):
             'object_list': self.descuentos,
         })
 
-class DetalleDescuentoView(ListView):
+
+class DetalleDescuentoView(FormView):
 
     model = Descuento
     template_name = "detalle_descuento.html"
+    form_class = DetalleDescuentosForm
+
+    def get_queryset(self):
+        return []
+
+    def post(self, request, *args, **kwargs):
+
+        alumno = request.POST["alumno"]
+        anio = request.POST["anio"]
+        numero_expediente = request.POST["numero_expediente"]
+        estado = request.POST["estado"]
+
+        logger.info(alumno)
+
+        # Proceso de filtrado según el alumno
+        if alumno == "":
+            descuentos_1 = self.model.objects
+        else:
+            descuentos_1 = self.model.objects.filter(Q(matricula__alumno__nombre=alumno) | Q(matricula__alumno__apellido_pa=alumno) | Q(matricula__alumno__apellido_ma=alumno))
+
+        # Proceso de filtrado según el año
+        descuentos_2 = descuentos_1.filter(fecha_modificacion__year=anio)
+
+        # Proceso de filtrado según el mes
+        if numero_expediente == "":
+            descuentos_3 = descuentos_2
+        else:
+            descuentos_3 = descuentos_2.filter(numero_expediente=int(numero_expediente))
+
+        # Proceso de filtrado según el estado o tipo
+        if estado == "Todos":
+            descuentos = descuentos_3
+        elif estado == "Pendiente":
+            descuentos = descuentos_3.filter(estado=1)
+        elif estado == "Aprobado":
+            descuentos = descuentos_3.filter(estado=2)
+        else:
+            descuentos = descuentos_3.filter(estado=3)
+
+        if len(descuentos) != 0:
+            return render(request, template_name=self.template_name, context={
+                'object_list': descuentos,
+                'form': DetalleDescuentosForm,
+            })
+        else:
+            return render(request, template_name=self.template_name, context={
+                'object_list': [],
+                'form': DetalleDescuentosForm,
+            })

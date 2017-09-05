@@ -13,17 +13,57 @@
       </ol>
 {% endblock %}
 
-
-
 {% block container %}
-<section class="content">
+    <!-- INICIO DE CONTENIDO -->
+    <section class="content">
       <div class="row">
           <div class="col-md-12">
               <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Detalles del Descuento</h3>
+                    <h3 class="box-title">Detalle de descuentos</h3>
                 </div>
-
+                <div class="box-body">
+                  <div class="col-md-12">
+                    <div class="panel-page">
+                      <div class="toolbar-search">
+                        <div class="box-body">
+                           <form action="" method="post" class="form-horizontal" id="1">{% csrf_token %}
+                                {% csrf_token %}
+                                    <div class="col-md-4">
+                                      <div class="form-group">
+                                      <label>Alumno</label>
+                                        {{ form.alumno }}
+                                      </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                      <div class="form-group">
+                                      <label>N° expediente</label>
+                                        {{ form.numero_expediente }}
+                                      </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                      <div class="form-group">
+                                      <label>Año</label>
+                                        {{ form.anio }}
+                                      </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                      <div class="form-group">
+                                      <label>Estado</label>
+                                        {{ form.estado }}
+                                      </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="search-actions">
+                                          <button type="submit" class="btn btn-primary btn-block">
+                                          <i class="fa fa-search" aria-hidden="true"></i>
+                                           Consultar
+                                          </button>
+                                        </div>
+                                    </div>
+                            </form>
+                        </div>
+                    </div>
                         <table class="table table-hover">
                             <tbody>
                             <tr>
@@ -63,8 +103,6 @@
                             </div>
                         </table>
 
-
-
                         <div class="col-md-2">
                             <div class="search-actions">
                                 <form action="{% url 'discounts:aprobar_descuentos' %}">
@@ -76,8 +114,19 @@
                             </div>
                         </div>
 
+                    </div>
+                  </div>
+
+
+                </div>
+                <div class="col-md-3"></div>
+
+                </div>
+
               </div>
           </div>
       </div>
-</section>
+    </section>
+<!-- /.FIN DE CONTENIDO -->
+
 {% endblock container %}
