@@ -16,6 +16,17 @@
 
 
 {% block container %}
+    <script language="Javascript">
+        function confirmAceptar()
+        {
+          var agree=confirm("Estos resultados no podrán ser deshechos ¿Realmente desea continuar?");
+          if (agree)
+            return true ;
+          else
+            return false ;
+        }
+    </script>
+
 <section class="content">
       <div class="row">
           <div class="col-md-12">
@@ -85,7 +96,7 @@
 
                         <div class="col-md-2">
                             <div class="search-actions">
-                                <button type="submit" value="Aceptar" class="btn btn-default" form="ListaDescuentos" formmethod="post">
+                                <button type="submit"  onclick="return confirmAceptar();" value="Aceptar" class="btn btn-default" form="ListaDescuentos" formmethod="post">
                                     <i class="fa fa-check-square" aria-hidden="true"></i>
                                     Aceptar
                                 </button>
