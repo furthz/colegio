@@ -132,7 +132,7 @@ class AprobarDescuentoView(ListView):
                     cuenta_descuento = cuenta_descuento2.filter(fecha_ven__year=date.today().year) #Se realizan descuentos para el presente año
 
                     for cuenta in cuenta_descuento:
-                        if cuenta.estado == False:
+                        if cuenta.estado == True:
                             cuenta.descuento = cuenta.precio*porcentaje_descuento
                             cuenta.precio = cuenta.precio - cuenta.descuento
                             cuenta.deuda = cuenta.deuda - cuenta.descuento
