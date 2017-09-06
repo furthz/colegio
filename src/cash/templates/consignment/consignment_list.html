@@ -3,6 +3,7 @@
 
 {% block container %}
 
+
     <!--Comienza el contenido!!!!!!!!!!!!!!!!!!!-->
 
     <div class="content-wrapper">
@@ -35,39 +36,79 @@
                                         </div>
                                         <div class="toolbar-search">
                                             <div class="box-body">
-                                                <div class="col-md-4">
+
+
+                                                <form method="get">
+
+
+
+                                                <div class="col-md-6">
                                                     <div class="form-group">
+                                                        <script>
+                                                            function sync(){
+                                                                var n1 = document.getElementById('text');
+                                                                var n2 = document.getElementById('id_fechacreacion__range');
+                                                                n2.value = n1.value;}
+
+                                                            function yolo() {
+                                                                for (i = 0; i < 3;) {
+                                                                    if (i == 0) {
+                                                                        var valorname = document.getElementById('nombre').value ;
+                                                                        document.getElementById('elemento1').innerHTML = valorname;
+                                                                        i = i+1
+                                                                    } else if (i==1) {
+                                                                        for (i = 0; i < 2;) {
+                                                                            if (i == 0) {
+                                                                                var str = document.getElementById("elemento1").innerHTML;
+                                                                                var res = str.replace(/-/g, ",");
+                                                                                document.getElementById("elemento1").innerHTML = res;
+                                                                                i = i+1
+                                                                            } else if (i==1) {
+                                                                                var str = document.getElementById("elemento1").innerHTML;
+                                                                                var res = str.replace(/\//g, "-");
+                                                                                document.getElementById("elemento1").innerHTML = res;
+                                                                                i = i+1
+                                                                            }
+                                                                        }
+                                                                        i = i+1
+                                                                    }
+                                                                }
+                                                                var text = document.getElementById('elemento1').innerHTML;
+                                                                document.getElementById('id_fechacreacion__range').value = text;
+                                                            }
+                                                        </script>
+
                                                         <label>Fecha de remesa:</label>
                                                         <div class="input-group date">
                                                             <div class="input-group-addon">
                                                                 <i class="fa fa-calendar"></i>
                                                             </div>
-                                                            <input type="text" class="form-control pull-right datepicker">
+
+
+                                                            <input type="text" id="nombre" onchange="yolo()" class="form-control pull-right datepicker">
+
+                                                            <div style="display: none;">
+                                                                <p id="elemento1"></p>
+
+                                                                {{ filter.form.as_p }}
+                                                            </div>
+
                                                         </div>
                                                     </div>
                                                 </div>
-                                            <form id="FilterList" action="../filterPC/" method="post">
-                                                <input type="text" name="personal_colegio">
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label>Encargado de remesa:</label>
-                                                        <select class="form-control">
-                                                            <option>------</option>
-                                                            {% for remesa in object_list %}
-                                                                <option value='{{remesa.personal_colegio}}'{% if remesa == current_remesa %}selected="selected"{% endif %}>{{remesa.personal_colegio|capfirst}}</option>
-                                                            {% endfor %}
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </form>
                                                 <div class="col-md-4">
                                                     <div class="search-actions">
-                                                        <button type="submit" class="btn btn-primary" form="FilterList">
+                                                        <button type="submit" class="btn btn-primary">
                                                             <i class="fa fa-search" aria-hidden="true"></i>
                                                             Buscar remesa
                                                         </button>
                                                     </div>
                                                 </div>
+
+                                                </form>
+
+
+
 
                                             </div>
                                         </div>
@@ -82,7 +123,7 @@
                                             <th class="text-center">Acciones</th>
                                         </tr>
                                         <div id="Lista">
-                                        {% for remesa in object_list %}
+                                        {% for remesa in filter.qs %}
                                             <tr>
                                                 <td>{{ forloop.counter }}</td>
                                                 <td>{{ remesa.personal_colegio }}</td>
@@ -102,15 +143,7 @@
                                     </table>
                                 </div>
                             </div>
-                            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-                            <script>
-                                $(document).ready(function(){
-                                    $("button").click(function(){
-                                        $("#ListFilter").load("demo_test.txt");
-                                    });
-                                });
-                            </script>
-                    </form>
+                        </form>
                 </div>
             </div>
     </div>
@@ -119,6 +152,14 @@
   </div>
   <!-- /.FIN DE CONTENEDOR DE FORMULARIO  -->
 
+
+<script>
+    $(function () {
+      //Date range picker
+      $('.datepicker').daterangepicker()
+      //$('.datepicker').datepicker()
+  });
+</script>
 
     <!--Fin del contenido!!!!!!!!!!!-->
 

@@ -1,3 +1,4 @@
+
 from django.db import models
 from django.utils import timezone
 from register.models import Colegio, PersonalColegio
@@ -123,7 +124,7 @@ class Remesa(models.Model):
     movimiento = models.ForeignKey(CajaCajero, models.DO_NOTHING, db_column='id_movimiento', default=cajeroExist)
     fechacreacion = models.DateTimeField(default=timezone.now)
     monto = models.FloatField()
-    comentario = models.CharField(max_length=500, blank=True, null=True)
+    comentario = models.CharField(max_length=500, blank=True, null=True )
 
     def __str__(self):
         """

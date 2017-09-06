@@ -3,82 +3,305 @@
 {% block container %}
 
     <!--Comienza el contenido!!!!!!!!!!!!!!!!!!!-->
-    <section class="content">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="box box-primary">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Registrar Tipo de Pago</h3>
-                        <div class="box-body">
-                            <div class="col-md-9">
-                                <div class="panel-page">
-                                    <div class="toolbar-header">
-                                            <a class="btn btn-success" href='{% url "payments:tipopago_create" %}'><i class="fa fa-plus" aria-hidden="true"></i>  Crear Tipo de Pago</a>
-                                        </div>
 
-                                    <div class="box-header with-border">
-                                        <h3 class="box-title">Lista de Tipos de Pagos</h3>
-                                    </div>
-                                    <div class="box-body">
-                                        <div class="table-responsive no-padding">
 
-                                            <table class="table table-hover">
-                                                <tbody>
-                                                <tr>
-                                                    <th>Item</th>
-                                                    <th>Tipo</th>
-                                                    <th>Descripcion</th>
-                                                    <th>Id Parent</th>
-                                                    <th>Colegio</th>
-
-                                                    <!-- <th>Estado</th>
-                                                    <th>Eliminado</th> -->
-
-                                                </tr>
-                                                {% for tipopago in object_list %}
-                                                <tr>
-                                                    {% if tipopago.eliminado == 1 %}
-                                                    {% else %}
-                                                    <td>{{ forloop.counter }}</td>
-                                                    {% if tipopago.tipo == 0 %}
-                                                        <td>Bienes</td>
-                                                    {% else %}
-                                                        <td>Servicios</td>
-                                                    {% endif %}
-                                                    <td>{{ tipopago.descripcion }}</td>
-                                                    <td>{{ tipopago.padre }}</td>
-                                                    <td>{{ tipopago.colegio }}</td>
-                                                    <td>
-                                                        <div class="btn-group btn-group-sm" role="group" aria-label="...">
-
-                                                            <a title="Detalle" href='{% url "payments:tipopago_detail" tipopago.id_tipo_pago %}' class="btn btn-default">
-                                                                <i class="fa fa-info-circle" aria-hidden="true"></i>
-                                                            </a>
-                                                            <a title="Eliminar" href="{% url 'payments:tipopago_delete' tipopago.id_tipo_pago %}" class="btn btn-default">
-                                                                <i class="fa fa-trash" aria-hidden="true"></i>
-                                                            </a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                {% endif %}
-                                                {% endfor %}
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <!-- INICIA CONTENDOR DE FORMULARIOS -->
+  <div class="content-wrapper">
+    <!-- HEADER INFO PAGE UBICACION -->
+    <section class="content-header">
+      <h1>
+        Tipos de Pagos
+        <small>Modúlo de Pagos</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+        <li>Modúlo de Pagos</li>
+        <li class="active">Lista de Tipos de Pagos</li>
+      </ol>
     </section>
+     <!-- FIN DE INFO PAGE UBICACION -->
+    <!-- INICIO DE CONTENIDO -->
+    <section class="content">
+      <div class="row">
+          <div class="col-md-12">
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Lista de Tipos de Pagos</h3>
+                </div>
+                <div class="box-body">
+                  <div class="col-md-9">
+                    <div class="panel-page">
 
+
+                      <div class="panel-body">
+                        <!-- INICIA LA LISTA DE REGISTROS -->
+                        <div class="page-header">
+
+                          <h3>Bienes</h3>
+                        </div>
+                          <!-- Bienes -->
+
+                          <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                              <div class="panel panel-default">
+                                  <div class="panel-heading">
+                                      <h4 class="panel-title">
+                                          <a data-toggle="collapse" data-parent="#accordion1" href="#collapseOne" class="" aria-expanded="true">
+                                              Bienes</a>
+                                      </h4>
+                                  </div>
+                                  <div id="collapseOne" class="panel-collapse collapse" aria-expanded="true">
+                                      <div class="panel-body">
+                                          <div class="panel-group" id="accordion2">
+                                            {% for tipopago in object_list %}
+                                            {% if tipopago.tipo == 0 and tipopago.eliminado == 0  %}
+                                                {% if tipopago.padre == None %}
+
+
+                                                    <div class="panel-body">
+                                                        <!-- <p>Es un bien, no esta eliminado y No tiene ID_PARENT, Como no tienen padre muestran descripción</p>
+                                                        Panel 1                                -->
+                                                        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                                            <div class="panel-body">
+                                                                <h4>Lista de Bienes</h4>
+                                                                <table class="table">
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <th>Item</th>
+                                                                        <th>Descripcion</th>
+                                                                        <th>Acciones</th>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    <tr>
+                                                                        <th scope="row">{{ forloop.counter0 }}</th>
+                                                                        <td>{{ tipopago.descripcion }}</td>
+                                                                        <td>
+                                                                            <div class="btn-group btn-group-sm" role="group" aria-label="...">
+
+                                                                                <a title="Detalle" href='{% url "payments:tipopago_detail" tipopago.id_tipo_pago %}' class="btn btn-default">
+                                                                                    <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                                                                </a>
+                                                                                <a title="Eliminar" href="{% url 'payments:tipopago_delete' tipopago.id_tipo_pago %}" class="btn btn-default">
+                                                                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                                                                </a>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% else %}
+
+
+                                                        <div class="panel panel-default">
+                                                        <div class="panel-heading">
+                                                            <h4 class="panel-title">
+                                                                <a data-toggle="collapse" data-parent="#accordion2" href="#2a{{ tipopago.id_tipo_pago }}" aria-expanded="false" class="collapsed">
+
+                                                                    <!--ACÁ SE DEBERÁ MOSTRAR EL NOMBRE DEL PADRE-->
+                                                                    {{ tipopago.padre }}
+
+                                                                </a>
+                                                            </h4>
+                                                        </div>
+                                                        <div id="2a{{ tipopago.id_tipo_pago }}" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                                            <div class="panel-body">
+
+                                                                <!--Acá los que estén ligados al padre-->
+
+                                                                <h4>Lista de Bienes</h4>
+                                                                <table class="table">
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <th>Item</th>
+                                                                        <th>Descripcion</th>
+                                                                        <th>Acciones</th>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    <tr>
+                                                                        <th scope="row">{{ forloop.counter0 }}</th>
+                                                                        <td>{{ tipopago.descripcion }}</td>
+                                                                        <td>
+                                                                            <div class="btn-group btn-group-sm" role="group" aria-label="...">
+
+                                                                                <a title="Detalle" href='{% url "payments:tipopago_detail" tipopago.id_tipo_pago %}' class="btn btn-default">
+                                                                                    <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                                                                </a>
+                                                                                <a title="Eliminar" href="{% url 'payments:tipopago_delete' tipopago.id_tipo_pago %}" class="btn btn-default">
+                                                                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                                                                </a>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+
+
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                            {% endif %}
+                                            {% endfor %}
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+
+
+
+                          </div>
+
+                        <!-- FIN DE Bienes -->
+
+
+                        <div class="page-header">
+                          <h3>Servicios</h3>
+                        </div>
+
+                        <!-- Servicios -->
+
+
+
+                          <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                              <div class="panel panel-default">
+                                  <div class="panel-heading">
+                                      <h4 class="panel-title">
+                                          <a data-toggle="collapse" data-parent="#accordion1" href="#collapseTwo" class="" aria-expanded="true">
+                                              Servicios</a>
+                                      </h4>
+                                  </div>
+                                  <div id="collapseTwo" class="panel-collapse collapse" aria-expanded="true">
+                                      <div class="panel-body">
+                                          <div class="panel-group" id="accordion2">
+                                            {% for tipopago in object_list %}
+                                            {% if tipopago.tipo == 1 and tipopago.eliminado == 0  %}
+                                                {% if tipopago.padre == None %}
+
+
+                                                    <div class="panel-body">
+                                                        <!-- <p>Es un bien, no esta eliminado y No tiene ID_PARENT, Como no tienen padre muestran descripción</p>
+                                                        Panel 1                                -->
+                                                        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                                            <div class="panel-body">
+                                                                <h4>Lista de Servicios</h4>
+                                                                <table class="table">
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <th>Item</th>
+                                                                        <th>Descripcion</th>
+                                                                        <th>Acciones</th>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    <tr>
+                                                                        <th scope="row">{{ forloop.counter }}</th>
+                                                                        <td>{{ tipopago.descripcion }}</td>
+                                                                        <td>
+                                                                            <div class="btn-group btn-group-sm" role="group" aria-label="...">
+
+                                                                                <a title="Detalle" href='{% url "payments:tipopago_detail" tipopago.id_tipo_pago %}' class="btn btn-default">
+                                                                                    <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                                                                </a>
+                                                                                <a title="Eliminar" href="{% url 'payments:tipopago_delete' tipopago.id_tipo_pago %}" class="btn btn-default">
+                                                                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                                                                </a>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% else %}
+
+
+                                                        <div class="panel panel-default">
+                                                        <div class="panel-heading">
+                                                            <h4 class="panel-title">
+                                                                <a data-toggle="collapse" data-parent="#accordion2" href="#2aSS{{ tipopago.id_tipo_pago }}" aria-expanded="false" class="collapsed">
+
+                                                                    <!--ACÁ SE DEBERÁ MOSTRAR EL NOMBRE DEL PADRE-->
+                                                                    {{ tipopago.padre }}
+
+                                                                </a>
+                                                            </h4>
+                                                        </div>
+                                                        <div id="2aSS{{ tipopago.id_tipo_pago }}" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                                            <div class="panel-body">
+
+                                                                <!--Acá los que estén ligados al padre-->
+
+                                                                <h4>Lista de Servicios</h4>
+                                                                <table class="table">
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <th>Item</th>
+                                                                        <th>Descripcion</th>
+                                                                        <th>Acciones</th>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    <tr>
+                                                                        <th scope="row">{{ forloop.counter }}</th>
+                                                                        <td>{{ tipopago.descripcion }}</td>
+                                                                        <td>
+                                                                            <div class="btn-group btn-group-sm" role="group" aria-label="...">
+
+                                                                                <a title="Detalle" href='{% url "payments:tipopago_detail" tipopago.id_tipo_pago %}' class="btn btn-default">
+                                                                                    <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                                                                </a>
+                                                                                <a title="Eliminar" href="{% url 'payments:tipopago_delete' tipopago.id_tipo_pago %}" class="btn btn-default">
+                                                                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                                                                </a>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+
+
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                            {% endif %}
+                                            {% endfor %}
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+
+
+
+                          </div>
+
+
+
+
+                        <!-- FIN DE Servicios -->
+
+                        <!-- FIN DE LA LISTA DE REGISTRO -->
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+
+                  </div>
+                </div>
+              </div>
+          </div>
+      </div>
+    </section>
     <!-- /.FIN DE CONTENIDO -->
-    <!-- /.FIN DE CONTENEDOR DE FORMULARIO  -->
-
+  </div>
+  <!-- /.FIN DE CONTENEDOR DE FORMULARIO  -->
 
 
     <!--Fin del contenido!!!!!!!!!!!-->

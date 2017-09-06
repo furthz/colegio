@@ -10,6 +10,7 @@ from django.views.generic.edit import (
 from django.http import HttpResponse
 from .models import Caja, CajaCajero, Remesa
 from .forms import CashierForm, BoxCashierForm, ConsignmentForm
+from .filters import ConsignmentFilter
 
 
 def index(request):
@@ -107,8 +108,8 @@ class BoxCashierDeleteView(DeleteView):
 
 class ConsignmentListView(ListView):
     model = Remesa
+    filterset_class = ConsignmentFilter
     template_name = 'consignment/consignment_list.html'
-
 
 class ConsignmentDetailView(DetailView):
     model = Remesa
@@ -139,7 +140,7 @@ class ConsignmentDeleteView(DeleteView):
 #####          FILTRADO                     #####
 #################################################
 
-
-class FiltrarPersonalColegioView(ListView):
-    model = Remesa
-    template_name = 'consignment/consignment_filterlist.html'
+def search(request):
+    comentario_list = Remesa.objects.all()
+    comentario_filter = ConsignmentFilter(request.GET, queryset=comentario_list)
+    return render(request, 'consignment/consignment_list.html', {'filter': comentario_filter})

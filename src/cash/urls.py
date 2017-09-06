@@ -8,7 +8,7 @@ from .views import (
     # Import de vistas CRUD de Consignment
     ConsignmentListView, ConsignmentDetailView, ConsignmentCreationView, ConsignmentUpdateView, ConsignmentDeleteView,
     # Import de vistas de Filtrado
-    FiltrarPersonalColegioView
+    search,
 )
 
 urlpatterns = [
@@ -35,15 +35,14 @@ urlpatterns = [
     url(r'^boxcashier/delete/(?P<pk>\d+)$', BoxCashierDeleteView.as_view(), name='boxcashier_delete'),
 
     # URL's del CRUD de Remesas
-    url(r'^consignment/$', ConsignmentListView.as_view(), name='consignment_list'),
+
+    #url(r'^search/$', search, name='search'),
+    #url(r'^consignment/$', ConsignmentListView.as_view(), name='consignment_list'),
+    url(r'^consignment/$', search, name='consignment_list'),
     url(r'^consignment/(?P<pk>\d+)$', ConsignmentDetailView.as_view(), name='consignment_detail'),
     url(r'^consignment/create$', ConsignmentCreationView.as_view(), name='consignment_create'),
     url(r'^consignment/update/(?P<pk>\d+)$', ConsignmentUpdateView.as_view(), name='consignment_edit'),
     url(r'^consignment/delete/(?P<pk>\d+)$', ConsignmentDeleteView.as_view(), name='consignment_delete'),
-
-    # URL'S de Filtrado
-    url(r'^filterPC', FiltrarPersonalColegioView.as_view(), name="filtrar_PersonalColegio"),
-
 
 ]
 

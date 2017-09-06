@@ -1,5 +1,5 @@
 {% extends "page.html" %}
-{% block title %}{{ block.super }}Cajeros{% endblock %}
+{% block title %}{{ block.super }}Pagos{% endblock %}
 
 {% block container %}
 
@@ -9,13 +9,13 @@
         <!-- HEADER INFO PAGE UBICACION -->
         <section class="content-header">
             <h1>
-                Control de Cajas
-                <small>Modúlo de facturación</small>
+                Control de tipos de pagos
+                <small>Modúlo de pagos</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-                <li>Modúlo de facturación</li>
-                <li class="active">Control de Caja</li>
+                <li>Modúlo de pago</li>
+                <li class="active">Control de tipos de pago</li>
             </ol>
         </section>
         <!-- FIN DE INFO PAGE UBICACION -->
@@ -25,7 +25,7 @@
                 <div class="col-md-12">
                     <div class="box box-primary">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Registrar Caja</h3>
+                            <h3 class="box-title">Tipo de Pago</h3>
                             <div class="box-body">
                                 <div class="col-md-9">
                                     <div class="panel-page">
@@ -39,19 +39,25 @@
                                                 {{ tipopago.usuario_modificacion }}
                                                 </div>
                                                 <div class="form-group">
-                                                    <label class="col-sm-3 control-label">Id Padre</label>
+                                                    <label class="col-sm-3 control-label">Pertenece a: </label>
                                                     <div class="col-sm-9">
                                                              {{ tipopago.padre }}
                                                     </div>
                                                 </div>
                                                     <div class="form-group">
-                                                    <label class="col-sm-3 control-label">Descripcion</label>
+                                                    <label class="col-sm-3 control-label">Tipo:</label>
                                                     <div class="col-sm-9">
-                                                        {{ tipopago.tipo }}
+
+                                                        {% if tipopago.tipo == 0 %}
+                                                            <td>Bienes</td>
+                                                        {% else %}
+                                                            <td>Servicios</td>
+                                                        {% endif %}
+
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label class="col-sm-3 control-label">Descripcion</label>
+                                                    <label class="col-sm-3 control-label">Descripción:</label>
                                                     <div class="col-sm-9">
                                                         {{ tipopago.descripcion }}
                                                     </div>
