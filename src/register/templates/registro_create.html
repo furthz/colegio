@@ -95,212 +95,193 @@
                         <form id="registro" name="registro" action="" method="POST" class="form-horizontal">
                             {% csrf_token %}
 
-                            <!-- DATOS PERSONALES -->
                             <div class="col-md-9">
+                            <!-- DATOS PERSONALES -->
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">Datos Personales</h3>
+                                    <h3 class="box-title">Datos personales</h3>
                                 </div>
-                                <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="col-sm-5 control-label">{{ form.nombre.label }}</label>
-                                                <div class="col-sm-7">
+                                <div class="box-body">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">Nombre</label>
+                                            <div class="col-sm-9">
                                                 {{ form.nombre }}
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="col-sm-5 control-label">{{ form.apellido_pa.label }}</label>
-                                                <div class="col-sm-7">
-                                                {{ form.apellido_pa }}
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="col-sm-5 control-label">{{ form.tipo_documento.label }}</label>
-                                                <div class="col-sm-7">
-                                                {{ form.tipo_documento }}
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="col-sm-5 control-label">{{ form.numero_documento.label }}</label>
-                                                <div class="col-sm-7">
-                                                {{ form.numero_documento }}
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="col-sm-5 control-label">{{ form.correo.label }}</label>
-                                                <div class="col-sm-7">
-                                                {{ form.correo }}
-                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="col-sm-5 control-label">{{ form.segundo_nombre.label }}</label>
-                                                <div class="col-sm-7">
-                                                    {{ form.segundo_nombre }}
-                                                </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">Apellido Paterno</label>
+                                            <div class="col-sm-9">
+                                                {{ form.apellido_pa }}
                                             </div>
-                                            <div class="form-group">
-                                                <label class="col-sm-5 control-label">{{ form.apellido_pa.label }}</label>
-                                                <div class="col-sm-7">
-                                                    {{ form.apellido_pa }}
-                                                </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">Tipo de Documento</label>
+                                            <div class="col-sm-9">
+                                            {{ form.tipo_documento }}
                                             </div>
-                                            <div class="form-group">
-                                                <label class="col-sm-5 control-label">{{ form.sexo.label }}</label>
-                                                <div class="col-sm-7">
-                                                    {{ form.sexo }}
-                                                </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">Número de Documento</label>
+                                            <div class="col-sm-9">
+                                            {{ form.numero_documento }}
                                             </div>
-                                            <div class="form-group">
-                                                <label class="col-sm-5 control-label">{{ form.fecha_nac.label }}</label>
-                                                <div class="col-sm-7">
-                                                    <div class="input-group input-group-sm">
-                                                        {{ form.fecha_nac }}
-                                                        <span class="input-group-btn">
-                                                            <button class="btn btn-default">
-                                                                <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                            </button>
-                                                        </span>
-                                                    </div>
-                                                </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">Correo</label>
+                                            <div class="col-sm-9">
+                                            {{ form.correo }}
                                             </div>
-
-
-                                            <div class="form-group">
-                                                <!-- atributo parentesco sólo para el apoderado -->
-                                                {% if form.parentesco %}
-                                                    <label class="col-sm-5 control-label">{{ form.parentesco.label }}</label>
-                                                    <div class="col-sm-7">
-                                                        {{ form.parentesco }}
-                                                    </div>
-                                                {% endif %}
-
-                                                <!-- atributo razon social para el proveedor-->
-                                                {% if form.razon_social %}
-                                                    <label class="col-sm-5 control-label">{{ form.razon_social.label }}</label>
-                                                    <div class="col-sm-7">
-                                                        {{ form.razon_social }}
-                                                    </div>
-                                                {% endif %}
-                                            </div>
-
                                         </div>
                                     </div>
-                            </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">Segundo Nombre</label>
+                                            <div class="col-sm-9">
+                                                {{ form.segundo_nombre }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">Apellido Paterno</label>
+                                            <div class="col-sm-9">
+                                                {{ form.apellido_pa }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">Sexo</label>
+                                            <div class="col-sm-9">
+                                                {{ form.sexo }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">F. Nacimiento</label>
+                                            <div class="col-sm-9">
+                                                <div class="input-group input-group-sm">
+                                                    {{ form.fecha_nac }}
+                                                    <span class="input-group-btn">
+                                                        <button class="btn btn-default">
+                                                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <!-- atributo parentesco sólo para el apoderado -->
+                                            {% if form.parentesco %}
+                                                <label class="col-sm-5 control-label">Parentesco</label>
+                                                <div class="col-sm-7">
+                                                    {{ form.parentesco }}
+                                                </div>
+                                            {% endif %}
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            <!-- TERMINA DATOS PERSONALES -->
 
                             <!-- DATOS DE CONTACTO -->
-                            <div class="col-md-9">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">Datos Contacto</h3>
+                                    <h3 class="box-title">Datos contacto y dirección</h3>
                                 </div>
-                                <div class="row">
+                                <div class="box-body">
                                     <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label">{{ form.direccion.label }}</label>
-                                            <div class="col-sm-9">
-                                                {{ form.direccion }}
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Departamento</label>
+                                                <div class="col-sm-9">
+                                                    {{ form.departamento }}
+                                                </div>
                                             </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Distrito</label>
+                                                <div class="col-sm-9">
+                                                    {{ form.distrito }}
+                                                </div>
+                                            </div>
+
                                         </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Provincia</label>
+                                                <div class="col-sm-9">
+                                                    {{ form.provincia }}
+                                                </div>
+                                            </div>
+
                                     </div>
-                                </div>
-                                <div class="row">
+                                    </div>
                                     <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label">{{ form.referencia.label }}</label>
-                                            <div class="col-sm-9">
-                                                {{ form.referencia }}
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Dirección</label>
+                                                <div class="col-sm-9">
+                                                    {{ form.direccion }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Referencia</label>
+                                                <div class="col-sm-9">
+                                                    {{ form.referencia }}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="col-sm-5 control-label">{{ form.departamento.label }}</label>
-                                            <div class="col-sm-7">
-                                                {{ form.departamento }}
+                                    <div class="col-md-12">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Tipo Teléfono</label>
+                                                <div class="col-sm-9">
+                                                    {{ form.tipo_cel }}
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="col-sm-5 control-label">{{ form.provincia.label }}</label>
-                                            <div class="col-sm-7">
-                                                {{ form.provincia }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="col-sm-5 control-label">{{ form.distrito.label }}</label>
-                                            <div class="col-sm-7">
-                                                {{ form.distrito }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="col-sm-5 control-label">{{ form.tipo_cel.label }}</label>
-                                            <div class="col-sm-7">
-                                                {{ form.tipo_cel }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label"></label>
+                                                <div class="col-sm-9">
                                                 {{ form.celular }}
+                                                    <div class="btn-group" role="group">
+                                                        <button type="button" class="btn btn-success" name="agregartelefono" id="agregartelefono" onclick="agregarTelefono()">
+                                                            <i class="fa fa-plus" aria-hidden="true"></i>
+                                                        </button>
+                                                        <button type="button" class="btn btn-danger" name="quitartelefono" id="quitartelefono" onclick="eliminarTelefono()">
+                                                            <i class="fa fa-minus" aria-hidden="true"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label"></label>
+                                                <div class="col-sm-9">
+                                                    {{ form.celulares }}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="col-sm-5 control-label"></label>
-                                            <div class="col-sm-7">
-                                                <!--<select multiple="multiple" required id=id_celulares name="celulares" class="form-control"></select>-->
-                                                {{ form.celulares }}
-                                            </div>
+                                    <div class="col-md-12">
+                                        <div class="pull-right">
+                                            <a href="#" class="btn btn-default">
+                                                <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                                                Regresar al listado
+                                            </a>
+                                            <button type="submit" class="btn btn-success"  onclick="enviarTelefono()">
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                                Agregar persona
+                                            </button>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <div class="col-sm-12">
-                                                <button type="button" class="btn btn-primary" name="agregartelefono" id="agregartelefono" onclick="agregarTelefono()">
-                                                    <i class="glyphicon glyphicon-plus-sign" aria-hidden="true">
-                                                        Agregar
-                                                    </i>
-                                                </button>
-                                                <button type="button" class="btn btn-primary" name="quitartelefono" id="quitartelefono" onclick="eliminarTelefono()">
-                                                    <i class="glyphicon glyphicon-remove-sign" aria-hidden="true">
-                                                        Quitar
-                                                    </i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
+
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-6 col-md-offset-3">
-                                        <button type="reset" class="btn btn-primary">
-                                            <i class="glyphicon glyphicon-remove-sign" aria-hidden="true">
-                                                Cancelar
-                                            </i>
-                                        </button>
-                                        <button type="submit" class="btn btn-primary"  onclick="enviarTelefono()">
-                                            <i class="glyphicon glyphicon-plus-sign" aria-hidden="true">
-                                                Agregar
-                                            </i>
-                                        </button>
-                                    </div>
-                                </div>
+
                             </div>
+                            <div class="col-md-3">
+                                <!-- BLOQUE DE AYUDA -->
+                                <!-- FIN DE BLOQUE DE AYUDA -->
+                            </div>
+
                         </form>
             </div>
         </div>

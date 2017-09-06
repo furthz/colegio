@@ -279,9 +279,9 @@ class ControlIngresosPromotorDetallesView(FormView):
         if estado == "Todos":
             por_cobrar = por_cobrar3
         elif estado == "Pagado":
-            por_cobrar = por_cobrar3.filter(estado=True)
-        elif estado == "No_pagado":
             por_cobrar = por_cobrar3.filter(estado=False)
+        elif estado == "No_pagado":
+            por_cobrar = por_cobrar3.filter(estado=True)
 
 
         if len(por_cobrar) != 0:

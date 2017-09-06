@@ -137,9 +137,9 @@ def calculo_ingresos_alumno(alumno, anio, mes, estado):
     if estado == "Todos":
         por_cobrar = por_cobrar2
     elif estado == "Pagado":
-        por_cobrar = por_cobrar2.filter(estado=True)
-    elif estado == "No_pagado":
         por_cobrar = por_cobrar2.filter(estado=False)
+    elif estado == "No_pagado":
+        por_cobrar = por_cobrar2.filter(estado=True)
 
     # Proceso de filtrado según el mes
     if mes == "Todos":

@@ -519,7 +519,8 @@ class MatriculaCreateView(MyLoginRequiredMixin, CreateView):
                                                 fecha_ven=fecha_vencimiento,
                                                 estado=True,
                                                 precio=servicio.precio,
-                                                deuda=servicio.precio
+                                                deuda=servicio.precio,
+                                                descuento=0,
                                                 )
                         logger.debug(cuentas.matricula)
                         logger.info(cuentas.matricula)
@@ -535,7 +536,8 @@ class MatriculaCreateView(MyLoginRequiredMixin, CreateView):
                                         fecha_ven=servicio.fecha_facturar,
                                         estado=True,
                                         precio=servicio.precio,
-                                        deuda=servicio.precio
+                                        deuda=servicio.precio,
+                                        descuento=0
                                         )
                 cuentas.save()
 
