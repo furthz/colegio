@@ -1,12 +1,13 @@
 import logging
 
+from django.contrib.auth.decorators import permission_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.db.models.functions import Lower
 from django.http import HttpResponseRedirect
+from django.utils.decorators import method_decorator
 from django.views.generic import DetailView
-from django.views.generic import ListView
 from django.views.generic import TemplateView
 from django.db.models import Q
+from django.conf import settings
 
 from enrollment.models import Matricula
 from profiles.models import Profile
@@ -46,7 +47,6 @@ class AlumnoCreateView(CreateView):
     template_name = "registro_create.html"
 
     def form_valid(self, form):
-
         logger.debug("Alumno a crear con DNI: " + form.cleaned_data["numero_documento"])
 
         alu = SaveGeneric().saveGeneric(padre=Profile, form=form, hijo=Alumno)
@@ -123,9 +123,7 @@ class PromotorDetailView(DetailView):
     template_name = "promotor_detail.html"
 
 
-
 class DirectorCreateView(CreateView):
-
     model = Director
     form_class = DirectorForm
     template_name = "registro_create.html"
@@ -146,7 +144,6 @@ class DirectorDetailView(DetailView):
 
 
 class CajeroCreateView(CreateView):
-
     model = Cajero
     form_class = CajeroForm
     template_name = "registro_create.html"
@@ -167,7 +164,6 @@ class CajeroDetailView(DetailView):
 
 
 class TesoreroCreateView(CreateView):
-
     model = Tesorero
     form_class = TesoreroForm
     template_name = "registro_create.html"
@@ -188,13 +184,11 @@ class TesoreroDetailView(DetailView):
 
 
 class ProveedorCreateView(MyLoginRequiredMixin, CreateView):
-
     model = Proveedor
     form_class = ProveedorForm
     template_name = "proveedor_create.html"
 
     def form_valid(self, form):
-
         instance = form.save()
         instance.save()
 
@@ -212,15 +206,17 @@ class ProveedorDetailView(DetailView):
     model = Proveedor
     template_name = "proveedor_detail.html"
 
+
 class PersonaDetailView(DetailView):
-    #model = Profile
+    # model = Profile
     queryset = Profile.objects.select_related()
     template_name = "registro_detail.html"
 
+
 class PersonaListView(TemplateView):
-    # model = Profile
     template_name = "persona_list.html"
-    # paginate_by = 2
+
+    # permission_required = ('register.list_persona',)
 
     def post(self, request, *args, **kwargs):
 
@@ -236,12 +232,12 @@ class PersonaListView(TemplateView):
         elif numero_documento and nombres:
             empleados = Profile.objects.filter(Q(numero_documento=numero_documento),
                                                Q(nombre__contains=nombres) |
-                                               Q(apellido_pa__contains=nombres)|
-                                               Q(apellido_ma__contains=nombres)  )#,
-                                               #personal__Colegios__id_colegio=colegio)
+                                               Q(apellido_pa__contains=nombres) |
+                                               Q(apellido_ma__contains=nombres))  # ,
+            # personal__Colegios__id_colegio=colegio)
         elif not numero_documento and nombres:
             empleados = Profile.objects.filter(Q(nombre__contains=nombres) |
-                                               Q(apellido_pa__contains=nombres)|
+                                               Q(apellido_pa__contains=nombres) |
                                                Q(apellido_ma__contains=nombres))
         else:
             return self.get(request)
@@ -264,7 +260,10 @@ class PersonaListView(TemplateView):
                        'numero_documento': numero_documento,
                        'nombres': nombres})
 
+    @method_decorator(permission_required('register.list_personal', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def get(self, request, *args, **kwargs):
+
         logger.debug("get_context")
 
         # Obtener el id del colegio
@@ -324,7 +323,7 @@ class PersonaListView(TemplateView):
         for alumno in alumnos:
             alumno.alumno.persona.rol = "Alumno"
             personal.append(alumno.alumno.persona)
-            #personal.append(alumno.alumno.apoderado)
+            # personal.append(alumno.alumno.apoderado)
 
         page = request.GET.get('page', 1)
 
@@ -339,9 +338,7 @@ class PersonaListView(TemplateView):
             # If page is out of range (e.g. 9999), deliver last page of results.
             empleados = paginator.page(paginator.num_pages)
 
-        #context = super(PersonaListView, self).get_context(request)
+        # context = super(PersonaListView, self).get_context(request)
         logger.debug("Se cargo el contexto")
-        #context['empleados'] = empleados
-        return render(request, self.template_name, {'empleados': empleados })        #return context
-
-
+        # context['empleados'] = empleados
+        return render(request, self.template_name, {'empleados': empleados})  # return context

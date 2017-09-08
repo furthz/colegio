@@ -94,6 +94,7 @@ class BaseProfile(CreacionModificacionFechaProfileMixin, CreacionModificacionUse
 
     class Meta:
         abstract = True
+
         #unique_together = (("tipo_documento", "numero_documento"),)
 
 @python_2_unicode_compatible

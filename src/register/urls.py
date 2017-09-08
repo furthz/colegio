@@ -1,4 +1,5 @@
 from django.conf.urls import url
+from django.contrib.auth.decorators import permission_required
 
 from register.views import CreatePersonaView, PersonaDetail, AlumnoCreateView, AlumnoDetail, ApoderadoCreateView, \
     ApoderadoDetailView, PersonalDetailView, PersonalCreateView, PromotorCreateView, PromotorDetailView, \

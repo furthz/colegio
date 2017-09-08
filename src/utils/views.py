@@ -1,5 +1,7 @@
 import logging
 
+from django.contrib.auth.mixins import AccessMixin
+
 from profiles.models import Profile
 from register.models import Personal, Colegio, PersonalColegio, Direccion, Telefono
 from utils.middleware import get_current_colegio

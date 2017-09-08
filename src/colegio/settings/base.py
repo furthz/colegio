@@ -170,3 +170,5 @@ LOGIN_REDIRECT_URL = reverse_lazy("accounts:tocolegio_self")
 LOGIN_URL = reverse_lazy("accounts:login")
 
 THUMBNAIL_EXTENSION = 'png'     # Or any extn for your thumbnails
+
+REDIRECT_PERMISOS = '/about/'
