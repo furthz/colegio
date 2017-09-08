@@ -1,0 +1,131 @@
+{% extends "page.html" %}
+
+{% block container %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Lista de Registros</h3>
+            </div>
+                <form role="form" name="search" method="post" class="form-horizontal">
+                    {% csrf_token %}
+                    <div class="box-body">
+                        <div class="col-md-9">
+                            <div class="panel-page">
+                                <div class="toolbar-header">
+                                    <a class="btn btn-success" href="#">
+                                        <i class="fa fa-plus" aria-hidden="true">
+                                        </i>
+                                        Crear Usuario
+                                    </a>
+                                </div>
+                                <div class="toolbar-search">
+                                    <div class="box-body">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Número Documento</label>
+                                                <div class="input-group date">
+                                                    <input type="text" class="form-control" id="dni" placeholder="DNI"
+                                                    id="numero_documento" name="numero_documento" value="{{ numero_documento }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Apellidos o Nombres</label>
+                                                <input type="text" class="form-control" id="nombres"
+                                                       placeholder="Apellidos o Nombres" name="nombres"
+                                                        value="{{ nombres }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="search-actions">
+                                                <button type="submit" class="btn btn-primary" >
+                                                    <i class="fa fa-search" aria-hidden="true">Buscar Usuario</i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                             </div>
+                            <table class="table table-hover">
+                                <tbody>
+                                    <tr class="table-header">
+                                        <th>Código</th>
+                                        <th>DNI</th>
+                                        <th>Apellidos y Nombres</th>
+                                        <th>Perfil</th>
+                                        <th class="text-center">Acciones</th>
+                                    </tr>
+                                {% for empleado in empleados %}
+                                    <tr>
+                                        <td>{{ empleado.id_persona }}</td>
+                                        <td>{{ empleado.numero_documento }}</td>
+                                        <td>{{ empleado.getNombreCompleto }}</td>
+                                        <td>{{ empleado.rol }}</td>
+                                        <td>
+                                            <div class="btn-group btn-group-sm" role="group" aria-level="...">
+                                                <a title="Editar" href="#" class="btn btn-default">
+                                                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                </a>
+                                                <a title="Detalle" href="{% url 'registers:personal_detail' pk=empleado.id_persona %}" class="btn btn-default">
+                                                    <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                                </a>
+                                                <a title="Baja" href="#" class="btn btn-default">
+                                                    <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <div class="toolbar-footer">
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination">
+                                        {% if empleados.has_previous  %}
+                                            <li>
+                                                <a href="?page={{ empleados.previous_page_number }}" aria-label="Previous">
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                </a>
+                                            </li>
+                                        {% else %}
+                                             <li class="disabled">
+                                                 <span aria-hidden="true">«</span>
+                                            </li>
+                                        {% endif %}
+                                        {% for i in empleados.paginator.page_range %}
+                                            {% if empleados.number == i %}
+                                                <li>
+                                                    <span aria-hidden="true">{{ i }}</span>
+                                                </li>
+                                            {% else %}
+                                                <li>
+                                                    <a href="?page={{ i }}" aria-label="Previous">
+                                                        <span aria-hidden="true">{{ i }}</span>
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% if empleados.has_next %}
+                                            <li>
+                                                <a href="?page={{ page_obj.next_page_number  }}" aria-label="Previous">
+                                                    <span aria-hidden="true">&raquo;</span>
+                                                </a>
+                                            </li>
+                                        {% else %}
+                                            <li class="disabled">
+                                                <span aria-hidden="true">&raquo;</span>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

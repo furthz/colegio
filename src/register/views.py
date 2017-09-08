@@ -1,8 +1,14 @@
 import logging
 
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.db.models.functions import Lower
 from django.http import HttpResponseRedirect
 from django.views.generic import DetailView
+from django.views.generic import ListView
+from django.views.generic import TemplateView
+from django.db.models import Q
 
+from enrollment.models import Matricula
 from profiles.models import Profile
 
 from django.shortcuts import render
@@ -13,7 +19,8 @@ from django.views.generic import CreateView
 from register.forms import PersonaForm, AlumnoForm, ApoderadoForm, PersonalForm, PromotorForm, DirectorForm, CajeroForm, \
     TesoreroForm, ProveedorForm
 from register.models import Alumno, Apoderado, Personal, Promotor, Director, Cajero, Tesorero, Colegio, Proveedor, \
-    ProvedorColegio
+    ProvedorColegio, PersonalColegio, Administrativo
+from utils.middleware import get_current_colegio
 from utils.views import SaveGeneric, MyLoginRequiredMixin
 
 logger = logging.getLogger("project")
@@ -204,3 +211,137 @@ class ProveedorCreateView(MyLoginRequiredMixin, CreateView):
 class ProveedorDetailView(DetailView):
     model = Proveedor
     template_name = "proveedor_detail.html"
+
+class PersonaDetailView(DetailView):
+    #model = Profile
+    queryset = Profile.objects.select_related()
+    template_name = "registro_detail.html"
+
+class PersonaListView(TemplateView):
+    # model = Profile
+    template_name = "persona_list.html"
+    # paginate_by = 2
+
+    def post(self, request, *args, **kwargs):
+
+        colegio = get_current_colegio()
+
+        numero_documento = request.POST["numero_documento"]
+
+        nombres = request.POST["nombres"]
+
+        if numero_documento and not nombres:
+            empleados = Profile.objects.filter(numero_documento=numero_documento,
+                                               personal__Colegios__id_colegio=colegio)
+        elif numero_documento and nombres:
+            empleados = Profile.objects.filter(Q(numero_documento=numero_documento),
+                                               Q(nombre__contains=nombres) |
+                                               Q(apellido_pa__contains=nombres)|
+                                               Q(apellido_ma__contains=nombres)  )#,
+                                               #personal__Colegios__id_colegio=colegio)
+        elif not numero_documento and nombres:
+            empleados = Profile.objects.filter(Q(nombre__contains=nombres) |
+                                               Q(apellido_pa__contains=nombres)|
+                                               Q(apellido_ma__contains=nombres))
+        else:
+            return self.get(request)
+
+        paginator = Paginator(empleados, 5)
+
+        page = request.GET.get('page', 1)
+
+        try:
+            buscados = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            buscados = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            buscados = paginator.page(paginator.num_pages)
+
+        return render(request, self.template_name,
+                      {'empleados': buscados,
+                       'numero_documento': numero_documento,
+                       'nombres': nombres})
+
+    def get(self, request, *args, **kwargs):
+        logger.debug("get_context")
+
+        # Obtener el id del colegio
+        id_colegio = get_current_colegio()
+        logger.debug("colegio id: " + str(id_colegio))
+
+        colegio = Colegio.objects.get(pk=id_colegio)
+        logger.debug("colegio: " + str(colegio))
+
+        # Obtener los empleados del colegio
+        empleados = PersonalColegio.objects.filter(colegio=colegio, activo=True).all()
+        logger.debug("cantidad de empleados: " + str(empleados.count()))
+
+        personal = []
+
+        for empleado in empleados:
+
+            rol = ""
+
+            try:
+                if empleado.personal.promotor:
+                    rol = "Promotor "
+            except Promotor.DoesNotExist:
+                pass
+
+            try:
+                if empleado.personal.director:
+                    rol = "Director "
+            except Director.DoesNotExist:
+                pass
+
+            try:
+                if empleado.personal.cajero:
+                    rol = "Cajero "
+            except Cajero.DoesNotExist:
+                pass
+
+            try:
+                if empleado.personal.administrativo:
+                    rol = "Administrativo "
+            except Administrativo.DoesNotExist:
+                pass
+
+            try:
+                if empleado.personal.tesorero:
+                    rol = "Tesorero "
+            except Tesorero.DoesNotExist:
+                pass
+
+            empleado.personal.persona.rol = rol
+
+            personal.append(empleado.personal.persona)
+
+        alumnos = Matricula.objects.filter(colegio=colegio, activo=True).all()
+        logger.debug("Cantidad de alumnos: " + str(alumnos.count()))
+
+        for alumno in alumnos:
+            alumno.alumno.persona.rol = "Alumno"
+            personal.append(alumno.alumno.persona)
+            #personal.append(alumno.alumno.apoderado)
+
+        page = request.GET.get('page', 1)
+
+        paginator = Paginator(personal, 5)
+
+        try:
+            empleados = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            empleados = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            empleados = paginator.page(paginator.num_pages)
+
+        #context = super(PersonaListView, self).get_context(request)
+        logger.debug("Se cargo el contexto")
+        #context['empleados'] = empleados
+        return render(request, self.template_name, {'empleados': empleados })        #return context
+
+

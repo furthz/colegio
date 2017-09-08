@@ -125,6 +125,12 @@ class Profile(BaseProfile):
                             ]
         return detalle_completo
 
+    def profile_with_telefonos(self):
+        return self.telefonos.select_related('persona')
+
+    def profile_with_direcciones(self):
+        return self.direcciones.select_related('persona')
+
     def __str__(self):
         return "{}'s profile". format(self.user)
 
