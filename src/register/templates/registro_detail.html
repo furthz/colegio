@@ -1,0 +1,89 @@
+{% extends "page.html" %}
+
+{% block container %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Detalle del Usuario</h3>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <form class="form-horizontal" role="form">
+                                <dl class="dl-horizontal">
+                                    <dt>Código</dt>
+                                    <dd>{{ profile.id_persona }}</dd>
+                                </dl>
+                                <dl class="dl-horizontal">
+                                    <dt>Apellidos</dt>
+                                    <dd>{{ profile.apellido_pa}}  {{profile.apellido_ma }}</dd>
+                                </dl>
+                                <dl class="dl-horizontal">
+                                    <dt>Nombres</dt>
+                                    <dd>{{ profile.nombre}}  {{profile.segundo_nombre }}</dd>
+                                </dl>
+                                <dl class="dl-horizontal">
+                                    <dt>DNI</dt>
+                                    <dd>{{ profile.numero_documento}}</dd>
+                                </dl>
+                                <dl class="dl-horizontal">
+                                    <dt>Sexo</dt>
+                                    <dd>{{ profile.getSexo}}</dd>
+                                </dl>
+                                <dl class="dl-horizontal">
+                                    <dt>Correo</dt>
+                                    <dd>{{ profile.correo}}</dd>
+                                </dl>
+                                <dl class="dl-horizontal">
+                                    <dt>Celular</dt>
+                                    {% for tel in profile.profile_with_telefonos%}
+                                        {% if forloop.last %}
+                                            <dd> {{ tel.numero  }}</dd>
+                                        {% endif %}
+                                    {% endfor %}
+                                </dl>
+                                {% for dir in profile.profile_with_direcciones%}
+                                    {% if forloop.last %}
+                                        <dl class="dl-horizontal">
+                                            <dt>Dirección</dt>
+                                            <dd>{{ dir.calle }}</dd>
+                                        </dl>
+                                        <dl class="dl-horizontal">
+                                            <dt>Región</dt>
+                                            <dd>{{ dir.get_departamento }}</dd>
+                                        </dl>
+                                        <dl class="dl-horizontal">
+                                            <dt>Provincia</dt>
+                                            <dd>{{ dir.get_provincia }}</dd>
+                                        </dl>
+                                        <dl class="dl-horizontal">
+                                            <dt>Distrito</dt>
+                                            <dd>{{ dir.get_distrito }}</dd>
+                                        </dl>
+                                    {% endif %}
+                                {% endfor %}
+                            </form>
+                        </div>
+                        <div class="col-md-6">
+                            <img src="" class="img-thumbnail" alt="...">
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <a class="btn btn-default" href="{% url 'registers:personal_list' %}">
+                                    <i class="fa fa-reply" aria-hidden="true">
+                                    </i>
+                                    Regresar a Lista
+                                </a>
+                                <a class="btn btn-success">
+                                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                                    Actualizar Usuario
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

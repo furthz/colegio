@@ -94,6 +94,7 @@ class BaseProfile(CreacionModificacionFechaProfileMixin, CreacionModificacionUse
 
     class Meta:
         abstract = True
+
         #unique_together = (("tipo_documento", "numero_documento"),)
 
 @python_2_unicode_compatible
@@ -124,6 +125,12 @@ class Profile(BaseProfile):
                             "Fecha modificacion: {0}".format(self.fecha_modificacion_persona)
                             ]
         return detalle_completo
+
+    def profile_with_telefonos(self):
+        return self.telefonos.select_related('persona')
+
+    def profile_with_direcciones(self):
+        return self.direcciones.select_related('persona')
 
     def __str__(self):
         return "{}'s profile". format(self.user)

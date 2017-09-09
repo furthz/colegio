@@ -112,6 +112,49 @@ class Direccion(CreacionModificacionUserMixin, CreacionModificacionFechaMixin, m
     numero = models.CharField(max_length=6, blank=True, null=True)
     referencia = models.CharField(max_length=500, blank=True, null=True)
 
+    @property
+    def get_departamento(self):
+        """
+        Método que retorna la descripción del Departamento
+
+        :return: Descripción del catalogo Departamento
+        """
+        from utils.models import Departamento
+
+        iddpto = self.dpto
+
+        dpto = Departamento.objects.get(pk=iddpto)
+
+        return dpto.descripcion
+
+    def get_provincia(self):
+        """
+        Método que retorna la descripción del Provincia
+
+        :return: Descripción del catalogo Provincia
+        """
+        from utils.models import Provincia
+
+        idprov = self.provincia
+
+        prov = Provincia.objects.get(pk=idprov)
+
+        return prov.descripcion
+
+    def get_distrito(self):
+        """
+        Método que retorna la descripción del Distrito
+
+        :return: Descripción del catalogo Distrito
+        """
+        from utils.models import Distrito
+
+        iddis = self.distrito
+
+        dis = Distrito.objects.get(pk=iddis)
+
+        return dis.descripcion
+
     class Meta:
         managed = True
         db_table = 'direccion'
