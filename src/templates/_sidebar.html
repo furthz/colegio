@@ -72,6 +72,8 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="{% url 'discounts:tipo_descuento_create' %}"><i class="fa fa-circle-o"></i> Tipo de Descuento</a></li>
+            <li><a href="{% url 'discounts:aprobar_descuentos' %}"><i class="fa fa-circle-o"></i> Aprobar Descuentos</a></li>
+            <li><a href="{% url 'discounts:detalle_descuentos' %}"><i class="fa fa-circle-o"></i> Detalle de Descuentos</a></li>
           </ul>
         </li>
         <li class="treeview yellow">
@@ -84,6 +86,7 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="{% url 'payments:registrarpago_create' %}"><i class="fa fa-circle-o"></i> Registrar Pago</a></li>
+            <li><a href="{% url 'payments:pago_promotor' %}"><i class="fa fa-circle-o"></i> Control de Pagos</a></li>
           </ul>
         </li>
       </ul>
