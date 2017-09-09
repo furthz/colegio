@@ -338,7 +338,5 @@ class PersonaListView(TemplateView):
             # If page is out of range (e.g. 9999), deliver last page of results.
             empleados = paginator.page(paginator.num_pages)
 
-        # context = super(PersonaListView, self).get_context(request)
         logger.debug("Se cargo el contexto")
-        # context['empleados'] = empleados
         return render(request, self.template_name, {'empleados': empleados})  # return context
