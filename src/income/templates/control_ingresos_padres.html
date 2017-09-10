@@ -16,6 +16,10 @@
 
 {% block container %}
 {% load crispy_forms_tags %}
+
+{% if mensaje_error %}
+    {{ mensaje_error }}
+{% else %}
 <!-- INICIO DE CONTENIDO -->
     <div class="box box-primary">
         <div class="box-header with-border">
@@ -108,5 +112,6 @@
               </div>
         </div>
     </div>
+{% endif %}
 {% endblock container %}
 
