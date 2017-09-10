@@ -13,111 +13,100 @@
 {% endblock %}
 
 {% block title %}{{ block.super }}Ingresos{% endblock %}
-<body>
+
 {% block container %}
 {% load crispy_forms_tags %}
 <!-- INICIO DE CONTENIDO -->
-    <section class="content">
-      <div class="row">
-          <div class="col-md-12">
-              <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Control de ingresos</h3>
-                </div>
-                <div class="box-body">
-                  <div class="col-md-12">
-                    <div class="panel-page">
-                      <div class="toolbar-search">
-                        <div class="box-body">
-                           <form action="" method="post" class="form-horizontal" id="1">{% csrf_token %}
-                                {% csrf_token %}
-                                    <div class="col-md-4">
-                                      <div class="form-group">
-                                      <label>Alumno</label>
-                                        {{ form.alumno }}
-                                      </div>
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Control de ingresos</h3>
+        </div>
+        <div class="box-body">
+              <div class="col-md-9">
+                <div class="panel-page">
+                    <!--- TOOLBAR SEARCH -->
+                    <div class="toolbar-search">
+                    <div class="box-body">
+                       <form action="" method="post" class="form-horizontal" id="1">{% csrf_token %}
+                            {% csrf_token %}
+                                <div class="col-md-4">
+                                  <div class="form-group">
+                                  <label>Alumno</label>
+                                    {{ form.alumno }}
+                                  </div>
+                                </div>
+                                <div class="col-md-2">
+                                  <div class="form-group">
+                                  <label>Año</label>
+                                    {{ form.anio }}
+                                  </div>
+                                </div>
+                                <div class="col-md-2">
+                                  <div class="form-group">
+                                  <label>Mes</label>
+                                    {{ form.mes }}
+                                  </div>
+                                </div>
+                                <div class="col-md-2">
+                                  <div class="form-group">
+                                  <label>Estado</label>
+                                    {{ form.estado }}
+                                  </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="search-actions">
+                                      <button type="submit" class="btn btn-primary btn-block">
+                                      <i class="fa fa-search" aria-hidden="true"></i>
+                                       Consultar
+                                      </button>
                                     </div>
-                                    <div class="col-md-2">
-                                      <div class="form-group">
-                                      <label>Año</label>
-                                        {{ form.anio }}
-                                      </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                      <div class="form-group">
-                                      <label>Mes</label>
-                                        {{ form.mes }}
-                                      </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                      <div class="form-group">
-                                      <label>Estado</label>
-                                        {{ form.estado }}
-                                      </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="search-actions">
-                                          <button type="submit" class="btn btn-primary btn-block">
-                                          <i class="fa fa-search" aria-hidden="true"></i>
-                                           Consultar
-                                          </button>
-                                        </div>
-                                    </div>
-                            </form>
-                        </div>
+                                </div>
+                        </form>
                     </div>
-                        <table class="table table-hover">
-                            <tbody>
-                            <tr>
-                                <th>N° de Documento</th>
-                                <th>Fecha de vencimiento</th>
-                                <th>Monto cancelado</th>
-                                <th>Importe a pagar S/.</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
-                            </tr>
-                            <div id="div1">
+                </div>
+                    <!-- TOOLBAR SEARCH -->
+                    <!-- INICIO TABLA -->
+                    <div class="table-responsive">
+                    <table class="table table-condensed">
+                        <tr>
+                            <th>N° de Documento</th>
+                            <th>Fecha de vencimiento</th>
+                            <th>Monto cancelado</th>
+                            <th>A pagar S/.</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                        {% for cuenta in object_list %}
+                            {% if not cuenta.orderDate %}
                                 <tr>
-                                    {% for cuenta in object_list %}
-                                        {% if not cuenta.orderDate %}
-                                            <tr>
-                                                <td>BOOL21</td>
-                                                <td>{{ cuenta.fecha_ven }}</td>
-                                                <td>S/.{{ cuenta.getMonto }}</td>
-                                                <td>S/.{{ cuenta.deuda }}</td>
-                                                {% if cuenta.estado %}
-                                                    <td>
-                                                        <span class="label label-danger">No pagado</div>
-                                                    </td>
-                                                {% else %}
-                                                    <td>
-                                                        <span class="label label-success">Pagado</div>
-                                                    </td>
-                                                {% endif %}
-                                                <td>
-                                                    <a href="#">Imprimir PDF</a>
-                                                </td>
-                                            </tr>
-                                        {% endif %}
-                                    {% endfor %}
+                                    <td>BOOL21</td>
+                                    <td>{{ cuenta.fecha_ven }}</td>
+                                    <td>S/.{{ cuenta.getMonto }}</td>
+                                    <td>S/.{{ cuenta.deuda }}</td>
+                                    {% if cuenta.estado %}
+                                        <td>
+                                            <span class="label label-danger">No pagado</span>
+                                        </td>
+                                    {% else %}
+                                        <td>
+                                            <span class="label label-success">Pagado</span>
+                                        </td>
+                                    {% endif %}
+                                    <td>
+                                        <a href="#">Imprimir PDF</a>
+                                    </td>
                                 </tr>
-                            </tbody>
-                            </div>
-                        </table>
-                    </div>
-                  </div>
-
-
+                            {% endif %}
+                        {% endfor %}
+                    </table>
                 </div>
-                <div class="col-md-3"></div>
-
+                    <!-- FIN TABLA -->
                 </div>
+              </div>
+              <div class="col-md-3">
 
               </div>
-          </div>
-      </div>
-    </section>
-<!-- /.FIN DE CONTENIDO -->
+        </div>
+    </div>
 {% endblock container %}
 
-</body>

@@ -1,6 +1,19 @@
 {% extends "page.html" %}
 
 {% block container %}
+
+
+<script language="Javascript">
+function confirmDel()
+{
+  var agree=confirm("¿Realmente desea eliminarlo? ");
+  if (agree)
+    return true ;
+  else
+    return false ;
+}
+</script>
+
 {% if messages %}
 <ul class="messages">
     {% for message in messages %}
@@ -8,6 +21,13 @@
     {% endfor %}
 </ul>
 {% endif %}
+
+{% for empleado in empleados %}
+    <form id="{{ empleado.id_persona }}">
+        {% csrf_token %}
+        <input hidden value="{{ empleado.id_persona }}" name="idpersona">
+    </form>
+{% endfor %}
 
 <div class="row">
     <div class="col-md-12">
@@ -73,15 +93,21 @@
                                         <td>{{ empleado.rol }}</td>
                                         <td>
                                             <div class="btn-group btn-group-sm" role="group" aria-level="...">
-                                                <a title="Editar" href="#" class="btn btn-default">
+                                                <a title="Editar" href="{% url 'registers:personal_update' pk=empleado.id_persona %}" class="btn btn-default">
                                                     <i class="fa fa-pencil" aria-hidden="true"></i>
                                                 </a>
                                                 <a title="Detalle" href="{% url 'registers:personal_detail' pk=empleado.id_persona %}" class="btn btn-default">
                                                     <i class="fa fa-info-circle" aria-hidden="true"></i>
                                                 </a>
+
+                                                <button class="btn btn-default" type="submit" onclick="return confirmDel();" title="Eliminar" formaction="{% url 'registers:personal_delete' %}" formmethod="get" form="{{ empleado.id_persona }}">
+                                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                                </button>
+                                                <!--
                                                 <a title="Baja" href="#" class="btn btn-default">
                                                     <i class="fa fa-minus-circle" aria-hidden="true"></i>
                                                 </a>
+                                                -->
                                             </div>
                                         </td>
                                     </tr>

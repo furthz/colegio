@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import permission_required
 from register.views import CreatePersonaView, PersonaDetail, AlumnoCreateView, AlumnoDetail, ApoderadoCreateView, \
     ApoderadoDetailView, PersonalDetailView, PersonalCreateView, PromotorCreateView, PromotorDetailView, \
     DirectorDetailView, DirectorCreateView, CajeroCreateView, CajeroDetailView, TesoreroCreateView, TesoreroDetailView, \
-    ProveedorCreateView, ProveedorDetailView, PersonaListView, PersonaDetailView
+    ProveedorCreateView, ProveedorDetailView, PersonaListView, PersonaDetailView, PersonalUpdateView, PersonalDeleteView
 from . import views
 
 urlpatterns = [
@@ -38,5 +38,6 @@ urlpatterns = [
 
     url(r'^list/$', PersonaListView.as_view(), name="personal_list"),
     url(r'^registers/(?P<pk>\d+)/$',PersonaDetailView.as_view(), name='personal_detail'),
-
+    url(r'^registers/update/(?P<pk>\d+)/$', PersonalUpdateView.as_view(), name="personal_update"),
+    url(r'^registers/delete', PersonalDeleteView.as_view(), name="personal_delete"),
 ]

@@ -3,11 +3,14 @@ import logging
 from django.contrib.auth.decorators import permission_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponseRedirect
+from django.urls import reverse
+from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import DetailView
 from django.views.generic import TemplateView
 from django.db.models import Q
 from django.conf import settings
+from django.views.generic import UpdateView
 
 from enrollment.models import Matricula
 from profiles.models import Profile
@@ -212,11 +215,39 @@ class PersonaDetailView(DetailView):
     queryset = Profile.objects.select_related()
     template_name = "registro_detail.html"
 
+    @method_decorator(permission_required('register.list_persona', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        return super(PersonaDetailView, self).get(request, *args, **kwargs)
+
+
+class PersonalDeleteView(TemplateView):
+    model = Profile
+
+    def get(self, request, *args, **kwargs):
+        persona = Personal.objects.get(pk=int(request.GET['idpersona']))
+        id_colegio = get_current_colegio()
+
+
+        personales = PersonalColegio.objects.filter(personal=persona)
+
+        for personal in personales:
+            personal.activo = False
+            personal.save()
+
+        return HttpResponseRedirect(reverse('registers:personal_list'))
+
+
+class PersonalUpdateView(UpdateView):
+    model = Profile
+    form_class = PersonaForm
+    template_name = "registro_form.html"
+
+    def get_success_url(self):
+        return reverse_lazy('registers:personal_list')
 
 class PersonaListView(TemplateView):
     template_name = "persona_list.html"
-
-    # permission_required = ('register.list_persona',)
 
     def post(self, request, *args, **kwargs):
 
@@ -325,6 +356,8 @@ class PersonaListView(TemplateView):
             personal.append(alumno.alumno.persona)
             # personal.append(alumno.alumno.apoderado)
 
+        personal.sort(key=lambda x: x.getNombreCompleto.lower())
+
         page = request.GET.get('page', 1)
 
         paginator = Paginator(personal, 5)
@@ -338,7 +371,5 @@ class PersonaListView(TemplateView):
             # If page is out of range (e.g. 9999), deliver last page of results.
             empleados = paginator.page(paginator.num_pages)
 
-        # context = super(PersonaListView, self).get_context(request)
         logger.debug("Se cargo el contexto")
-        # context['empleados'] = empleados
         return render(request, self.template_name, {'empleados': empleados})  # return context
