@@ -187,7 +187,7 @@ class ControlIngresosPadresView(FormView):
             logger.debug("apoderado: " + str(apoderado.id_apoderado))
 
             #2 verificamos que el apoderado tenga un alumno registrado en el colegio
-            apoderado_alumno = ApoderadoAlumno.objects.filter(colegio=colegio, apoderado=apoderado)
+            apoderado_alumno = ApoderadoAlumno.objects.filter(al, apoderado=apoderado)
 
             if apoderado_alumno.count() == 0:
                 sw_error = True
