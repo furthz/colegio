@@ -1,0 +1,14 @@
+{% extends "page.html" %}
+
+{% block container %}
+<form action="" method="POST" class="form-horizontal" id="1">{% csrf_token %}
+    {{ form.as_p}}
+
+ <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+        <a class="btn btn-default" href="{% url 'registers:personal_list' %}">Cancelar</a>
+        <button type="submit"  class="btn btn-success">Actualizar</button>
+    </div>
+ </div>
+</form>
+{% endblock %}
