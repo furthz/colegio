@@ -1,15 +1,11 @@
 {% extends "page.html" %}
-
 {% block titulo %}
     {{ block.super }}
     <h1>Listar remesas
         <small>Módulo de Facturación</small>
     </h1>
 {% endblock %}
-
 {% block container %}
-
-
 <div class="box box-primary">
     <div class="box-header with-border">
         <h3 class="box-title">Lista de remesas</h3>
@@ -47,42 +43,41 @@
                                     </button>
                                 </div>
                             </div>
-                            
                         </div>
                     </div>
                 </div>
             <div class="table-responsive">
-                <table class="table table-hover">
-                    <tr class="table-header">
-                        <th>Item</th>
-                        <th>Encargo de remesa</th>
-                        <th>Monto S/.</th>
-                        <th>Comentario</th>
-                        <th>Fecha</th>
-                        <th class="text-center">Acciones</th>
-                    </tr>
-                    {% for remesa in filter.qs %}
-                        <tr>
-                            <td>{{ forloop.counter }}</td>
-                            <td>{{ remesa.personal_colegio }}</td>
-                            <td>S/ {{ remesa.monto }}</td>
-                            <td>{{ remesa.comentario }}</td>
-                            <td>{{ remesa.fechacreacion }}</td>
-                            <td class="text-center">
-                                <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                                    <a href='{% url "cash:consignment_detail" remesa.id_remesa %}' class="btn btn-default">
-                                        <i class="fa fa-info-circle" aria-hidden="true"></i>
-                                    </a>
-                                </div>
-                            </td>
+                    <table class="table table-hover">
+                        <tr class="table-header">
+                            <th>Item</th>
+                            <th>Encargo de remesa</th>
+                            <th>Monto S/.</th>
+                            <th>Comentario</th>
+                            <th>Fecha</th>
+                            <th class="text-center">Acciones</th>
                         </tr>
-                    {% endfor %}
+                        {% for remesa in filter.qs %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ remesa.personal_colegio }}</td>
+                                <td>S/ {{ remesa.monto }}</td>
+                                <td>{{ remesa.comentario }}</td>
+                                <td>{{ remesa.fechacreacion }}</td>
+                                <td class="text-center">
+                                    <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                                        <a href='{% url "cash:consignment_detail" remesa.id_remesa %}' class="btn btn-default">
+                                            <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
                     </table>
                 </div>
             </div>
         </div>
+    </form>
 </div>
-
 
 {% endblock container %}
 {% block scripts %}
