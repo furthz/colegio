@@ -106,12 +106,12 @@ class CuentasCobrarPromotorDetalleForm(forms.Form):
         self.fields['estado'].widget.attrs.update({'class': 'form-control'})
 
 class CuentasCobrarPadresForm(forms.Form):
-
+    """
     alumno = forms.ModelChoiceField(
         label='Alumnos',
         queryset=None,
-        required=True, )
-
+        required=True, )"""
+    alumno = forms.CharField()
     anio = forms.CharField()
     mes = forms.CharField()
     estado = forms.CharField()
@@ -159,7 +159,7 @@ class CuentasCobrarPadresForm(forms.Form):
         self.fields['anio'].widget.attrs.update({'class': 'form-control'})
         self.fields['mes'].widget.attrs.update({'class': 'form-control'})
         self.fields['estado'].widget.attrs.update({'class': 'form-control'})
-
+        """
         user = get_current_user()
         logger.debug("Usuario: " + user.name)
 
@@ -170,8 +170,8 @@ class CuentasCobrarPadresForm(forms.Form):
         logger.debug("apoderado: " + str(apoderado.id_apoderado))
 
         alumnos = apoderado.alumnos.all()
-
+        """
         self.helper = FormHelper()
         self.helper.form_id = "alumno"
         self.helper.form_method = "post"
-        self.fields['alumno'].queryset = alumnos
+        #self.fields['alumno'].queryset = alumnos
