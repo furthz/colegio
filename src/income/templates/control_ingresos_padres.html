@@ -36,25 +36,41 @@
                                 <div class="col-md-4">
                                   <div class="form-group">
                                   <label>Alumno</label>
-                                    {{ form.alumno }}
+                                    <select name="alumno"  class="form-control">
+                                        {% for alu in alumnos %}
+                                            <option value="{{ alu.id_alumno }}">{{ alu.getNombreCompleto }}</option>
+                                        {% endfor %}
+                                    </select>
                                   </div>
                                 </div>
                                 <div class="col-md-2">
                                   <div class="form-group">
                                   <label>Año</label>
-                                    {{ form.anio }}
+                                    <select name="anio"  class="form-control">
+                                        {% for anio in anios %}
+                                            <option>{{ anio }}</option>
+                                        {% endfor %}
+                                    </select>
                                   </div>
                                 </div>
                                 <div class="col-md-2">
                                   <div class="form-group">
                                   <label>Mes</label>
-                                    {{ form.mes }}
+                                    <select name="mes"  class="form-control">
+                                        {% for mes in meses %}
+                                            <option>{{ mes }}</option>
+                                        {% endfor %}
+                                    </select>
                                   </div>
                                 </div>
                                 <div class="col-md-2">
                                   <div class="form-group">
                                   <label>Estado</label>
-                                    {{ form.estado }}
+                                    <select name="estado"  class="form-control">
+                                        {% for estado in estados %}
+                                            <option>{{ estado }}</option>
+                                        {% endfor %}
+                                    </select>
                                   </div>
                                 </div>
                                 <div class="col-md-2">
