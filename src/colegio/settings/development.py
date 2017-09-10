@@ -28,7 +28,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 THUMBNAIL_DEBUG = True
 
 # Allow internal IPs for debugging
-INTERNAL_IPS = ['*']
+INTERNAL_IPS = ['127.0.0.1', '*']
 
 # Log everything to the logs directory at the top
 LOGFILE_ROOT = join(dirname(BASE_DIR), 'logs')
