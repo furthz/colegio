@@ -3,16 +3,19 @@ from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView,UpdateView
 from django.views.generic import TemplateView
+
+from utils.middleware import get_current_colegio, get_current_user
 from utils.views import MyLoginRequiredMixin
 from payments.models import TipoPago
 from payments.models import CajaChica
 from income.models import obtener_mes
-from register.models import PersonalColegio
+from register.models import PersonalColegio, Colegio, Personal, Promotor
+from profiles.models import Profile
 from payments.forms import TipoPagoForm
 from payments.forms import PagoForm
 #from datetime import datetime
 from django.utils.timezone import now as timezone_now
-import datetime
+from _datetime import datetime
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.shortcuts import render
@@ -120,6 +123,80 @@ class ControlPagosPromotorView(FormView):
     template_name = "control_pagos_promotor.html"
     form_class = ControlPagosPromotorForm
 
+    def cargarformPromotorpagos(self, request):
+
+        # Obtiene el colegio en cuestión
+        id_colegio = get_current_colegio()
+        colegio = Colegio.objects.get(pk=id_colegio)
+        # logger.debug("Colegio: " + colegio.nombre)
+
+        # Obtiene el usuario que ha iniciado sesión
+        user = get_current_user()
+        logger.debug("Usuario: " + user.name)
+
+        try:
+            profile = Profile.objects.get(user=user)
+            logger.debug("profile: " + str(profile.id_persona))
+        except Profile.DoesNotExist:
+            sw_error = True
+            mensaje_error = "No existe la Persona asociada al usuario"
+
+        try:
+            # 1. Verificamos que el usuario sea un personal
+            personal = Personal.objects.get(persona=profile)
+            logger.debug("personal: " + str(personal.id_personal))
+
+            # 2. Verificamos que el usuario sea un personal asociado al colegio
+            personal_colegio = PersonalColegio.objects.get(personal=personal, colegio=colegio)
+
+            # 3. Verificamos que sea un promotor
+            promotor = Promotor.objects.filter(empleado=personal_colegio.personal)
+            #logger.debug()
+            if promotor.count() == 0:
+                sw_error = True
+                mensaje_error = "No es un promotor de un alumno asociado al colegio"
+            else:
+                sw_error = False
+
+        except Personal.DoesNotExist:
+            sw_error = True
+            mensaje_error = "No es un personal asociado al colegio"
+
+        if sw_error != True:
+
+            # Cargamos los años
+            anio = datetime.today().year
+            anios = []
+            for i in range(0, 3):
+                anios.append(anio - i)
+
+            # Cargamos los meses
+            meses_todos = ["Todos", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto",
+                           "Setiembre", "Octubre", "Noviembre", "Diciembre"]
+            num_mes = datetime.today().month
+            meses = []
+            for i in range(0, num_mes + 1):
+                meses.append(meses_todos[i])
+
+            # Cargamos los estados
+            tipos = TipoPago.objects.filter(colegio=colegio)
+            tipos_pagos = []
+            tipos_pagos.append("Todos")
+            for tipo in tipos:
+                tipos_pagos.append(tipo)
+
+            return {'anios': anios, 'meses': meses_todos, 'tipos_pagos': tipos_pagos}
+
+        else:
+            return {'mensaje_error': mensaje_error}  # return context
+
+    def get(self, request, *args, **kwargs):
+        super(ControlPagosPromotorView, self).get(request, *args, **kwargs)
+
+        contexto = self.cargarformPromotorpagos(request)
+
+        return render(request, self.template_name, contexto)  # return context
+
     def get_queryset(self):
         return []
 
@@ -132,15 +209,8 @@ class ControlPagosPromotorView(FormView):
         mes = request.POST["mes"]
         logger.debug("El mes ingresado es {0}".format(mes))
 
-        fecha_inicio = date.today()
-        fecha_final = date.today()
-
-        pagos_colegio = calculo_pagos_total(anio, tipo_pago, mes)
-
-        num_mes = obtener_mes(mes)
-
-        pagos_colegio_2 = calculo_pagos_total(anio, tipo_pago, "Todos")
-        pagos_rango = pagos_colegio_2.filter(fecha__gte=fecha_inicio).filter(fecha__lte=fecha_final)
+        id_colegio = get_current_colegio()
+        pagos_colegio = calculo_pagos_total(id_colegio, anio, tipo_pago, mes)
 
         anio = int(anio)
         if anio == date.today().year:
@@ -158,44 +228,19 @@ class ControlPagosPromotorView(FormView):
                 monto_mes_total[mes] = monto_mes_total[mes] + pagos.monto  # Cálculo de los montos totales del mes
         logger.debug("El monto del año por mes es {0}".format(monto_mes_total))
 
-        # CALCULO DE MONTO TOTAL DE PAGOS POR RANGO
-        monto_total_rango = 0  # Lista de Montos totales por mes
-        for pagos_1 in pagos_rango:
-            monto_total_rango = monto_total_rango + pagos_1.monto  # Cálculo de los montos totales del mes
-
-        logger.debug("El monto total de los pagos para el rango de tiempo es {0}".format(monto_total_rango))
-
-        # CALCULO DE MONTO POR MES PARA UN RANGO
-        #mes_inicio = fecha_inicio.month
-        #mes_final = fecha_final.month
-        mes_inicio = 3
-        mes_final = 8
-        rango_mes = mes_final - mes_inicio
-        monto_rango_mes = []
-        for mes in range(0, rango_mes+1):
-            monto_rango_mes.append(0)
-            pagos_mes = pagos_colegio.filter(fecha__month=mes + mes_inicio)
-            for pagos in pagos_mes:
-                monto_rango_mes[mes] = monto_rango_mes[mes] + pagos.monto
-
-        logger.debug("El monto de rango por mes es {0}".format(monto_rango_mes))
-
         mes_labels = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Setiembre", "Octubre", "Noviembre", "Diciembre"]
 
+        contexto = self.cargarformPromotorpagos(request)
+        contexto['mes_labels'] = mes_labels
+
         if len(pagos_colegio) != 0:
-            return render(request, template_name=self.template_name, context={
-                'pagos_colegio': pagos_colegio,
-                'monto_mes_total': monto_mes_total,
-                'mes_labels': mes_labels,
-                'form': ControlPagosPromotorForm,
-            })
+            contexto['pagos_colegio']=pagos_colegio
+            contexto['monto_mes_total']=monto_mes_total
+            return render(request, template_name=self.template_name, context=contexto)
         else:
-            return render(request, template_name=self.template_name,context={
-                'pagos_colegio': [],
-                'monto_mes_total': [],
-                'mes_labels': mes_labels,
-                'form': ControlPagosPromotorForm,
-            })
+            contexto['pagos_colegio'] = []
+            contexto['monto_mes_total'] = []
+            return render(request, template_name=self.template_name,context=contexto)
 
 
 
@@ -266,38 +311,3 @@ class ControlPagosDirectorView(FormView):
                 'monto_mes_total': [],
                 'form': ControlPagosPromotorForm,
             })
-
-
-from django.shortcuts import render, get_object_or_404, redirect, HttpResponse, render_to_response, HttpResponseRedirect
-from django.core.urlresolvers import reverse
-
-from django.contrib.auth import authenticate, login
-import json
-
-def myajaxview(request):
-    if request.method == 'POST':
-        if request.is_ajax():
-            print("**ajax post**")
-            data = request.POST['mydata']
-            astr = "<html><b> you sent an ajax post request </b> <br> returned data: %s</html>" % data
-            return HttpResponse(astr)
-    return render(request)
-
-def myajaxformview(request):
-    if request.method == 'POST':
-        if request.is_ajax():
-
-            print("**ajax form post**")
-            for k, v in request.POST.items():
-                print(k, v)
-
-            print("field1 data: %s" % request.POST['field1'])
-            print("field2 data: %s" % request.POST['field2'])
-
-            mydata = [{'foo': 1, 'baz': 2}]
-            return HttpResponse(json.dumps(mydata), mimetype="application/json")
-
-    return render(request)
-
-def foo(request, template='foo.html'):
-    return render(request, template)
