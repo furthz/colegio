@@ -29,9 +29,7 @@ from enrollment.views import FiltrarAlumnoView
 from enrollment.views import CargarMatriculaCreateView
 from enrollment.views import CargarMatriculaUpdateView
 #
-from enrollment.views import testform
-from enrollment.views import testpersonaform
-from enrollment.views import AuthorCreate
+
 
 urlpatterns = [
     # URL para tipos de servicios
@@ -69,6 +67,5 @@ urlpatterns = [
     # URL para filtrar y crear matriculas
     url(r'^filter', FiltrarAlumnoView.as_view(), name="filtrar_alumno"),
 
-    url(r'^test', AuthorCreate.as_view(), name="test"),
-    url(r'^persona', testpersonaform.as_view(), name="test_persona"),
+
 ]

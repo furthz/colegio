@@ -73,7 +73,12 @@ function confirmDel()
                         <!-- INICIA LA LISTA DE REGISTROS -->
                         <div class="page-header">
                           <div class="pull-right">
-                            <a class="btn btn-success" href="{% url 'enrollments:servicioregular_create' %}" role="button"><i class="fa fa-plus" aria-hidden="true"></i> Crear pagos</a>
+                              {% if serviciosregularesvacio == True %}
+                                <a class="btn btn-success" ><i class="fa fa-plus" aria-hidden="true"></i> Crear pagos</a>
+                              {% else %}
+                                <a class="btn btn-success" href="{% url 'enrollments:servicioregular_create' %}" role="button"><i class="fa fa-plus" aria-hidden="true"></i> Crear pagos</a>
+                              {% endif %}
+
                           </div>
                           <h3>Servicios Regulares</h3>
                         </div>
@@ -152,7 +157,11 @@ function confirmDel()
                         <!-- FIN DE REGULARES -->
                         <div class="page-header">
                           <div class="pull-right">
-                            <a class="btn btn-success" href="{% url 'enrollments:servicioextra_create' %}" role="button"><i class="fa fa-plus" aria-hidden="true"></i> Crear pagos</a>
+                              {% if serviciosextravacio == True %}
+                                <a class="btn btn-success" ><i class="fa fa-plus" aria-hidden="true"></i> Crear pagos</a>
+                              {% else %}
+                                <a class="btn btn-success" href="{% url 'enrollments:servicioextra_create' %}" role="button"><i class="fa fa-plus" aria-hidden="true"></i> Crear pagos</a>
+                              {% endif %}
                           </div>
                           <h3>Servicios Extracurriculares</h3>
                         </div>

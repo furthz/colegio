@@ -9,9 +9,9 @@ from utils.views import MyLoginRequiredMixin
 from payments.models import TipoPago
 from payments.models import CajaChica
 from income.models import obtener_mes
-from register.models import PersonalColegio, Colegio, Personal, Promotor
-from profiles.models import Profile
+from register.models import PersonalColegio, Tesorero, Colegio, Personal, Promotor
 from payments.forms import TipoPagoForm
+from profiles.models import Profile
 from payments.forms import PagoForm
 #from datetime import datetime
 from django.utils.timezone import now as timezone_now
@@ -25,6 +25,9 @@ from payments.models import Pago, calculo_pagos_total
 from django.views.generic import FormView
 import logging
 from datetime import date
+from django.conf import settings
+from utils.middleware import get_current_colegio, get_current_user
+
 
 logger = logging.getLogger("project")
 
@@ -74,6 +77,21 @@ class RegistrarPagoCreateView(CreateView):
     form_class = PagoForm
     success_url = reverse_lazy('payments:registrarpago_create')
     template_name = 'RegistrarPago/registrarpago_form.html'
+
+    def get(self, request, *args, **kwargs):
+        try:
+            logger.info("Estoy en el Registrar Pago")
+            user_now = PersonalColegio.objects.get(personal__user=get_current_user(), colegio_id= get_current_colegio())
+            logger.info(user_now)
+            rol_tesorero = Tesorero.objects.filter(personalcolegio=user_now)
+            logger.info(rol_tesorero.count())
+            if (rol_tesorero.count()) > 0:
+                logger.info("Tengo los permisos")
+                return super(RegistrarPagoCreateView, self).get(request, *args, **kwargs)
+            else:
+                return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+        except:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
     def form_valid(self, form):
         form.instance.personal = PersonalColegio.objects.get(pagos__proveedor__user=self.request.user)
