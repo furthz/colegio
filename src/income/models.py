@@ -127,12 +127,14 @@ def calculo_ingresos_alumno(alumno, anio, mes, estado):
     por_cobrar1 = Cuentascobrar.objetos.get_queryset().filter(Q(matricula__alumno__id_alumno=alumno))
 
     # Proceso de filtrado según el año
+    """
     if anio == "Todos":
         por_cobrar2 = por_cobrar1
     else:
         anio = int(anio)
         por_cobrar2 = por_cobrar1.filter(fecha_ven__year=anio)
-
+    """
+    por_cobrar2 = por_cobrar1.filter(fecha_ven__year=anio)
     # Proceso de filtrado según el estado o tipo
     if estado == "Todos":
         por_cobrar = por_cobrar2

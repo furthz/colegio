@@ -1,34 +1,36 @@
 from __future__ import unicode_literals
 
-from django.contrib.auth.decorators import login_required
+from django.core.cache import cache
+from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseRedirect
-from django.template import RequestContext
 from django.utils.decorators import method_decorator
 from django.views import generic
 from django.contrib.auth import get_user_model
 from django.contrib import auth
 from django.contrib import messages
-from django.core.urlresolvers import reverse
 
 from authtools import views as authviews
 from braces import views as bracesviews
 from django.conf import settings
+from django.views.decorators.cache import cache_page
+
+from enrollment.models import Matricula
 from profiles.models import Profile
-from django.shortcuts import get_object_or_404, redirect, render_to_response
 from django.contrib.auth.mixins import LoginRequiredMixin
-from register.models import Personal
-from register.models import PersonalColegio
-from django.views.generic.edit import FormView
+from register.models import Personal, Colegio, Promotor, Director, Cajero, Tesorero, Administrativo, Apoderado
 from django.shortcuts import render
 from django.views import View
-#from utils.views import LoginRequiredMixin
+
+from utils.middleware import get_current_user, get_current_colegio
 from . import forms
 
 import logging
 
 User = get_user_model()
 logger = logging.getLogger("project")
+
+CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 
 
 class LoginView(bracesviews.AnonymousRequiredMixin,
@@ -50,12 +52,68 @@ class LoginView(bracesviews.AnonymousRequiredMixin,
 
 
 class AsignColegioView(LoginRequiredMixin, View):
-
     """
     Vista que permite mostrar la asignación del colegio
     """
-
     template_name = "accounts/asign_colegio.html"
+
+    def get_roles(self):
+
+        id_colegio = get_current_colegio()
+        colegio = Colegio.objects.get(pk=id_colegio, activo=True)
+
+        id_user = get_current_user()
+        profile = Profile.objects.get(user_id=id_user)
+
+        # determinar si es un personal asociado al colegio logueado
+        empleados = Personal.objects.filter(persona=profile, personalcolegio__colegio=colegio,
+                                            personalcolegio__activo=True)
+
+        roles = {}
+        for empleado in empleados:
+            try:
+                promotor = Promotor.objects.get(empleado=empleado, activo_promotor=True)
+                roles['promotor'] = promotor.id_promotor
+            except Promotor.DoesNotExist:
+                promotor = None
+
+            try:
+                director = Director.objects.get(empleado=empleado, activo_director=True)
+                roles['director'] = director.id_director
+            except Director.DoesNotExist:
+                director = None
+
+            try:
+                cajero = Cajero.objects.get(empleado=empleado, activo_cajero=True)
+                roles['cajero'] = cajero.id_cajero
+            except Cajero.DoesNotExist:
+                cajero = None
+
+            try:
+                tesorero = Tesorero.objects.get(empleado=empleado, activo_tesorero=True)
+                roles['tesorero'] = tesorero.id_tesorero
+            except Tesorero.DoesNotExist:
+                tesorero = None
+
+            try:
+                administrativo = Administrativo.objects.get(empleado=empleado, activo_administrativo=True)
+                roles['administrativo'] = administrativo.id_administrativo
+            except Administrativo.DoesNotExist:
+                administrativo = None
+
+        # determinar si es un apoderado
+        try:
+            apoderado = Apoderado.objects.get(persona=profile)
+
+            apoderados = Matricula.objects.filter(colegio=colegio, activo=True,
+                                                  alumno__apoderadoalumno__apoderado=apoderado)
+
+            for apo in apoderados:
+                roles['apoderado'] = apo.id_apoderado
+        except Apoderado.DoesNotExist:
+            pass
+
+        return roles
 
     def get(self, request, *args, **kwargs):
         logger.debug("GET formulario")
@@ -65,6 +123,7 @@ class AsignColegioView(LoginRequiredMixin, View):
 
         return render(request, self.template_name, {'form': form})
 
+    @method_decorator(cache_page(CACHE_TTL))
     def post(self, request, *args, **kwargs):
 
         form = forms.AsignColegioForm(request.POST, user=request.user)
@@ -75,6 +134,12 @@ class AsignColegioView(LoginRequiredMixin, View):
             request.session['colegio'] = colegios.id_colegio
 
         logger.info("Usuario Logueado")
+
+        if 'roles' in cache:
+            roles = cache.get('roles')
+        else:
+            roles = self.get_roles()
+            cache.set('roles', roles, timeout=CACHE_TTL)
 
         return HttpResponseRedirect('/users/me')
 

@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 
 from django.core.urlresolvers import reverse_lazy
 from os.path import dirname, join, exists, os, sys
+from decouple import config, Csv
 
 
 # Build paths inside the project like this: join(BASE_DIR, "directory")
@@ -109,6 +110,7 @@ INSTALLED_APPS = (
 
 
 MIDDLEWARE_CLASSES = (
+    'django.middleware.cache.UpdateCacheMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -117,7 +119,33 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'utils.middleware.ThreadLocalMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
 )
+
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://54.232.246.225:6379/1',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.ShardClient',
+            #'CONNECTION_POOL_KWARGS': {'max_connections': 100},
+            #"CONNECTION_POOL_CLASS": "myproj.mypool.MyOwnPool",
+            #"PARSER_CLASS": "redis.connection.HiredisParser",
+            #"PASSWORD": "1234",
+        },
+        #"KEY_PREFIX": "colegio"
+    }
+}
+
+
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+
+SESSION_CACHE_ALIAS = "default"
+
+CACHE_TTL = 60 * 15
+
+
 
 ROOT_URLCONF = 'colegio.urls'
 

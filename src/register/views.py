@@ -1,6 +1,7 @@
 import logging
 
 from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.models import PermissionsMixin
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -246,7 +247,7 @@ class PersonalUpdateView(UpdateView):
     def get_success_url(self):
         return reverse_lazy('registers:personal_list')
 
-class PersonaListView(TemplateView):
+class PersonaListView(PermissionsMixin, TemplateView):
     template_name = "persona_list.html"
 
     def post(self, request, *args, **kwargs):
