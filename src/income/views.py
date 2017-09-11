@@ -9,14 +9,18 @@ from django.db.models import Q
 from income.models import calculo_ingresos_promotor, obtener_mes, calculo_ingresos_alumno, calculo_por_nivel_promotor
 from django.views.generic import FormView, TemplateView
 from django.shortcuts import render
-from enrollment.models import Cuentascobrar, Matricula
-from register.models import Colegio, Alumno, Apoderado, ApoderadoAlumno
+from enrollment.models import Cuentascobrar,  Matricula
+from register.models import Colegio, Alumno, Tesorero, Cajero, PersonalColegio, Apoderado, ApoderadoAlumno
 from profiles.models import Profile
 from income.models import Cobranza, DetalleCobranza
 from cash.models import CajaCajero
+from utils.views import get_current_colegio
+from utils.middleware import get_current_user
 from utils.middleware import get_current_colegio, get_current_user
 
 from utils.views import MyLoginRequiredMixin
+from django.http import HttpResponseRedirect
+from django.conf import settings
 
 import logging
 logger = logging.getLogger("project")
@@ -36,6 +40,24 @@ class RegistrarPagoListView(MyLoginRequiredMixin, TemplateView):
         tiposervicio.save()
         """
         #cuentas = Cuentascobrar.objects.all()
+
+        try:
+            logger.info("Estoy en el primer GET")
+            user_now = PersonalColegio.objects.get(personal__user=get_current_user(), colegio_id=get_current_colegio())
+            logger.info(user_now)
+            rol_tesorero = Tesorero.objects.filter(personalcolegio=user_now)
+            rol_cajero = Cajero.objects.filter(personalcolegio=user_now)
+            logger.info(rol_tesorero)
+            logger.info(rol_cajero)
+            if (rol_cajero.count() + rol_tesorero.count()) > 0:
+                logger.info("Se tienen los permisos")
+            else:
+                return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+        except:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+
+
         logger.info("Estoy en income pagos")
         cuentas_totales = Cuentascobrar.objects.filter(
             matricula__colegio__id_colegio=self.request.session.get('colegio'), estado=True)
@@ -63,7 +85,6 @@ class RegistrarPagoListView(MyLoginRequiredMixin, TemplateView):
         #return HttpResponseRedirect(reverse('enrollments:tiposervicio_list'))
 
     def post(self, request, *args, **kwargs):
-
         logger.info("Estoy en el POST")
         logger.info(request.POST)
         data_post = request.POST
