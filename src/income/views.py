@@ -9,7 +9,7 @@ from django.db.models import Q
 from income.models import calculo_ingresos_promotor, obtener_mes, calculo_ingresos_alumno, calculo_por_nivel_promotor
 from django.views.generic import FormView, TemplateView
 from django.shortcuts import render
-from enrollment.models import Cuentascobrar
+from enrollment.models import Cuentascobrar, Matricula
 from register.models import Colegio, Alumno, Apoderado, ApoderadoAlumno
 from profiles.models import Profile
 from income.models import Cobranza, DetalleCobranza
@@ -165,12 +165,13 @@ class ControlIngresosPadresView(FormView):
     template_name = "control_ingresos_padres.html"
     form_class = CuentasCobrarPadresForm
 
-    def get(self, request, *args, **kwargs):
-        super(ControlIngresosPadresView, self).get(request, *args, **kwargs)
+    def cargarform(self, request):
 
+        # Obtiene el colegio en cuestión
         id_colegio = get_current_colegio()
         colegio = Colegio.objects.get(pk=id_colegio)
 
+        # Obtiene el usuario que ha iniciado sesión
         user = get_current_user()
         logger.debug("Usuario: " + user.name)
 
@@ -182,33 +183,58 @@ class ControlIngresosPadresView(FormView):
             mensaje_error = "No existe la Persona asociada al usuario"
 
         try:
-            #1 verificamos que el usuario sea un apoderado
+            # 1. Verificamos que el usuario sea un apoderado
             apoderado = Apoderado.objects.get(persona=profile)
             logger.debug("apoderado: " + str(apoderado.id_apoderado))
 
-            #2 verificamos que el apoderado tenga un alumno registrado en el colegio
-            apoderado_alumno = ApoderadoAlumno.objects.filter(al, apoderado=apoderado)
+            # 2. Verificamos los alumnos que tienen el apoderado y el colegio de la sesión
+            matriculas = Matricula.objects.filter(colegio=colegio, alumno__apoderados=apoderado)
 
-            if apoderado_alumno.count() == 0:
+            if matriculas.count() == 0:
                 sw_error = True
                 mensaje_error = "No es un apoderado de un alumno asociado al colegio"
+            else:
+                sw_error = False
 
         except Apoderado.DoesNotExist:
             sw_error = True
             mensaje_error = "No es un apoderado"
 
-
         if sw_error != True:
-            #cargamos los alumnos
+
+            # Cargamos los alumnos
             alumnos = []
-            for apo_alu in apoderado_alumno:
+            for apo_alu in matriculas:
                 alumnos.append(apo_alu.alumno)
 
-            return render(request, self.template_name, {'alumnos': alumnos})  # return context
+            # Cargamos los años
+            anio = datetime.today().year
+            anios = []
+            for i in range(0, 3):
+                anios.append(anio - i)
+
+            # Cargamos los meses
+            meses_todos = ["Todos", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto",
+                           "Setiembre", "Octubre", "Noviembre", "Diciembre"]
+            num_mes = datetime.today().month
+            meses = []
+            for i in range(0, num_mes + 1):
+                meses.append(meses_todos[i])
+
+            # Cargamos los estados
+            estados = ["Todos", "Pagado", "No pagado"]
+
+            return {'alumnos': alumnos, 'anios': anios, 'meses': meses_todos, 'estados': estados }
+
         else:
-            return render(request, self.template_name, {'mensaje_error': mensaje_error})  # return context
+            return {'mensaje_error': mensaje_error}  # return context
 
+    def get(self, request, *args, **kwargs):
+        super(ControlIngresosPadresView, self).get(request, *args, **kwargs)
 
+        contexto = self.cargarform(request)
+
+        return render(request, self.template_name, contexto)  # return context
 
     def get_queryset(self):
         return []
@@ -229,16 +255,15 @@ class ControlIngresosPadresView(FormView):
 
         cuenta_padres = calculo_ingresos_alumno(alumno, anio, mes, estado)
 
+        contexto = self.cargarform(request)
+
         if len(cuenta_padres) != 0:
-            return render(request, template_name=self.template_name, context={
-                'object_list': cuenta_padres,
-                'form': CuentasCobrarPadresForm,
-            })
+            contexto['object_list'] = cuenta_padres
+
+            return render(request, template_name=self.template_name, context=contexto)
         else:
-            return render(request, template_name=self.template_name,context={
-                'object_list': [],
-                'form': CuentasCobrarPadresForm,
-            })
+            contexto['object_list'] = []
+            return render(request, template_name=self.template_name,context=contexto)
 
 """
 PROMOTOR: DEUDAS Y COBROS POR AÑO, MES Y NIVEL
