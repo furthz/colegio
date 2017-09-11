@@ -16,8 +16,9 @@
 {% block container %}
 
       <!-- INICIA CONTENDOR DE FORMULARIOS -->
-
-
+{% if mensaje_error %}
+    {{ mensaje_error }}
+{% else %}
     <!-- INICIO DE CONTENIDO -->
     <section class="content">
       <div class="row">
@@ -36,13 +37,21 @@
                                     <div class="col-md-2">
                                       <div class="form-group">
                                       <label>Año</label>
-                                        {{ form.anio }}
+                                        <select name="anio"  class="form-control">
+                                            {% for anio in anios %}
+                                                <option>{{ anio }}</option>
+                                            {% endfor %}
+                                        </select>
                                       </div>
                                     </div>
                                     <div class="col-md-3">
                                       <div class="form-group">
                                       <label>Mes</label>
-                                        {{ form.mes }}
+                                        <select name="mes"  class="form-control">
+                                            {% for mes in meses %}
+                                                <option>{{ mes }}</option>
+                                            {% endfor %}
+                                        </select>
                                       </div>
                                     </div>
                                     <div class="col-md-3">
@@ -74,7 +83,11 @@
                         <!-- BAR CHART -->
                         <div class="box box-success">
                           <div class="box-header with-border">
-                            <h3 class="box-title">Monto recaudado por población mes de {{ mes }}</h3>
+                              {% if mes == "Todos" %}
+                                  <h3 class="box-title">Monto recaudado por población de este mes</h3>
+                              {% else %}
+                                  <h3 class="box-title">Monto recaudado por población para mes de {{ mes }}</h3>
+                              {% endif %}
                           </div>
                           <div class="box-body">
                             <div class="chart">
@@ -101,7 +114,7 @@
       </div>
     </section>
     <!-- /.FIN DE CONTENIDO -->
-
+{% endif %}
 
 </div>
 <!-- ./wrapper -->

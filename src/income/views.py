@@ -10,7 +10,7 @@ from income.models import calculo_ingresos_promotor, obtener_mes, calculo_ingres
 from django.views.generic import FormView, TemplateView
 from django.shortcuts import render
 from enrollment.models import Cuentascobrar, Matricula
-from register.models import Colegio, Alumno, Apoderado, ApoderadoAlumno
+from register.models import Colegio, Alumno, Apoderado, ApoderadoAlumno, Promotor, PersonalColegio, Personal
 from profiles.models import Profile
 from income.models import Cobranza, DetalleCobranza
 from cash.models import CajaCajero
@@ -165,11 +165,12 @@ class ControlIngresosPadresView(FormView):
     template_name = "control_ingresos_padres.html"
     form_class = CuentasCobrarPadresForm
 
-    def cargarform(self, request):
+    def cargarformPadres(self, request):
 
         # Obtiene el colegio en cuestión
         id_colegio = get_current_colegio()
         colegio = Colegio.objects.get(pk=id_colegio)
+        # logger.debug("Colegio: " + colegio.nombre)
 
         # Obtiene el usuario que ha iniciado sesión
         user = get_current_user()
@@ -224,7 +225,7 @@ class ControlIngresosPadresView(FormView):
             # Cargamos los estados
             estados = ["Todos", "Pagado", "No pagado"]
 
-            return {'alumnos': alumnos, 'anios': anios, 'meses': meses_todos, 'estados': estados }
+            return {'alumnos': alumnos, 'anios': anios, 'meses': meses_todos, 'estados': estados}
 
         else:
             return {'mensaje_error': mensaje_error}  # return context
@@ -232,7 +233,7 @@ class ControlIngresosPadresView(FormView):
     def get(self, request, *args, **kwargs):
         super(ControlIngresosPadresView, self).get(request, *args, **kwargs)
 
-        contexto = self.cargarform(request)
+        contexto = self.cargarformPadres(request)
 
         return render(request, self.template_name, contexto)  # return context
 
@@ -253,13 +254,13 @@ class ControlIngresosPadresView(FormView):
         # Validación de hijos asociados a un apoderado
         alumno = int(alumno)
 
-        cuenta_padres = calculo_ingresos_alumno(alumno, anio, mes, estado)
+        id_colegio = get_current_colegio()
+        cuenta_padres = calculo_ingresos_alumno(id_colegio, alumno, anio, mes, estado)
 
-        contexto = self.cargarform(request)
+        contexto = self.cargarformPadres(request)
 
         if len(cuenta_padres) != 0:
             contexto['object_list'] = cuenta_padres
-
             return render(request, template_name=self.template_name, context=contexto)
         else:
             contexto['object_list'] = []
@@ -274,11 +275,79 @@ class ControlIngresosPromotorView(FormView):
     template_name = "control_ingresos_director.html"
     form_class = CuentasCobrarPromotorForm
 
+    def cargarformPromotor(self, request):
+
+        # Obtiene el colegio en cuestión
+        id_colegio = get_current_colegio()
+        colegio = Colegio.objects.get(pk=id_colegio)
+        # logger.debug("Colegio: " + colegio.nombre)
+
+        # Obtiene el usuario que ha iniciado sesión
+        user = get_current_user()
+        logger.debug("Usuario: " + user.name)
+
+        try:
+            profile = Profile.objects.get(user=user)
+            logger.debug("profile: " + str(profile.id_persona))
+        except Profile.DoesNotExist:
+            sw_error = True
+            mensaje_error = "No existe la Persona asociada al usuario"
+
+        try:
+            # 1. Verificamos que el usuario sea un personal
+            personal = Personal.objects.get(persona=profile)
+            logger.debug("personal: " + str(personal.id_personal))
+
+            # 2. Verificamos que el usuario sea un personal asociado al colegio
+            personal_colegio = PersonalColegio.objects.get(personal=personal, colegio=colegio)
+
+            # 3. Verificamos que sea un promotor
+            promotor = Promotor.objects.filter(empleado=personal_colegio.personal)
+
+            if promotor.count() == 0:
+                sw_error = True
+                mensaje_error = "No es un promotor de un alumno asociado al colegio"
+            else:
+                sw_error = False
+
+        except Personal.DoesNotExist:
+            sw_error = True
+            mensaje_error = "No es un personal asociado al colegio"
+
+        if sw_error != True:
+
+            # Cargamos los años
+            anio = datetime.today().year
+            anios = []
+            for i in range(0, 3):
+                anios.append(anio - i)
+
+            # Cargamos los meses
+            meses_todos = ["Todos", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto",
+                           "Setiembre", "Octubre", "Noviembre", "Diciembre"]
+            num_mes = datetime.today().month
+            meses = []
+            for i in range(0, num_mes + 1):
+                meses.append(meses_todos[i])
+
+            return {'anios': anios, 'meses': meses_todos}
+
+        else:
+            return {'mensaje_error': mensaje_error}  # return context
+
+    def get(self, request, *args, **kwargs):
+        super(ControlIngresosPromotorView, self).get(request, *args, **kwargs)
+
+        contexto = self.cargarformPromotor(request)
+
+        return render(request, self.template_name, contexto)  # return context
+
     def get_queryset(self):
         return []
 
     def post(self, request, *args, **kwargs):
 
+        id_colegio = get_current_colegio()
         anio = request.POST["anio"]
         mes = request.POST["mes"]
 
@@ -290,9 +359,10 @@ class ControlIngresosPromotorView(FormView):
         else:
             num_mes = 12
 
-        por_cobrar_total, cobro_total, deuda_total = calculo_ingresos_promotor(int(anio))
+        anio = int(anio)
+        por_cobrar_total, cobro_total, deuda_total = calculo_ingresos_promotor(id_colegio, anio, mes)
         logger.info(por_cobrar_total)
-        por_cobrar_nivel, cobro_total_nivel, deuda_total_nivel = calculo_por_nivel_promotor(int(anio), mes)
+        por_cobrar_nivel, cobro_total_nivel, deuda_total_nivel = calculo_por_nivel_promotor(id_colegio, anio, mes)
 
         meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Setiembre", "Octubre",
                  "Noviembre", "Diciembre"]
@@ -302,17 +372,17 @@ class ControlIngresosPromotorView(FormView):
             mes_labels.append(meses[i])
         logger.info(mes_labels)
 
-        return render(request, template_name=self.template_name, context = {
-            "por_cobrar_nivel": por_cobrar_nivel,
-            "cobro_total_nivel": cobro_total_nivel,
-            "deuda_total_nivel": deuda_total_nivel,
-            "por_cobrar_total": por_cobrar_total,
-            "cobro_total": cobro_total,
-            "deuda_total": deuda_total,
-            "mes_labels": mes_labels,
-            'mes': mes,
-            'form': CuentasCobrarPromotorForm,
-        })
+        contexto = self.cargarformPromotor(request)
+        contexto['por_cobrar_nivel'] = por_cobrar_nivel
+        contexto['cobro_total_nivel'] = cobro_total_nivel
+        contexto['deuda_total_nivel'] = deuda_total_nivel
+        contexto['por_cobrar_total'] = por_cobrar_total
+        contexto['cobro_total'] = cobro_total
+        contexto['deuda_total'] = deuda_total
+        contexto['mes_labels'] = mes_labels
+        contexto['mes'] = mes
+
+        return render(request, template_name=self.template_name, context = contexto)
 
 
 """
@@ -323,6 +393,74 @@ class ControlIngresosPromotorDetallesView(FormView):
     model = Cuentascobrar
     template_name = "control_ingresos_promotor_detalle.html"
     form_class = CuentasCobrarPromotorDetalleForm
+
+    def cargarformPromotordetalle(self, request):
+
+        # Obtiene el colegio en cuestión
+        id_colegio = get_current_colegio()
+        colegio = Colegio.objects.get(pk=id_colegio)
+        # logger.debug("Colegio: " + colegio.nombre)
+
+        # Obtiene el usuario que ha iniciado sesión
+        user = get_current_user()
+        logger.debug("Usuario: " + user.name)
+
+        try:
+            profile = Profile.objects.get(user=user)
+            logger.debug("profile: " + str(profile.id_persona))
+        except Profile.DoesNotExist:
+            sw_error = True
+            mensaje_error = "No existe la Persona asociada al usuario"
+
+        try:
+            # 1. Verificamos que el usuario sea un personal
+            personal = Personal.objects.get(persona=profile)
+            logger.debug("personal: " + str(personal.id_personal))
+
+            # 2. Verificamos que el usuario sea un personal asociado al colegio
+            personal_colegio = PersonalColegio.objects.get(personal=personal, colegio=colegio)
+
+            # 3. Verificamos que sea un promotor
+            promotor = Promotor.objects.filter(empleado=personal_colegio.personal)
+            #logger.debug()
+            if promotor.count() == 0:
+                sw_error = True
+                mensaje_error = "No es un promotor de un alumno asociado al colegio"
+            else:
+                sw_error = False
+
+        except Personal.DoesNotExist:
+            sw_error = True
+            mensaje_error = "No es un personal asociado al colegio"
+
+        if sw_error != True:
+
+            # Cargamos los años
+            anio = datetime.today().year
+            anios = []
+            for i in range(0, 3):
+                anios.append(anio - i)
+
+            # Cargamos los meses
+            meses_todos = ["Todos", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto",
+                           "Setiembre", "Octubre", "Noviembre", "Diciembre"]
+            num_mes = datetime.today().month
+            meses = []
+            for i in range(0, num_mes + 1):
+                meses.append(meses_todos[i])
+
+            # Cargamos los estados
+            estados = ["Todos", "Pagado", "No pagado"]
+
+            return {'anios': anios, 'meses': meses_todos, 'estados': estados}
+
+        else:
+            return {'mensaje_error': mensaje_error}  # return context
+
+    def get(self, request, *args, **kwargs):
+        super(ControlIngresosPromotorDetallesView, self).get(request, *args, **kwargs)
+        contexto = self.cargarformPromotordetalle(request)
+        return render(request, self.template_name, contexto)  # return context
 
     def get_queryset(self):
         return []
@@ -335,10 +473,16 @@ class ControlIngresosPromotorDetallesView(FormView):
         estado = request.POST["estado"]
 
         logger.info(alumno)
+        colegio = get_current_colegio()
+
+        # Proceso de filtrado según el colegio
+        cuentas_cobrar_colegio = self.model.objetos.filter(matricula__colegio__id_colegio=colegio)
 
         # Proceso de filtrado según el alumno
-        por_cobrar1 = self.model.objetos.filter(Q(matricula__alumno__nombre=alumno) | Q(matricula__alumno__apellido_pa=alumno) | Q(matricula__alumno__apellido_ma=alumno))
-
+        if alumno == "":
+            por_cobrar1 = cuentas_cobrar_colegio
+        else:
+            por_cobrar1 = cuentas_cobrar_colegio.filter(Q(matricula__alumno__nombre=alumno) | Q(matricula__alumno__apellido_pa=alumno) | Q(matricula__alumno__apellido_ma=alumno))
 
         # Proceso de filtrado según el año
         if anio == "Todos":
@@ -362,14 +506,13 @@ class ControlIngresosPromotorDetallesView(FormView):
         elif estado == "No_pagado":
             por_cobrar = por_cobrar3.filter(estado=True)
 
+        contexto = self.cargarformPromotordetalle(request)
 
         if len(por_cobrar) != 0:
-            return render(request, template_name=self.template_name, context={
-                'object_list': por_cobrar,
-                'form': CuentasCobrarPromotorDetalleForm,
-            })
+            contexto['object_list']=por_cobrar
+            contexto['form']=CuentasCobrarPromotorDetalleForm
+            return render(request, template_name=self.template_name, context=contexto)
         else:
-            return render(request, template_name=self.template_name, context={
-                'object_list': [],
-                'form': CuentasCobrarPromotorDetalleForm,
-            })
+            contexto['object_list'] = []
+            contexto['form'] = CuentasCobrarPromotorDetalleForm
+            return render(request, template_name=self.template_name, context=contexto)

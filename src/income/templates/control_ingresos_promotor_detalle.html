@@ -16,6 +16,10 @@
 <body>
 {% block container %}
 {% load crispy_forms_tags %}
+
+{% if mensaje_error %}
+    {{ mensaje_error }}
+{% else %}
 <!-- INICIO DE CONTENIDO -->
     <section class="content">
       <div class="row">
@@ -34,25 +38,37 @@
                                     <div class="col-md-3">
                                       <div class="form-group">
                                       <label>Alumno</label>
-                                        {{ form.alumno }}
+                                        <input type="text" name="alumno" class="form-control">
                                       </div>
                                     </div>
                                     <div class="col-md-2">
                                       <div class="form-group">
                                       <label>Año</label>
-                                        {{ form.anio }}
+                                        <select name="anio"  class="form-control">
+                                            {% for anio in anios %}
+                                                <option>{{ anio }}</option>
+                                            {% endfor %}
+                                        </select>
                                       </div>
                                     </div>
                                     <div class="col-md-2">
                                       <div class="form-group">
                                       <label>Mes</label>
-                                        {{ form.mes }}
+                                        <select name="mes"  class="form-control">
+                                            {% for mes in meses %}
+                                                <option>{{ mes }}</option>
+                                            {% endfor %}
+                                        </select>
                                       </div>
                                     </div>
                                     <div class="col-md-2">
                                       <div class="form-group">
                                       <label>Estado</label>
-                                        {{ form.estado }}
+                                        <select name="estado"  class="form-control">
+                                            {% for estado in estados %}
+                                                <option>{{ estado }}</option>
+                                            {% endfor %}
+                                        </select>
                                       </div>
                                     </div>
                                     <div class="col-md-3">
@@ -114,7 +130,7 @@
       </div>
     </section>
 <!-- /.FIN DE CONTENIDO -->
-
+{% endif %}
 {% endblock container %}
 
 </body>
