@@ -51,9 +51,9 @@ function confirmDel()
                                     <div class="box-body">
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label>Número Documento</label>
-                                                <div class="input-group date">
-                                                    <input type="text" class="form-control" id="dni" placeholder="DNI"
+                                                <label>Número Documento de Identidad</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" id="dni" placeholder="Escriba el número"
                                                     id="numero_documento" name="numero_documento" value="{{ numero_documento }}">
                                                 </div>
                                             </div>
@@ -62,21 +62,22 @@ function confirmDel()
                                             <div class="form-group">
                                                 <label>Apellidos o Nombres</label>
                                                 <input type="text" class="form-control" id="nombres"
-                                                       placeholder="Apellidos o Nombres" name="nombres"
+                                                       placeholder="Escrina el apellido o nombre para la búsqueda" name="nombres"
                                                         value="{{ nombres }}">
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="search-actions">
                                                 <button type="submit" class="btn btn-primary" >
-                                                    <i class="fa fa-search" aria-hidden="true">Buscar Usuario</i>
+                                                    <i class="fa fa-search" aria-hidden="true"></i> Buscar Usuario
                                                 </button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                              </div>
-                            <table class="table table-hover">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
                                 <tbody>
                                     <tr class="table-header">
                                         <th>Código</th>
@@ -92,29 +93,32 @@ function confirmDel()
                                         <td>{{ empleado.getNombreCompleto }}</td>
                                         <td>{{ empleado.rol }}</td>
                                         <td>
-                                            <div class="btn-group btn-group-sm" role="group" aria-level="...">
-                                                <a title="Editar" href="{% url 'registers:personal_update' pk=empleado.id_persona %}" class="btn btn-default">
-                                                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                                                </a>
-                                                <a title="Detalle" href="{% url 'registers:personal_detail' pk=empleado.id_persona %}" class="btn btn-default">
-                                                    <i class="fa fa-info-circle" aria-hidden="true"></i>
-                                                </a>
+                                            <div class="text-center">
+                                                <div class="btn-group btn-group-sm" role="group" aria-level="">
+                                                    <a title="Editar" href="{% url 'registers:personal_update' pk=empleado.id_persona %}" class="btn btn-default">
+                                                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                    </a>
+                                                    <a title="Detalle" href="{% url 'registers:personal_detail' pk=empleado.id_persona %}" class="btn btn-default">
+                                                        <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                                    </a>
 
-                                                <button class="btn btn-default" type="submit" onclick="return confirmDel();" title="Eliminar" formaction="{% url 'registers:personal_delete' %}" formmethod="get" form="{{ empleado.id_persona }}">
-                                                    <i class="fa fa-trash" aria-hidden="true"></i>
-                                                </button>
-                                                <!--
-                                                <a title="Baja" href="#" class="btn btn-default">
-                                                    <i class="fa fa-minus-circle" aria-hidden="true"></i>
-                                                </a>
-                                                -->
+                                                    <button class="btn btn-default" type="submit" onclick="return confirmDel();" title="Eliminar" formaction="{% url 'registers:personal_delete' %}" formmethod="get" form="{{ empleado.id_persona }}">
+                                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                                    </button>
+                                                    <!--
+                                                    <a title="Baja" href="#" class="btn btn-default">
+                                                        <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                                                    </a>
+                                                    -->
+                                                </div>
                                             </div>
                                         </td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>
                             </table>
-                            <div class="toolbar-footer">
+                            </div>
+                            <div class="action-footer">
                                 <nav aria-label="Page navigation">
                                     <ul class="pagination">
                                         {% if empleados.has_previous  %}
