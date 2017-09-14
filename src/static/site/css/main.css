@@ -410,6 +410,12 @@ nav.navbar.navbar-static-top a{
 .actions{
   padding: 20px;
 }
+.table tr td,.table tr th {
+    border: 1px solid #c2c2c2;
+}
+.table tbody tr th{
+    border-top: 1px solid #c2c2c2;
+}
 .table-header{
 	background-color: #f5f5f5;
 }
@@ -472,7 +478,7 @@ nav.navbar.navbar-static-top a{
 }
 .toolbar-search{
 	padding: 10px;
-	border: 1px solid #d2d6de;
+	border: 1px solid #C2c2c2;
 	margin-bottom: 20px;
 }
 .toolbar-search .form-group{
@@ -504,4 +510,16 @@ nav.navbar.navbar-static-top a{
 }
 .checkbox.incheck{
 	margin-top: 0;
+}
+.action-footer{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-top: 1px solid #C2c2c2;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.box-header.with-border {
+	border-bottom: 1px solid #C2c2c2;
+    margin-bottom: 10px;
+    margin-top: 10px;
 }

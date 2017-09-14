@@ -1,5 +1,5 @@
 import logging
-
+from django.urls import reverse
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.models import PermissionsMixin
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -22,12 +22,12 @@ from django.shortcuts import render
 from django.views.generic import CreateView
 
 from register.forms import PersonaForm, AlumnoForm, ApoderadoForm, PersonalForm, PromotorForm, DirectorForm, CajeroForm, \
-    TesoreroForm, ProveedorForm
+    TesoreroForm, ProveedorForm, ColegioForm
 from register.models import Alumno, Apoderado, Personal, Promotor, Director, Cajero, Tesorero, Colegio, Proveedor, \
-    ProvedorColegio, PersonalColegio, Administrativo
+    ProvedorColegio, PersonalColegio, Administrativo, Direccion, Telefono
 from utils.middleware import get_current_colegio
 from utils.views import SaveGeneric, MyLoginRequiredMixin
-
+from payments.models import CajaChica
 logger = logging.getLogger("project")
 
 
@@ -374,3 +374,75 @@ class PersonaListView(PermissionsMixin, TemplateView):
 
         logger.debug("Se cargo el contexto")
         return render(request, self.template_name, {'empleados': empleados})  # return context
+
+
+class ColegioCreateView(MyLoginRequiredMixin, TemplateView):
+    """
+
+    """
+    template_name = "colegio_create.html"
+    model = Colegio
+    form_class = ColegioForm
+
+    @method_decorator(permission_required('register.list_personal', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        return render(request, template_name=self.template_name, context={
+            'form': self.form_class,
+        })
+
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        logger.info("En el POST")
+        logger.info(request.POST)
+        if form.is_valid():
+            data_form = form.cleaned_data
+            logger.info(data_form)
+            logger.info(form.data)
+            logger.info(request.POST['telefono[]'])
+            colegio = Colegio(
+                nombre=data_form['nombre'],
+                ruc=data_form['ruc'],
+                ugel=data_form['ugel']
+            )
+            colegio.save()
+            direccion = Direccion(
+                colegio= colegio,
+                dpto= data_form['departamento'],
+                calle= data_form['direccion'],
+                referencia= data_form['referencia'],
+                provincia= data_form['provincia'],
+                distrito= data_form['distrito']
+            )
+            direccion.save()
+            celulares = form.data['nros']
+            lst_celulares = celulares.split(',')
+            lista_numeros = []
+            for cel in lst_celulares:
+                telef = Telefono(
+                    colegio= colegio,
+                    numero=cel,
+                    tipo="Celular"
+                )
+                telef.save()
+            logger.info("El formulario es valido")
+            caja_chica = CajaChica(
+                colegio= colegio,
+                presupuesto= 0,
+                saldo= 0,
+                periodo=1,
+            )
+            caja_chica.save()
+            return HttpResponseRedirect(reverse('registers:colegio_list'))
+        return HttpResponseRedirect(reverse('registers:colegio_list'))
+
+class ColegioListView(MyLoginRequiredMixin, TemplateView):
+    model = Colegio
+    template_name = 'colegio_list.html'
+
+    def get(self, request, *args, **kwargs):
+        colegios = Colegio.objects.all()
+        return render(request, template_name=self.template_name, context={
+            'colegios': colegios,
+        })

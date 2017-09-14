@@ -87,14 +87,17 @@ class Pago(CreacionModificacionFechaMixin, CreacionModificacionUserMixin):
 
 
 
-def calculo_pagos_total(anio, tipo_pago, mes):
+def calculo_pagos_total(id_colegio, anio, tipo_pago, mes):
+
+    # Proceso de filtrado según colegio
+    pago_0 = Pago.objects.filter(caja_chica__colegio__id_colegio=id_colegio)
 
     # Proceso de filtrado según el año
     anio = int(anio)
-    pago_1 = Pago.objects.filter(fecha__year=anio)
+    pago_1 = pago_0.filter(fecha__year=anio)
 
     # Proceso de filtrado según el tipo de pago
-    if tipo_pago == "":
+    if tipo_pago == "Todos":
         pago_2 = pago_1
     else:
         pago_2 = pago_1.filter(tipo_pago=tipo_pago)

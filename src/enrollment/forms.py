@@ -6,6 +6,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from django.forms import ModelForm
 from utils.models import TiposNivel
+from utils.models import TiposGrados
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -26,27 +27,13 @@ class TipoServicioRegularForm(ModelForm):
         }
 
     def ChoiceNiveles(self):
-        MY_CHOICES = (
-            ('1', 'Inicial'),
-            ('2', 'Primaria'),
-            ('3', 'Secundaria'),
-        )
-        return MY_CHOICES
+        choices = [(d.id_tipo, d.descripcion) for d in TiposNivel.objects.all()]
+        return choices
 
     def ChoiceGrados(self):
-        MY_CHOICES = (
-            ('1', '3 Años'),
-            ('2', '4 Años'),
-            ('3', '5 Años'),
-            ('4', '1er Grado'),
-            ('5', '2do Grado'),
-            ('6', '3er Grado'),
-            ('7', '4to Grado'),
-            ('8', '5to Grado'),
-            ('9', '6to Grado'),
+        choices = [(d.id_tipo_grado, d.descripcion) for d in TiposGrados.objects.all()]
+        return choices
 
-        )
-        return MY_CHOICES
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

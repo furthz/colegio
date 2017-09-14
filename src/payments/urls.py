@@ -6,7 +6,7 @@ from .views import (
 )
 from payments.views import ControlPagosPromotorView
 from payments.views import RegistrarPagoCreateView, ControlPagosDirectorView
-from payments.views import foo, myajaxview, myajaxformview
+
 
 urlpatterns = [
     # URL's del CRUD de TipoPago
@@ -19,8 +19,5 @@ urlpatterns = [
     url(r'^pago_promotor/filter', ControlPagosPromotorView.as_view(), name="pago_promotor"),
     url(r'^lista/$', ControlPagosDirectorView.as_view(), name="lista"),
 
-    url(r'^foo', foo, name='foo'),
-    url(r'^myajaxview', myajaxview, name='myajaxview'),
-    url(r'^myajaxformview', myajaxformview, name='myajaxformview'),
 ]
 
