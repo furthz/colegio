@@ -85,7 +85,13 @@
                         <!-- BAR CHART -->
                         <div class="box box-success">
                           <div class="box-header with-border">
-                            <h3 class="box-title">Reporte de gastos</h3>
+                              {% if not mes_llega %}
+                                  <h3 class="box-title">Reporte de gastos</h3>
+                              {% elif mes_llega == "Todos" %}
+                                  <h3 class="box-title">Reporte de gastos del año {{ anio_llega }}</h3>
+                              {% else %}
+                                  <h3 class="box-title">Reporte de gastos del mes de {{ mes_llega }} del {{ anio_llega }}</h3>
+                              {% endif %}
                           </div>
                           <div class="box-body">
                             <div class="chart">
@@ -97,9 +103,16 @@
 
                         <div class="box box-success">
                           <div class="box-header with-border">
-                            <h3 class="box-title">Detalle de los gastos</h3>
+                              {% if not mes_llega %}
+                                  <h3 class="box-title">Detalle de los gastos</h3>
+                              {% elif mes_llega == "Todos" %}
+                                  <h3 class="box-title">Detalle de los gastos del año {{ anio_llega }}</h3>
+                              {% else %}
+                                  <h3 class="box-title">Detalle de los gastos del mes de {{ mes_llega }} del {{ anio_llega }}</h3>
+                              {% endif %}
                           </div>
                           <div class="box-body">
+                          {% if pagos_colegio %}
                             <table class="table table-hover">
                                 <tbody>
                                     <tr>
@@ -125,6 +138,7 @@
                                     </tr>
                                 </tbody>
                             </table>
+                          {% endif %}
                           </div>
 
                         </div>
