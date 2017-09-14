@@ -70,7 +70,13 @@
                         <!-- BAR CHART -->
                         <div class="box box-success">
                           <div class="box-header with-border">
-                            <h3 class="box-title">Reporte de recaudación</h3>
+                              {% if not mes_llega %}
+                                  <h3 class="box-title">Reporte de recaudación</h3>
+                              {% elif mes_llega == "Todos" %}
+                                  <h3 class="box-title">Reporte de recaudación del año {{ anio_llega }}</h3>
+                              {% else %}
+                                  <h3 class="box-title">Reporte de recaudación del mes de {{ mes_llega }} del {{ anio_llega }}</h3>
+                              {% endif %}
                           </div>
                           <div class="box-body">
                             <div class="chart">
@@ -83,10 +89,12 @@
                         <!-- BAR CHART -->
                         <div class="box box-success">
                           <div class="box-header with-border">
-                              {% if mes == "Todos" %}
+                              {% if not mes_llega %}
+                                  <h3 class="box-title">Monto recaudado por población</h3>
+                              {% elif mes_llega == "Todos" %}
                                   <h3 class="box-title">Monto recaudado por población de este mes</h3>
                               {% else %}
-                                  <h3 class="box-title">Monto recaudado por población para mes de {{ mes }}</h3>
+                                  <h3 class="box-title">Monto recaudado por población del mes de {{ mes_llega }} del {{ anio_llega }}</h3>
                               {% endif %}
                           </div>
                           <div class="box-body">

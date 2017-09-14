@@ -405,7 +405,8 @@ class ControlIngresosPromotorView(FormView):
         contexto['cobro_total'] = cobro_total
         contexto['deuda_total'] = deuda_total
         contexto['mes_labels'] = mes_labels
-        contexto['mes'] = mes
+        contexto['mes_llega'] = mes
+        contexto['anio_llega'] = anio
 
         return render(request, template_name=self.template_name, context = contexto)
 
