@@ -1,4 +1,6 @@
 import logging
+
+from django.db.models.functions import Lower
 from django.urls import reverse
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.models import PermissionsMixin
@@ -263,14 +265,14 @@ class PersonaListView(PermissionsMixin, TemplateView):
                                                personal__Colegios__id_colegio=colegio)
         elif numero_documento and nombres:
             empleados = Profile.objects.filter(Q(numero_documento=numero_documento),
-                                               Q(nombre__contains=nombres) |
-                                               Q(apellido_pa__contains=nombres) |
-                                               Q(apellido_ma__contains=nombres))  # ,
+                                               Q(nombre__icontains=nombres.upper()) |
+                                               Q(apellido_pa__icontains=nombres.upper()) |
+                                               Q(apellido_ma__icontains=nombres.upper())).filter(personal__Colegios__id_colegio=colegio)  # ,
             # personal__Colegios__id_colegio=colegio)
         elif not numero_documento and nombres:
-            empleados = Profile.objects.filter(Q(nombre__contains=nombres) |
-                                               Q(apellido_pa__contains=nombres) |
-                                               Q(apellido_ma__contains=nombres))
+            empleados = Profile.objects.filter(Q(nombre__icontains=nombres.upper()) |
+                                               Q(apellido_pa__icontains=nombres.upper()) |
+                                               Q(apellido_ma__icontains=nombres.upper())).filter(personal__Colegios__id_colegio=colegio)
         else:
             return self.get(request)
 
@@ -292,8 +294,8 @@ class PersonaListView(PermissionsMixin, TemplateView):
                        'numero_documento': numero_documento,
                        'nombres': nombres})
 
-    @method_decorator(permission_required('register.list_personal', login_url=settings.REDIRECT_PERMISOS,
-                                          raise_exception=False))
+    #@method_decorator(permission_required('register.list_personal', login_url=settings.REDIRECT_PERMISOS,
+    #                                      raise_exception=False))
     def get(self, request, *args, **kwargs):
 
         logger.debug("get_context")
