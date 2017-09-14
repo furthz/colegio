@@ -46,8 +46,22 @@ class BaseProfile(CreacionModificacionFechaProfileMixin, CreacionModificacionUse
 
         :return: Nombre completo de la persona
         """
+        cadena = ""
+        if self.nombre:
+            cadena = self.nombre.capitalize() + " "
 
-        return "{0} {1} {2} {3}".format(self.nombre, self.segundo_nombre, self.apellido_pa, self.apellido_ma)
+        if self.segundo_nombre:
+            cadena += self.segundo_nombre.capitalize() + " "
+
+        if self.apellido_pa:
+            cadena += self.apellido_pa.capitalize() + " "
+
+        if self.apellido_ma:
+            cadena += self.apellido_ma.capitalize()
+
+
+        #return "{0} {1} {2} {3}".format(self.nombre, self.segundo_nombre, self.apellido_pa, self.apellido_ma)
+        return "{0}".format(cadena)
 
     @property
     def getEdad(self):
