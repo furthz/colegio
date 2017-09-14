@@ -218,8 +218,8 @@ class PersonaDetailView(DetailView):
     queryset = Profile.objects.select_related()
     template_name = "registro_detail.html"
 
-    @method_decorator(permission_required('register.list_persona', login_url=settings.REDIRECT_PERMISOS,
-                                          raise_exception=False))
+    #@method_decorator(permission_required('register.list_persona', login_url=settings.REDIRECT_PERMISOS,
+    #                                      raise_exception=False))
     def get(self, request, *args, **kwargs):
         return super(PersonaDetailView, self).get(request, *args, **kwargs)
 
@@ -228,11 +228,11 @@ class PersonalDeleteView(TemplateView):
     model = Profile
 
     def get(self, request, *args, **kwargs):
-        persona = Personal.objects.get(pk=int(request.GET['idpersona']))
+        persona = Personal.objects.get(persona_id=int(request.GET['idpersona']))
         id_colegio = get_current_colegio()
 
 
-        personales = PersonalColegio.objects.filter(personal=persona)
+        personales = PersonalColegio.objects.filter(personal=persona, colegio_id=id_colegio)
 
         for personal in personales:
             personal.activo = False
@@ -245,6 +245,17 @@ class PersonalUpdateView(UpdateView):
     model = Profile
     form_class = PersonaForm
     template_name = "registro_form.html"
+
+    def get_object(self, queryset=None):
+        obj = Profile.objects.prefetch_related("direcciones").get(pk=self.kwargs['pk'])
+        """
+        try:
+            dir = Direccion.objects.get(persona=obj)
+            obj.direcciones.add(dir)
+        except Direccion.DoesNotExist:
+            pass
+        """
+        return obj
 
     def get_success_url(self):
         return reverse_lazy('registers:personal_list')
@@ -262,17 +273,20 @@ class PersonaListView(PermissionsMixin, TemplateView):
 
         if numero_documento and not nombres:
             empleados = Profile.objects.filter(numero_documento=numero_documento,
-                                               personal__Colegios__id_colegio=colegio)
+                                               personal__Colegios__id_colegio=colegio,
+                                               personal__Colegios__activo=True)
         elif numero_documento and nombres:
             empleados = Profile.objects.filter(Q(numero_documento=numero_documento),
                                                Q(nombre__icontains=nombres.upper()) |
                                                Q(apellido_pa__icontains=nombres.upper()) |
-                                               Q(apellido_ma__icontains=nombres.upper())).filter(personal__Colegios__id_colegio=colegio)  # ,
+                                               Q(apellido_ma__icontains=nombres.upper())).filter(personal__Colegios__id_colegio=colegio,
+                                                                                                 personal__Colegios__activo=True)  # ,
             # personal__Colegios__id_colegio=colegio)
         elif not numero_documento and nombres:
             empleados = Profile.objects.filter(Q(nombre__icontains=nombres.upper()) |
                                                Q(apellido_pa__icontains=nombres.upper()) |
-                                               Q(apellido_ma__icontains=nombres.upper())).filter(personal__Colegios__id_colegio=colegio)
+                                               Q(apellido_ma__icontains=nombres.upper())).filter(personal__Colegios__id_colegio=colegio,
+                                                                                                 personal__Colegios__activo=True)
         else:
             return self.get(request)
 

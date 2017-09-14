@@ -6,6 +6,6 @@
     <li>No hay tipos de servicio</li>
 {% endfor %}
 </ul>
-<form action="..">
+<form action={% url 'registers:personal_list' %}>
     <input type="submit" value="Volver">
 </form>
