@@ -15,6 +15,7 @@ from braces import views as bracesviews
 from django.conf import settings
 from django.views.decorators.cache import cache_page
 
+from accounts.services import Roles
 from enrollment.models import Matricula
 from profiles.models import Profile
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -57,64 +58,6 @@ class AsignColegioView(LoginRequiredMixin, View):
     """
     template_name = "accounts/asign_colegio.html"
 
-    def get_roles(self):
-
-        id_colegio = get_current_colegio()
-        colegio = Colegio.objects.get(pk=id_colegio, activo=True)
-
-        id_user = get_current_user()
-        profile = Profile.objects.get(user_id=id_user)
-
-        # determinar si es un personal asociado al colegio logueado
-        empleados = Personal.objects.filter(persona=profile, personalcolegio__colegio=colegio,
-                                            personalcolegio__activo=True)
-
-        roles = {}
-        for empleado in empleados:
-            try:
-                promotor = Promotor.objects.get(empleado=empleado, activo_promotor=True)
-                roles['promotor'] = promotor.id_promotor
-            except Promotor.DoesNotExist:
-                promotor = None
-
-            try:
-                director = Director.objects.get(empleado=empleado, activo_director=True)
-                roles['director'] = director.id_director
-            except Director.DoesNotExist:
-                director = None
-
-            try:
-                cajero = Cajero.objects.get(empleado=empleado, activo_cajero=True)
-                roles['cajero'] = cajero.id_cajero
-            except Cajero.DoesNotExist:
-                cajero = None
-
-            try:
-                tesorero = Tesorero.objects.get(empleado=empleado, activo_tesorero=True)
-                roles['tesorero'] = tesorero.id_tesorero
-            except Tesorero.DoesNotExist:
-                tesorero = None
-
-            try:
-                administrativo = Administrativo.objects.get(empleado=empleado, activo_administrativo=True)
-                roles['administrativo'] = administrativo.id_administrativo
-            except Administrativo.DoesNotExist:
-                administrativo = None
-
-        # determinar si es un apoderado
-        try:
-            apoderado = Apoderado.objects.get(persona=profile)
-
-            apoderados = Matricula.objects.filter(colegio=colegio, activo=True,
-                                                  alumno__apoderadoalumno__apoderado=apoderado)
-
-            for apo in apoderados:
-                roles['apoderado'] = apo.id_apoderado
-        except Apoderado.DoesNotExist:
-            pass
-
-        return roles
-
     def get(self, request, *args, **kwargs):
         logger.debug("GET formulario")
 
@@ -135,11 +78,15 @@ class AsignColegioView(LoginRequiredMixin, View):
 
         logger.info("Usuario Logueado")
 
+        #rol = Roles()
+
         if 'roles' in cache:
             roles = cache.get('roles')
         else:
-            roles = self.get_roles()
+            roles = Roles.get_roles()
             cache.set('roles', roles, timeout=CACHE_TTL)
+
+
 
         return HttpResponseRedirect('/users/me')
 

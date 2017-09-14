@@ -126,10 +126,10 @@ MIDDLEWARE_CLASSES = (
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://54.232.246.225:6379/1',
+        'LOCATION': 'redis://52.67.209.223/1',
         'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.ShardClient',
-            #'CONNECTION_POOL_KWARGS': {'max_connections': 100},
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            'CONNECTION_POOL_KWARGS': {'max_connections': 100},
             #"CONNECTION_POOL_CLASS": "myproj.mypool.MyOwnPool",
             #"PARSER_CLASS": "redis.connection.HiredisParser",
             #"PASSWORD": "1234",
