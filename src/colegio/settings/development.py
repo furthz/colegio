@@ -88,4 +88,5 @@ logging.config.dictConfig(LOGGING)
 TEST_RUNNER = 'colegio.settings.testing.UseDBTestRunner'
 
 IS_TESTING = False
+
 IS_MIGRATE = True

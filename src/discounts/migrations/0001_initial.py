@@ -32,7 +32,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'tipo_descuento',
-                'managed': settings.IS_TESTING
+                'managed': settings.IS_MIGRATE
             },
         ),
         migrations.CreateModel(
@@ -55,7 +55,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'descuento',
-                'managed': settings.IS_TESTING
+                'managed': settings.IS_MIGRATE
             },
         ),
     ]

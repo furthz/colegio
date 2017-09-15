@@ -34,7 +34,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'colegio',
-                'managed': settings.IS_TESTING,
+                'managed': settings.IS_MIGRATE,
             },
         ),
         migrations.CreateModel(
@@ -55,7 +55,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'telefono',
-                'managed': settings.IS_TESTING,
+                'managed': settings.IS_MIGRATE,
             },
         ),
         migrations.CreateModel(
@@ -79,7 +79,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'direccion',
-                'managed': settings.IS_TESTING,
+                'managed': settings.IS_MIGRATE,
             },
         ),
         migrations.CreateModel(
@@ -97,7 +97,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'alumno',
-                'managed': settings.IS_TESTING,
+                'managed': settings.IS_MIGRATE,
             },
             bases=('profiles.profile', models.Model),
         ),
@@ -115,7 +115,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'apoderado',
-                'managed': settings.IS_TESTING,
+                'managed': settings.IS_MIGRATE,
             },
             bases=('profiles.profile', models.Model),
         ),
@@ -135,7 +135,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'apoderado_alumno',
-                'managed': settings.IS_TESTING,
+                'managed': settings.IS_MIGRATE,
                 'unique_together': (('alumno', 'apoderado'),)
 
             },
@@ -154,7 +154,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'personal',
-                'managed': settings.IS_TESTING,
+                'managed': settings.IS_MIGRATE,
             },
         ),
         migrations.CreateModel(
@@ -171,7 +171,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'promotor',
-                'managed': settings.IS_TESTING,
+                'managed': settings.IS_MIGRATE,
             },
         ),
         migrations.CreateModel(
@@ -188,7 +188,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'cajero',
-                'managed': settings.IS_TESTING,
+                'managed': settings.IS_MIGRATE,
             },
         ),
         migrations.CreateModel(
@@ -205,7 +205,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'tesorero',
-                'managed': settings.IS_TESTING,
+                'managed': settings.IS_MIGRATE,
             },
         ),
         migrations.CreateModel(
@@ -222,7 +222,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'director',
-                'managed': settings.IS_TESTING,
+                'managed': settings.IS_MIGRATE,
             },
         ),
         migrations.CreateModel(
@@ -241,7 +241,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'personal_colegio',
-                'managed': settings.IS_TESTING,
+                'managed': settings.IS_MIGRATE,
                 'unique_together': (('personal', 'colegio'),)
 
             },
@@ -307,7 +307,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'proveedor_colegio',
-                'managed': settings.IS_TESTING,
+                'managed': settings.IS_MIGRATE,
             },
         ),
 

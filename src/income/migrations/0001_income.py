@@ -31,7 +31,7 @@ class Migration(migrations.Migration):
             ],
             options = {
                       'db_table': 'cobranza',
-                      'managed': settings.IS_TESTING,
+                      'managed': settings.IS_MIGRATE,
             },
         ),
         migrations.CreateModel(
@@ -44,7 +44,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'detalle_cobranza',
-                'managed': settings.IS_TESTING,
+                'managed': settings.IS_MIGRATE,
             }
         )
     ]
