@@ -90,7 +90,7 @@ class Migration(migrations.Migration):
                 ('estado', models.BooleanField()),
                 ('precio', models.FloatField()),
                 ('deuda', models.FloatField()),
-                ('descuento', models.FloatField())
+                ('descuento', models.FloatField()),
                 ('fecha_creacion', models.DateField()),
                 ('fecha_modificacion', models.DateField()),
                 ('usuario_creacion', models.CharField(max_length=10, null=True)),
