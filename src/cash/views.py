@@ -7,10 +7,16 @@ from django.views.generic.edit import (
     UpdateView,
     DeleteView
 )
+from django.contrib.auth import authenticate
 from django.http import HttpResponse
 from .models import Caja, CajaCajero, Remesa
 from .forms import CashierForm, BoxCashierForm, ConsignmentForm
 from .filters import ConsignmentFilter
+from django.db import models
+
+
+from profiles.models import BaseProfile as Profile
+
 
 
 def index(request):
@@ -121,6 +127,28 @@ class ConsignmentCreationView(CreateView):
     form_class = ConsignmentForm
     success_url = reverse_lazy('cash:consignment_list')
     template_name = 'consignment/consignment_form.html'
+
+    def post(self, request, *args, **kwargs):
+
+        a = request.POST.get('personal_colegio')
+        print(a)
+        #print(Profile.objects.all())
+        print(Profile.objects.get(pk=a))
+
+        #print(User.objects.get(pk=a))
+        #print(User.objects.select_related('profile').get(id=a))
+
+        return render(request, template_name=self.template_name)
+
+"""
+        profile = User.objects.filter(pk=a)
+        for prof in profile:
+
+            print(profile.email)
+"""
+
+
+
 
 
 class ConsignmentUpdateView(UpdateView):

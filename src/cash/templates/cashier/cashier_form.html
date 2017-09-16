@@ -40,7 +40,7 @@
                                         <a href="{% url 'cash:cashier_list'  %}" class="btn btn-default" >
                                             <i class="fa fa-arrow-left" aria-hidden="true"></i> Volver a lista
                                         </a>
-                                        <button type="submit" class="btn btn-success">
+                                        <button type="submit" class="btn btn-success" tabindex="3">
                                             <i class="fa fa-plus" aria-hidden="true"></i> Registrar Caja
                                         </button>
                                     </div>
@@ -57,4 +57,14 @@
     </div>
 
 {% endblock container %}
+{% block scripts %}
+<script type="text/javascript">
+  //Solo permite ingresar numeros
+
+        function soloNumeros(e){
+            var key = window.Event ? e.which : e.keyCode
+            return (key >= 48 && key <= 57)}
+
+</script>
+{% endblock scripts %}
 

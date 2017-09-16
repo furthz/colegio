@@ -1,9 +1,12 @@
-
 from django.db import models
 from django.utils import timezone
+from django.db.models import Sum
 from register.models import Colegio, PersonalColegio
 from utils.models import CreacionModificacionFechaMixin, CreacionModificacionUserMixin
 from utils.middleware import get_current_colegio, get_current_userID
+import datetime
+
+
 
 class Eliminar(models.Model):
     """
@@ -27,7 +30,6 @@ class Eliminar(models.Model):
         abstract = True
 
 
-
 class Caja(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, Eliminar, models.Model):
     """
     Clase para la Caja
@@ -37,7 +39,6 @@ class Caja(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, Elimin
     numero = models.IntegerField()
     descripcion = models.CharField(max_length=500, blank=True, null=True)
     activo = models.BooleanField(default=True)
-
 
     def __str__(self):
         """
@@ -62,7 +63,8 @@ class EstadoCambio(models.Model):
     def save(self, *args, **kwargs):
         # creación
         if not self.pk:
-            self.estado = True
+            #Antes era True
+            self.estado = False
 
         else:  # modificacion
             self.estado = False
@@ -74,19 +76,54 @@ class EstadoCambio(models.Model):
     class Meta:
         abstract = True
 
-class CajaCajero(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, EstadoCambio,models.Model):
+
+"""
+Falta obtener las Cobranzas del día en una función
+Cobranza.monto
+"""
+
+
+def getRemesasTotal():
+    today = datetime.datetime.today()
+    TotalRemesa = Remesa.objects.filter(fechacreacion__year=today.year, fechacreacion__month=today.month, fechacreacion__day=today.day).aggregate(Sum('monto'))['monto__sum']
+
+    return TotalRemesa
+
+#Cajacajero.movimiento
+
+
+class CajaCajero(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, EstadoCambio, models.Model):
     """
     Clase para CajaCajero
     """
     id_movimiento = models.AutoField(primary_key=True)
     personal_colegio = models.ForeignKey(PersonalColegio, models.DO_NOTHING,
-                                         db_column="id_personal_colegio", default=get_current_userID)  # Persona encargada de la Caja
+                                         db_column="id_personal_colegio",
+                                         default=get_current_userID)  # Persona encargada de la Caja
     caja = models.ForeignKey(Caja, models.DO_NOTHING, db_column='id_caja')  # Caja en la que se apertura la sesión
-    saldo = models.FloatField(default=0.0)  # Sobrante o Faltante al Final de la caja
+    saldo = models.FloatField(default=0)  # Sobrante o Faltante al Final de la caja
     monto_apertura = models.FloatField(default=0.0)  # Caja Inicial
     monto_cierre = models.FloatField(default=0.0)  # Caja Final
     comentario_apertura = models.CharField(max_length=500, blank=True, null=True)
     comentario_cierre = models.CharField(max_length=500, blank=True, null=True)
+    total_remesa = models.FloatField(default=getRemesasTotal)
+
+    def save(self, *args, **kwargs):
+        try:
+            remesa = Remesa.objects.latest('id_remesa')
+
+        except Remesa.DoesNotExist:
+            self.saldo = self.monto_apertura - self.monto_cierre
+            super().save(*args, **kwargs)
+
+            pass
+        except Remesa.MultipleObjectsReturned:
+            self.total_remesa = getRemesasTotal()
+            self.saldo = ((self.monto_apertura) - getRemesasTotal()) - self.monto_cierre
+            super().save(*args, **kwargs)
+
+            pass
+        super().save(*args, **kwargs)
 
     def __str__(self):
         """
@@ -113,18 +150,18 @@ def cajeroExist():
         pass
     return movimientoid
 
+
 class Remesa(models.Model):
     """
     Clase para la Remesa
     """
-
 
     id_remesa = models.AutoField(primary_key=True)
     personal_colegio = models.ForeignKey(PersonalColegio, models.DO_NOTHING, db_column="id_personal_colegio")
     movimiento = models.ForeignKey(CajaCajero, models.DO_NOTHING, db_column='id_movimiento', default=cajeroExist)
     fechacreacion = models.DateTimeField(default=timezone.now)
     monto = models.FloatField()
-    comentario = models.CharField(max_length=500, blank=True, null=True )
+    comentario = models.CharField(max_length=500, blank=True, null=True)
 
     def __str__(self):
         """
@@ -137,4 +174,3 @@ class Remesa(models.Model):
     class Meta:
         managed = False
         db_table = 'remesa'
-

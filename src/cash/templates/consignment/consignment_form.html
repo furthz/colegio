@@ -44,10 +44,10 @@
                     </form>
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                            <a href="cash:consignment_list" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i>
+                            <a href="{% url 'cash:consignment_list'  %}" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i>
                                 Regresar a la lista
                             </a>
-                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">
+                            <button type="button" class="btn btn-success" onclick="validar()" tabindex="4">
                                 <i class="fa fa-plus" aria-hidden="true"></i> Generar remesa</button>
                         </div>
                     </div>
@@ -101,4 +101,27 @@
 
 {% endblock container %}
 {% block scripts %}
+<script type="text/javascript">
+    //Solo permite ingresar numeros.
+
+    function soloNumeros(e){
+            var key = window.Event ? e.which : e.keyCode;
+            return (key >= 48 && key <= 57)}
+
+     // Para obtener el texto
+
+    function personaSelect(){
+        var combo = document.getElementById("personaTxt");
+        var selected = combo.options[combo.selectedIndex].text;
+        document.getElementById("selecPerso").innerHTML = selected;}
+
+    function validar(){
+         valor = document.getElementById("id_monto").value;
+         if( valor != "" ) {
+             $("#myModal").modal()
+         }else{
+             alert('Debe de ingresar un monto');
+         }
+     }
+</script>
 {% endblock scripts %}

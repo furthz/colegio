@@ -7,7 +7,7 @@
 BoxCashier List
 
 <p>
-    <a href="{% url "cash:boxcashier_AperturarCaja" %}">Aperturar Caja</a>
+    <a href="{% url 'cash:boxcashier_AperturarCaja' %}">Aperturar Caja</a>
      <!--<a href="{ url "cash:boxcashier_CerrarCaja" %}">Cerrar Caja</a>                PARA CERRAR CAJA ANTES DEBE DE HABER UNA APERTURA DE CAJA
             DENTRO DE LA LÓGICA DE CERRAR CAJA AL MOMENTO DE DARLE CERRAR CAJA ES UN UPDATE DE LA TABLA CAJACAJERO DONDE SE CAMBIÁN CIERTOS VALORES, PERO SE DEBE INGRESAR LA LLAVE PRIMARIA
             QUE SE DEBE MODIFICAR POR ESO SALE EL ERROR -->
@@ -37,6 +37,9 @@ BoxCashier List
         <table>
             <tr>
                 <th>Item</th>
+
+                <th>Total Remesa</th>
+
                 <th>Cajero</th>
                 <th>N° de Caja</th>
                 <th>Monto de Apertura</th>
@@ -48,6 +51,9 @@ BoxCashier List
             {% for cajacajero in object_list %}
             <tr>
                 <td>{{ forloop.counter }}</td>
+
+                <td>{{ cajacajero.total_remesa }}</td>
+
                 <td>{{ cajacajero.personal_colegio }}</td>
                 <td>{{ cajacajero.caja }}</td>
                 <td>{{ cajacajero.monto_apertura }}</td>

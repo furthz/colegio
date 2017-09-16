@@ -47,6 +47,7 @@ class Migration(migrations.Migration):
                 ('monto_cierre', models.FloatField()),
                 ('comentario_apertura', models.CharField(blank=True, max_length=500, null=True)),
                 ('comentario_cierre', models.CharField(blank=True, max_length=500, null=True)),
+                ('total_remesa', models.FloatField()),
                 ('estado', models.BooleanField(default=True)),
                 ('fecha_creacion', models.DateField(blank=True, null=True)),
                 ('fecha_modificacion', models.DateField(blank=True, null=True)),
