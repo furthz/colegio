@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'caja',
-                'managed': settings.IS_TESTING,
+                'managed': settings.IS_MIGRATE,
             },
         ),
         migrations.CreateModel(
@@ -56,7 +56,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'caja_cajero',
-                'managed': settings.IS_TESTING,
+                'managed': settings.IS_MIGRATE,
             },
         ),
         migrations.CreateModel(
@@ -71,7 +71,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'remesa',
-                'managed': settings.IS_TESTING,
+                'managed': settings.IS_MIGRATE,
             },
         ),
     ]

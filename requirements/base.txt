@@ -8,5 +8,7 @@ easy-thumbnails>=2.4.1
 psycopg2>=2.7
 django-import-export>=0.5.1
 django-filter>=1.0.4
+python-decouple==3.0
+django-redis
 
 

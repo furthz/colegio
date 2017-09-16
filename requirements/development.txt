@@ -5,4 +5,3 @@ sphinx
 django-extensions>=0.8
 ipython
 ipdb
-

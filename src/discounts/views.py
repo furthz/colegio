@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 from django.views.generic import TemplateView
 from django.views.generic import DetailView
 from django.views.generic import CreateView
@@ -12,18 +12,21 @@ from django.db.models import Q
 from django.views import View
 from django.core.urlresolvers import reverse_lazy
 from django.urls import reverse
+
+from payments.models import TipoPago
 from utils.views import MyLoginRequiredMixin
 from discounts.models import Descuento
 from discounts.models import TipoDescuento
 from enrollment.models import Matricula
 from enrollment.models import Cuentascobrar
 from income.models import obtener_mes
-from register.models import Colegio
+from register.models import Colegio, Personal, Promotor
 from register.models import PersonalColegio
 from discounts.forms import SolicitarDescuentoForm
 from discounts.forms import TipoDescuentForm
 from discounts.forms import DetalleDescuentosForm
-from utils.middleware import get_current_colegio, get_current_userID
+from utils.middleware import get_current_colegio, get_current_userID, get_current_user
+from profiles.models import Profile
 import logging
 
 # Create your views here.
@@ -99,11 +102,57 @@ class AprobarDescuentoView(ListView):
     model = Descuento
     template_name = "aprobar_descuento.html"
 
+    def cargarformPromotordescuentos(self, request):
+
+        # Obtiene el colegio en cuestión
+        id_colegio = get_current_colegio()
+        colegio = Colegio.objects.get(pk=id_colegio)
+        # logger.debug("Colegio: " + colegio.nombre)
+
+        # Obtiene el usuario que ha iniciado sesión
+        user = get_current_user()
+        logger.debug("Usuario: " + user.name)
+
+        try:
+            profile = Profile.objects.get(user=user)
+            logger.debug("profile: " + str(profile.id_persona))
+        except Profile.DoesNotExist:
+            sw_error = True
+            mensaje_error = "No existe la Persona asociada al usuario"
+
+        try:
+            # 1. Verificamos que el usuario sea un personal
+            personal = Personal.objects.get(persona=profile)
+            logger.debug("personal: " + str(personal.id_personal))
+
+            # 2. Verificamos que el usuario sea un personal asociado al colegio
+            personal_colegio = PersonalColegio.objects.get(personal=personal, colegio=colegio)
+
+            # 3. Verificamos que sea un promotor
+            promotor = Promotor.objects.filter(empleado=personal_colegio.personal)
+            #logger.debug()
+            if promotor.count() == 0:
+                sw_error = True
+                mensaje_error = "No es un promotor de un alumno asociado al colegio"
+            else:
+                sw_error = False
+
+        except Personal.DoesNotExist:
+            sw_error = True
+            mensaje_error = "No es un personal asociado al colegio"
+
+        if sw_error != True:
+            return {}
+        else:
+            return {'mensaje_error': mensaje_error}  # return context
+
     def post(self, request, *args, **kwargs):
         logger.info("Estoy en el POST")
         logger.info("Los datos de llegada son {0}".format(request.POST))
         data_post = request.POST
-        self.descuentos = Descuento.objects.filter(estado=1).order_by("id_descuento")
+
+        id_colegio = get_current_colegio()
+        self.descuentos = Descuento.objects.filter(matricula__colegio__id_colegio=id_colegio).filter(estado=1).order_by("id_descuento")
         n = 0
         for descuento in self.descuentos:
             n = n + 1
@@ -145,10 +194,9 @@ class AprobarDescuentoView(ListView):
             except:
                 logger.info("No se realizan cambios")
 
-
-        return render(request, template_name=self.template_name, context={
-            'object_list': self.descuentos,
-        })
+        contexto = self.cargarformPromotordescuentos(request)
+        contexto['object_list'] = self.descuentos
+        return render(request, template_name=self.template_name, context=contexto)
 
 
 class DetalleDescuentoView(FormView):
@@ -156,6 +204,69 @@ class DetalleDescuentoView(FormView):
     model = Descuento
     template_name = "detalle_descuento.html"
     form_class = DetalleDescuentosForm
+
+    def cargarformPromotordescuentos(self, request):
+
+        # Obtiene el colegio en cuestión
+        id_colegio = get_current_colegio()
+        colegio = Colegio.objects.get(pk=id_colegio)
+        # logger.debug("Colegio: " + colegio.nombre)
+
+        # Obtiene el usuario que ha iniciado sesión
+        user = get_current_user()
+        logger.debug("Usuario: " + user.name)
+
+        try:
+            profile = Profile.objects.get(user=user)
+            logger.debug("profile: " + str(profile.id_persona))
+        except Profile.DoesNotExist:
+            sw_error = True
+            mensaje_error = "No existe la Persona asociada al usuario"
+
+        try:
+            # 1. Verificamos que el usuario sea un personal
+            personal = Personal.objects.get(persona=profile)
+            logger.debug("personal: " + str(personal.id_personal))
+
+            # 2. Verificamos que el usuario sea un personal asociado al colegio
+            personal_colegio = PersonalColegio.objects.get(personal=personal, colegio=colegio)
+
+            # 3. Verificamos que sea un promotor
+            promotor = Promotor.objects.filter(empleado=personal_colegio.personal)
+            #logger.debug()
+            if promotor.count() == 0:
+                sw_error = True
+                mensaje_error = "No es un promotor de un alumno asociado al colegio"
+            else:
+                sw_error = False
+
+        except Personal.DoesNotExist:
+            sw_error = True
+            mensaje_error = "No es un personal asociado al colegio"
+
+        if sw_error != True:
+
+            # Cargamos los años
+            anio = datetime.today().year
+            anios = []
+            for i in range(0, 3):
+                anios.append(anio - i)
+
+            # Cargamos los estados
+            estados = ["Todos", "Pagado", "No pagado"]
+
+            return {'anios': anios, 'estados': estados}
+
+        else:
+            return {'mensaje_error': mensaje_error}  # return context
+
+    def get(self, request, *args, **kwargs):
+        super(DetalleDescuentoView, self).get(request, *args, **kwargs)
+
+        contexto = self.cargarformPromotordescuentos(request)
+
+        return render(request, self.template_name, contexto)  # return context
+
 
     def get_queryset(self):
         return []
@@ -169,11 +280,16 @@ class DetalleDescuentoView(FormView):
 
         logger.info("Los datos de llegada son {0}".format(request.POST))
 
+        id_colegio = get_current_colegio()
+
+        # Proceso de filtrado según el colegio
+        descuentos_0 = self.model.objects.filter(matricula__colegio__id_colegio=id_colegio)
+
         # Proceso de filtrado según el alumno
         if alumno == "":
-            descuentos_1 = self.model.objects
+            descuentos_1 = descuentos_0
         else:
-            descuentos_1 = self.model.objects.filter(Q(matricula__alumno__nombre=alumno) | Q(matricula__alumno__apellido_pa=alumno) | Q(matricula__alumno__apellido_ma=alumno))
+            descuentos_1 = descuentos_0.filter(Q(matricula__alumno__nombre=alumno) | Q(matricula__alumno__apellido_pa=alumno) | Q(matricula__alumno__apellido_ma=alumno))
 
         # Proceso de filtrado según el año
         descuentos_2 = descuentos_1.filter(fecha_modificacion__year=anio)
@@ -194,13 +310,11 @@ class DetalleDescuentoView(FormView):
         else:
             descuentos = descuentos_3.filter(estado=3)
 
+        contexto = self.cargarformPromotordescuentos(request)
+
         if len(descuentos) != 0:
-            return render(request, template_name=self.template_name, context={
-                'object_list': descuentos,
-                'form': DetalleDescuentosForm,
-            })
+            contexto['object_list']=descuentos
+            return render(request, template_name=self.template_name, context=contexto)
         else:
-            return render(request, template_name=self.template_name, context={
-                'object_list': [],
-                'form': DetalleDescuentosForm,
-            })
+            contexto['object_list'] = []
+            return render(request, template_name=self.template_name, context=contexto)

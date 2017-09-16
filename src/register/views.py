@@ -1,6 +1,9 @@
 import logging
 
+from django.db.models.functions import Lower
+from django.urls import reverse
 from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.models import PermissionsMixin
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -21,12 +24,12 @@ from django.shortcuts import render
 from django.views.generic import CreateView
 
 from register.forms import PersonaForm, AlumnoForm, ApoderadoForm, PersonalForm, PromotorForm, DirectorForm, CajeroForm, \
-    TesoreroForm, ProveedorForm
+    TesoreroForm, ProveedorForm, ColegioForm
 from register.models import Alumno, Apoderado, Personal, Promotor, Director, Cajero, Tesorero, Colegio, Proveedor, \
-    ProvedorColegio, PersonalColegio, Administrativo
+    ProvedorColegio, PersonalColegio, Administrativo, Direccion, Telefono
 from utils.middleware import get_current_colegio
 from utils.views import SaveGeneric, MyLoginRequiredMixin
-
+from payments.models import CajaChica
 logger = logging.getLogger("project")
 
 
@@ -215,8 +218,8 @@ class PersonaDetailView(DetailView):
     queryset = Profile.objects.select_related()
     template_name = "registro_detail.html"
 
-    @method_decorator(permission_required('register.list_persona', login_url=settings.REDIRECT_PERMISOS,
-                                          raise_exception=False))
+    #@method_decorator(permission_required('register.list_persona', login_url=settings.REDIRECT_PERMISOS,
+    #                                      raise_exception=False))
     def get(self, request, *args, **kwargs):
         return super(PersonaDetailView, self).get(request, *args, **kwargs)
 
@@ -225,11 +228,11 @@ class PersonalDeleteView(TemplateView):
     model = Profile
 
     def get(self, request, *args, **kwargs):
-        persona = Personal.objects.get(pk=int(request.GET['idpersona']))
+        persona = Personal.objects.get(persona_id=int(request.GET['idpersona']))
         id_colegio = get_current_colegio()
 
 
-        personales = PersonalColegio.objects.filter(personal=persona)
+        personales = PersonalColegio.objects.filter(personal=persona, colegio_id=id_colegio)
 
         for personal in personales:
             personal.activo = False
@@ -243,10 +246,21 @@ class PersonalUpdateView(UpdateView):
     form_class = PersonaForm
     template_name = "registro_form.html"
 
+    def get_object(self, queryset=None):
+        obj = Profile.objects.prefetch_related("direcciones").get(pk=self.kwargs['pk'])
+        """
+        try:
+            dir = Direccion.objects.get(persona=obj)
+            obj.direcciones.add(dir)
+        except Direccion.DoesNotExist:
+            pass
+        """
+        return obj
+
     def get_success_url(self):
         return reverse_lazy('registers:personal_list')
 
-class PersonaListView(TemplateView):
+class PersonaListView(PermissionsMixin, TemplateView):
     template_name = "persona_list.html"
 
     def post(self, request, *args, **kwargs):
@@ -259,17 +273,20 @@ class PersonaListView(TemplateView):
 
         if numero_documento and not nombres:
             empleados = Profile.objects.filter(numero_documento=numero_documento,
-                                               personal__Colegios__id_colegio=colegio)
+                                               personal__Colegios__id_colegio=colegio,
+                                               personal__Colegios__activo=True)
         elif numero_documento and nombres:
             empleados = Profile.objects.filter(Q(numero_documento=numero_documento),
-                                               Q(nombre__contains=nombres) |
-                                               Q(apellido_pa__contains=nombres) |
-                                               Q(apellido_ma__contains=nombres))  # ,
+                                               Q(nombre__icontains=nombres.upper()) |
+                                               Q(apellido_pa__icontains=nombres.upper()) |
+                                               Q(apellido_ma__icontains=nombres.upper())).filter(personal__Colegios__id_colegio=colegio,
+                                                                                                 personal__Colegios__activo=True)  # ,
             # personal__Colegios__id_colegio=colegio)
         elif not numero_documento and nombres:
-            empleados = Profile.objects.filter(Q(nombre__contains=nombres) |
-                                               Q(apellido_pa__contains=nombres) |
-                                               Q(apellido_ma__contains=nombres))
+            empleados = Profile.objects.filter(Q(nombre__icontains=nombres.upper()) |
+                                               Q(apellido_pa__icontains=nombres.upper()) |
+                                               Q(apellido_ma__icontains=nombres.upper())).filter(personal__Colegios__id_colegio=colegio,
+                                                                                                 personal__Colegios__activo=True)
         else:
             return self.get(request)
 
@@ -291,8 +308,8 @@ class PersonaListView(TemplateView):
                        'numero_documento': numero_documento,
                        'nombres': nombres})
 
-    @method_decorator(permission_required('register.list_personal', login_url=settings.REDIRECT_PERMISOS,
-                                          raise_exception=False))
+    #@method_decorator(permission_required('register.list_personal', login_url=settings.REDIRECT_PERMISOS,
+    #                                      raise_exception=False))
     def get(self, request, *args, **kwargs):
 
         logger.debug("get_context")
@@ -373,3 +390,75 @@ class PersonaListView(TemplateView):
 
         logger.debug("Se cargo el contexto")
         return render(request, self.template_name, {'empleados': empleados})  # return context
+
+
+class ColegioCreateView(MyLoginRequiredMixin, TemplateView):
+    """
+
+    """
+    template_name = "colegio_create.html"
+    model = Colegio
+    form_class = ColegioForm
+
+    @method_decorator(permission_required('register.list_personal', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        return render(request, template_name=self.template_name, context={
+            'form': self.form_class,
+        })
+
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        logger.info("En el POST")
+        logger.info(request.POST)
+        if form.is_valid():
+            data_form = form.cleaned_data
+            logger.info(data_form)
+            logger.info(form.data)
+            logger.info(request.POST['telefono[]'])
+            colegio = Colegio(
+                nombre=data_form['nombre'],
+                ruc=data_form['ruc'],
+                ugel=data_form['ugel']
+            )
+            colegio.save()
+            direccion = Direccion(
+                colegio= colegio,
+                dpto= data_form['departamento'],
+                calle= data_form['direccion'],
+                referencia= data_form['referencia'],
+                provincia= data_form['provincia'],
+                distrito= data_form['distrito']
+            )
+            direccion.save()
+            celulares = form.data['nros']
+            lst_celulares = celulares.split(',')
+            lista_numeros = []
+            for cel in lst_celulares:
+                telef = Telefono(
+                    colegio= colegio,
+                    numero=cel,
+                    tipo="Celular"
+                )
+                telef.save()
+            logger.info("El formulario es valido")
+            caja_chica = CajaChica(
+                colegio= colegio,
+                presupuesto= 0,
+                saldo= 0,
+                periodo=1,
+            )
+            caja_chica.save()
+            return HttpResponseRedirect(reverse('registers:colegio_list'))
+        return HttpResponseRedirect(reverse('registers:colegio_list'))
+
+class ColegioListView(MyLoginRequiredMixin, TemplateView):
+    model = Colegio
+    template_name = 'colegio_list.html'
+
+    def get(self, request, *args, **kwargs):
+        colegios = Colegio.objects.all()
+        return render(request, template_name=self.template_name, context={
+            'colegios': colegios,
+        })

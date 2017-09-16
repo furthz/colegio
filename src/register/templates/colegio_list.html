@@ -1,0 +1,114 @@
+{% extends "page.html" %}
+
+{% block container %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Lista de Registros</h3>
+            </div>
+                <form role="form" name="search" method="post" class="form-horizontal">
+                    {% csrf_token %}
+                    <div class="box-body">
+                        <div class="col-md-9">
+                            <div class="panel-page">
+                                <div class="toolbar-header">
+                                    <a class="btn btn-success" href="{% url 'registers:colegio_create' %}">
+                                        <i class="fa fa-plus" aria-hidden="true">
+                                        </i>
+                                        Crear Colegio
+                                    </a>
+                                </div>
+
+                             </div>
+                            <table class="table table-hover">
+                                <tbody>
+                                    <tr class="table-header">
+                                        <th>Código</th>
+                                        <th>Nombre</th>
+                                        <th>RUC</th>
+                                        <th>Ugel</th>
+                                        <th>Activo</th>
+                                        <th class="text-center">Acciones</th>
+                                    </tr>
+                                {% for colegio in colegios %}
+                                    <tr>
+                                        <td>{{ colegio.id_colegio }}</td>
+                                        <td>{{ colegio.nombre }}</td>
+                                        <td>{{ colegio.ruc }}</td>
+                                        <td>{{ colegio.ugel }}</td>
+                                        <td>{{ colegio.activo }}</td>
+                                        <td>
+                                            <div class="btn-group btn-group-sm" role="group" aria-level="...">
+                                                <a title="Editar" href="#" class="btn btn-default">
+                                                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                </a>
+                                                <a title="Detalle" href="#" class="btn btn-default">
+                                                    <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                                </a>
+                                                <a title="Baja" href="#" class="btn btn-default">
+                                                    <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <div class="toolbar-footer">
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination">
+                                        {% if empleados.has_previous  %}
+                                            <li>
+                                                <a href="?page={{ empleados.previous_page_number }}" aria-label="Previous">
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                </a>
+                                            </li>
+                                        {% else %}
+                                             <li class="disabled">
+                                                 <span aria-hidden="true">«</span>
+                                            </li>
+                                        {% endif %}
+                                        {% for i in empleados.paginator.page_range %}
+                                            {% if empleados.number == i %}
+                                                <li>
+                                                    <span aria-hidden="true">{{ i }}</span>
+                                                </li>
+                                            {% else %}
+                                                <li>
+                                                    <a href="?page={{ i }}" aria-label="Previous">
+                                                        <span aria-hidden="true">{{ i }}</span>
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% if empleados.has_next %}
+                                            <li>
+                                                <a href="?page={{ page_obj.next_page_number  }}" aria-label="Previous">
+                                                    <span aria-hidden="true">&raquo;</span>
+                                                </a>
+                                            </li>
+                                        {% else %}
+                                            <li class="disabled">
+                                                <span aria-hidden="true">&raquo;</span>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

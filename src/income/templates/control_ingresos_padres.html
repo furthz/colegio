@@ -88,36 +88,38 @@
                     <!-- INICIO TABLA -->
                     <div class="table-responsive">
                     <table class="table table-condensed">
-                        <tr>
-                            <th>N° de Documento</th>
-                            <th>Fecha de vencimiento</th>
-                            <th>Monto cancelado</th>
-                            <th>A pagar S/.</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-                        {% for cuenta in object_list %}
-                            {% if not cuenta.orderDate %}
-                                <tr>
-                                    <td>BOOL21</td>
-                                    <td>{{ cuenta.fecha_ven }}</td>
-                                    <td>S/.{{ cuenta.getMonto }}</td>
-                                    <td>S/.{{ cuenta.deuda }}</td>
-                                    {% if cuenta.estado %}
+                    {% if object_list %}
+                            <tr>
+                                <th>Alumno</th>
+                                <th>Fecha de vencimiento</th>
+                                <th>Monto cancelado</th>
+                                <th>A pagar S/.</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                            {% for cuenta in object_list %}
+                                {% if not cuenta.orderDate %}
+                                    <tr>
+                                        <td>{{ cuenta.matricula.alumno.getNombreCompleto }}</td>
+                                        <td>{{ cuenta.fecha_ven }}</td>
+                                        <td>S/.{{ cuenta.getMonto }}</td>
+                                        <td>S/.{{ cuenta.deuda }}</td>
+                                        {% if cuenta.estado %}
+                                            <td>
+                                                <span class="label label-danger">No pagado</span>
+                                            </td>
+                                        {% else %}
+                                            <td>
+                                                <span class="label label-success">Pagado</span>
+                                            </td>
+                                        {% endif %}
                                         <td>
-                                            <span class="label label-danger">No pagado</span>
+                                            <a href="#">Imprimir PDF</a>
                                         </td>
-                                    {% else %}
-                                        <td>
-                                            <span class="label label-success">Pagado</span>
-                                        </td>
-                                    {% endif %}
-                                    <td>
-                                        <a href="#">Imprimir PDF</a>
-                                    </td>
-                                </tr>
-                            {% endif %}
-                        {% endfor %}
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                    {% endif %}
                     </table>
                 </div>
                     <!-- FIN TABLA -->

@@ -16,104 +16,110 @@
 
 
 {% block container %}
-    <script language="Javascript">
-        function confirmAceptar()
-        {
-          var agree=confirm("Estos resultados no podrán ser deshechos ¿Realmente desea continuar?");
-          if (agree)
-            return true ;
-          else
-            return false ;
-        }
-    </script>
 
-<section class="content">
-      <div class="row">
-          <div class="col-md-12">
-              <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Detalles del Descuento</h3>
-                </div>
+    {% if mensaje_error %}
+        {{ mensaje_error }}
+    {% else %}
+        <script language="Javascript">
+            function confirmAceptar()
+            {
+              var agree=confirm("Estos resultados no podrán ser deshechos ¿Realmente desea continuar?");
+              if (agree)
+                return true ;
+              else
+                return false ;
+            }
+        </script>
 
-                        <table class="table table-hover">
-                            <tbody>
-                            <tr>
-                                <th>Alumno</th>
-                                <th>Fecha de solicitud</th>
-                                <th>Tipo de descuento</th>
-                                <th>N° expediente</th>
-                                <th>Estado</th>
-                                <th>Aprobar</th>
-                                <th>No Aprobar</th>
-                            </tr>
-                            <div id="div1">
-                                <form id="ListaDescuentos">{% csrf_token %}
-                                <tr>
-                                    {% for descuento in object_list %}
-                                        {% if descuento.estado == 1 %}
-                                            <tr>
-                                                <td>{{ descuento.matricula.alumno.getNombreCompleto }}</td>
-                                                <td>{{ descuento.fecha_solicitud }}</td>
-                                                <td>{{ descuento.tipo_descuento.descripcion }}</td>
-                                                <td>{{ descuento.numero_expediente }}</td>
+        <section class="content">
+              <div class="row">
+                  <div class="col-md-12">
+                      <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Detalles del Descuento</h3>
+                        </div>
+
+                                <table class="table table-hover">
+                                    <tbody>
+                                    <tr>
+                                        <th>Alumno</th>
+                                        <th>Fecha de solicitud</th>
+                                        <th>Tipo de descuento</th>
+                                        <th>N° expediente</th>
+                                        <th>Estado</th>
+                                        <th>Aprobar</th>
+                                        <th>No Aprobar</th>
+                                    </tr>
+                                    <div id="div1">
+                                        <form id="ListaDescuentos">{% csrf_token %}
+                                        <tr>
+                                            {% for descuento in object_list %}
                                                 {% if descuento.estado == 1 %}
-                                                    <td>
-                                                        <span class="label label-warning">Pendiente</div>
-                                                    </td>
-                                                {% elif descuento.estado == 2 %}
-                                                    <td>
-                                                        <span class="label label-success">Aprobado</div>
-                                                    </td>
-                                                {% else %}
-                                                    <td>
-                                                        <span class="label label-danger">No aprobado</div>
-                                                    </td>
+                                                    <tr>
+                                                        <td>{{ descuento.matricula.alumno.getNombreCompleto }}</td>
+                                                        <td>{{ descuento.fecha_solicitud }}</td>
+                                                        <td>{{ descuento.tipo_descuento.descripcion }}</td>
+                                                        <td>{{ descuento.numero_expediente }}</td>
+                                                        {% if descuento.estado == 1 %}
+                                                            <td>
+                                                                <span class="label label-warning">Pendiente</div>
+                                                            </td>
+                                                        {% elif descuento.estado == 2 %}
+                                                            <td>
+                                                                <span class="label label-success">Aprobado</div>
+                                                            </td>
+                                                        {% else %}
+                                                            <td>
+                                                                <span class="label label-danger">No aprobado</div>
+                                                            </td>
+                                                        {% endif %}
+                                                        <td>
+
+                                                                <label>
+                                                                    <input type="radio" name="gender{{ descuento.id_descuento }}" value="aprobar">
+                                                                </label>
+
+                                                        </td>
+                                                        <td>
+
+                                                                <label>
+                                                                    <input type="radio" name="gender{{ descuento.id_descuento }}" value="noaprobar">
+                                                                </label>
+
+                                                        </td>
+                                                    </tr>
                                                 {% endif %}
-                                                <td>
-
-                                                        <label>
-                                                            <input type="radio" name="gender{{ descuento.id_descuento }}" value="aprobar">
-                                                        </label>
-
-                                                </td>
-                                                <td>
-
-                                                        <label>
-                                                            <input type="radio" name="gender{{ descuento.id_descuento }}" value="noaprobar">
-                                                        </label>
-
-                                                </td>
-                                            </tr>
-                                        {% endif %}
-                                    {% endfor %}
-                                    </form>
-                                </tr>
-                            </tbody>
-                            </div>
-                        </table>
+                                            {% endfor %}
+                                            </form>
+                                        </tr>
+                                    </tbody>
+                                    </div>
+                                </table>
 
 
 
-                        <div class="col-md-2">
-                            <div class="search-actions">
-                                <button type="submit"  onclick="return confirmAceptar();" value="Aceptar" class="btn btn-default" form="ListaDescuentos" formmethod="post">
-                                    <i class="fa fa-check-square" aria-hidden="true"></i>
-                                    Aceptar
-                                </button>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="search-actions">
-                                <form action="{% url 'discounts:detalle_descuentos' %}">
-                                    <button type="submit" value="Detalle" class="btn btn-default">
-                                        <i class="fa fa-circle" aria-hidden="true"></i>
-                                        Detalle
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
+                                <div class="col-md-2">
+                                    <div class="search-actions">
+                                        <button type="submit"  onclick="return confirmAceptar();" value="Aceptar" class="btn btn-default" form="ListaDescuentos" formmethod="post">
+                                            <i class="fa fa-check-square" aria-hidden="true"></i>
+                                            Aceptar
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="search-actions">
+                                        <form action="{% url 'discounts:detalle_descuentos' %}">
+                                            <button type="submit" value="Detalle" class="btn btn-default">
+                                                <i class="fa fa-circle" aria-hidden="true"></i>
+                                                Detalle
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                      </div>
+                  </div>
               </div>
-          </div>
-      </div>
-</section>
+        </section>
+    {% endif %}
+
 {% endblock container %}

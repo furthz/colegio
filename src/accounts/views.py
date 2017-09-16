@@ -1,34 +1,37 @@
 from __future__ import unicode_literals
 
-from django.contrib.auth.decorators import login_required
+from django.core.cache import cache
+from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseRedirect
-from django.template import RequestContext
 from django.utils.decorators import method_decorator
 from django.views import generic
 from django.contrib.auth import get_user_model
 from django.contrib import auth
 from django.contrib import messages
-from django.core.urlresolvers import reverse
 
 from authtools import views as authviews
 from braces import views as bracesviews
 from django.conf import settings
+from django.views.decorators.cache import cache_page
+
+from accounts.services import Roles
+from enrollment.models import Matricula
 from profiles.models import Profile
-from django.shortcuts import get_object_or_404, redirect, render_to_response
 from django.contrib.auth.mixins import LoginRequiredMixin
-from register.models import Personal
-from register.models import PersonalColegio
-from django.views.generic.edit import FormView
+from register.models import Personal, Colegio, Promotor, Director, Cajero, Tesorero, Administrativo, Apoderado
 from django.shortcuts import render
 from django.views import View
-#from utils.views import LoginRequiredMixin
+
+from utils.middleware import get_current_user, get_current_colegio
 from . import forms
 
 import logging
 
 User = get_user_model()
 logger = logging.getLogger("project")
+
+CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 
 
 class LoginView(bracesviews.AnonymousRequiredMixin,
@@ -50,11 +53,9 @@ class LoginView(bracesviews.AnonymousRequiredMixin,
 
 
 class AsignColegioView(LoginRequiredMixin, View):
-
     """
     Vista que permite mostrar la asignación del colegio
     """
-
     template_name = "accounts/asign_colegio.html"
 
     def get(self, request, *args, **kwargs):
@@ -65,6 +66,7 @@ class AsignColegioView(LoginRequiredMixin, View):
 
         return render(request, self.template_name, {'form': form})
 
+    @method_decorator(cache_page(CACHE_TTL))
     def post(self, request, *args, **kwargs):
 
         form = forms.AsignColegioForm(request.POST, user=request.user)
@@ -75,6 +77,16 @@ class AsignColegioView(LoginRequiredMixin, View):
             request.session['colegio'] = colegios.id_colegio
 
         logger.info("Usuario Logueado")
+
+        #rol = Roles()
+
+        if 'roles' in cache:
+            roles = cache.get('roles')
+        else:
+            roles = Roles.get_roles()
+            cache.set('roles', roles, timeout=CACHE_TTL)
+
+
 
         return HttpResponseRedirect('/users/me')
 

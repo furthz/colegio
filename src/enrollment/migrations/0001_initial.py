@@ -34,7 +34,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'tipo_servicio',
-                'managed': settings.IS_TESTING
+                'managed': settings.IS_MIGRATE
                 #'managed': False,
             },
         ),
@@ -56,7 +56,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'servicio',
-                'managed': settings.IS_TESTING
+                'managed': settings.IS_MIGRATE
                 #'managed': False,
             },
         ),
@@ -75,7 +75,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'matricula',
-                'managed': settings.IS_TESTING
+                'managed': settings.IS_MIGRATE
                 # 'managed': False,
             },
         ),
@@ -90,6 +90,7 @@ class Migration(migrations.Migration):
                 ('estado', models.BooleanField()),
                 ('precio', models.FloatField()),
                 ('deuda', models.FloatField()),
+                ('descuento', models.FloatField()),
                 ('fecha_creacion', models.DateField()),
                 ('fecha_modificacion', models.DateField()),
                 ('usuario_creacion', models.CharField(max_length=10, null=True)),
@@ -98,7 +99,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'cuentascobrar',
-                'managed': settings.IS_TESTING
+                'managed': settings.IS_MIGRATE
                 # 'managed': False,
             },
         ),

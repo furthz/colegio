@@ -17,7 +17,9 @@
 
       <!-- INICIA CONTENDOR DE FORMULARIOS -->
 
-
+{% if mensaje_error %}
+    {{ mensaje_error }}
+{% else %}
     <!-- INICIO DE CONTENIDO -->
     <section class="content">
       <div class="row">
@@ -36,19 +38,35 @@
                                     <div class="col-md-2">
                                       <div class="form-group">
                                       <label>Año</label>
-                                        {{ form.anio }}
+                                        <select name="anio"  class="form-control">
+                                            {% for anio in anios %}
+                                                <option>{{ anio }}</option>
+                                            {% endfor %}
+                                        </select>
                                       </div>
                                     </div>
                                     <div class="col-md-3">
                                       <div class="form-group">
                                       <label>Mes</label>
-                                        {{ form.mes }}
+                                        <select name="mes"  class="form-control">
+                                            {% for mes in meses %}
+                                                <option>{{ mes }}</option>
+                                            {% endfor %}
+                                        </select>
                                       </div>
                                     </div>
                                     <div class="col-md-4">
                                       <div class="form-group">
                                       <label>Tipo de pago</label>
-                                        {{ form.tipo_pago }}
+                                        <select name="tipo_pago"  class="form-control">
+                                            {% for tipo_pago in tipos_pagos %}
+                                                {% if tipo_pago == "Todos" %}
+                                                    <option value="Todos">Todos</option>
+                                                {% else %}
+                                                    <option>{{ tipo_pago.descripcion }}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
                                       </div>
                                     </div>
                                     <div class="col-md-3">
@@ -67,7 +85,13 @@
                         <!-- BAR CHART -->
                         <div class="box box-success">
                           <div class="box-header with-border">
-                            <h3 class="box-title">Reporte de gastos</h3>
+                              {% if not mes_llega %}
+                                  <h3 class="box-title">Reporte de gastos</h3>
+                              {% elif mes_llega == "Todos" %}
+                                  <h3 class="box-title">Reporte de gastos del año {{ anio_llega }}</h3>
+                              {% else %}
+                                  <h3 class="box-title">Reporte de gastos del mes de {{ mes_llega }} del {{ anio_llega }}</h3>
+                              {% endif %}
                           </div>
                           <div class="box-body">
                             <div class="chart">
@@ -79,13 +103,20 @@
 
                         <div class="box box-success">
                           <div class="box-header with-border">
-                            <h3 class="box-title">Detalle de los gastos</h3>
+                              {% if not mes_llega %}
+                                  <h3 class="box-title">Detalle de los gastos</h3>
+                              {% elif mes_llega == "Todos" %}
+                                  <h3 class="box-title">Detalle de los gastos del año {{ anio_llega }}</h3>
+                              {% else %}
+                                  <h3 class="box-title">Detalle de los gastos del mes de {{ mes_llega }} del {{ anio_llega }}</h3>
+                              {% endif %}
                           </div>
                           <div class="box-body">
+                          {% if pagos_colegio %}
                             <table class="table table-hover">
                                 <tbody>
                                     <tr>
-                                        <th>Proveedor</th>
+                                        <th>Proveedor RUC</th>
                                         <th>Fecha</th>
                                         <th>Tipo de pago</th>
                                         <th>Monto S/.</th>
@@ -96,7 +127,7 @@
                                         {% for pago in pagos_colegio %}
                                             {% if not pago.orderDate %}
                                                 <tr>
-                                                    <td>Proveedor</td>
+                                                    <td>{{ pago.proveedor.proveedor.ruc }}</td>
                                                     <td>{{ pago.fecha.date }}</td>
                                                     <td>{{ pago.tipo_pago.descripcion}}</td>
                                                     <td>S/.{{ pago.monto }}</td>
@@ -107,6 +138,7 @@
                                     </tr>
                                 </tbody>
                             </table>
+                          {% endif %}
                           </div>
 
                         </div>
@@ -121,7 +153,7 @@
       </div>
     </section>
     <!-- /.FIN DE CONTENIDO -->
-
+{% endif %}
 <!-- ./wrapper -->
 
 <!-- jQuery 3 -->

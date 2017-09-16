@@ -122,9 +122,9 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-sm-3 control-label">Número de Documento</label>
+                                            <label class="col-sm-3 control-label">Sexo</label>
                                             <div class="col-sm-9">
-                                            {{ form.numero_documento }}
+                                                {{ form.sexo }}
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -148,9 +148,10 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-sm-3 control-label">Sexo</label>
+                                            <label class="col-sm-3 control-label">N° Documento</label>
                                             <div class="col-sm-9">
-                                                {{ form.sexo }}
+                                                {{ form.numero_documento }}
+
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -262,20 +263,21 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
-                                        <div class="pull-right">
-                                            <a href="#" class="btn btn-default">
-                                                <i class="fa fa-arrow-left" aria-hidden="true"></i>
-                                                Regresar al listado
-                                            </a>
-                                            <button type="submit" class="btn btn-success"  onclick="enviarTelefono()">
-                                                <i class="fa fa-plus" aria-hidden="true"></i>
-                                                Agregar persona
-                                            </button>
-                                        </div>
-                                    </div>
-
                                 </div>
+                            <div class="box-body">
+
+                                <div class="action-footer">
+                                    <a href="#" class="btn btn-default">
+                                        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                                        Regresar al listado
+                                    </a>
+                                    <button type="submit" class="btn btn-success"  onclick="enviarTelefono()">
+                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                        Agregar persona
+                                    </button>
+                                </div>
+
+                            </div>
 
                             </div>
                             <div class="col-md-3">
