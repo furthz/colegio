@@ -64,7 +64,7 @@ class EstadoCambio(models.Model):
         # creación
         if not self.pk:
             #Antes era True
-            self.estado = False
+            self.estado = True
 
         else:  # modificacion
             self.estado = False

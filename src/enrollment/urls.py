@@ -28,6 +28,8 @@ from enrollment.views import MatriculaUpdateView
 from enrollment.views import FiltrarAlumnoView
 from enrollment.views import CargarMatriculaCreateView
 from enrollment.views import CargarMatriculaUpdateView
+
+from enrollment.views import generar_pdf
 #
 
 
@@ -67,5 +69,6 @@ urlpatterns = [
     # URL para filtrar y crear matriculas
     url(r'^filter', FiltrarAlumnoView.as_view(), name="filtrar_alumno"),
 
+    url(r'^pdf/$', generar_pdf, name="generar_pdf"),
 
 ]

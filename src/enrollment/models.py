@@ -105,6 +105,19 @@ class TipoServicio(ActivoMixin, CreacionModificacionFechaMixin, CreacionModifica
     class Meta:
         managed = False
         db_table = 'tipo_servicio'
+        permissions = (
+            ("Cargar_Tipo_Servicio_Create", "cargar tipo de servicio"),
+            ("Tipo_Servicio_Regular_Create","cargar tipo de servicio regular"),
+            ("Tipo_Servicio_Extra_Create","cargar tipo de servicio extra"),
+            ("Tipo_ServicioDetail","cargar detalle de tipo de servicio "),
+            ("Tipo_ServicioRegularEndUpdate","actualizar tipo de servicio regular end"),
+            ("Tipo_ServicioExtraEndUpdate","actualizar tipo de servicio extra end"),
+            ("Tipo_ServicioRegularUpdate","actualizar tipo de servicio regular"),
+            ("Tipo_ServicioExtraUpdate","actualizar tipo de servicio extra"),
+            ("Tipo_ServicioDelete","borrar tipo de servicio"),
+            ("Tipo_ServicioList","listar tipo de servicio"),
+        )
+
         #unique_together = (('id_tipo_servicio', 'colegio'),)
 
 class Servicio(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
