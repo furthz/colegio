@@ -47,11 +47,12 @@ class RegistrarPagoListView(MyLoginRequiredMixin, TemplateView):
             logger.info("Estoy en el primer GET")
             user_now = PersonalColegio.objects.get(personal__user=get_current_user(), colegio_id=get_current_colegio())
             logger.info(user_now)
-            rol_tesorero = Tesorero.objects.filter(personalcolegio=user_now)
+            #rol_tesorero = Tesorero.objects.filter(personalcolegio=user_now)
             rol_cajero = Cajero.objects.filter(personalcolegio=user_now)
-            logger.info(rol_tesorero)
+            #logger.info(rol_tesorero)
             logger.info(rol_cajero)
-            if (rol_cajero.count() + rol_tesorero.count()) > 0:
+            #if (rol_cajero.count() + rol_tesorero.count()) > 0:
+            if (rol_cajero.count()) > 0:
                 logger.info("Se tienen los permisos")
             else:
                 return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
@@ -553,3 +554,51 @@ class ControlIngresosPromotorDetallesView(FormView):
             contexto['object_list'] = []
             contexto['form'] = CuentasCobrarPromotorDetalleForm
             return render(request, template_name=self.template_name, context=contexto)
+
+
+
+########################################################
+#       Generacion de PDF
+########################################################
+
+from io import BytesIO
+
+from django.http import HttpResponse
+from reportlab.platypus import SimpleDocTemplate, Paragraph, TableStyle
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import letter, A6
+from reportlab.platypus import Table
+
+
+def generar_pdf(request):
+    print("Genero el PDF")
+    response = HttpResponse(content_type='application/pdf')
+    pdf_name = "clientes.pdf"  # llamado clientes
+    # la linea 26 es por si deseas descargar el pdf a tu computadora
+    # response['Content-Disposition'] = 'attachment; filename=%s' % pdf_name
+    buff = BytesIO()
+    doc = SimpleDocTemplate(buff,
+                            pagesize=A6,
+                            rightMargin=0,
+                            leftMargin=0,
+                            topMargin=0,
+                            bottomMargin=0,
+                            )
+    clientes = []
+    styles = getSampleStyleSheet()
+    header = Paragraph("Lista de Cuentas por Cobrar", styles['Heading1'])
+    header1 = Paragraph("Nombre del alumno:", styles['Heading2'])
+    header1 = Paragraph("{0}".format("Perez"), styles['Heading3'])
+    clientes.append(header)
+    clientes.append(header1)
+    headings = ('Servicio', 'Precio')
+    allclientes = [(p.servicio, p.precio) for p in Cuentascobrar.objects.all()]
+    print(allclientes)
+
+    t = Table([headings] + allclientes)
+    clientes.append(t)
+    doc.build(clientes)
+    response.write(buff.getvalue())
+    buff.close()
+    return response

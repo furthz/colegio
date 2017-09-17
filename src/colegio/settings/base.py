@@ -122,7 +122,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.cache.FetchFromCacheMiddleware',
 )
 
-
+"""
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
@@ -139,12 +139,14 @@ CACHES = {
 }
 
 
+
+
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 
 SESSION_CACHE_ALIAS = "default"
 
 CACHE_TTL = 60 * 15
-
+"""
 
 
 ROOT_URLCONF = 'colegio.urls'

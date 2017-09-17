@@ -8,6 +8,7 @@ from income.views import ControlIngresosPadresView, ControlIngresosPromotorView
 from income.views import ControlIngresosPromotorDetallesView
 from enrollment.views import TipoServicioRegularCreateView
 from income.views import RegistrarPagoListView
+from income.views import generar_pdf
 
 
 urlpatterns = [
@@ -18,4 +19,7 @@ urlpatterns = [
     url(r'^cuentas_cobrar_promotor/filter', ControlIngresosPromotorView.as_view(), name="cuentas_cobrar_promotor"),
 
     url(r'^cuentas_cobrar_promotor_detalle/filter', ControlIngresosPromotorDetallesView.as_view(), name="cuentas_cobrar_promotor_detalle"),
+
+    url(r'^register/pdf/$', generar_pdf, name="generar_pdf"),
+
 ]
