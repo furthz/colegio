@@ -1,3 +1,6 @@
+from django.contrib.auth.decorators import permission_required
+from django.utils.decorators import method_decorator
+
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
@@ -135,6 +138,7 @@ class RegistrarPagoCreateView(CreateView):
 """
 PROMOTOR: PAGOS REALIZADOS POR AÑO, MES Y TIPO DE PAGO
 """
+
 class ControlPagosPromotorView(FormView):
 
     model = Pago
@@ -208,6 +212,8 @@ class ControlPagosPromotorView(FormView):
         else:
             return {'mensaje_error': mensaje_error}  # return context
 
+    @method_decorator(permission_required('Pago.control_pagos', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def get(self, request, *args, **kwargs):
         super(ControlPagosPromotorView, self).get(request, *args, **kwargs)
 
@@ -219,9 +225,13 @@ class ControlPagosPromotorView(FormView):
         else:
             return render(request, self.template_name, contexto)  # return context
 
+    @method_decorator(permission_required('Pago.control_pagos', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def get_queryset(self):
         return []
 
+    @method_decorator(permission_required('Pago.control_pagos', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def post(self, request, *args, **kwargs):
 
         anio = request.POST["anio"]

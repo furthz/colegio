@@ -57,6 +57,9 @@ class Migration(migrations.Migration):
             options={
                 'db_table': 'pago',
                 'managed': True,
+                'permissions': (
+                    ('control_pagos', 'Para el control de pagos realizados'),
+                )
             },
         ),
         migrations.CreateModel(
