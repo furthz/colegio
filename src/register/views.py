@@ -260,7 +260,7 @@ class PersonalUpdateView(UpdateView):
     def get_success_url(self):
         return reverse_lazy('registers:personal_list')
 
-class PersonaListView(PermissionsMixin, TemplateView):
+class PersonaListView(TemplateView):
     template_name = "persona_list.html"
 
     def post(self, request, *args, **kwargs):
