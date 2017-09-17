@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'tipo_documento',
-                'managed': settings.IS_TESTING,
+                'managed': settings.IS_MIGRATE,
             },
         ),
         migrations.CreateModel(
@@ -38,7 +38,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'tipo_sexo',
-                'managed': settings.IS_TESTING,
+                'managed': settings.IS_MIGRATE,
             },
         ),
 
@@ -51,7 +51,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'tipos_medio_pago',
-                'managed': settings.IS_TESTING,
+                'managed': settings.IS_MIGRATE,
             },
         ),
         migrations.CreateModel(
@@ -63,7 +63,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'tipos_nivel',
-                'managed': settings.IS_TESTING,
+                'managed': settings.IS_MIGRATE,
             },
         ),
         migrations.CreateModel(
@@ -76,7 +76,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'tipos_grados',
-                'managed': settings.IS_TESTING,
+                'managed': settings.IS_MIGRATE,
             },
         ),
         migrations.CreateModel(
@@ -88,7 +88,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'departamento',
-                'managed': settings.IS_TESTING,
+                'managed': settings.IS_MIGRATE,
             },
         ),
         migrations.CreateModel(
@@ -102,7 +102,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'provincia',
-                'managed': settings.IS_TESTING,
+                'managed': settings.IS_MIGRATE,
             },
         ),
         migrations.CreateModel(
@@ -116,7 +116,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'distrito',
-                'managed': settings.IS_TESTING,
+                'managed': settings.IS_MIGRATE,
             },
         ),
     ]
