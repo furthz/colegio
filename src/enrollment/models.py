@@ -214,6 +214,12 @@ class Cuentascobrar(ActivoMixin, CreacionModificacionFechaMixin, CreacionModific
     class Meta:
         managed = False
         db_table = 'cuentascobrar'
+        permissions = (
+            ('control_ingresos_padres', 'Para el control de ingresos de los padres'),
+            ('control_ingresos_promotor', 'Para el control de ingresos del promotor'),
+            ('control_ingresos_promotor_detalle', 'Para el detalle de control de ingresos del promotor'),
+        )
+
 
     @property
     def getMonto(self):
