@@ -64,7 +64,7 @@ class Roles:
                                                   alumno__apoderadoalumno__apoderado=apoderado)
 
             for apo in apoderados:
-                roles['apoderado'] = apo.id_apoderado
+                roles['apoderado'] = apo.id_matricula
         except Apoderado.DoesNotExist:
             pass
 
