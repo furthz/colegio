@@ -993,3 +993,52 @@ class CargarMatriculaCreateView(TemplateView):
                 'form': self.form_class,
             })
 
+########################################################
+#       Generacion de PDF
+########################################################
+
+from io import BytesIO
+
+from django.http import HttpResponse
+from reportlab.platypus import SimpleDocTemplate, Paragraph, TableStyle
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import letter, A6
+from reportlab.platypus import Table
+
+
+def generar_pdf(request):
+    print("Genero el PDF")
+    response = HttpResponse(content_type='application/pdf')
+    pdf_name = "clientes.pdf"  # llamado clientes
+    # la linea 26 es por si deseas descargar el pdf a tu computadora
+    # response['Content-Disposition'] = 'attachment; filename=%s' % pdf_name
+    buff = BytesIO()
+    doc = SimpleDocTemplate(buff,
+                            pagesize=A6,
+                            rightMargin=0,
+                            leftMargin=0,
+                            topMargin=0,
+                            bottomMargin=0,
+                            )
+    clientes = []
+    styles = getSampleStyleSheet()
+    header = Paragraph("Listado de Clientes", styles['Heading1'])
+    clientes.append(header)
+    headings = ('Activo', 'Fecha Creacion', 'Fecha Modificacion')
+    allclientes = [(p.activo, p.fecha_creacion, p.fecha_modificacion) for p in TipoServicio.objects.all()]
+    print(allclientes)
+
+    t = Table([headings] + allclientes)
+    t.setStyle(TableStyle(
+        [
+            ('GRID', (0, 0), (3, -1), 1, colors.dodgerblue),
+            ('LINEBELOW', (0, 0), (-1, 0), 2, colors.darkblue),
+            ('BACKGROUND', (0, 0), (-1, 0), colors.dodgerblue)
+        ]
+    ))
+    clientes.append(t)
+    doc.build(clientes)
+    response.write(buff.getvalue())
+    buff.close()
+    return response

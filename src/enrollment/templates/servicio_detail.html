@@ -23,16 +23,44 @@
               <div class="box box-primary">
                 <div class="box-header with-border">
                     <h3 class="box-title">Detalles del Servicio</h3>
-                </div>
-                {% for detalles in servicio.full_detail %}
-                    <li>{{detalles}}</li>
-                {% empty %}
-                    <li>No hay tipos de servicio</li>
-                {% endfor %}
+                <div class="box-body">
 
-                <form action="{% url 'enrollments:tiposervicio_list' %}">
-                    <input type="submit" value="Volver">
+                <form role="form" name="search" action="" class="form-horizontal">
+
+
+                 <dl class="dl-horizontal">
+                  <dt>Tipo Servicio</dt>
+                  <dd>{{ servicio.tipo_servicio }}</dd>
+                </dl>
+
+               <dl class="dl-horizontal">
+                  <dt>Descripción</dt>
+                  <dd> {{ servicio.nombre }} </dd>
+                </dl>
+
+                <dl class="dl-horizontal">
+                  <dt>Precio</dt>
+                  <dd>{{ servicio.precio }}</dd>
+                </dl>
+
+                 <dl class="dl-horizontal">
+                  <dt>Fecha a Facturar</dt>
+                  <dd>{{ servicio.fecha_facturar }}</dd>
+                </dl>
+
+                 <dl class="dl-horizontal">
+                  <dt>Cuotas</dt>
+                  <dd>{{ servicio.cuotas }}</dd>
+                </dl>
+
+                <div class="form-group">
+                  <div class="col-sm-offset-2 col-sm-10">
+                    <a type="submit" href="javascript:history.back()" class="btn btn-default"><i class="fa fa-reply" aria-hidden="true"></i>Volver</a>
+
+                  </div>
+                </div>
                 </form>
+
               </div>
           </div>
       </div>

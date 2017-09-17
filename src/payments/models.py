@@ -84,7 +84,9 @@ class Pago(CreacionModificacionFechaMixin, CreacionModificacionUserMixin):
     class Meta:
         managed = True
         db_table = 'pago'
-
+        permissions = (
+            ('control_pagos', 'Para el control de pagos realizados'),
+        )
 
 
 def calculo_pagos_total(id_colegio, anio, tipo_pago, mes):
