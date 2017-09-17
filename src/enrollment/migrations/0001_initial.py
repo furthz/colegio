@@ -99,8 +99,12 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'cuentascobrar',
-                'managed': settings.IS_MIGRATE
-                # 'managed': False,
+                'managed': settings.IS_MIGRATE,
+                'permissions': (
+                    ('control_ingresos_padres', 'Para el control de ingresos de los padres'),
+                    ('control_ingresos_promotor', 'Para el control de ingresos del promotor'),
+                    ('control_ingresos_promotor_detalle', 'Para el detalle de control de ingresos del promotor'),
+                )
             },
         ),
     ]
