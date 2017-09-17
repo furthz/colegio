@@ -259,7 +259,10 @@ class ControlIngresosPadresView(FormView):
 
         contexto = self.cargarformPadres(request)
 
-        return render(request, self.template_name, contexto)  # return context
+        if 'mensaje_error' in contexto.keys():
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+        else:
+            return render(request, self.template_name, contexto)  # return context
 
     def get_queryset(self):
         return []
@@ -365,7 +368,10 @@ class ControlIngresosPromotorView(FormView):
 
         contexto = self.cargarformPromotor(request)
 
-        return render(request, self.template_name, contexto)  # return context
+        if 'mensaje_error' in contexto.keys():
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+        else:
+            return render(request, self.template_name, contexto)  # return context
 
     def get_queryset(self):
         return []
@@ -485,8 +491,13 @@ class ControlIngresosPromotorDetallesView(FormView):
 
     def get(self, request, *args, **kwargs):
         super(ControlIngresosPromotorDetallesView, self).get(request, *args, **kwargs)
+
         contexto = self.cargarformPromotordetalle(request)
-        return render(request, self.template_name, contexto)  # return context
+
+        if 'mensaje_error' in contexto.keys():
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+        else:
+            return render(request, self.template_name, contexto)  # return context
 
     def get_queryset(self):
         return []
