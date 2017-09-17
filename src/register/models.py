@@ -10,7 +10,6 @@ Fecha: 23/07/2017
 from django.db import models
 from django.urls import reverse
 
-from utils.middleware import get_current_colegio
 from utils.misc import insert_child
 from utils.models import CreacionModificacionUserMixin, CreacionModificacionFechaPersonalMixin, \
     CreacionModificacionFechaApoderadoMixin, CreacionModificacionFechaAlumnoMixin, \
@@ -57,6 +56,13 @@ class Personal(CreacionModificacionUserPersonalMixin, CreacionModificacionFechaP
     class Meta:
         managed = True
         db_table = 'personal'
+        permissions = (
+            ("personal_create", "crear un personal"),
+            ("personal_detail", "verificar el detalle"),
+            ("personal_update", "actualizar el personal"),
+            ("personal_delete", "eliminar un personal"),
+            ("personal_list", "listar personal"),
+        )
 
 
 class Colegio(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
@@ -76,6 +82,12 @@ class Colegio(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionU
     class Meta:
         managed = True
         db_table = 'colegio'
+        permissions = (
+            ("colegio_create","crear colegio"),
+            ("colegio_detail", "detalle del colegio"),
+            ("colegio_update", "actualizar el colegio"),
+            ("colegio_delete", "eliminar un colegio"),
+        )
 
 
 class Telefono(ActivoMixin, CreacionModificacionUserMixin, CreacionModificacionFechaMixin, models.Model):
@@ -197,6 +209,12 @@ class Apoderado(CreacionModificacionUserApoderadoMixin, CreacionModificacionFech
     class Meta:
         managed = True
         db_table = 'apoderado'
+        permissions = (
+            ("apoderado_create", "crear apoderado"),
+            ("apoderado_detail", "detalle del apoderado"),
+            ("apoderado_update", "actualizar apoderado"),
+            ("apoderado_delete", "eliminiar un apoderado")
+        )
 
 
 class Alumno(CreacionModificacionUserAlumnoMixin, CreacionModificacionFechaAlumnoMixin, Profile, models.Model):

@@ -153,8 +153,13 @@ class Migration(migrations.Migration):
                 ('usuario_modificacion', models.CharField(max_length=10, null=True))
             ],
             options={
-                'db_table': 'personal',
+                #'db_table': 'personal',
                 'managed': settings.IS_MIGRATE,
+                'permissions': (("personal_create", "crear un personal"),
+            ("personal_detail", "verificar el detalle"),
+            ("personal_update", "actualizar el personal"),
+            ("personal_delete", "eliminar un personal"),
+            ("personal_list", "listar personal"),)
             },
         ),
         migrations.CreateModel(
