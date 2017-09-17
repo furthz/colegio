@@ -87,6 +87,7 @@ class Colegio(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionU
             ("colegio_detail", "detalle del colegio"),
             ("colegio_update", "actualizar el colegio"),
             ("colegio_delete", "eliminar un colegio"),
+            ("colegio_list", "listar colegio"),
         )
 
 
@@ -213,7 +214,8 @@ class Apoderado(CreacionModificacionUserApoderadoMixin, CreacionModificacionFech
             ("apoderado_create", "crear apoderado"),
             ("apoderado_detail", "detalle del apoderado"),
             ("apoderado_update", "actualizar apoderado"),
-            ("apoderado_delete", "eliminiar un apoderado")
+            ("apoderado_delete", "eliminiar un apoderado"),
+            ("apoderado_list", "listar apoderados")
         )
 
 
@@ -253,6 +255,13 @@ class Alumno(CreacionModificacionUserAlumnoMixin, CreacionModificacionFechaAlumn
     class Meta:
         managed = True
         db_table = 'alumno'
+        permissions = (
+            ("alumno_create", "crear alumno"),
+            ("alumno_detail", "detalle alumno"),
+            ("alumno_delete", "eliminar alumno"),
+            ("alumno_update", "actualizar alumno"),
+            ("alumno_list", "listar alumnos"),
+        )
 
 
 class ApoderadoAlumno(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
@@ -302,6 +311,13 @@ class Tesorero(CreacionModificacionUserTesoreroMixin, CreacionModificacionFechaT
     class Meta:
         managed = True
         db_table = 'tesorero'
+        permissions = (
+            ("tesorero_create", "crear tesorero"),
+            ("tesorero_update", "update tesorero"),
+            ("tesorero_delete", "eliminar tesorero"),
+            ("tesorero_list", "listar tesorero"),
+            ("tesorero_detail", "detalle tesorero"),
+        )
 
 
 class Promotor(CreacionModificacionUserPromotorMixin, CreacionModificacionFechaPromotorMixin, Personal, models.Model):
@@ -339,6 +355,13 @@ class Promotor(CreacionModificacionUserPromotorMixin, CreacionModificacionFechaP
     class Meta:
         managed = True
         db_table = 'promotor'
+        permissions = (
+            ("promotor_create", "crear promotor"),
+            ("promotor_update", "update promotor"),
+            ("promotor_delete", "eliminar promotor"),
+            ("promotor_list", "listar promotor"),
+            ("promotor_detail", "detalle promotor"),
+        )
 
 
 class Cajero(CreacionModificacionUserCajeroMixin, CreacionModificacionFechaCajeroMixin, Personal, models.Model):
@@ -376,6 +399,13 @@ class Cajero(CreacionModificacionUserCajeroMixin, CreacionModificacionFechaCajer
     class Meta:
         managed = True
         db_table = 'cajero'
+        permissions = (
+            ("cajero_create", "crear cajero"),
+            ("cajero_update", "update cajero"),
+            ("cajero_delete", "eliminar cajero"),
+            ("cajero_list", "listar cajero"),
+            ("cajero_detail", "detalle cajero"),
+        )
 
 
 class Director(CreacionModificacionUserDirectorMixin, CreacionModificacionFechaDirectorMixin, Personal, models.Model):
@@ -412,6 +442,13 @@ class Director(CreacionModificacionUserDirectorMixin, CreacionModificacionFechaD
     class Meta:
         managed = True
         db_table = 'director'
+        permissions = (
+            ("director_create", "crear director"),
+            ("director_update", "update director"),
+            ("director_delete", "eliminar director"),
+            ("director_list", "listar director"),
+            ("director_detail", "detalle director"),
+        )
 
 
 class PersonalColegio(ActivoMixin, CreacionModificacionUserMixin, CreacionModificacionFechaMixin, models.Model):
@@ -463,6 +500,13 @@ class Administrativo(CreacionModificacionUserAdministrativoMixin, CreacionModifi
     class Meta:
         managed = True
         db_table = 'administrativo'
+        permissions = (
+            ("administrativo_create", "crear administrativo"),
+            ("administrativo_update", "update administrativo"),
+            ("administrativo_delete", "eliminar administrativo"),
+            ("administrativo_list", "listar administrativo"),
+            ("administrativo_detail", "detalle administrativo"),
+        )
 
 
 class Proveedor(CreacionModificacionUserProveedorMixin, CreacionModificacionFechaProveedorMixin,models.Model):
@@ -491,6 +535,13 @@ class Proveedor(CreacionModificacionUserProveedorMixin, CreacionModificacionFech
     class Meta:
         managed = True
         db_table = 'proveedor'
+        permissions = (
+            ("proveedor_create", "crear proveedor"),
+            ("proveedor_update", "update proveedor"),
+            ("proveedor_delete", "eliminar proveedor"),
+            ("proveedor_list", "listar proveedor"),
+            ("proveedor_detail", "detalle proveedor"),
+        )
 
 
 class ProvedorColegio(ActivoMixin,CreacionModificacionUserProveedorMixin, CreacionModificacionFechaProveedorMixin,models.Model):

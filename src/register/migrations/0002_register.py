@@ -35,6 +35,13 @@ class Migration(migrations.Migration):
             options={
                 'db_table': 'colegio',
                 'managed': settings.IS_MIGRATE,
+                'permissions': (
+                    ("personal_create", "crear un personal"),
+                    ("personal_detail", "verificar el detalle"),
+                    ("personal_update", "actualizar el personal"),
+                    ("personal_delete", "eliminar un personal"),
+                    ("personal_list", "listar personal"),
+                ),
             },
         ),
         migrations.CreateModel(
@@ -98,6 +105,13 @@ class Migration(migrations.Migration):
             options={
                 'db_table': 'alumno',
                 'managed': settings.IS_MIGRATE,
+                'permissions': (
+                    ("alumno_create", "crear alumno"),
+                    ("alumno_detail", "detalle alumno"),
+                    ("alumno_delete", "eliminar alumno"),
+                    ("alumno_update", "actualizar alumno"),
+                    ("alumno_list", "listar alumnos"),
+                )
             },
             bases=('profiles.profile', models.Model),
         ),
@@ -116,6 +130,13 @@ class Migration(migrations.Migration):
             options={
                 'db_table': 'apoderado',
                 'managed': settings.IS_MIGRATE,
+                'permissions': (
+                    ("apoderado_create", "crear apoderado"),
+                    ("apoderado_detail", "detalle del apoderado"),
+                    ("apoderado_update", "actualizar apoderado"),
+                    ("apoderado_delete", "eliminiar un apoderado"),
+                    ("apoderado_list", "listar apoderados")
+                )
             },
             bases=('profiles.profile', models.Model),
         ),
@@ -153,13 +174,13 @@ class Migration(migrations.Migration):
                 ('usuario_modificacion', models.CharField(max_length=10, null=True))
             ],
             options={
-                #'db_table': 'personal',
+                'db_table': 'personal',
                 'managed': settings.IS_MIGRATE,
                 'permissions': (("personal_create", "crear un personal"),
-            ("personal_detail", "verificar el detalle"),
-            ("personal_update", "actualizar el personal"),
-            ("personal_delete", "eliminar un personal"),
-            ("personal_list", "listar personal"),)
+                    ("personal_detail", "verificar el detalle"),
+                    ("personal_update", "actualizar el personal"),
+                    ("personal_delete", "eliminar un personal"),
+                    ("personal_list", "listar personal"),)
             },
         ),
         migrations.CreateModel(
@@ -177,6 +198,13 @@ class Migration(migrations.Migration):
             options={
                 'db_table': 'promotor',
                 'managed': settings.IS_MIGRATE,
+                'permissions': (
+                    ("promotor_create", "crear promotor"),
+                    ("promotor_update", "update promotor"),
+                    ("promotor_delete", "eliminar promotor"),
+                    ("promotor_list", "listar promotor"),
+                    ("promotor_detail", "detalle promotor"),
+                )
             },
         ),
         migrations.CreateModel(
@@ -194,6 +222,13 @@ class Migration(migrations.Migration):
             options={
                 'db_table': 'cajero',
                 'managed': settings.IS_MIGRATE,
+                'permissions': (
+                    ("cajero_create", "crear cajero"),
+                    ("cajero_update", "update cajero"),
+                    ("cajero_delete", "eliminar cajero"),
+                    ("cajero_list", "listar cajero"),
+                    ("cajero_detail", "detalle cajero"),
+                )
             },
         ),
         migrations.CreateModel(
@@ -211,6 +246,13 @@ class Migration(migrations.Migration):
             options={
                 'db_table': 'tesorero',
                 'managed': settings.IS_MIGRATE,
+                'permissions': (
+                    ("tesorero_create", "crear tesorero"),
+                    ("tesorero_update", "update tesorero"),
+                    ("tesorero_delete", "eliminar tesorero"),
+                    ("tesorero_list", "listar tesorero"),
+                    ("tesorero_detail", "detalle tesorero"),
+                )
             },
         ),
         migrations.CreateModel(
@@ -228,6 +270,13 @@ class Migration(migrations.Migration):
             options={
                 'db_table': 'director',
                 'managed': settings.IS_MIGRATE,
+                'permissions': (
+                    ("director_create", "crear director"),
+                    ("director_update", "update director"),
+                    ("director_delete", "eliminar director"),
+                    ("director_list", "listar director"),
+                    ("director_detail", "detalle director"),
+                )
             },
         ),
         migrations.CreateModel(
@@ -272,6 +321,13 @@ class Migration(migrations.Migration):
             options={
                 'db_table': 'administrativo',
                 'managed': True,
+                'permissions': (
+                    ("administrativo_create", "crear administrativo"),
+                    ("administrativo_update", "update administrativo"),
+                    ("administrativo_delete", "eliminar administrativo"),
+                    ("administrativo_list", "listar administrativo"),
+                    ("administrativo_detail", "detalle administrativo"),
+                )
             },
             bases=('register.personal', models.Model),
         ),
@@ -294,6 +350,13 @@ class Migration(migrations.Migration):
             options={
                 'db_table': 'proveedor',
                 'managed': True,
+                'permissions': (
+                    ("proveedor_create", "crear proveedor"),
+                    ("proveedor_update", "update proveedor"),
+                    ("proveedor_delete", "eliminar proveedor"),
+                    ("proveedor_list", "listar proveedor"),
+                    ("proveedor_detail", "detalle proveedor"),
+                )
             },
         ),
         migrations.CreateModel(
