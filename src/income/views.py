@@ -181,8 +181,7 @@ class RegistrarPagoListView(MyLoginRequiredMixin, TemplateView):
 """
 PADRES: PAGOS REALIZADOS POR HIJO, AÑO, MES Y ESTADO
 """
-#@method_decorator(permission_required('Cuentascobrar.control_ingresos_padres', login_url=settings.REDIRECT_PERMISOS,
-#                                          raise_exception=False))
+
 class ControlIngresosPadresView(FormView):
 
     model = Cuentascobrar
@@ -254,6 +253,8 @@ class ControlIngresosPadresView(FormView):
         else:
             return {'mensaje_error': mensaje_error}  # return context
 
+    @method_decorator(permission_required('Cuentascobrar.control_ingresos_padres', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def get(self, request, *args, **kwargs):
         super(ControlIngresosPadresView, self).get(request, *args, **kwargs)
 
@@ -264,9 +265,13 @@ class ControlIngresosPadresView(FormView):
         else:
             return render(request, self.template_name, contexto)  # return context
 
+    @method_decorator(permission_required('Cuentascobrar.control_ingresos_padres', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def get_queryset(self):
         return []
 
+    @method_decorator(permission_required('Cuentascobrar.control_ingresos_padres', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def post(self, request, *args, **kwargs):
 
         alumno = request.POST["alumno"]
@@ -294,9 +299,11 @@ class ControlIngresosPadresView(FormView):
             contexto['object_list'] = []
             return render(request, template_name=self.template_name,context=contexto)
 
+
 """
 PROMOTOR: DEUDAS Y COBROS POR AÑO, MES Y NIVEL
 """
+
 class ControlIngresosPromotorView(FormView):
 
     model = Cuentascobrar
@@ -363,6 +370,9 @@ class ControlIngresosPromotorView(FormView):
         else:
             return {'mensaje_error': mensaje_error}  # return context
 
+    @method_decorator(
+        permission_required('Cuentascobrar.control_ingresos_promotor', login_url=settings.REDIRECT_PERMISOS,
+                            raise_exception=False))
     def get(self, request, *args, **kwargs):
         super(ControlIngresosPromotorView, self).get(request, *args, **kwargs)
 
@@ -373,9 +383,15 @@ class ControlIngresosPromotorView(FormView):
         else:
             return render(request, self.template_name, contexto)  # return context
 
+    @method_decorator(
+        permission_required('Cuentascobrar.control_ingresos_promotor', login_url=settings.REDIRECT_PERMISOS,
+                            raise_exception=False))
     def get_queryset(self):
         return []
 
+    @method_decorator(
+        permission_required('Cuentascobrar.control_ingresos_promotor', login_url=settings.REDIRECT_PERMISOS,
+                            raise_exception=False))
     def post(self, request, *args, **kwargs):
 
         id_colegio = get_current_colegio()
@@ -420,6 +436,7 @@ class ControlIngresosPromotorView(FormView):
 """
 PROMOTOR: DETALLE DE PAGOS REALIZADOS POR HIJO, AÑO, MES Y ESTADO
 """
+
 class ControlIngresosPromotorDetallesView(FormView):
 
     model = Cuentascobrar
@@ -489,6 +506,9 @@ class ControlIngresosPromotorDetallesView(FormView):
         else:
             return {'mensaje_error': mensaje_error}  # return context
 
+    @method_decorator(
+        permission_required('Cuentascobrar.control_ingresos_promotor_detalle', login_url=settings.REDIRECT_PERMISOS,
+                            raise_exception=False))
     def get(self, request, *args, **kwargs):
         super(ControlIngresosPromotorDetallesView, self).get(request, *args, **kwargs)
 
@@ -499,9 +519,15 @@ class ControlIngresosPromotorDetallesView(FormView):
         else:
             return render(request, self.template_name, contexto)  # return context
 
+    @method_decorator(
+        permission_required('Cuentascobrar.control_ingresos_promotor_detalle', login_url=settings.REDIRECT_PERMISOS,
+                            raise_exception=False))
     def get_queryset(self):
         return []
 
+    @method_decorator(
+        permission_required('Cuentascobrar.control_ingresos_promotor_detalle', login_url=settings.REDIRECT_PERMISOS,
+                            raise_exception=False))
     def post(self, request, *args, **kwargs):
 
         alumno = request.POST["alumno"]
