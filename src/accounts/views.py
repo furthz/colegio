@@ -78,13 +78,19 @@ class AsignColegioView(LoginRequiredMixin, View):
 
         logger.info("Usuario Logueado")
 
-        #rol = Roles()
+        #if 'roles' in cache:
+        #    roles = cache.get('roles')
+        #else:
+        #    roles = Roles.get_roles()
+        #    cache.set('roles', roles, timeout=CACHE_TTL)
 
-        if 'roles' in cache:
-            roles = cache.get('roles')
-        else:
+        try:
+            if request.session['roles']:
+                roles = request.session['roles']
+        except:
             roles = Roles.get_roles()
-            cache.set('roles', roles, timeout=CACHE_TTL)
+            request.session['roles'] = roles
+
 
 
 
