@@ -125,4 +125,3 @@ class Roles:
         logger.info("Se asignaron los roles al profile")
         logger.debug("Fin de get_roles")
         return roles
-
