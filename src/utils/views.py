@@ -1,6 +1,7 @@
 import logging
 
 from django.contrib.auth.mixins import AccessMixin
+from django.http import HttpResponseRedirect
 
 from profiles.models import Profile
 from register.models import Personal, Colegio, PersonalColegio, Direccion, Telefono
@@ -22,9 +23,10 @@ class MyLoginRequiredMixin:
         logger.debug("MIXIN LOGGIN: ")
         logger.debug("usuario logueado: " + str(request.user.is_authenticated()))
         logger.debug("colegio: " + str(request.session.get('colegio')))
-        if not request.user.is_authenticated() or not request.session.get('colegio'):
-            # return HttpResponseRedirect('/login/')
-            return self.handle_no_permission()
+        if not request.user.is_authenticated():
+            if not request.user.is_superuser and not request.session.get('colegio'):
+                return HttpResponseRedirect('/login/')
+            # return self.handle_no_permission()
         return super().dispatch(request, *args, **kwargs)
 
 

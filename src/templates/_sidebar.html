@@ -18,6 +18,7 @@
       {% with request.resolver_match.namespace as namespace %}
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">MENÚ DE NAVEGACIÓN</li>
+            {% if perms.personal %}
             <li class="{% if namespace == 'registers' %}active treeview orange {% else  %}treeview green{% endif %} ">
               <a href="#">
                 <img src="{% static 'site/img/svg/user.svg' %}" width="22px" height="22px"/>
@@ -27,16 +28,33 @@
                 </span>
               </a>
               <ul class="treeview-menu">
-                <li><a href="{% url 'registers:personal_list' %}"><i class="fa fa-circle-o"></i>Listado Personas </a> </li>
-                <li><a href="{% url 'registers:alumno_create' %}"><i class="fa fa-circle-o"></i> Alumno</a></li>
-                <li><a href="{% url 'registers:apoderado_create' %}"><i class="fa fa-circle-o"></i> Apoderado</a></li>
-                <li><a href="{% url 'registers:promotor_create' %}"><i class="fa fa-circle-o"></i> Promotor</a></li>
-                <li><a href="{% url 'registers:director_create' %}"><i class="fa fa-circle-o"></i> Director</a></li>
-                <li><a href="{% url 'registers:tesorero_create' %}"><i class="fa fa-circle-o"></i> Tesorero</a></li>
-                <li><a href="{% url 'registers:cajero_create' %}"><i class="fa fa-circle-o"></i> Cajero</a></li>
-                <li><a href="{% url 'registers:proveedor_create' %}"><i class="fa fa-circle-o"></i> Proveedor</a></li>
+                {% if perms.personal.personal_list %}
+                    <li><a href="{% url 'registers:personal_list' %}"><i class="fa fa-circle-o"></i>Listado Personas </a> </li>
+                {% endif %}
+                {% if perms.alumno.alumno_create %}
+                    <li><a href="{% url 'registers:alumno_create' %}"><i class="fa fa-circle-o"></i> Alumno</a></li>
+                {% endif %}
+                {% if perms.apoderado.apoderado_create %}
+                    <li><a href="{% url 'registers:apoderado_create' %}"><i class="fa fa-circle-o"></i> Apoderado</a></li>
+                {% endif %}
+                {% if perms.promotor.promotor_create %}
+                    <li><a href="{% url 'registers:promotor_create' %}"><i class="fa fa-circle-o"></i> Promotor</a></li>
+                {% endif %}
+                {% if perms.director.director_create %}
+                    <li><a href="{% url 'registers:director_create' %}"><i class="fa fa-circle-o"></i> Director</a></li>
+                {% endif %}
+                {% if perms.tesorero.tesorero_create %}
+                    <li><a href="{% url 'registers:tesorero_create' %}"><i class="fa fa-circle-o"></i> Tesorero</a></li>
+                {% endif %}
+                {% if perms.cajero.cajero_create %}
+                    <li><a href="{% url 'registers:cajero_create' %}"><i class="fa fa-circle-o"></i> Cajero</a></li>
+                {% endif %}
+                {% if perms.proveedor.proveedor_create %}
+                    <li><a href="{% url 'registers:proveedor_create' %}"><i class="fa fa-circle-o"></i> Proveedor</a></li>
+                {% endif %}
               </ul>
             </li>
+            {% endif %}
             <li class="{% if namespace == 'enrollments' %}active treeview orange {% else  %}treeview blue{% endif %} ">
               <a href="#">
                 <img src="{% static 'site/img/svg/notepad.svg' %}" width="22px" height="22px"/>

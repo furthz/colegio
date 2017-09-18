@@ -43,13 +43,19 @@ class LoginView(bracesviews.AnonymousRequiredMixin,
     form_class = forms.LoginForm
 
     def form_valid(self, form):
+        superuser = form.user_cache.is_superuser
         redirect = super(LoginView, self).form_valid(form)
-        remember_me = form.cleaned_data.get('remember_me')
-        if remember_me is True:
-            ONE_MONTH = 30 * 24 * 60 * 60
-            expiry = getattr(settings, "KEEP_LOGGED_DURATION", ONE_MONTH)
-            self.request.session.set_expiry(expiry)
-        return redirect
+        if superuser:
+            #self.request.session.user = form.user_cache
+            return HttpResponseRedirect('/users/me')
+        else:
+
+            remember_me = form.cleaned_data.get('remember_me')
+            if remember_me is True:
+                ONE_MONTH = 30 * 24 * 60 * 60
+                expiry = getattr(settings, "KEEP_LOGGED_DURATION", ONE_MONTH)
+                self.request.session.set_expiry(expiry)
+            return redirect
 
 
 class AsignColegioView(LoginRequiredMixin, View):

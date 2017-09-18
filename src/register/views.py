@@ -260,7 +260,7 @@ class PersonalUpdateView(UpdateView):
     def get_success_url(self):
         return reverse_lazy('registers:personal_list')
 
-class PersonaListView(PermissionsMixin, TemplateView):
+class PersonaListView(TemplateView):
     template_name = "persona_list.html"
 
     def post(self, request, *args, **kwargs):
@@ -308,8 +308,8 @@ class PersonaListView(PermissionsMixin, TemplateView):
                        'numero_documento': numero_documento,
                        'nombres': nombres})
 
-    #@method_decorator(permission_required('register.list_personal', login_url=settings.REDIRECT_PERMISOS,
-    #                                      raise_exception=False))
+    @method_decorator(permission_required('register.list_personal', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def get(self, request, *args, **kwargs):
 
         logger.debug("get_context")
@@ -318,12 +318,22 @@ class PersonaListView(PermissionsMixin, TemplateView):
         id_colegio = get_current_colegio()
         logger.debug("colegio id: " + str(id_colegio))
 
-        colegio = Colegio.objects.get(pk=id_colegio)
-        logger.debug("colegio: " + str(colegio))
+        alumnos = []
+        try:
+            colegio = Colegio.objects.get(pk=id_colegio)
+            logger.debug("colegio: " + str(colegio))
 
-        # Obtener los empleados del colegio
-        empleados = PersonalColegio.objects.filter(colegio=colegio, activo=True).all()
-        logger.debug("cantidad de empleados: " + str(empleados.count()))
+            # Obtener los empleados del colegio
+            empleados = PersonalColegio.objects.filter(colegio=colegio, activo=True).all()
+            logger.debug("cantidad de empleados: " + str(empleados.count()))
+
+            alumnos = Matricula.objects.filter(colegio=colegio, activo=True).all()
+            logger.debug("Cantidad de alumnos: " + str(alumnos.count()))
+
+        except Colegio.DoesNotExist:
+            # Obtener los empleados del colegio
+            empleados = PersonalColegio.objects.filter(activo=True).all()
+            logger.debug("cantidad de empleados: " + str(empleados.count()))
 
         personal = []
 
@@ -365,9 +375,8 @@ class PersonaListView(PermissionsMixin, TemplateView):
 
             personal.append(empleado.personal.persona)
 
-        alumnos = Matricula.objects.filter(colegio=colegio, activo=True).all()
-        logger.debug("Cantidad de alumnos: " + str(alumnos.count()))
 
+        # verificamos los alumnos matriculados
         for alumno in alumnos:
             alumno.alumno.persona.rol = "Alumno"
             personal.append(alumno.alumno.persona)
