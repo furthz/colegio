@@ -24,14 +24,14 @@ def get_current_colegio():
         return id
 
 
-def validar_roles(permisos):
+def validar_roles(roles):
     try:
         request = get_current_request()
-        roles = request.session['roles']
+        permisos = request.session['roles']
 
         sw = False
-        for perm in permisos:
-            if roles[perm] > 0:
+        for rol in roles:
+            if permisos[rol] > 0:
                 sw = True
 
         return sw
