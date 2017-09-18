@@ -1,9 +1,6 @@
 import logging
 
-from django.db.models.functions import Lower
-from django.urls import reverse
 from django.contrib.auth.decorators import permission_required
-from django.contrib.auth.models import PermissionsMixin
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -33,21 +30,29 @@ from payments.models import CajaChica
 logger = logging.getLogger("project")
 
 
-class CreatePersonaView(CreateView):
+class CreatePersonaView(MyLoginRequiredMixin, CreateView):
     model = Profile
     form_class = PersonaForm
     template_name = "persona_create.html"
 
+    @method_decorator(permission_required('persona.persona_create', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def form_valid(self, form):
         return super(CreatePersonaView, self).form_valid(form)
 
 
-class PersonaDetail(DetailView):
+class PersonaDetail(MyLoginRequiredMixin, DetailView):
     model = Profile
     template_name = "persona_detail.html"
 
+    @method_decorator(permission_required('persona.persona_detail', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def form_valid(self, form):
+        return super(PersonaDetail, self).form_valid(form)
 
-class AlumnoCreateView(CreateView):
+#@method_decorator(permission_required('alumno.alumno_create', login_url=settings.REDIRECT_PERMISOS,
+#                                          raise_exception=False))
+class AlumnoCreateView(MyLoginRequiredMixin, CreateView):
     model = Alumno
     form_class = AlumnoForm
     template_name = "registro_create.html"
@@ -64,12 +69,12 @@ class AlumnoCreateView(CreateView):
         return HttpResponseRedirect(alu.get_absolute_url())
 
 
-class AlumnoDetail(DetailView):
+class AlumnoDetail(MyLoginRequiredMixin, DetailView):
     model = Alumno
     template_name = "alumno_detail.html"
 
 
-class ApoderadoCreateView(CreateView):
+class ApoderadoCreateView(MyLoginRequiredMixin, CreateView):
     model = Apoderado
     form_class = ApoderadoForm
     template_name = "registro_create.html"
@@ -84,12 +89,12 @@ class ApoderadoCreateView(CreateView):
         return HttpResponseRedirect(apoderado.get_absolute_url())
 
 
-class ApoderadoDetailView(DetailView):
+class ApoderadoDetailView(MyLoginRequiredMixin, DetailView):
     model = Apoderado
     template_name = "apoderado_detail.html"
 
 
-class PersonalCreateView(CreateView):
+class PersonalCreateView(MyLoginRequiredMixin, CreateView):
     model = Personal
     form_class = PersonalForm
     template_name = "personal_create.html"
@@ -104,12 +109,12 @@ class PersonalCreateView(CreateView):
         return HttpResponseRedirect(personal.get_absolute_url())
 
 
-class PersonalDetailView(DetailView):
+class PersonalDetailView(MyLoginRequiredMixin, DetailView):
     model = Personal
     template_name = "personal_detail.html"
 
 
-class PromotorCreateView(CreateView):
+class PromotorCreateView(MyLoginRequiredMixin, CreateView):
     model = Promotor
     form_class = PromotorForm
     template_name = "registro_create.html"
@@ -124,12 +129,12 @@ class PromotorCreateView(CreateView):
         return HttpResponseRedirect(personal.get_absolute_url())
 
 
-class PromotorDetailView(DetailView):
+class PromotorDetailView(MyLoginRequiredMixin, DetailView):
     model = Promotor
     template_name = "promotor_detail.html"
 
 
-class DirectorCreateView(CreateView):
+class DirectorCreateView(MyLoginRequiredMixin, CreateView):
     model = Director
     form_class = DirectorForm
     template_name = "registro_create.html"
@@ -144,12 +149,12 @@ class DirectorCreateView(CreateView):
         return HttpResponseRedirect(personal.get_absolute_url())
 
 
-class DirectorDetailView(DetailView):
+class DirectorDetailView(MyLoginRequiredMixin, DetailView):
     model = Director
     template_name = "director_detail.html"
 
 
-class CajeroCreateView(CreateView):
+class CajeroCreateView(MyLoginRequiredMixin, CreateView):
     model = Cajero
     form_class = CajeroForm
     template_name = "registro_create.html"
@@ -164,12 +169,12 @@ class CajeroCreateView(CreateView):
         return HttpResponseRedirect(personal.get_absolute_url())
 
 
-class CajeroDetailView(DetailView):
+class CajeroDetailView(MyLoginRequiredMixin, DetailView):
     model = Cajero
     template_name = "cajero_detail.html"
 
 
-class TesoreroCreateView(CreateView):
+class TesoreroCreateView(MyLoginRequiredMixin, CreateView):
     model = Tesorero
     form_class = TesoreroForm
     template_name = "registro_create.html"
@@ -184,7 +189,7 @@ class TesoreroCreateView(CreateView):
         return HttpResponseRedirect(personal.get_absolute_url())
 
 
-class TesoreroDetailView(DetailView):
+class TesoreroDetailView(MyLoginRequiredMixin, DetailView):
     model = Tesorero
     template_name = "tesorero_detail.html"
 
@@ -208,12 +213,12 @@ class ProveedorCreateView(MyLoginRequiredMixin, CreateView):
         return HttpResponseRedirect(instance.get_absolute_url())
 
 
-class ProveedorDetailView(DetailView):
+class ProveedorDetailView(MyLoginRequiredMixin, DetailView):
     model = Proveedor
     template_name = "proveedor_detail.html"
 
 
-class PersonaDetailView(DetailView):
+class PersonaDetailView(MyLoginRequiredMixin, DetailView):
     # model = Profile
     queryset = Profile.objects.select_related()
     template_name = "registro_detail.html"
@@ -224,7 +229,7 @@ class PersonaDetailView(DetailView):
         return super(PersonaDetailView, self).get(request, *args, **kwargs)
 
 
-class PersonalDeleteView(TemplateView):
+class PersonalDeleteView(MyLoginRequiredMixin, TemplateView):
     model = Profile
 
     def get(self, request, *args, **kwargs):
@@ -241,7 +246,7 @@ class PersonalDeleteView(TemplateView):
         return HttpResponseRedirect(reverse('registers:personal_list'))
 
 
-class PersonalUpdateView(UpdateView):
+class PersonalUpdateView(MyLoginRequiredMixin, UpdateView):
     model = Profile
     form_class = PersonaForm
     template_name = "registro_form.html"
@@ -260,7 +265,7 @@ class PersonalUpdateView(UpdateView):
     def get_success_url(self):
         return reverse_lazy('registers:personal_list')
 
-class PersonaListView(PermissionsMixin, TemplateView):
+class PersonaListView(MyLoginRequiredMixin, TemplateView):
     template_name = "persona_list.html"
 
     def post(self, request, *args, **kwargs):
@@ -272,21 +277,38 @@ class PersonaListView(PermissionsMixin, TemplateView):
         nombres = request.POST["nombres"]
 
         if numero_documento and not nombres:
-            empleados = Profile.objects.filter(numero_documento=numero_documento,
+            if colegio is None:
+                empleados = Profile.objects.filter(numero_documento=numero_documento,
+                                               personal__Colegios__activo=True)
+            else:
+                empleados = Profile.objects.filter(numero_documento=numero_documento,
                                                personal__Colegios__id_colegio=colegio,
                                                personal__Colegios__activo=True)
         elif numero_documento and nombres:
-            empleados = Profile.objects.filter(Q(numero_documento=numero_documento),
-                                               Q(nombre__icontains=nombres.upper()) |
-                                               Q(apellido_pa__icontains=nombres.upper()) |
-                                               Q(apellido_ma__icontains=nombres.upper())).filter(personal__Colegios__id_colegio=colegio,
-                                                                                                 personal__Colegios__activo=True)  # ,
+            if colegio is None:
+                empleados = Profile.objects.filter(Q(numero_documento=numero_documento),
+                                                   Q(nombre__icontains=nombres.upper()) |
+                                                   Q(apellido_pa__icontains=nombres.upper()) |
+                                                   Q(apellido_ma__icontains=nombres.upper())).filter(
+                                                            personal__Colegios__activo=True)  # ,
+            else:
+                empleados = Profile.objects.filter(Q(numero_documento=numero_documento),
+                                                   Q(nombre__icontains=nombres.upper()) |
+                                                   Q(apellido_pa__icontains=nombres.upper()) |
+                                                   Q(apellido_ma__icontains=nombres.upper())).filter(personal__Colegios__id_colegio=colegio,
+                                                                                                     personal__Colegios__activo=True)  # ,
             # personal__Colegios__id_colegio=colegio)
         elif not numero_documento and nombres:
-            empleados = Profile.objects.filter(Q(nombre__icontains=nombres.upper()) |
-                                               Q(apellido_pa__icontains=nombres.upper()) |
-                                               Q(apellido_ma__icontains=nombres.upper())).filter(personal__Colegios__id_colegio=colegio,
-                                                                                                 personal__Colegios__activo=True)
+            if colegio is None:
+                empleados = Profile.objects.filter(Q(nombre__icontains=nombres.upper()) |
+                                                   Q(apellido_pa__icontains=nombres.upper()) |
+                                                   Q(apellido_ma__icontains=nombres.upper())).filter(
+                                                                        personal__Colegios__activo=True)
+            else:
+                empleados = Profile.objects.filter(Q(nombre__icontains=nombres.upper()) |
+                                                   Q(apellido_pa__icontains=nombres.upper()) |
+                                                   Q(apellido_ma__icontains=nombres.upper())).filter(personal__Colegios__id_colegio=colegio,
+                                                                                                     personal__Colegios__activo=True)
         else:
             return self.get(request)
 
@@ -308,9 +330,11 @@ class PersonaListView(PermissionsMixin, TemplateView):
                        'numero_documento': numero_documento,
                        'nombres': nombres})
 
-    #@method_decorator(permission_required('register.list_personal', login_url=settings.REDIRECT_PERMISOS,
-    #                                      raise_exception=False))
+    @method_decorator(permission_required('personal.list_personal', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def get(self, request, *args, **kwargs):
+
+        roles = request.session['roles']
 
         logger.debug("get_context")
 
@@ -318,12 +342,22 @@ class PersonaListView(PermissionsMixin, TemplateView):
         id_colegio = get_current_colegio()
         logger.debug("colegio id: " + str(id_colegio))
 
-        colegio = Colegio.objects.get(pk=id_colegio)
-        logger.debug("colegio: " + str(colegio))
+        alumnos = []
+        try:
+            colegio = Colegio.objects.get(pk=id_colegio)
+            logger.debug("colegio: " + str(colegio))
 
-        # Obtener los empleados del colegio
-        empleados = PersonalColegio.objects.filter(colegio=colegio, activo=True).all()
-        logger.debug("cantidad de empleados: " + str(empleados.count()))
+            # Obtener los empleados del colegio
+            empleados = PersonalColegio.objects.filter(colegio=colegio, activo=True).all()
+            logger.debug("cantidad de empleados: " + str(empleados.count()))
+
+            alumnos = Matricula.objects.filter(colegio=colegio, activo=True).all()
+            logger.debug("Cantidad de alumnos: " + str(alumnos.count()))
+
+        except Colegio.DoesNotExist:
+            # Obtener los empleados del colegio
+            empleados = PersonalColegio.objects.filter(activo=True).all()
+            logger.debug("cantidad de empleados: " + str(empleados.count()))
 
         personal = []
 
@@ -365,9 +399,8 @@ class PersonaListView(PermissionsMixin, TemplateView):
 
             personal.append(empleado.personal.persona)
 
-        alumnos = Matricula.objects.filter(colegio=colegio, activo=True).all()
-        logger.debug("Cantidad de alumnos: " + str(alumnos.count()))
 
+        # verificamos los alumnos matriculados
         for alumno in alumnos:
             alumno.alumno.persona.rol = "Alumno"
             personal.append(alumno.alumno.persona)
