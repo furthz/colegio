@@ -63,4 +63,8 @@ class Descuento(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacio
     class Meta:
         managed = False
         db_table = 'descuento'
+        permissions = (
+            ('aprobar_descuento', 'Para aprobar descuento'),
+            ('detalle_descuento', 'Para ver detalles descuento')
+        )
 

@@ -1,4 +1,7 @@
 from datetime import date, datetime
+from django.contrib.auth.decorators import permission_required
+from django.utils.decorators import method_decorator
+
 from django.views.generic import TemplateView
 from django.views.generic import DetailView
 from django.views.generic import CreateView
@@ -9,7 +12,7 @@ from django.views.generic import FormView
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.db.models import Q
-from django.views import View
+from django.conf import settings
 from django.core.urlresolvers import reverse_lazy
 from django.urls import reverse
 
@@ -146,6 +149,9 @@ class AprobarDescuentoView(ListView):
         else:
             return {'mensaje_error': mensaje_error}  # return context
 
+    @method_decorator(
+        permission_required('Descuento.aprobar_descuento', login_url=settings.REDIRECT_PERMISOS,
+                            raise_exception=False))
     def post(self, request, *args, **kwargs):
         logger.info("Estoy en el POST")
         logger.info("Los datos de llegada son {0}".format(request.POST))
@@ -260,6 +266,9 @@ class DetalleDescuentoView(FormView):
         else:
             return {'mensaje_error': mensaje_error}  # return context
 
+    @method_decorator(
+        permission_required('Descuento.detalle_descuento', login_url=settings.REDIRECT_PERMISOS,
+                            raise_exception=False))
     def get(self, request, *args, **kwargs):
         super(DetalleDescuentoView, self).get(request, *args, **kwargs)
 
@@ -267,10 +276,15 @@ class DetalleDescuentoView(FormView):
 
         return render(request, self.template_name, contexto)  # return context
 
-
+    @method_decorator(
+        permission_required('Descuento.detalle_descuento', login_url=settings.REDIRECT_PERMISOS,
+                            raise_exception=False))
     def get_queryset(self):
         return []
 
+    @method_decorator(
+        permission_required('Descuento.detalle_descuento', login_url=settings.REDIRECT_PERMISOS,
+                            raise_exception=False))
     def post(self, request, *args, **kwargs):
 
         alumno = request.POST["alumno"]
