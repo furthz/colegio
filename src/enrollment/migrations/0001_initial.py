@@ -34,8 +34,20 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'tipo_servicio',
-                'managed': settings.IS_MIGRATE
+                'managed': settings.IS_MIGRATE,
                 #'managed': False,
+                'permissions': (
+                    ("Cargar_Tipo_Servicio_Create", "cargar tipo de servicio"),
+                    ("Tipo_Servicio_Regular_Create", "cargar tipo de servicio regular"),
+                    ("Tipo_Servicio_Extra_Create", "cargar tipo de servicio extra"),
+                    ("Tipo_Servicio_Detail", "cargar detalle de tipo de servicio "),
+                    ("Tipo_Servicio_Regular_End_Update", "actualizar tipo de servicio regular end"),
+                    ("Tipo_Servicio_Extra_End_Update", "actualizar tipo de servicio extra end"),
+                    ("Tipo_Servicio_Regular_Update", "actualizar tipo de servicio regular"),
+                    ("Tipo_Servicio_Extra_Update", "actualizar tipo de servicio extra"),
+                    ("Tipo_Servicio_Delete", "borrar tipo de servicio"),
+                    ("Tipo_Servicio_List", "listar tipo de servicio"),
+                )
             },
         ),
         migrations.CreateModel(
@@ -56,8 +68,19 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'servicio',
-                'managed': settings.IS_MIGRATE
+                'managed': settings.IS_MIGRATE,
                 #'managed': False,
+                'permissions' : (
+                    ("Servicio_Regular_Create", "crear un servicio regular"),
+                    ("Servicio_Extra_Create", "crear un servicios extra"),
+                    ("Servicio_Detail", "ver un detalle de servicio"),
+                    ("Servicio_Regular_End_Update", "actualizar un servicio regular end"),
+                    ("Servicio_Extra_End_Update", "actualizar un servicio extra end"),
+                    ("Servicio_Regular_Update", "actualizar un servicio regular"),
+                    ("Servicio_Extra_Update", "actualizar un servicio extra"),
+                    ("Servicio_Delete", "borrar un srvicio"),
+                    ("Servicio_List", "listar un servicio"),
+                )
             },
         ),
         migrations.CreateModel(
@@ -75,8 +98,17 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'matricula',
-                'managed': settings.IS_MIGRATE
+                'managed': settings.IS_MIGRATE,
                 # 'managed': False,
+                'permissions': (
+                    ("Matricula_Create", "crear una matricula"),
+                    ("Cargar_Matricula_Create", "cargar una matricula"),
+                    ("Matricula_Detail", "detalles de matricula"),
+                    ("Matricula_Update", "matricula update"),
+                    ("Cargar_Matricula_Update", "cargar matricula update"),
+                    ("Matricula_Delete", "borrar matricula"),
+                    ("Matricula_List", "listar matricula")
+                )
             },
         ),
         migrations.CreateModel(

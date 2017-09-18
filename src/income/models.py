@@ -30,7 +30,9 @@ class Cobranza(CreacionModificacionUserMixin, CreacionModificacionFechaMixin, mo
     class Meta:
         managed = False
         db_table = 'cobranza'
-
+        permissions = (
+            ("Registrar_Pago_List","listar registros de pago")
+        )
 
 class DetalleCobranza(models.Model):
     id_detalle_cobranza = models.AutoField(primary_key=True)

@@ -32,6 +32,9 @@ class Migration(migrations.Migration):
             options = {
                       'db_table': 'cobranza',
                       'managed': settings.IS_MIGRATE,
+                      'permissions' : (
+                            ("Registrar_Pago_List", "listar registros de pago")
+                        )
             },
         ),
         migrations.CreateModel(
