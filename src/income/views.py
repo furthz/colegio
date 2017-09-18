@@ -710,9 +710,6 @@ class ControlIngresosPromotorDetallesView2(TemplateView):
         else:
             return {'mensaje_error': mensaje_error}  # return context
 
-    @method_decorator(
-        permission_required('Cuentascobrar.control_ingresos_promotor_detalle', login_url=settings.REDIRECT_PERMISOS,
-                            raise_exception=False))
     def get(self, request, *args, **kwargs):
         super(ControlIngresosPromotorDetallesView2, self).get(request, *args, **kwargs)
 
@@ -724,9 +721,6 @@ class ControlIngresosPromotorDetallesView2(TemplateView):
         else:
             return render(request, self.template_name, contexto)  # return context
 
-    @method_decorator(
-        permission_required('Cuentascobrar.control_ingresos_promotor_detalle', login_url=settings.REDIRECT_PERMISOS,
-                            raise_exception=False))
     def post(self, request, *args, **kwargs):
 
         alumno = request.POST["alumno"]
