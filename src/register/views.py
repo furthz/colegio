@@ -27,6 +27,7 @@ from register.models import Alumno, Apoderado, Personal, Promotor, Director, Caj
 from utils.middleware import get_current_colegio
 from utils.views import SaveGeneric, MyLoginRequiredMixin
 from payments.models import CajaChica
+
 logger = logging.getLogger("project")
 
 
@@ -34,6 +35,11 @@ class CreatePersonaView(MyLoginRequiredMixin, CreateView):
     model = Profile
     form_class = PersonaForm
     template_name = "persona_create.html"
+
+    @method_decorator(permission_required('persona.persona_create', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        return super(CreatePersonaView, self).get(request, args, kwargs)
 
     @method_decorator(permission_required('persona.persona_create', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
@@ -47,16 +53,27 @@ class PersonaDetail(MyLoginRequiredMixin, DetailView):
 
     @method_decorator(permission_required('persona.persona_detail', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        return super(PersonaDetail, self).get(request, args, kwargs)
+
+    @method_decorator(permission_required('persona.persona_detail', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def form_valid(self, form):
         return super(PersonaDetail, self).form_valid(form)
 
-#@method_decorator(permission_required('alumno.alumno_create', login_url=settings.REDIRECT_PERMISOS,
-#                                          raise_exception=False))
+
 class AlumnoCreateView(MyLoginRequiredMixin, CreateView):
     model = Alumno
     form_class = AlumnoForm
     template_name = "registro_create.html"
 
+    @method_decorator(permission_required('alumno.alumno_create', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        return super(AlumnoCreateView, self).get(request, args, kwargs)
+
+    @method_decorator(permission_required('alumno.alumno_create', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def form_valid(self, form):
         logger.debug("Alumno a crear con DNI: " + form.cleaned_data["numero_documento"])
 
@@ -73,12 +90,24 @@ class AlumnoDetail(MyLoginRequiredMixin, DetailView):
     model = Alumno
     template_name = "alumno_detail.html"
 
+    @method_decorator(permission_required('alumno.alumno_detail', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        return super(AlumnoDetail, self).get(request, args, kwargs)
+
 
 class ApoderadoCreateView(MyLoginRequiredMixin, CreateView):
     model = Apoderado
     form_class = ApoderadoForm
     template_name = "registro_create.html"
 
+    @method_decorator(permission_required('apoderado.apoderado_create', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        return super(ApoderadoCreateView, self).get(request, args, kwargs)
+
+    @method_decorator(permission_required('apoderado.apoderado_create', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def form_valid(self, form):
         logger.debug("Apoderado a crear con DNI: " + form.cleaned_data["numero_documento"])
 
@@ -93,12 +122,24 @@ class ApoderadoDetailView(MyLoginRequiredMixin, DetailView):
     model = Apoderado
     template_name = "apoderado_detail.html"
 
+    @method_decorator(permission_required('apoderado.apoderado_detail', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        return super(ApoderadoDetailView, self).get(request, args, kwargs)
+
 
 class PersonalCreateView(MyLoginRequiredMixin, CreateView):
     model = Personal
     form_class = PersonalForm
     template_name = "personal_create.html"
 
+    @method_decorator(permission_required('personal.personal_create', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        return super(PersonalCreateView, self).get(request, args, kwargs)
+
+    @method_decorator(permission_required('personal.personal_create', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def form_valid(self, form):
         logger.debug("Personal a crear con DNI: " + form.cleaned_data["numero_documento"])
 
@@ -113,12 +154,24 @@ class PersonalDetailView(MyLoginRequiredMixin, DetailView):
     model = Personal
     template_name = "personal_detail.html"
 
+    @method_decorator(permission_required('personal.personal_detail', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        return super(PersonalDetailView, self).get(request, args, kwargs)
+
 
 class PromotorCreateView(MyLoginRequiredMixin, CreateView):
     model = Promotor
     form_class = PromotorForm
     template_name = "registro_create.html"
 
+    @method_decorator(permission_required('promotor.promotor_create', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        return super(PromotorCreateView, self).get(request, args, kwargs)
+
+    @method_decorator(permission_required('promotor.promotor_create', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def form_valid(self, form):
         logger.debug("Promotor a crear con DNI: " + form.cleaned_data["numero_documento"])
 
@@ -133,12 +186,24 @@ class PromotorDetailView(MyLoginRequiredMixin, DetailView):
     model = Promotor
     template_name = "promotor_detail.html"
 
+    @method_decorator(permission_required('promotor.promotor_detail', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        return super(PromotorDetailView, self).get(request, args, kwargs)
+
 
 class DirectorCreateView(MyLoginRequiredMixin, CreateView):
     model = Director
     form_class = DirectorForm
     template_name = "registro_create.html"
 
+    @method_decorator(permission_required('director.director_create', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        return super(DirectorCreateView, self).get(request, args, kwargs)
+
+    @method_decorator(permission_required('director.director_create', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def form_valid(self, form):
         logger.debug("Director a crear con DNI: " + form.cleaned_data["numero_documento"])
 
@@ -153,12 +218,24 @@ class DirectorDetailView(MyLoginRequiredMixin, DetailView):
     model = Director
     template_name = "director_detail.html"
 
+    @method_decorator(permission_required('director.director_detail', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        return super(DirectorDetailView, self).get(request, args, kwargs)
+
 
 class CajeroCreateView(MyLoginRequiredMixin, CreateView):
     model = Cajero
     form_class = CajeroForm
     template_name = "registro_create.html"
 
+    @method_decorator(permission_required('cajero.cajero_create', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        return super(CajeroCreateView, self).get(request, args, kwargs)
+
+    @method_decorator(permission_required('cajero.cajero_create', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def form_valid(self, form):
         logger.debug("Cajero a crear con DNI: " + form.cleaned_data["numero_documento"])
 
@@ -173,12 +250,24 @@ class CajeroDetailView(MyLoginRequiredMixin, DetailView):
     model = Cajero
     template_name = "cajero_detail.html"
 
+    @method_decorator(permission_required('cajero.cajero_detail', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        return super(CajeroDetailView, self).get(request, args, kwargs)
+
 
 class TesoreroCreateView(MyLoginRequiredMixin, CreateView):
     model = Tesorero
     form_class = TesoreroForm
     template_name = "registro_create.html"
 
+    @method_decorator(permission_required('tesorero.tesorero_create', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        return super(TesoreroCreateView, self).get(request, args, kwargs)
+
+    @method_decorator(permission_required('tesorero.tesorero_create', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def form_valid(self, form):
         logger.debug("Tesorero a crear con DNI: " + form.cleaned_data["numero_documento"])
 
@@ -193,12 +282,24 @@ class TesoreroDetailView(MyLoginRequiredMixin, DetailView):
     model = Tesorero
     template_name = "tesorero_detail.html"
 
+    @method_decorator(permission_required('tesorero.tesorero_detail', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        return super(TesoreroDetailView, self).get(request, args, kwargs)
+
 
 class ProveedorCreateView(MyLoginRequiredMixin, CreateView):
     model = Proveedor
     form_class = ProveedorForm
     template_name = "proveedor_create.html"
 
+    @method_decorator(permission_required('proveedor.proveedor_create', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        return super(ProveedorCreateView, self).get(request, args, kwargs)
+
+    @method_decorator(permission_required('proveedor.proveedor_create', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def form_valid(self, form):
         instance = form.save()
         instance.save()
@@ -217,14 +318,19 @@ class ProveedorDetailView(MyLoginRequiredMixin, DetailView):
     model = Proveedor
     template_name = "proveedor_detail.html"
 
+    @method_decorator(permission_required('proveedor.proveedor_detail', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        return super(ProveedorDetailView, self).get(request, args, kwargs)
+
 
 class PersonaDetailView(MyLoginRequiredMixin, DetailView):
     # model = Profile
     queryset = Profile.objects.select_related()
     template_name = "registro_detail.html"
 
-    #@method_decorator(permission_required('register.list_persona', login_url=settings.REDIRECT_PERMISOS,
-    #                                      raise_exception=False))
+    @method_decorator(permission_required('persona.persona_detail', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def get(self, request, *args, **kwargs):
         return super(PersonaDetailView, self).get(request, *args, **kwargs)
 
@@ -232,10 +338,11 @@ class PersonaDetailView(MyLoginRequiredMixin, DetailView):
 class PersonalDeleteView(MyLoginRequiredMixin, TemplateView):
     model = Profile
 
+    @method_decorator(permission_required('personal.personal_delete', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def get(self, request, *args, **kwargs):
         persona = Personal.objects.get(persona_id=int(request.GET['idpersona']))
         id_colegio = get_current_colegio()
-
 
         personales = PersonalColegio.objects.filter(personal=persona, colegio_id=id_colegio)
 
@@ -251,23 +358,27 @@ class PersonalUpdateView(MyLoginRequiredMixin, UpdateView):
     form_class = PersonaForm
     template_name = "registro_form.html"
 
+    @method_decorator(permission_required('personal.personal_update', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        return super(PersonalUpdateView, self).get(request, args, kwargs)
+
+    @method_decorator(permission_required('personal.personal_update', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def get_object(self, queryset=None):
         obj = Profile.objects.prefetch_related("direcciones").get(pk=self.kwargs['pk'])
-        """
-        try:
-            dir = Direccion.objects.get(persona=obj)
-            obj.direcciones.add(dir)
-        except Direccion.DoesNotExist:
-            pass
-        """
+
         return obj
 
     def get_success_url(self):
         return reverse_lazy('registers:personal_list')
 
+
 class PersonaListView(MyLoginRequiredMixin, TemplateView):
     template_name = "persona_list.html"
 
+    @method_decorator(permission_required('personal.personal_list', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def post(self, request, *args, **kwargs):
 
         colegio = get_current_colegio()
@@ -330,7 +441,7 @@ class PersonaListView(MyLoginRequiredMixin, TemplateView):
                        'numero_documento': numero_documento,
                        'nombres': nombres})
 
-    @method_decorator(permission_required('personal.list_personal', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('personal.personal_list', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
 
@@ -433,14 +544,15 @@ class ColegioCreateView(MyLoginRequiredMixin, TemplateView):
     model = Colegio
     form_class = ColegioForm
 
-    @method_decorator(permission_required('register.list_personal', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('colegio.colegio_create', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         return render(request, template_name=self.template_name, context={
             'form': self.form_class,
         })
 
-
+    @method_decorator(permission_required('colegio.colegio_create', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         logger.info("En el POST")
@@ -486,12 +598,16 @@ class ColegioCreateView(MyLoginRequiredMixin, TemplateView):
             return HttpResponseRedirect(reverse('registers:colegio_list'))
         return HttpResponseRedirect(reverse('registers:colegio_list'))
 
+
 class ColegioListView(MyLoginRequiredMixin, TemplateView):
     model = Colegio
     template_name = 'colegio_list.html'
 
+    @method_decorator(permission_required('colegio.colegio_list', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def get(self, request, *args, **kwargs):
         colegios = Colegio.objects.all()
         return render(request, template_name=self.template_name, context={
             'colegios': colegios,
         })
+

@@ -1,6 +1,5 @@
 from __future__ import unicode_literals
 
-from django.core.cache import cache
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseRedirect
@@ -23,7 +22,6 @@ from register.models import Personal, Colegio, Promotor, Director, Cajero, Tesor
 from django.shortcuts import render
 from django.views import View
 
-from utils.middleware import get_current_user, get_current_colegio
 from . import forms
 
 import logging
@@ -46,7 +44,8 @@ class LoginView(bracesviews.AnonymousRequiredMixin,
         superuser = form.user_cache.is_superuser
         redirect = super(LoginView, self).form_valid(form)
         if superuser:
-            #self.request.session.user = form.user_cache
+            roles = Roles.get_roles()
+            self.request.session['roles'] = roles
             return HttpResponseRedirect('/users/me')
         else:
 
@@ -84,21 +83,12 @@ class AsignColegioView(LoginRequiredMixin, View):
 
         logger.info("Usuario Logueado")
 
-        #if 'roles' in cache:
-        #    roles = cache.get('roles')
-        #else:
-        #    roles = Roles.get_roles()
-        #    cache.set('roles', roles, timeout=CACHE_TTL)
-
         try:
             if request.session['roles']:
                 roles = request.session['roles']
         except:
             roles = Roles.get_roles()
             request.session['roles'] = roles
-
-
-
 
         return HttpResponseRedirect('/users/me')
 
