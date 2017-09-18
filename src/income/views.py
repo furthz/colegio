@@ -16,7 +16,7 @@ from register.models import Colegio, Alumno, Apoderado, Promotor, PersonalColegi
 from profiles.models import Profile
 from income.models import Cobranza, DetalleCobranza
 from cash.models import CajaCajero
-from utils.middleware import get_current_colegio, get_current_user
+from utils.middleware import get_current_colegio, get_current_user, validar_roles
 
 from utils.views import MyLoginRequiredMixin
 from django.http import HttpResponseRedirect
@@ -311,45 +311,9 @@ class ControlIngresosPromotorView(FormView):
 
     def cargarformPromotor(self, request):
 
-        # Obtiene el colegio en cuestión
-        id_colegio = get_current_colegio()
-        colegio = Colegio.objects.get(pk=id_colegio)
-        # logger.debug("Colegio: " + colegio.nombre)
+        roles = ['promotor', 'director']
 
-        # Obtiene el usuario que ha iniciado sesión
-        user = get_current_user()
-        logger.debug("Usuario: " + user.name)
-
-        try:
-            profile = Profile.objects.get(user=user)
-            logger.debug("profile: " + str(profile.id_persona))
-        except Profile.DoesNotExist:
-            sw_error = True
-            mensaje_error = "No existe la Persona asociada al usuario"
-
-        try:
-            # 1. Verificamos que el usuario sea un personal
-            personal = Personal.objects.get(persona=profile)
-            logger.debug("personal: " + str(personal.id_personal))
-
-            # 2. Verificamos que el usuario sea un personal asociado al colegio
-            personal_colegio = PersonalColegio.objects.get(personal=personal, colegio=colegio)
-
-            # 3. Verificamos que sea un promotor
-            promotor = Promotor.objects.filter(empleado=personal_colegio.personal)
-
-            if promotor.count() == 0:
-                sw_error = True
-                mensaje_error = "No es un promotor de un alumno asociado al colegio"
-            else:
-                sw_error = False
-
-        except Personal.DoesNotExist:
-            sw_error = True
-            mensaje_error = "No es un personal asociado al colegio"
-
-        logger.debug("El mensaje de error es : ")
-        if sw_error != True:
+        if validar_roles(roles=roles):
 
             # Cargamos los años
             anio = datetime.today().year
@@ -368,7 +332,9 @@ class ControlIngresosPromotorView(FormView):
             return {'anios': anios, 'meses': meses_todos}
 
         else:
+            mensaje_error = "No tienes acceso a esta vista"
             return {'mensaje_error': mensaje_error}  # return context
+
 
     @method_decorator(
         permission_required('cuentascobrar.control_ingresos_promotor', login_url=settings.REDIRECT_PERMISOS,
@@ -445,44 +411,9 @@ class ControlIngresosPromotorDetallesView(FormView):
 
     def cargarformPromotordetalle(self, request):
 
-        # Obtiene el colegio en cuestión
-        id_colegio = get_current_colegio()
-        colegio = Colegio.objects.get(pk=id_colegio)
-        # logger.debug("Colegio: " + colegio.nombre)
+        roles = ['promotor', 'director']
 
-        # Obtiene el usuario que ha iniciado sesión
-        user = get_current_user()
-        logger.debug("Usuario: " + user.name)
-
-        try:
-            profile = Profile.objects.get(user=user)
-            logger.debug("profile: " + str(profile.id_persona))
-        except Profile.DoesNotExist:
-            sw_error = True
-            mensaje_error = "No existe la Persona asociada al usuario"
-
-        try:
-            # 1. Verificamos que el usuario sea un personal
-            personal = Personal.objects.get(persona=profile)
-            logger.debug("personal: " + str(personal.id_personal))
-
-            # 2. Verificamos que el usuario sea un personal asociado al colegio
-            personal_colegio = PersonalColegio.objects.get(personal=personal, colegio=colegio)
-
-            # 3. Verificamos que sea un promotor
-            promotor = Promotor.objects.filter(empleado=personal_colegio.personal)
-            #logger.debug()
-            if promotor.count() == 0:
-                sw_error = True
-                mensaje_error = "No es un promotor de un alumno asociado al colegio"
-            else:
-                sw_error = False
-
-        except Personal.DoesNotExist:
-            sw_error = True
-            mensaje_error = "No es un personal asociado al colegio"
-
-        if sw_error != True:
+        if validar_roles(roles=roles):
 
             # Cargamos los años
             anio = datetime.today().year
@@ -504,6 +435,7 @@ class ControlIngresosPromotorDetallesView(FormView):
             return {'anios': anios, 'meses': meses_todos, 'estados': estados}
 
         else:
+            mensaje_error = "No tienes acceso a esta vista"
             return {'mensaje_error': mensaje_error}  # return context
 
     @method_decorator(
@@ -649,44 +581,9 @@ class ControlIngresosPromotorDetallesView2(TemplateView):
 
     def cargarformPromotordetalle(self, request):
 
-        # Obtiene el colegio en cuestión
-        id_colegio = get_current_colegio()
-        colegio = Colegio.objects.get(pk=id_colegio)
-        # logger.debug("Colegio: " + colegio.nombre)
+        roles = ['promotor', 'director']
 
-        # Obtiene el usuario que ha iniciado sesión
-        user = get_current_user()
-        logger.debug("Usuario: " + user.name)
-
-        try:
-            profile = Profile.objects.get(user=user)
-            logger.debug("profile: " + str(profile.id_persona))
-        except Profile.DoesNotExist:
-            sw_error = True
-            mensaje_error = "No existe la Persona asociada al usuario"
-
-        try:
-            # 1. Verificamos que el usuario sea un personal
-            personal = Personal.objects.get(persona=profile)
-            logger.debug("personal: " + str(personal.id_personal))
-
-            # 2. Verificamos que el usuario sea un personal asociado al colegio
-            personal_colegio = PersonalColegio.objects.get(personal=personal, colegio=colegio)
-
-            # 3. Verificamos que sea un promotor
-            promotor = Promotor.objects.filter(empleado=personal_colegio.personal)
-            # logger.debug()
-            if promotor.count() == 0:
-                sw_error = True
-                mensaje_error = "No es un promotor de un alumno asociado al colegio"
-            else:
-                sw_error = False
-
-        except Personal.DoesNotExist:
-            sw_error = True
-            mensaje_error = "No es un personal asociado al colegio"
-
-        if sw_error != True:
+        if validar_roles(roles=roles):
 
             # Cargamos los años
             anio = datetime.today().year
@@ -708,6 +605,7 @@ class ControlIngresosPromotorDetallesView2(TemplateView):
             return {'anios': anios, 'meses': meses_todos, 'estados': estados}
 
         else:
+            mensaje_error = "No tienes acceso a esta vista"
             return {'mensaje_error': mensaje_error}  # return context
 
     def get(self, request, *args, **kwargs):
