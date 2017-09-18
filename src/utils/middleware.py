@@ -25,19 +25,21 @@ def get_current_colegio():
 
 
 def validar_roles(roles):
-    try:
+
         request = get_current_request()
         permisos = request.session['roles']
 
         sw = False
         for rol in roles:
-            if permisos[rol] > 0:
-                sw = True
+            try:
+                if permisos[rol] > 0:
+                    sw = True
+            except KeyError:
+                pass
 
         return sw
 
-    except KeyError:
-        return False
+
 
 
 class ThreadLocalMiddleware(object):
