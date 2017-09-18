@@ -37,6 +37,9 @@
                 {% if perms.apoderado.apoderado_create %}
                     <li><a href="{% url 'registers:apoderado_create' %}"><i class="fa fa-circle-o"></i> Apoderado</a></li>
                 {% endif %}
+                {% if perms.sistemas.sistemas_create %}
+                    <li><a href="{% url 'registers:sistemas_create' %}"><i class="fa fa-circle-o"></i> Usuario Sistemas</a></li>
+                {% endif %}
                 {% if perms.promotor.promotor_create %}
                     <li><a href="{% url 'registers:promotor_create' %}"><i class="fa fa-circle-o"></i> Promotor</a></li>
                 {% endif %}

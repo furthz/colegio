@@ -20,7 +20,8 @@ from utils.models import CreacionModificacionUserMixin, CreacionModificacionFech
     CreacionModificacionUserPromotorMixin, CreacionModificacionUserCajeroMixin, CreacionModificacionUserDirectorMixin, \
     CreacionModificacionUserTesoreroMixin, CreacionModificacionFechaTesoreroMixin, \
     CreacionModificacionUserAdministrativoMixin, CreacionModificacionFechaAdministrativoMixin, \
-    CreacionModificacionUserProveedorMixin, CreacionModificacionFechaProveedorMixin
+    CreacionModificacionUserProveedorMixin, CreacionModificacionFechaProveedorMixin, \
+    CreacionModificacionUserSistemasMixin, CreacionModificacionFechaSistemasMixin
 from utils.models import CreacionModificacionFechaMixin
 from utils.models import ActivoMixin
 from profiles.models import Profile
@@ -317,6 +318,50 @@ class Tesorero(CreacionModificacionUserTesoreroMixin, CreacionModificacionFechaT
             ("tesorero_delete", "eliminar tesorero"),
             ("tesorero_list", "listar tesorero"),
             ("tesorero_detail", "detalle tesorero"),
+        )
+
+
+class Sistemas(CreacionModificacionUserSistemasMixin, CreacionModificacionFechaSistemasMixin, Personal, models.Model):
+    """
+    Clase para el Promotor
+    """
+    id_sistemas = models.AutoField(primary_key=True)
+    empleado = models.OneToOneField(Personal, models.DO_NOTHING, parent_link=True)
+    activo_promotor = models.BooleanField(default=True, db_column="activo")
+
+    def __str__(self):
+        return "Id Sistemas: {0}".format(self.id_sistemas)
+
+    def get_absolute_url(self):
+        """
+        Redirecciona las views que usan como modelo esta clase
+        :return: url de detalles de la persona
+        """
+        return reverse('registers:sistemas_detail', kwargs={'pk': self.pk})
+
+    @staticmethod
+    def saveFromPersonal(per: Personal, **atributos):
+        """
+        # Método que permite guardar un Promotor a partir de un personal existente
+        # :param personal: Personal existente
+        # :param atributos: Nuevos atributos propios de Apoderado
+        # :return: Objeto Promotor creado
+        """
+        try:
+            sistemas = Sistemas.objects.get(persona=per)
+            return sistemas
+        except Sistemas.DoesNotExist:
+            return insert_child(obj=per, child_model=Sistemas, **atributos)
+
+    class Meta:
+        managed = True
+        db_table = 'sistemas'
+        permissions = (
+            ("sistemas_create", "crear usuario sistemas"),
+            ("sistemas_update", "update usuario sistemas"),
+            ("sistemas_delete", "eliminar usuario sistemas"),
+            ("sistemas_list", "listar usuario sistemas"),
+            ("sistemas_detail", "detalle usuario sistemas"),
         )
 
 

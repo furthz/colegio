@@ -184,6 +184,30 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
+            name='Sistemas',
+            fields=[
+                ('id_sistemas', models.AutoField(auto_created=True, primary_key=True, serialize=False)),
+                ('empleado', models.OneToOneField(on_delete=django.db.models.deletion.DO_NOTHING,
+                                                  parent_link=True, to='register.Personal')),
+                ('activo', models.BooleanField(default=True)),
+                ('fecha_creacion', models.DateTimeField(null=True)),
+                ('fecha_modificacion', models.DateTimeField(null=True)),
+                ('usuario_creacion', models.CharField(max_length=10, null=True)),
+                ('usuario_modificacion', models.CharField(max_length=10, null=True))
+            ],
+            options={
+                'db_table': 'sistemas',
+                'managed': settings.IS_MIGRATE,
+                'permissions': (
+                    ("sistemas_create", "crear usuario sistemas"),
+                    ("sistemas_update", "update usuario sistemas"),
+                    ("sistemas_delete", "eliminar usuario sistemas"),
+                    ("sistemas_list", "listar usuario sistemas"),
+                    ("sistemas_detail", "detalle usuario sistemas"),
+                )
+            },
+        ),
+        migrations.CreateModel(
             name='Promotor',
             fields=[
                 ('id_promotor', models.AutoField(auto_created=True, primary_key=True, serialize=False)),
