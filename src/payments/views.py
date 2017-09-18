@@ -5,26 +5,23 @@ from django.core.urlresolvers import reverse_lazy
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView,UpdateView
-from django.views.generic import TemplateView
 
-from utils.middleware import get_current_colegio, get_current_user
-from utils.views import MyLoginRequiredMixin
 from payments.models import TipoPago
 from payments.models import CajaChica
-from income.models import obtener_mes
+
 from register.models import PersonalColegio, Tesorero, Colegio, Personal, Promotor
 from payments.forms import TipoPagoForm
 from profiles.models import Profile
 from payments.forms import PagoForm
-#from datetime import datetime
+
 from django.utils.timezone import now as timezone_now
 from _datetime import datetime
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from django.shortcuts import render
+
 from payments.forms import ControlPagosPromotorForm
 from payments.models import Pago, calculo_pagos_total
-# Create your views here.
+
 from django.views.generic import FormView
 import logging
 from datetime import date
