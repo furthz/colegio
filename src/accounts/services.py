@@ -30,7 +30,7 @@ class Roles:
                 promotor = Promotor.objects.get(empleado=empleado, activo_promotor=True)
                 roles['promotor'] = promotor.id_promotor
             except Promotor.DoesNotExist:
-                promotor = None
+                roles['promotor'] = -1
 
             try:
                 director = Director.objects.get(empleado=empleado, activo_director=True)
