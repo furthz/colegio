@@ -146,8 +146,8 @@ class ControlPagosPromotorView(FormView):
 
         # Obtiene el colegio en cuestión
         id_colegio = get_current_colegio()
+        logger.debug("El id del colegio es {0}".format(id_colegio))
         colegio = Colegio.objects.get(pk=id_colegio)
-        # logger.debug("Colegio: " + colegio.nombre)
 
         # Obtiene el usuario que ha iniciado sesión
         user = get_current_user()
@@ -209,7 +209,7 @@ class ControlPagosPromotorView(FormView):
         else:
             return {'mensaje_error': mensaje_error}  # return context
 
-    @method_decorator(permission_required('Pago.control_pagos', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('pago.control_pagos', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         super(ControlPagosPromotorView, self).get(request, *args, **kwargs)
@@ -222,12 +222,12 @@ class ControlPagosPromotorView(FormView):
         else:
             return render(request, self.template_name, contexto)  # return context
 
-    @method_decorator(permission_required('Pago.control_pagos', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('pago.control_pagos', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get_queryset(self):
         return []
 
-    @method_decorator(permission_required('Pago.control_pagos', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('pago.control_pagos', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def post(self, request, *args, **kwargs):
 

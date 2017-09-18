@@ -4,9 +4,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from . import views
 
-from income.views import ControlIngresosPadresView, ControlIngresosPromotorView
+from income.views import ControlIngresosPadresView, ControlIngresosPromotorView, ControlIngresosPromotorDetallesView2
 from income.views import ControlIngresosPromotorDetallesView
-from enrollment.views import TipoServicioRegularCreateView
 from income.views import RegistrarPagoListView
 from income.views import generar_pdf
 
@@ -21,5 +20,7 @@ urlpatterns = [
     url(r'^cuentas_cobrar_promotor_detalle/filter', ControlIngresosPromotorDetallesView.as_view(), name="cuentas_cobrar_promotor_detalle"),
 
     url(r'^register/pdf/$', generar_pdf, name="generar_pdf"),
+
+    url(r'^cuentas_cobrar_promotor_detalle2/filter', ControlIngresosPromotorDetallesView2.as_view(), name="cuentas_cobrar_promotor_detalle2"),
 
 ]
