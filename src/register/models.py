@@ -327,7 +327,7 @@ class Sistemas(CreacionModificacionUserSistemasMixin, CreacionModificacionFechaS
     """
     id_sistemas = models.AutoField(primary_key=True)
     empleado = models.OneToOneField(Personal, models.DO_NOTHING, parent_link=True)
-    activo_promotor = models.BooleanField(default=True, db_column="activo")
+    activo_sistemas = models.BooleanField(default=True, db_column="activo")
 
     def __str__(self):
         return "Id Sistemas: {0}".format(self.id_sistemas)
