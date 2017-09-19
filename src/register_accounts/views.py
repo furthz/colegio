@@ -29,7 +29,7 @@ class RegistroUsarioCreationView(CreateView):
     model = User
     template_name = "register_accounts/register_accounts_form.html"
     form_class = RegistroUsuarioForm
-    success_url = '/register_accounts/registe/'
+    success_url = reverse_lazy('register_accounts:register_accounts_list')
 
 
 class RegistroUsarioUpdateView(UpdateView):
