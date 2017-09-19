@@ -1,6 +1,7 @@
 from datetime import date, datetime
 
 from django.contrib.auth.decorators import permission_required
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.utils.decorators import method_decorator
 from django.conf import settings
 
@@ -9,16 +10,13 @@ from django.db.models import Q
 from income.models import calculo_ingresos_promotor, obtener_mes, calculo_ingresos_alumno, calculo_por_nivel_promotor
 from django.views.generic import FormView, TemplateView
 from django.shortcuts import render
-from enrollment.models import Cuentascobrar,  Matricula
-from register.models import Colegio, Alumno, Tesorero, Cajero, PersonalColegio, Apoderado, ApoderadoAlumno
+from register.models import Cajero
 from enrollment.models import Cuentascobrar, Matricula
-from register.models import Colegio, Alumno, Apoderado, ApoderadoAlumno, Promotor, PersonalColegio, Personal
+from register.models import Colegio, Alumno, Apoderado, Promotor, PersonalColegio, Personal
 from profiles.models import Profile
 from income.models import Cobranza, DetalleCobranza
 from cash.models import CajaCajero
-from utils.views import get_current_colegio
-from utils.middleware import get_current_user
-from utils.middleware import get_current_colegio, get_current_user
+from utils.middleware import get_current_colegio, get_current_user, validar_roles
 
 from utils.views import MyLoginRequiredMixin
 from django.http import HttpResponseRedirect
@@ -33,6 +31,9 @@ class RegistrarPagoListView(MyLoginRequiredMixin, TemplateView):
     """
     template_name = "registrarpago_form.html"
     cuentas = []
+
+    @method_decorator(permission_required('Cobranza.Registrar_Pago_List', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def get(self, request, *args, **kwargs):
         """tiposervicio = self.model.objects.get(pk = int(request.GET['tiposervicio']))
         for servicio in tiposervicio.getServiciosAsociados():
@@ -42,23 +43,12 @@ class RegistrarPagoListView(MyLoginRequiredMixin, TemplateView):
         tiposervicio.save()
         """
         #cuentas = Cuentascobrar.objects.all()
+        roles = ['cajero']
 
-        try:
-            logger.info("Estoy en el primer GET")
-            user_now = PersonalColegio.objects.get(personal__user=get_current_user(), colegio_id=get_current_colegio())
-            logger.info(user_now)
-            #rol_tesorero = Tesorero.objects.filter(personalcolegio=user_now)
-            rol_cajero = Cajero.objects.filter(personalcolegio=user_now)
-            #logger.info(rol_tesorero)
-            logger.info(rol_cajero)
-            #if (rol_cajero.count() + rol_tesorero.count()) > 0:
-            if (rol_cajero.count()) > 0:
-                logger.info("Se tienen los permisos")
-            else:
-                return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
-        except:
+        if validar_roles(roles=roles):
+            logger.info("Se tienen los permisos de cajero")
+        else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
-
 
 
         logger.info("Estoy en income pagos")
@@ -254,7 +244,7 @@ class ControlIngresosPadresView(FormView):
         else:
             return {'mensaje_error': mensaje_error}  # return context
 
-    @method_decorator(permission_required('Cuentascobrar.control_ingresos_padres', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('cuentascobrar.control_ingresos_padres', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         super(ControlIngresosPadresView, self).get(request, *args, **kwargs)
@@ -266,12 +256,12 @@ class ControlIngresosPadresView(FormView):
         else:
             return render(request, self.template_name, contexto)  # return context
 
-    @method_decorator(permission_required('Cuentascobrar.control_ingresos_padres', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('cuentascobrar.control_ingresos_padres', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get_queryset(self):
         return []
 
-    @method_decorator(permission_required('Cuentascobrar.control_ingresos_padres', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('cuentascobrar.control_ingresos_padres', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def post(self, request, *args, **kwargs):
 
@@ -313,44 +303,9 @@ class ControlIngresosPromotorView(FormView):
 
     def cargarformPromotor(self, request):
 
-        # Obtiene el colegio en cuestión
-        id_colegio = get_current_colegio()
-        colegio = Colegio.objects.get(pk=id_colegio)
-        # logger.debug("Colegio: " + colegio.nombre)
+        roles = ['promotor', 'director']
 
-        # Obtiene el usuario que ha iniciado sesión
-        user = get_current_user()
-        logger.debug("Usuario: " + user.name)
-
-        try:
-            profile = Profile.objects.get(user=user)
-            logger.debug("profile: " + str(profile.id_persona))
-        except Profile.DoesNotExist:
-            sw_error = True
-            mensaje_error = "No existe la Persona asociada al usuario"
-
-        try:
-            # 1. Verificamos que el usuario sea un personal
-            personal = Personal.objects.get(persona=profile)
-            logger.debug("personal: " + str(personal.id_personal))
-
-            # 2. Verificamos que el usuario sea un personal asociado al colegio
-            personal_colegio = PersonalColegio.objects.get(personal=personal, colegio=colegio)
-
-            # 3. Verificamos que sea un promotor
-            promotor = Promotor.objects.filter(empleado=personal_colegio.personal)
-
-            if promotor.count() == 0:
-                sw_error = True
-                mensaje_error = "No es un promotor de un alumno asociado al colegio"
-            else:
-                sw_error = False
-
-        except Personal.DoesNotExist:
-            sw_error = True
-            mensaje_error = "No es un personal asociado al colegio"
-
-        if sw_error != True:
+        if validar_roles(roles=roles):
 
             # Cargamos los años
             anio = datetime.today().year
@@ -369,10 +324,12 @@ class ControlIngresosPromotorView(FormView):
             return {'anios': anios, 'meses': meses_todos}
 
         else:
+            mensaje_error = "No tienes acceso a esta vista"
             return {'mensaje_error': mensaje_error}  # return context
 
+
     @method_decorator(
-        permission_required('Cuentascobrar.control_ingresos_promotor', login_url=settings.REDIRECT_PERMISOS,
+        permission_required('cuentascobrar.control_ingresos_promotor', login_url=settings.REDIRECT_PERMISOS,
                             raise_exception=False))
     def get(self, request, *args, **kwargs):
         super(ControlIngresosPromotorView, self).get(request, *args, **kwargs)
@@ -385,13 +342,13 @@ class ControlIngresosPromotorView(FormView):
             return render(request, self.template_name, contexto)  # return context
 
     @method_decorator(
-        permission_required('Cuentascobrar.control_ingresos_promotor', login_url=settings.REDIRECT_PERMISOS,
+        permission_required('cuentascobrar.control_ingresos_promotor', login_url=settings.REDIRECT_PERMISOS,
                             raise_exception=False))
     def get_queryset(self):
         return []
 
     @method_decorator(
-        permission_required('Cuentascobrar.control_ingresos_promotor', login_url=settings.REDIRECT_PERMISOS,
+        permission_required('cuentascobrar.control_ingresos_promotor', login_url=settings.REDIRECT_PERMISOS,
                             raise_exception=False))
     def post(self, request, *args, **kwargs):
 
@@ -446,44 +403,9 @@ class ControlIngresosPromotorDetallesView(FormView):
 
     def cargarformPromotordetalle(self, request):
 
-        # Obtiene el colegio en cuestión
-        id_colegio = get_current_colegio()
-        colegio = Colegio.objects.get(pk=id_colegio)
-        # logger.debug("Colegio: " + colegio.nombre)
+        roles = ['promotor', 'director']
 
-        # Obtiene el usuario que ha iniciado sesión
-        user = get_current_user()
-        logger.debug("Usuario: " + user.name)
-
-        try:
-            profile = Profile.objects.get(user=user)
-            logger.debug("profile: " + str(profile.id_persona))
-        except Profile.DoesNotExist:
-            sw_error = True
-            mensaje_error = "No existe la Persona asociada al usuario"
-
-        try:
-            # 1. Verificamos que el usuario sea un personal
-            personal = Personal.objects.get(persona=profile)
-            logger.debug("personal: " + str(personal.id_personal))
-
-            # 2. Verificamos que el usuario sea un personal asociado al colegio
-            personal_colegio = PersonalColegio.objects.get(personal=personal, colegio=colegio)
-
-            # 3. Verificamos que sea un promotor
-            promotor = Promotor.objects.filter(empleado=personal_colegio.personal)
-            #logger.debug()
-            if promotor.count() == 0:
-                sw_error = True
-                mensaje_error = "No es un promotor de un alumno asociado al colegio"
-            else:
-                sw_error = False
-
-        except Personal.DoesNotExist:
-            sw_error = True
-            mensaje_error = "No es un personal asociado al colegio"
-
-        if sw_error != True:
+        if validar_roles(roles=roles):
 
             # Cargamos los años
             anio = datetime.today().year
@@ -505,10 +427,11 @@ class ControlIngresosPromotorDetallesView(FormView):
             return {'anios': anios, 'meses': meses_todos, 'estados': estados}
 
         else:
+            mensaje_error = "No tienes acceso a esta vista"
             return {'mensaje_error': mensaje_error}  # return context
 
     @method_decorator(
-        permission_required('Cuentascobrar.control_ingresos_promotor_detalle', login_url=settings.REDIRECT_PERMISOS,
+        permission_required('cuentascobrar.control_ingresos_promotor_detalle', login_url=settings.REDIRECT_PERMISOS,
                             raise_exception=False))
     def get(self, request, *args, **kwargs):
         super(ControlIngresosPromotorDetallesView, self).get(request, *args, **kwargs)
@@ -521,13 +444,13 @@ class ControlIngresosPromotorDetallesView(FormView):
             return render(request, self.template_name, contexto)  # return context
 
     @method_decorator(
-        permission_required('Cuentascobrar.control_ingresos_promotor_detalle', login_url=settings.REDIRECT_PERMISOS,
+        permission_required('cuentascobrar.control_ingresos_promotor_detalle', login_url=settings.REDIRECT_PERMISOS,
                             raise_exception=False))
     def get_queryset(self):
         return []
 
     @method_decorator(
-        permission_required('Cuentascobrar.control_ingresos_promotor_detalle', login_url=settings.REDIRECT_PERMISOS,
+        permission_required('cuentascobrar.control_ingresos_promotor_detalle', login_url=settings.REDIRECT_PERMISOS,
                             raise_exception=False))
     def post(self, request, *args, **kwargs):
 
@@ -628,3 +551,125 @@ def generar_pdf(request):
     response.write(buff.getvalue())
     buff.close()
     return response
+
+
+
+
+
+"""
+
+XD XD XD XD XD
+"""
+
+"""
+PROMOTOR: DETALLE DE PAGOS REALIZADOS POR HIJO, AÑO, MES Y ESTADO
+"""
+
+
+class ControlIngresosPromotorDetallesView2(TemplateView):
+    model = Cuentascobrar
+    template_name = "control_ingresos_promotor_detalle2.html"
+    #form_class = CuentasCobrarPromotorDetalleForm
+
+    def cargarformPromotordetalle(self, request):
+
+        roles = ['promotor', 'director']
+
+        if validar_roles(roles=roles):
+
+            # Cargamos los años
+            anio = datetime.today().year
+            anios = []
+            for i in range(0, 3):
+                anios.append(anio - i)
+
+            # Cargamos los meses
+            meses_todos = ["Todos", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto",
+                           "Setiembre", "Octubre", "Noviembre", "Diciembre"]
+            num_mes = datetime.today().month
+            meses = []
+            for i in range(0, num_mes + 1):
+                meses.append(meses_todos[i])
+
+            # Cargamos los estados
+            estados = ["Todos", "Pagado", "No pagado"]
+
+            return {'anios': anios, 'meses': meses_todos, 'estados': estados}
+
+        else:
+            mensaje_error = "No tienes acceso a esta vista"
+            return {'mensaje_error': mensaje_error}  # return context
+
+    def get(self, request, *args, **kwargs):
+        super(ControlIngresosPromotorDetallesView2, self).get(request, *args, **kwargs)
+
+        contexto = self.cargarformPromotordetalle(request)
+        contexto['object_list'] = []
+
+        if 'mensaje_error' in contexto.keys():
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+        else:
+            return render(request, self.template_name, contexto)  # return context
+
+    def post(self, request, *args, **kwargs):
+
+        alumno = request.POST["alumno"]
+        anio = request.POST["anio"]
+        mes = request.POST["mes"]
+        estado = request.POST["estado"]
+
+        logger.info(alumno)
+        colegio = get_current_colegio()
+
+        # Proceso de filtrado según el colegio
+        cuentas_cobrar_colegio = self.model.objetos.filter(matricula__colegio__id_colegio=colegio)
+
+        # Proceso de filtrado según el alumno
+        if alumno == "":
+            por_cobrar1 = cuentas_cobrar_colegio
+        else:
+            por_cobrar1 = cuentas_cobrar_colegio.filter(
+                Q(matricula__alumno__nombre=alumno) | Q(matricula__alumno__apellido_pa=alumno) | Q(
+                    matricula__alumno__apellido_ma=alumno))
+
+        # Proceso de filtrado según el año
+        if anio == "Todos":
+            por_cobrar2 = por_cobrar1
+        else:
+            anio = int(anio)
+            por_cobrar2 = por_cobrar1.filter(fecha_ven__year=anio)
+
+        # Proceso de filtrado según el mes
+        if mes == "Todos":
+            por_cobrar3 = por_cobrar2
+        else:
+            num_mes = obtener_mes(mes)
+            por_cobrar3 = por_cobrar2.filter(fecha_ven__month=num_mes)
+
+        # Proceso de filtrado según el estado o tipo
+        if estado == "Todos":
+            por_cobrar = por_cobrar3
+        elif estado == "Pagado":
+            por_cobrar = por_cobrar3.filter(estado=False)
+        elif estado == "No_pagado":
+            por_cobrar = por_cobrar3.filter(estado=True)
+
+        contexto = self.cargarformPromotordetalle(request)
+
+        paginator = Paginator(por_cobrar.order_by('fecha_ven'), 4)
+
+        page = request.GET.get('page', 1)
+
+        try:
+            buscados = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            buscados = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            buscados = paginator.page(paginator.num_pages)
+
+        contexto['object_list'] = buscados
+        #contexto['form'] = CuentasCobrarPromotorDetalleForm
+
+        return render(request, self.template_name, contexto)

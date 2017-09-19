@@ -5,31 +5,28 @@ from django.core.urlresolvers import reverse_lazy
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView,UpdateView
-from django.views.generic import TemplateView
 
-from utils.middleware import get_current_colegio, get_current_user
-from utils.views import MyLoginRequiredMixin
 from payments.models import TipoPago
 from payments.models import CajaChica
-from income.models import obtener_mes
+
 from register.models import PersonalColegio, Tesorero, Colegio, Personal, Promotor
 from payments.forms import TipoPagoForm
 from profiles.models import Profile
 from payments.forms import PagoForm
-#from datetime import datetime
+
 from django.utils.timezone import now as timezone_now
 from _datetime import datetime
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from django.shortcuts import render
+
 from payments.forms import ControlPagosPromotorForm
 from payments.models import Pago, calculo_pagos_total
-# Create your views here.
+
 from django.views.generic import FormView
 import logging
 from datetime import date
 from django.conf import settings
-from utils.middleware import get_current_colegio, get_current_user
+from utils.middleware import get_current_colegio, get_current_user, validar_roles
 
 
 logger = logging.getLogger("project")
@@ -81,20 +78,16 @@ class RegistrarPagoCreateView(CreateView):
     success_url = reverse_lazy('payments:registrarpago_create')
     template_name = 'RegistrarPago/registrarpago_form.html'
 
+    @method_decorator(permission_required('pago.Registrar_Pago_Create', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def get(self, request, *args, **kwargs):
-        try:
-            logger.info("Estoy en el Registrar Pago")
-            user_now = PersonalColegio.objects.get(personal__user=get_current_user(), colegio_id= get_current_colegio())
-            logger.info(user_now)
-            rol_tesorero = Tesorero.objects.filter(personalcolegio=user_now)
-            logger.info(rol_tesorero.count())
-            if (rol_tesorero.count()) > 0:
-                logger.info("Tengo los permisos")
-                return super(RegistrarPagoCreateView, self).get(request, *args, **kwargs)
-            else:
-                return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
-        except:
+        roles = ['tesorero']
+
+        if validar_roles(roles=roles):
+            return super(RegistrarPagoCreateView, self).get(request, *args, **kwargs)
+        else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
 
     def form_valid(self, form):
         form.instance.personal = PersonalColegio.objects.get(pagos__proveedor__user=self.request.user)
@@ -147,44 +140,9 @@ class ControlPagosPromotorView(FormView):
 
     def cargarformPromotorpagos(self, request):
 
-        # Obtiene el colegio en cuestión
-        id_colegio = get_current_colegio()
-        colegio = Colegio.objects.get(pk=id_colegio)
-        # logger.debug("Colegio: " + colegio.nombre)
+        roles = ['promotor', 'director']
 
-        # Obtiene el usuario que ha iniciado sesión
-        user = get_current_user()
-        logger.debug("Usuario: " + user.name)
-
-        try:
-            profile = Profile.objects.get(user=user)
-            logger.debug("profile: " + str(profile.id_persona))
-        except Profile.DoesNotExist:
-            sw_error = True
-            mensaje_error = "No existe la Persona asociada al usuario"
-
-        try:
-            # 1. Verificamos que el usuario sea un personal
-            personal = Personal.objects.get(persona=profile)
-            logger.debug("personal: " + str(personal.id_personal))
-
-            # 2. Verificamos que el usuario sea un personal asociado al colegio
-            personal_colegio = PersonalColegio.objects.get(personal=personal, colegio=colegio)
-
-            # 3. Verificamos que sea un promotor
-            promotor = Promotor.objects.filter(empleado=personal_colegio.personal)
-            #logger.debug()
-            if promotor.count() == 0:
-                sw_error = True
-                mensaje_error = "No es un promotor de un alumno asociado al colegio"
-            else:
-                sw_error = False
-
-        except Personal.DoesNotExist:
-            sw_error = True
-            mensaje_error = "No es un personal asociado al colegio"
-
-        if sw_error != True:
+        if validar_roles(roles=roles):
 
             # Cargamos los años
             anio = datetime.today().year
@@ -200,7 +158,10 @@ class ControlPagosPromotorView(FormView):
             for i in range(0, num_mes + 1):
                 meses.append(meses_todos[i])
 
-            # Cargamos los estados
+            # Cargamos los tipos de pago
+            id_colegio = get_current_colegio()
+            logger.debug("El id del colegio es {0}".format(id_colegio))
+            colegio = Colegio.objects.get(pk=id_colegio)
             tipos = TipoPago.objects.filter(colegio=colegio)
             tipos_pagos = []
             tipos_pagos.append("Todos")
@@ -210,9 +171,10 @@ class ControlPagosPromotorView(FormView):
             return {'anios': anios, 'meses': meses_todos, 'tipos_pagos': tipos_pagos}
 
         else:
+            mensaje_error = "No tienes acceso a esta vista"
             return {'mensaje_error': mensaje_error}  # return context
 
-    @method_decorator(permission_required('Pago.control_pagos', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('pago.control_pagos', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         super(ControlPagosPromotorView, self).get(request, *args, **kwargs)
@@ -225,12 +187,12 @@ class ControlPagosPromotorView(FormView):
         else:
             return render(request, self.template_name, contexto)  # return context
 
-    @method_decorator(permission_required('Pago.control_pagos', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('pago.control_pagos', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get_queryset(self):
         return []
 
-    @method_decorator(permission_required('Pago.control_pagos', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('pago.control_pagos', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def post(self, request, *args, **kwargs):
 
@@ -295,44 +257,9 @@ class ControlPagosDirectorView(FormView):
 
     def cargarformPromotorpagos(self, request):
 
-        # Obtiene el colegio en cuestión
-        id_colegio = get_current_colegio()
-        colegio = Colegio.objects.get(pk=id_colegio)
-        # logger.debug("Colegio: " + colegio.nombre)
+        roles = ['promotor', 'director']
 
-        # Obtiene el usuario que ha iniciado sesión
-        user = get_current_user()
-        logger.debug("Usuario: " + user.name)
-
-        try:
-            profile = Profile.objects.get(user=user)
-            logger.debug("profile: " + str(profile.id_persona))
-        except Profile.DoesNotExist:
-            sw_error = True
-            mensaje_error = "No existe la Persona asociada al usuario"
-
-        try:
-            # 1. Verificamos que el usuario sea un personal
-            personal = Personal.objects.get(persona=profile)
-            logger.debug("personal: " + str(personal.id_personal))
-
-            # 2. Verificamos que el usuario sea un personal asociado al colegio
-            personal_colegio = PersonalColegio.objects.get(personal=personal, colegio=colegio)
-
-            # 3. Verificamos que sea un promotor
-            promotor = Promotor.objects.filter(empleado=personal_colegio.personal)
-            #logger.debug()
-            if promotor.count() == 0:
-                sw_error = True
-                mensaje_error = "No es un promotor de un alumno asociado al colegio"
-            else:
-                sw_error = False
-
-        except Personal.DoesNotExist:
-            sw_error = True
-            mensaje_error = "No es un personal asociado al colegio"
-
-        if sw_error != True:
+        if validar_roles(roles=roles):
 
             # Cargamos los años
             anio = datetime.today().year
@@ -348,7 +275,10 @@ class ControlPagosDirectorView(FormView):
             for i in range(0, num_mes + 1):
                 meses.append(meses_todos[i])
 
-            # Cargamos los estados
+            # Cargamos los tipos de pago
+            id_colegio = get_current_colegio()
+            logger.debug("El id del colegio es {0}".format(id_colegio))
+            colegio = Colegio.objects.get(pk=id_colegio)
             tipos = TipoPago.objects.filter(colegio=colegio)
             tipos_pagos = []
             tipos_pagos.append("Todos")
@@ -358,6 +288,7 @@ class ControlPagosDirectorView(FormView):
             return {'anios': anios, 'meses': meses_todos, 'tipos_pagos': tipos_pagos}
 
         else:
+            mensaje_error = "No tienes acceso a esta vista"
             return {'mensaje_error': mensaje_error}  # return context
 
     def get(self, request, *args, **kwargs):

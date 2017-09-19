@@ -2,6 +2,7 @@
 from threading import local
 _thread_locals = local()
 
+
 def get_current_request():
     """ returns the HttpRequest object for this thread """
     return getattr(_thread_locals, "request", None)
@@ -12,8 +13,8 @@ def get_current_user():
         return getattr(request, "user", None)
 
 
-def get_current_colegio():
-    return getattr(_thread_locals, "request", None)
+#def get_current_colegio():
+#    return getattr(_thread_locals, "request", None)
 
 
 def get_current_colegio():
@@ -21,6 +22,24 @@ def get_current_colegio():
     if request.session.get('colegio'):
         id = request.session.get('colegio')
         return id
+
+
+def validar_roles(roles):
+
+        request = get_current_request()
+        permisos = request.session['roles']
+
+        sw = False
+        for rol in roles:
+            try:
+                if permisos[rol] > 0:
+                    sw = True
+            except KeyError:
+                pass
+
+        return sw
+
+
 
 
 class ThreadLocalMiddleware(object):

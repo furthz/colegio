@@ -1,5 +1,7 @@
 
 # from . import forms
+from django.contrib.auth.decorators import permission_required
+from django.utils.decorators import method_decorator
 from django.conf import settings
 from datetime import date
 from enrollment.models import Servicio
@@ -32,6 +34,7 @@ from utils.models import TiposGrados
 from utils.views import get_current_colegio
 from utils.middleware import get_current_user
 from utils.middleware import get_current_userID
+from utils.middleware import validar_roles
 
 from utils.views import MyLoginRequiredMixin
 import logging
@@ -55,23 +58,16 @@ class TipoServicioListView(MyLoginRequiredMixin, ListView):
     model = TipoServicio
     template_name = "tiposervicio_list.html"
 
+    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def get(self, request, *args, **kwargs):
-        try:
-            logger.info("Estoy en el primer GET")
-            user_now = PersonalColegio.objects.get(personal__user=get_current_user(), colegio_id= get_current_colegio())
-            logger.info(user_now)
-            rol_promotor = Promotor.objects.filter(personalcolegio=user_now)
-            rol_director = Director.objects.filter(personalcolegio=user_now)
-            rol_administrativo = Administrativo.objects.filter(personalcolegio=user_now)
-            logger.info(rol_promotor)
-            logger.info(rol_director)
-            logger.info(rol_administrativo)
-            if (rol_administrativo.count()+rol_director.count()+rol_promotor.count()) > 0:
-                return super(TipoServicioListView, self).get(request, *args, **kwargs)
-            else:
-                return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
-        except:
+        roles = ['promotor', 'director', 'administrativo']
+
+        if validar_roles(roles=roles):
+            return super(TipoServicioListView, self).get(request, *args, **kwargs)
+        else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
 
     def get_context_data(self, **kwargs):
         context = super(TipoServicioListView, self).get_context_data(**kwargs)
@@ -114,23 +110,16 @@ class TipoServicioDetailView(MyLoginRequiredMixin, DetailView):
     model = TipoServicio
     template_name = "tiposervicio_detail.html"
 
+    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def get(self, request, *args, **kwargs):
-        try:
-            logger.info("Estoy en el primer GET")
-            user_now = PersonalColegio.objects.get(personal__user=get_current_user(), colegio_id= get_current_colegio())
-            logger.info(user_now)
-            rol_promotor = Promotor.objects.filter(personalcolegio=user_now)
-            rol_director = Director.objects.filter(personalcolegio=user_now)
-            rol_administrativo = Administrativo.objects.filter(personalcolegio=user_now)
-            logger.info(rol_promotor)
-            logger.info(rol_director)
-            logger.info(rol_administrativo)
-            if (rol_administrativo.count()+rol_director.count()+rol_promotor.count()) > 0:
-                return super(TipoServicioDetailView, self).get(request, *args, **kwargs)
-            else:
-                return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
-        except:
+        roles = ['promotor', 'director', 'administrativo']
+
+        if validar_roles(roles=roles):
+            return super(TipoServicioDetailView, self).get(request, *args, **kwargs)
+        else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
 
 class TipoServicioRegularCreateView(MyLoginRequiredMixin, CreateView):
     """
@@ -139,23 +128,16 @@ class TipoServicioRegularCreateView(MyLoginRequiredMixin, CreateView):
     model = TipoServicio
     form_class = TipoServicioRegularForm
 
+    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def get(self, request, *args, **kwargs):
-        try:
-            logger.info("Estoy en el primer GET")
-            user_now = PersonalColegio.objects.get(personal__user=get_current_user(), colegio_id= get_current_colegio())
-            logger.info(user_now)
-            rol_promotor = Promotor.objects.filter(personalcolegio=user_now)
-            rol_director = Director.objects.filter(personalcolegio=user_now)
-            rol_administrativo = Administrativo.objects.filter(personalcolegio=user_now)
-            logger.info(rol_promotor)
-            logger.info(rol_director)
-            logger.info(rol_administrativo)
-            if (rol_administrativo.count()+rol_director.count()+rol_promotor.count()) > 0:
-                return super(TipoServicioRegularCreateView, self).get(request, *args, **kwargs)
-            else:
-                return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
-        except:
+        roles = ['promotor', 'director', 'administrativo']
+
+        if validar_roles(roles=roles):
+            return super(TipoServicioRegularCreateView, self).get(request, *args, **kwargs)
+        else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
 
     def form_valid(self, form):
         form.instance.is_ordinario = True
@@ -169,23 +151,16 @@ class TipoServicioExtraCreateView(MyLoginRequiredMixin, CreateView):
     model = TipoServicio
     form_class = TipoServicioExtraForm
 
+    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def get(self, request, *args, **kwargs):
-        try:
-            logger.info("Estoy en el primer GET")
-            user_now = PersonalColegio.objects.get(personal__user=get_current_user(), colegio_id= get_current_colegio())
-            logger.info(user_now)
-            rol_promotor = Promotor.objects.filter(personalcolegio=user_now)
-            rol_director = Director.objects.filter(personalcolegio=user_now)
-            rol_administrativo = Administrativo.objects.filter(personalcolegio=user_now)
-            logger.info(rol_promotor)
-            logger.info(rol_director)
-            logger.info(rol_administrativo)
-            if (rol_administrativo.count()+rol_director.count()+rol_promotor.count()) > 0:
-                return super(TipoServicioExtraCreateView, self).get(request, *args, **kwargs)
-            else:
-                return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
-        except:
+        roles = ['promotor', 'director', 'administrativo']
+
+        if validar_roles(roles=roles):
+            return super(TipoServicioExtraCreateView, self).get(request, *args, **kwargs)
+        else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
 
     def form_valid(self, form):
         form.instance.is_ordinario = False
@@ -200,28 +175,22 @@ class CargarTipoServicioCreateView(MyLoginRequiredMixin, TemplateView):
     model = TipoServicio
     form1 = TipoServicioRegularForm
     form2 = TipoServicioExtraForm
+
+    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def get(self, request, *args, **kwargs):
-        try:
-            logger.info("Estoy en el primer GET")
-            user_now = PersonalColegio.objects.get(personal__user=get_current_user(), colegio_id= get_current_colegio())
-            logger.info(user_now)
-            rol_promotor = Promotor.objects.filter(personalcolegio=user_now)
-            rol_director = Director.objects.filter(personalcolegio=user_now)
-            rol_administrativo = Administrativo.objects.filter(personalcolegio=user_now)
-            logger.info(rol_promotor)
-            logger.info(rol_director)
-            logger.info(rol_administrativo)
-            if (rol_administrativo.count()+rol_director.count()+rol_promotor.count()) > 0:
-                form1 = self.form1
-                form2 = self.form2
-                return render(request, template_name=self.template_name, context={
-                    'form1': form1,
-                    'form2': form2,
-                })
-            else:
-                return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
-        except:
+        roles = ['promotor', 'director', 'administrativo']
+
+        if validar_roles(roles=roles):
+            form1 = self.form1
+            form2 = self.form2
+            return render(request, template_name=self.template_name, context={
+                'form1': form1,
+                'form2': form2,
+            })
+        else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
 
 
 class TipoServicioRegularEndUpdateView(MyLoginRequiredMixin, UpdateView):
@@ -240,23 +209,16 @@ class TipoServicioRegularUpdateView(MyLoginRequiredMixin, TemplateView):
     model = TipoServicio
     form_class = TipoServicioRegularForm
 
+    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def get(self, request, *args, **kwargs):
-        try:
-            logger.info("Estoy en el primer GET")
-            user_now = PersonalColegio.objects.get(personal__user=get_current_user(), colegio_id= get_current_colegio())
-            logger.info(user_now)
-            rol_promotor = Promotor.objects.filter(personalcolegio=user_now)
-            rol_director = Director.objects.filter(personalcolegio=user_now)
-            rol_administrativo = Administrativo.objects.filter(personalcolegio=user_now)
-            logger.info(rol_promotor)
-            logger.info(rol_director)
-            logger.info(rol_administrativo)
-            if (rol_administrativo.count()+rol_director.count()+rol_promotor.count()) > 0:
-                return super(TipoServicioRegularUpdateView, self).get(request, *args, **kwargs)
-            else:
-                return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
-        except:
+        roles = ['promotor', 'director', 'administrativo']
+
+        if validar_roles(roles=roles):
+            return super(TipoServicioRegularUpdateView, self).get(request, *args, **kwargs)
+        else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
 
     def post(self, request, *args, **kwargs):
 
@@ -283,23 +245,17 @@ class TipoServicioExtraUpdateView(MyLoginRequiredMixin, TemplateView):
     model = TipoServicio
     form_class = TipoServicioExtraForm
 
+    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def get(self, request, *args, **kwargs):
-        try:
-            logger.info("Estoy en el primer GET")
-            user_now = PersonalColegio.objects.get(personal__user=get_current_user(), colegio_id= get_current_colegio())
-            logger.info(user_now)
-            rol_promotor = Promotor.objects.filter(personalcolegio=user_now)
-            rol_director = Director.objects.filter(personalcolegio=user_now)
-            rol_administrativo = Administrativo.objects.filter(personalcolegio=user_now)
-            logger.info(rol_promotor)
-            logger.info(rol_director)
-            logger.info(rol_administrativo)
-            if (rol_administrativo.count()+rol_director.count()+rol_promotor.count()) > 0:
-                return super(TipoServicioExtraUpdateView, self).get(request, *args, **kwargs)
-            else:
-                return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
-        except:
+        roles = ['promotor', 'director', 'administrativo']
+
+        if validar_roles(roles=roles):
+            return super(TipoServicioExtraUpdateView, self).get(request, *args, **kwargs)
+        else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+
 
     def post(self, request, *args, **kwargs):
 
@@ -320,29 +276,23 @@ class TipoServicioDeleteView(MyLoginRequiredMixin, TemplateView):
     model = TipoServicio
     template_name = "tiposervicio_confirm_delete.html"
 
+    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def get(self, request, *args, **kwargs):
-        try:
-            logger.info("Estoy en el primer GET")
-            user_now = PersonalColegio.objects.get(personal__user=get_current_user(), colegio_id= get_current_colegio())
-            logger.info(user_now)
-            rol_promotor = Promotor.objects.filter(personalcolegio=user_now)
-            rol_director = Director.objects.filter(personalcolegio=user_now)
-            rol_administrativo = Administrativo.objects.filter(personalcolegio=user_now)
-            logger.info(rol_promotor)
-            logger.info(rol_director)
-            logger.info(rol_administrativo)
-            if (rol_administrativo.count()+rol_director.count()+rol_promotor.count()) > 0:
-                tiposervicio = self.model.objects.get(pk=int(request.GET['tiposervicio']))
-                for servicio in tiposervicio.getServiciosAsociados():
-                    servicio.activo = False
-                    servicio.save()
-                tiposervicio.activo = False
-                tiposervicio.save()
-                return HttpResponseRedirect(reverse('enrollments:tiposervicio_list'))
-            else:
-                return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
-        except:
+        roles = ['promotor', 'director', 'administrativo']
+
+        if validar_roles(roles=roles):
+            tiposervicio = self.model.objects.get(pk=int(request.GET['tiposervicio']))
+            for servicio in tiposervicio.getServiciosAsociados():
+                servicio.activo = False
+                servicio.save()
+            tiposervicio.activo = False
+            tiposervicio.save()
+            return HttpResponseRedirect(reverse('enrollments:tiposervicio_list'))
+        else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+
 
 
 
@@ -366,23 +316,16 @@ class ServicioListView(MyLoginRequiredMixin, ListView):
     model = Servicio
     template_name = "servicio_list.html"
 
+    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def get(self, request, *args, **kwargs):
-        try:
-            logger.info("Estoy en el primer GET")
-            user_now = PersonalColegio.objects.get(personal__user=get_current_user(), colegio_id= get_current_colegio())
-            logger.info(user_now)
-            rol_promotor = Promotor.objects.filter(personalcolegio=user_now)
-            rol_director = Director.objects.filter(personalcolegio=user_now)
-            rol_administrativo = Administrativo.objects.filter(personalcolegio=user_now)
-            logger.info(rol_promotor)
-            logger.info(rol_director)
-            logger.info(rol_administrativo)
-            if (rol_administrativo.count()+rol_director.count()+rol_promotor.count()) > 0:
-                return super(ServicioListView, self).get(request, *args, **kwargs)
-            else:
-                return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
-        except:
+        roles = ['promotor', 'director', 'administrativo']
+
+        if validar_roles(roles=roles):
+            return super(ServicioListView, self).get(request, *args, **kwargs)
+        else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
 
     def get_queryset(self):
         return self.model.objects.filter(tipo_servicio=self.kwargs["pkts"])
@@ -398,23 +341,16 @@ class ServicioDetailView(MyLoginRequiredMixin, DetailView):
     model = Servicio
     template_name = "servicio_detail.html"
 
+    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def get(self, request, *args, **kwargs):
-        try:
-            logger.info("Estoy en el primer GET")
-            user_now = PersonalColegio.objects.get(personal__user=get_current_user(), colegio_id= get_current_colegio())
-            logger.info(user_now)
-            rol_promotor = Promotor.objects.filter(personalcolegio=user_now)
-            rol_director = Director.objects.filter(personalcolegio=user_now)
-            rol_administrativo = Administrativo.objects.filter(personalcolegio=user_now)
-            logger.info(rol_promotor)
-            logger.info(rol_director)
-            logger.info(rol_administrativo)
-            if (rol_administrativo.count()+rol_director.count()+rol_promotor.count()) > 0:
-                return super(ServicioDetailView, self).get(request, *args, **kwargs)
-            else:
-                return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
-        except:
+        roles = ['promotor', 'director', 'administrativo']
+
+        if validar_roles(roles=roles):
+            return super(ServicioDetailView, self).get(request, *args, **kwargs)
+        else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
 
 
 
@@ -435,26 +371,21 @@ class ServicioRegularCreateView(MyLoginRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse_lazy('enrollments:tiposervicio_list')
 
+    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def get(self, request, *args, **kwargs):
-        try:
-            logger.info("Estoy en el primer GET")
-            user_now = PersonalColegio.objects.get(personal__user=get_current_user(), colegio_id= get_current_colegio())
-            logger.info(user_now)
-            rol_promotor = Promotor.objects.filter(personalcolegio=user_now)
-            rol_director = Director.objects.filter(personalcolegio=user_now)
-            rol_administrativo = Administrativo.objects.filter(personalcolegio=user_now)
-            logger.info(rol_promotor)
-            logger.info(rol_director)
-            logger.info(rol_administrativo)
-            if (rol_administrativo.count()+rol_director.count()+rol_promotor.count()) > 0:
-                return render(request, template_name=self.template_name, context={
-                    'tiposervicio': TipoServicio.objects.filter(is_ordinario=True, activo=True, colegio_id=get_current_colegio()).order_by("nivel","grado"),
-                    'form': self.form_class,
-                })
-            else:
-                return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
-        except:
+        roles = ['promotor', 'director', 'administrativo']
+
+        if validar_roles(roles=roles):
+            return render(request, template_name=self.template_name, context={
+                'tiposervicio': TipoServicio.objects.filter(is_ordinario=True, activo=True,
+                                                            colegio_id=get_current_colegio()).order_by("nivel",
+                                                                                                       "grado"),
+                'form': self.form_class,
+            })
+        else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
 
 
 
@@ -475,26 +406,20 @@ class ServicioExtraCreateView(MyLoginRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse_lazy('enrollments:tiposervicio_list')
 
+    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def get(self, request, *args, **kwargs):
-        try:
-            logger.info("Estoy en el primer GET")
-            user_now = PersonalColegio.objects.get(personal__user=get_current_user(), colegio_id=get_current_colegio())
-            logger.info(user_now)
-            rol_promotor = Promotor.objects.filter(personalcolegio=user_now)
-            rol_director = Director.objects.filter(personalcolegio=user_now)
-            rol_administrativo = Administrativo.objects.filter(personalcolegio=user_now)
-            logger.info(rol_promotor)
-            logger.info(rol_director)
-            logger.info(rol_administrativo)
-            if (rol_administrativo.count() + rol_director.count() + rol_promotor.count()) > 0:
-                return render(request,template_name=self.template_name,context={
-                    'tiposervicio':TipoServicio.objects.filter(is_ordinario=False, activo=True, colegio_id=get_current_colegio()),
-                    'form': self.form_class,
-                })
-            else:
-                return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
-        except:
+        roles = ['promotor', 'director', 'administrativo']
+
+        if validar_roles(roles=roles):
+            return render(request, template_name=self.template_name, context={
+                'tiposervicio': TipoServicio.objects.filter(is_ordinario=False, activo=True,
+                                                            colegio_id=get_current_colegio()),
+                'form': self.form_class,
+            })
+        else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
 
 
 
@@ -531,22 +456,14 @@ class ServicioRegularUpdateView(MyLoginRequiredMixin, TemplateView):
     model = Servicio
     form_class = ServicioRegularForm
 
+    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def get(self, request, *args, **kwargs):
-        try:
-            logger.info("Estoy en el primer GET")
-            user_now = PersonalColegio.objects.get(personal__user=get_current_user(), colegio_id=get_current_colegio())
-            logger.info(user_now)
-            rol_promotor = Promotor.objects.filter(personalcolegio=user_now)
-            rol_director = Director.objects.filter(personalcolegio=user_now)
-            rol_administrativo = Administrativo.objects.filter(personalcolegio=user_now)
-            logger.info(rol_promotor)
-            logger.info(rol_director)
-            logger.info(rol_administrativo)
-            if (rol_administrativo.count() + rol_director.count() + rol_promotor.count()) > 0:
-                return super(ServicioRegularUpdateView, self).get(request, *args, **kwargs)
-            else:
-                return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
-        except:
+        roles = ['promotor', 'director', 'administrativo']
+
+        if validar_roles(roles=roles):
+            return super(ServicioRegularUpdateView, self).get(request, *args, **kwargs)
+        else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
     def post(self, request, *args, **kwargs):
@@ -592,23 +509,16 @@ class ServicioExtraUpdateView(MyLoginRequiredMixin, TemplateView):
     form_class = ServicioExtraForm
     template_name = "servicioextra_update_form.html"
 
+    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def get(self, request, *args, **kwargs):
-        try:
-            logger.info("Estoy en el primer GET")
-            user_now = PersonalColegio.objects.get(personal__user=get_current_user(), colegio_id=get_current_colegio())
-            logger.info(user_now)
-            rol_promotor = Promotor.objects.filter(personalcolegio=user_now)
-            rol_director = Director.objects.filter(personalcolegio=user_now)
-            rol_administrativo = Administrativo.objects.filter(personalcolegio=user_now)
-            logger.info(rol_promotor)
-            logger.info(rol_director)
-            logger.info(rol_administrativo)
-            if (rol_administrativo.count() + rol_director.count() + rol_promotor.count()) > 0:
-                return super(TipoServicioExtraUpdateView, self).get(request, *args, **kwargs)
-            else:
-                return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
-        except:
+        roles = ['promotor', 'director', 'administrativo']
+
+        if validar_roles(roles=roles):
+            return super(TipoServicioExtraUpdateView, self).get(request, *args, **kwargs)
+        else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
 
     def post(self, request, *args, **kwargs):
 
@@ -629,25 +539,17 @@ class ServicioDeleteView(MyLoginRequiredMixin, TemplateView):
     model = Servicio
     template_name = "servicio_confirm_delete.html"
 
+    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def get(self, request, *args, **kwargs):
-        try:
-            logger.info("Estoy en el primer GET")
-            user_now = PersonalColegio.objects.get(personal__user=get_current_user(), colegio_id=get_current_colegio())
-            logger.info(user_now)
-            rol_promotor = Promotor.objects.filter(personalcolegio=user_now)
-            rol_director = Director.objects.filter(personalcolegio=user_now)
-            rol_administrativo = Administrativo.objects.filter(personalcolegio=user_now)
-            logger.info(rol_promotor)
-            logger.info(rol_director)
-            logger.info(rol_administrativo)
-            if (rol_administrativo.count() + rol_director.count() + rol_promotor.count()) > 0:
-                servicio = self.model.objects.get(pk=request.GET['idser'])
-                servicio.activo = False
-                servicio.save()
-                return HttpResponseRedirect(reverse('enrollments:tiposervicio_list'))
-            else:
-                return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
-        except:
+        roles = ['promotor', 'director', 'administrativo']
+
+        if validar_roles(roles=roles):
+            servicio = self.model.objects.get(pk=request.GET['idser'])
+            servicio.activo = False
+            servicio.save()
+            return HttpResponseRedirect(reverse('enrollments:tiposervicio_list'))
+        else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
 
@@ -673,23 +575,16 @@ class MatriculaListView(MyLoginRequiredMixin, ListView):
     model = Matricula
     template_name = "matricula_list.html"
 
+    @method_decorator(permission_required('Matricula.Matricula_List', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def get(self, request, *args, **kwargs):
-        try:
-            logger.info("Estoy en el primer GET")
-            user_now = PersonalColegio.objects.get(personal__user=get_current_user(), colegio_id=get_current_colegio())
-            logger.info(user_now)
-            rol_promotor = Promotor.objects.filter(personalcolegio=user_now)
-            rol_director = Director.objects.filter(personalcolegio=user_now)
-            rol_administrativo = Administrativo.objects.filter(personalcolegio=user_now)
-            logger.info(rol_promotor)
-            logger.info(rol_director)
-            logger.info(rol_administrativo)
-            if (rol_administrativo.count() + rol_director.count() + rol_promotor.count()) > 0:
-                return super(MatriculaListView, self).get(request, *args, **kwargs)
-            else:
-                return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
-        except:
+        roles = ['promotor', 'director', 'administrativo']
+
+        if validar_roles(roles=roles):
+            return super(MatriculaListView, self).get(request, *args, **kwargs)
+        else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
     # def get_queryset(self):
     #    return self.model.objects.filter(tipo_servicio = self.kwargs["pkts"])
     #def get_context_data(self,request, **kwargs):
@@ -704,23 +599,16 @@ class MatriculaDetailView(MyLoginRequiredMixin, DetailView):
     model = Matricula
     template_name = "matricula_detail.html"
 
+    @method_decorator(permission_required('Matricula.Matricula_List', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def get(self, request, *args, **kwargs):
-        try:
-            logger.info("Estoy en el primer GET")
-            user_now = PersonalColegio.objects.get(personal__user=get_current_user(), colegio_id=get_current_colegio())
-            logger.info(user_now)
-            rol_promotor = Promotor.objects.filter(personalcolegio=user_now)
-            rol_director = Director.objects.filter(personalcolegio=user_now)
-            rol_administrativo = Administrativo.objects.filter(personalcolegio=user_now)
-            logger.info(rol_promotor)
-            logger.info(rol_director)
-            logger.info(rol_administrativo)
-            if (rol_administrativo.count() + rol_director.count() + rol_promotor.count()) > 0:
-                return super(MatriculaDetailView, self).get(request, *args, **kwargs)
-            else:
-                return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
-        except:
+        roles = ['promotor', 'director', 'administrativo']
+
+        if validar_roles(roles=roles):
+            return super(MatriculaDetailView, self).get(request, *args, **kwargs)
+        else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
 
 class MatriculaCreateView(MyLoginRequiredMixin, CreateView):
     """
@@ -735,26 +623,19 @@ class MatriculaCreateView(MyLoginRequiredMixin, CreateView):
         form.instance.colegio = Colegio.objects.get(pk=self.request.session.get('colegio'))
         return super(MatriculaCreateView, self).form_valid(form)
 
+    @method_decorator(permission_required('Matricula.Matricula_List', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def get(self, request, *args, **kwargs):
-        try:
-            logger.info("Estoy en el primer GET")
-            user_now = PersonalColegio.objects.get(personal__user=get_current_user(), colegio_id=get_current_colegio())
-            logger.info(user_now)
-            rol_promotor = Promotor.objects.filter(personalcolegio=user_now)
-            rol_director = Director.objects.filter(personalcolegio=user_now)
-            rol_administrativo = Administrativo.objects.filter(personalcolegio=user_now)
-            logger.info(rol_promotor)
-            logger.info(rol_director)
-            logger.info(rol_administrativo)
-            if (rol_administrativo.count() + rol_director.count() + rol_promotor.count()) > 0:
-                return render(request, template_name=self.template_name, context={
-                    'alumno': Alumno.objects.get(pk=request.GET["alumno"]),
-                    'form': self.form_class,
-                })
-            else:
-                return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
-        except:
+        roles = ['promotor', 'director', 'administrativo']
+
+        if validar_roles(roles=roles):
+            return render(request, template_name=self.template_name, context={
+                'alumno': Alumno.objects.get(pk=request.GET["alumno"]),
+                'form': self.form_class,
+            })
+        else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
 
 
     def post(self, request, *args, **kwargs):
@@ -870,46 +751,32 @@ class MatriculaUpdateView(MyLoginRequiredMixin, UpdateView):
     form_class = MatriculaForm
     template_name = "matricula_form.html"
 
+    @method_decorator(permission_required('Matricula.Matricula_List', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def get(self, request, *args, **kwargs):
-        try:
-            logger.info("Estoy en el primer GET")
-            user_now = PersonalColegio.objects.get(personal__user=get_current_user(), colegio_id=get_current_colegio())
-            logger.info(user_now)
-            rol_promotor = Promotor.objects.filter(personalcolegio=user_now)
-            rol_director = Director.objects.filter(personalcolegio=user_now)
-            rol_administrativo = Administrativo.objects.filter(personalcolegio=user_now)
-            logger.info(rol_promotor)
-            logger.info(rol_director)
-            logger.info(rol_administrativo)
-            if (rol_administrativo.count() + rol_director.count() + rol_promotor.count()) > 0:
-                return super(MatriculaUpdateView, self).get(request, *args, **kwargs)
-            else:
-                return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
-        except:
+        roles = ['promotor', 'director', 'administrativo']
+
+        if validar_roles(roles=roles):
+            return super(MatriculaUpdateView, self).get(request, *args, **kwargs)
+        else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
 
 class CargarMatriculaUpdateView(MyLoginRequiredMixin, TemplateView):
     template_name = "matricula_form.html"
     model = Matricula
     form_class = MatriculaForm
 
+    @method_decorator(permission_required('Matricula.Matricula_List', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def get(self, request, *args, **kwargs):
-        try:
-            logger.info("Estoy en el primer GET")
-            user_now = PersonalColegio.objects.get(personal__user=get_current_user(), colegio_id=get_current_colegio())
-            logger.info(user_now)
-            rol_promotor = Promotor.objects.filter(personalcolegio=user_now)
-            rol_director = Director.objects.filter(personalcolegio=user_now)
-            rol_administrativo = Administrativo.objects.filter(personalcolegio=user_now)
-            logger.info(rol_promotor)
-            logger.info(rol_director)
-            logger.info(rol_administrativo)
-            if (rol_administrativo.count() + rol_director.count() + rol_promotor.count()) > 0:
-                return super(CargarMatriculaUpdateView, self).get(request, *args, **kwargs)
-            else:
-                return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
-        except:
+        roles = ['promotor', 'director', 'administrativo']
+
+        if validar_roles(roles=roles):
+            return super(CargarMatriculaUpdateView, self).get(request, *args, **kwargs)
+        else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
 
     def post(self, request, *args, **kwargs):
 
@@ -927,22 +794,14 @@ class MatriculaDeleteView(MyLoginRequiredMixin, DeleteView):
     model = Matricula
     template_name = "matricula_confirm_delete.html"
 
+    @method_decorator(permission_required('Matricula.Matricula_List', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def get(self, request, *args, **kwargs):
-        try:
-            logger.info("Estoy en el primer GET")
-            user_now = PersonalColegio.objects.get(personal__user=get_current_user(), colegio_id=get_current_colegio())
-            logger.info(user_now)
-            rol_promotor = Promotor.objects.filter(personalcolegio=user_now)
-            rol_director = Director.objects.filter(personalcolegio=user_now)
-            rol_administrativo = Administrativo.objects.filter(personalcolegio=user_now)
-            logger.info(rol_promotor)
-            logger.info(rol_director)
-            logger.info(rol_administrativo)
-            if (rol_administrativo.count() + rol_director.count() + rol_promotor.count()) > 0:
-                return super(MatriculaDeleteView, self).get(request, *args, **kwargs)
-            else:
-                return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
-        except:
+        roles = ['promotor', 'director', 'administrativo']
+
+        if validar_roles(roles=roles):
+            return super(MatriculaDeleteView, self).get(request, *args, **kwargs)
+        else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
     def get_success_url(self):

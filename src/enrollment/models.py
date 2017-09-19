@@ -109,13 +109,13 @@ class TipoServicio(ActivoMixin, CreacionModificacionFechaMixin, CreacionModifica
             ("Cargar_Tipo_Servicio_Create", "cargar tipo de servicio"),
             ("Tipo_Servicio_Regular_Create","cargar tipo de servicio regular"),
             ("Tipo_Servicio_Extra_Create","cargar tipo de servicio extra"),
-            ("Tipo_ServicioDetail","cargar detalle de tipo de servicio "),
-            ("Tipo_ServicioRegularEndUpdate","actualizar tipo de servicio regular end"),
-            ("Tipo_ServicioExtraEndUpdate","actualizar tipo de servicio extra end"),
-            ("Tipo_ServicioRegularUpdate","actualizar tipo de servicio regular"),
-            ("Tipo_ServicioExtraUpdate","actualizar tipo de servicio extra"),
-            ("Tipo_ServicioDelete","borrar tipo de servicio"),
-            ("Tipo_ServicioList","listar tipo de servicio"),
+            ("Tipo_Servicio_Detail","cargar detalle de tipo de servicio "),
+            ("Tipo_Servicio_Regular_End_Update","actualizar tipo de servicio regular end"),
+            ("Tipo_Servicio_Extra_End_Update","actualizar tipo de servicio extra end"),
+            ("Tipo_Servicio_Regular_Update","actualizar tipo de servicio regular"),
+            ("Tipo_Servicio_Extra_Update","actualizar tipo de servicio extra"),
+            ("Tipo_Servicio_Delete","borrar tipo de servicio"),
+            ("Tipo_Servicio_List","listar tipo de servicio"),
         )
 
         #unique_together = (('id_tipo_servicio', 'colegio'),)
@@ -172,7 +172,17 @@ class Servicio(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacion
     class Meta:
         managed = False
         db_table = 'servicio'
-
+        permissions = (
+            ("Servicio_Regular_Create", "crear un servicio regular"),
+            ("Servicio_Extra_Create", "crear un servicios extra"),
+            ("Servicio_Detail", "ver un detalle de servicio"),
+            ("Servicio_Regular_End_Update", "actualizar un servicio regular end"),
+            ("Servicio_Extra_End_Update", "actualizar un servicio extra end"),
+            ("Servicio_Regular_Update", "actualizar un servicio regular"),
+            ("Servicio_Extra_Update", "actualizar un servicio extra"),
+            ("Servicio_Delete", "borrar un srvicio"),
+            ("Servicio_List", "listar un servicio"),
+        )
 
 class Matricula(ActivoMixin, CreacionModificacionUserMixin, CreacionModificacionFechaMixin, models.Model):
     """
@@ -200,6 +210,15 @@ class Matricula(ActivoMixin, CreacionModificacionUserMixin, CreacionModificacion
     class Meta:
         managed = False
         db_table = 'matricula'
+        permissions = (
+            ("Matricula_Create","crear una matricula"),
+            ("Cargar_Matricula_Create","cargar una matricula"),
+            ("Matricula_Detail","detalles de matricula"),
+            ("Matricula_Update","matricula update"),
+            ("Cargar_Matricula_Update","cargar matricula update"),
+            ("Matricula_Delete","borrar matricula"),
+            ("Matricula_List","listar matricula")
+        )
 
 class dCuentasManager(models.Manager):
     fecha_inicio = models.DateField

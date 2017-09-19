@@ -1,4 +1,7 @@
 from datetime import date, datetime
+from django.contrib.auth.decorators import permission_required
+from django.utils.decorators import method_decorator
+
 from django.views.generic import TemplateView
 from django.views.generic import DetailView
 from django.views.generic import CreateView
@@ -9,7 +12,7 @@ from django.views.generic import FormView
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.db.models import Q
-from django.views import View
+from django.conf import settings
 from django.core.urlresolvers import reverse_lazy
 from django.urls import reverse
 
@@ -25,7 +28,7 @@ from register.models import PersonalColegio
 from discounts.forms import SolicitarDescuentoForm
 from discounts.forms import TipoDescuentForm
 from discounts.forms import DetalleDescuentosForm
-from utils.middleware import get_current_colegio, get_current_userID, get_current_user
+from utils.middleware import get_current_colegio, get_current_userID, get_current_user, validar_roles
 from profiles.models import Profile
 import logging
 
@@ -146,6 +149,9 @@ class AprobarDescuentoView(ListView):
         else:
             return {'mensaje_error': mensaje_error}  # return context
 
+    @method_decorator(
+        permission_required('descuento.aprobar_descuento', login_url=settings.REDIRECT_PERMISOS,
+                            raise_exception=False))
     def post(self, request, *args, **kwargs):
         logger.info("Estoy en el POST")
         logger.info("Los datos de llegada son {0}".format(request.POST))
@@ -207,44 +213,9 @@ class DetalleDescuentoView(FormView):
 
     def cargarformPromotordescuentos(self, request):
 
-        # Obtiene el colegio en cuestión
-        id_colegio = get_current_colegio()
-        colegio = Colegio.objects.get(pk=id_colegio)
-        # logger.debug("Colegio: " + colegio.nombre)
+        roles = ['promotor', 'director']
 
-        # Obtiene el usuario que ha iniciado sesión
-        user = get_current_user()
-        logger.debug("Usuario: " + user.name)
-
-        try:
-            profile = Profile.objects.get(user=user)
-            logger.debug("profile: " + str(profile.id_persona))
-        except Profile.DoesNotExist:
-            sw_error = True
-            mensaje_error = "No existe la Persona asociada al usuario"
-
-        try:
-            # 1. Verificamos que el usuario sea un personal
-            personal = Personal.objects.get(persona=profile)
-            logger.debug("personal: " + str(personal.id_personal))
-
-            # 2. Verificamos que el usuario sea un personal asociado al colegio
-            personal_colegio = PersonalColegio.objects.get(personal=personal, colegio=colegio)
-
-            # 3. Verificamos que sea un promotor
-            promotor = Promotor.objects.filter(empleado=personal_colegio.personal)
-            #logger.debug()
-            if promotor.count() == 0:
-                sw_error = True
-                mensaje_error = "No es un promotor de un alumno asociado al colegio"
-            else:
-                sw_error = False
-
-        except Personal.DoesNotExist:
-            sw_error = True
-            mensaje_error = "No es un personal asociado al colegio"
-
-        if sw_error != True:
+        if validar_roles(roles=roles):
 
             # Cargamos los años
             anio = datetime.today().year
@@ -258,8 +229,12 @@ class DetalleDescuentoView(FormView):
             return {'anios': anios, 'estados': estados}
 
         else:
+            mensaje_error = "No tienes acceso a esta vista"
             return {'mensaje_error': mensaje_error}  # return context
 
+    @method_decorator(
+        permission_required('descuento.detalle_descuento', login_url=settings.REDIRECT_PERMISOS,
+                            raise_exception=False))
     def get(self, request, *args, **kwargs):
         super(DetalleDescuentoView, self).get(request, *args, **kwargs)
 
@@ -267,10 +242,15 @@ class DetalleDescuentoView(FormView):
 
         return render(request, self.template_name, contexto)  # return context
 
-
+    @method_decorator(
+        permission_required('descuento.detalle_descuento', login_url=settings.REDIRECT_PERMISOS,
+                            raise_exception=False))
     def get_queryset(self):
         return []
 
+    @method_decorator(
+        permission_required('descuento.detalle_descuento', login_url=settings.REDIRECT_PERMISOS,
+                            raise_exception=False))
     def post(self, request, *args, **kwargs):
 
         alumno = request.POST["alumno"]
