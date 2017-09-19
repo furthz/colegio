@@ -106,6 +106,7 @@ INSTALLED_APPS = (
     'django_filters',
     'register_accounts',
 
+
 )
 
 
