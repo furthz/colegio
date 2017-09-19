@@ -1,0 +1,66 @@
+{% extends "page.html" %}
+{% block title %}{{ block.super }}Cajeros{% endblock %}
+{% block container %}
+
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Usuario Alumno</h3>
+                        <div class="box-body">
+                            <div class="col-md-9">
+                                <div class="panel-page">
+                                    <div class="toolbar-header">
+                                            <a class="btn btn-success" href='{% url "register_accounts:register_accounts_create" %}'><i class="fa fa-plus" aria-hidden="true"></i>  Crear cajero</a>
+                                        </div>
+
+
+
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">Lista de Cajas</h3>
+                                    </div>
+                                    <div class="box-body">
+                                        <div class="table-responsive no-padding">
+
+                                            <table class="table table-hover">
+                                                <tbody>
+                                                <tr>
+                                                    <th>Item</th>
+                                                    <th>Name</th>
+                                                    <th>Email</th>
+                                                    <th>Acciones</th>
+
+                                                </tr>
+                                                {% for registro in object_list %}
+                                                <tr>
+                                                    <td>{{ forloop.counter }}</td>
+                                                    <td>{{ registro.name }}</td>
+                                                    <td>{{ registro.email }}</td>
+                                                    <td>
+                                                        <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                                                            <a title="Detalle" href='{% url "register_accounts:register_accounts_detail" registro.id %}' class="btn btn-default">
+                                                                <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                                            </a>
+                                                            <a title="Eliminar" href="{% url 'register_accounts:register_accounts_edit' registro.id %}" class="btn btn-default">
+                                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                                            </a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock container %}
+
