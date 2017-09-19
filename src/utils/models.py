@@ -393,6 +393,41 @@ class CreacionModificacionUserAdministrativoMixin(models.Model):
         abstract = True
 
 
+class CreacionModificacionUserSistemasMixin(models.Model):
+    """
+    Clase abstracta para poder especificar los usuario:
+        - Creacion
+        - Modificacion
+    """
+    usuario_creacion_sistemas = models.CharField('Usuario_Creacion', null=True, blank=True, max_length=10,
+                                                 db_column='usuario_creacion')
+    usuario_modificacion_sistemas = models.CharField('Usuario_Modificacion', null=True, blank=True, max_length=10,
+                                                     db_column='usuario_modificacion')
+
+    def save(self, *args, **kwargs):
+        from utils.middleware import get_current_user
+
+        usuario = get_current_user()
+
+        if usuario is not None:
+            iduser = usuario.id
+        else:
+            iduser = -1
+
+        # creacion
+        if not self.pk:
+            self.usuario_creacion_sistemas = iduser
+
+        self.usuario_modificacion_sistemas = iduser
+
+        super(CreacionModificacionUserSistemasMixin, self).save(*args, **kwargs)
+
+    save.alters_data = True
+
+    class Meta:
+        abstract = True
+
+
 class CreacionModificacionUserPromotorMixin(models.Model):
     """
     Clase abstracta para poder especificar los usuario:
@@ -653,6 +688,33 @@ class CreacionModificacionFechaAlumnoMixin(models.Model):
         self.fecha_modificacion_alumno = timezone_now()
 
         super(CreacionModificacionFechaAlumnoMixin, self).save(*args, **kwargs)
+
+    save.alters_data = True
+
+    class Meta:
+        abstract = True
+
+
+class CreacionModificacionFechaSistemasMixin(models.Model):
+    """
+    Clase abstracta para definir las fechas de:
+     - Fecha_creacion
+     - Fecha_modificacion
+    """
+    fecha_creacion_sistemas = models.DateTimeField(blank=True, null=True, db_column="fecha_creacion")
+    fecha_modificacion_sistemas = models.DateTimeField(blank=True, null=True, db_column="fecha_modificacion")
+
+    def save(self, *args, **kwargs):
+        # creación
+        if not self.pk:
+            self.fecha_creacion_sistemas = timezone_now()
+        else:  # modificacion
+            if not self.fecha_creacion_sistemas:
+                self.fecha_creacion_sistemas = timezone_now()
+
+        self.fecha_modificacion_sistemas = timezone_now()
+
+        super(CreacionModificacionFechaSistemasMixin, self).save(*args, **kwargs)
 
     save.alters_data = True
 

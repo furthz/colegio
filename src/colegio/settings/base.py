@@ -104,6 +104,7 @@ INSTALLED_APPS = (
     'discounts',
     'import_export',
     'django_filters',
+    'register_accounts',
 
 
 )

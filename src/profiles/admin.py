@@ -42,7 +42,8 @@ class ProfileResource(resources.ModelResource):
         exclude = ('id',)
         import_id_fields = ('id_persona',)
         skip_unchanged = True
-        fields = ['id_persona', 'email_verified', 'nombre', ]
+        fields = ['id_persona', 'email_verified', 'nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento',
+                  'numero_documento', 'sexo', 'correo', 'fecha_nac']
 
 class ProfileAdmin(ImportExportModelAdmin):
     resource_class = ProfileResource

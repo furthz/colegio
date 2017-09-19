@@ -59,6 +59,8 @@ class Migration(migrations.Migration):
                 'permissions': (
                     ('aprobar_descuento', 'Para aprobar descuento'),
                     ('detalle_descuento', 'Para ver detalles descuento'),
+                    ('Solicitar_Descuento', 'solicitar descuento'),
+                    ('Crear_Solicitud', 'crear solicitud'),
                 )
             },
         ),

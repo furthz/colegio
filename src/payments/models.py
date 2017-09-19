@@ -86,6 +86,7 @@ class Pago(CreacionModificacionFechaMixin, CreacionModificacionUserMixin):
         db_table = 'pago'
         permissions = (
             ('control_pagos', 'Para el control de pagos realizados'),
+            ("Registrar_Pago_Create","crear registro de pago"),
         )
 
 

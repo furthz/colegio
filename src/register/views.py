@@ -21,10 +21,10 @@ from django.shortcuts import render
 from django.views.generic import CreateView
 
 from register.forms import PersonaForm, AlumnoForm, ApoderadoForm, PersonalForm, PromotorForm, DirectorForm, CajeroForm, \
-    TesoreroForm, ProveedorForm, ColegioForm
+    TesoreroForm, ProveedorForm, ColegioForm, SistemasForm
 from register.models import Alumno, Apoderado, Personal, Promotor, Director, Cajero, Tesorero, Colegio, Proveedor, \
-    ProvedorColegio, PersonalColegio, Administrativo, Direccion, Telefono
-from utils.middleware import get_current_colegio, validar_roles
+    ProvedorColegio, PersonalColegio, Administrativo, Direccion, Telefono, Sistemas
+from utils.middleware import get_current_colegio, validar_roles, get_current_user
 from utils.views import SaveGeneric, MyLoginRequiredMixin
 from payments.models import CajaChica
 
@@ -244,6 +244,52 @@ class PersonalDetailView(MyLoginRequiredMixin, DetailView):
 
         if validar_roles(roles=roles):
             return super(PersonalDetailView, self).get(request, args, kwargs)
+
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+
+class SistemasCreateView(MyLoginRequiredMixin, CreateView):
+    model = Sistemas
+    form_class = SistemasForm
+    template_name = "registro_create.html"
+
+    @method_decorator(permission_required('sistemas.sistemas_create', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+
+        if request.user.is_superuser:
+            return super(SistemasCreateView, self).get(request, args, kwargs)
+
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+    @method_decorator(permission_required('sistemas.sistemas_create', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def form_valid(self, request, form):
+        logger.debug("Sistemas a crear con DNI: " + form.cleaned_data["numero_documento"])
+
+        if request.user.is_superuser:
+            personal = SaveGeneric().saveGeneric(padre=Personal, form=form, hijo=Sistemas)
+            logger.debug("Se creó el usuario de sistemas en la vista")
+
+            logger.info("Se creó el usuario de sistemas")
+            return HttpResponseRedirect(personal.get_absolute_url())
+
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+
+class SistemasDetailView(MyLoginRequiredMixin, DetailView):
+    model = Sistemas
+    template_name = "sistemas_detail.html"
+
+    @method_decorator(permission_required('sistemas.sistemas_detail', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+
+        if request.user.is_superuser:
+            return super(SistemasDetailView, self).get(request, args, kwargs)
 
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)

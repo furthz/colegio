@@ -4,7 +4,7 @@ from django import forms
 from django.forms import ModelForm
 
 from profiles.models import Profile
-from register.models import Alumno, Apoderado, Personal, Promotor, Director, Cajero, Tesorero, Proveedor, Colegio
+from register.models import Alumno, Apoderado, Personal, Promotor, Director, Cajero, Tesorero, Proveedor, Colegio, Sistemas
 from utils.forms import ValidProfileFormMixin
 from utils.models import TipoDocumento, TipoSexo, Departamento, Provincia, Distrito
 
@@ -80,7 +80,7 @@ class AlumnoForm(ValidProfileFormMixin, PersonaForm):
 
     class Meta:
         model = Alumno
-        fields = ['nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento', 'numero_documento',
+        fields = ['user', 'nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento', 'numero_documento',
                   'sexo', 'correo', 'fecha_nac']
 
 
@@ -102,6 +102,16 @@ class PersonalForm(ValidProfileFormMixin, PersonaForm):
 
     class Meta:
         model = Personal
+        fields = ['nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento', 'numero_documento',
+                  'sexo', 'correo', 'fecha_nac']
+
+
+class SistemasForm(ValidProfileFormMixin, PersonaForm):
+
+    title = forms.CharField(label="Registrar Sistemas", required=False)
+
+    class Meta:
+        model = Sistemas
         fields = ['nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento', 'numero_documento',
                   'sexo', 'correo', 'fecha_nac']
 
