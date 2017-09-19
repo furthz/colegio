@@ -28,7 +28,7 @@ from register.models import PersonalColegio
 from discounts.forms import SolicitarDescuentoForm
 from discounts.forms import TipoDescuentForm
 from discounts.forms import DetalleDescuentosForm
-from utils.middleware import get_current_colegio, get_current_userID, get_current_user
+from utils.middleware import get_current_colegio, get_current_userID, get_current_user, validar_roles
 from profiles.models import Profile
 import logging
 
@@ -213,44 +213,9 @@ class DetalleDescuentoView(FormView):
 
     def cargarformPromotordescuentos(self, request):
 
-        # Obtiene el colegio en cuestión
-        id_colegio = get_current_colegio()
-        colegio = Colegio.objects.get(pk=id_colegio)
-        # logger.debug("Colegio: " + colegio.nombre)
+        roles = ['promotor', 'director']
 
-        # Obtiene el usuario que ha iniciado sesión
-        user = get_current_user()
-        logger.debug("Usuario: " + user.name)
-
-        try:
-            profile = Profile.objects.get(user=user)
-            logger.debug("profile: " + str(profile.id_persona))
-        except Profile.DoesNotExist:
-            sw_error = True
-            mensaje_error = "No existe la Persona asociada al usuario"
-
-        try:
-            # 1. Verificamos que el usuario sea un personal
-            personal = Personal.objects.get(persona=profile)
-            logger.debug("personal: " + str(personal.id_personal))
-
-            # 2. Verificamos que el usuario sea un personal asociado al colegio
-            personal_colegio = PersonalColegio.objects.get(personal=personal, colegio=colegio)
-
-            # 3. Verificamos que sea un promotor
-            promotor = Promotor.objects.filter(empleado=personal_colegio.personal)
-            #logger.debug()
-            if promotor.count() == 0:
-                sw_error = True
-                mensaje_error = "No es un promotor de un alumno asociado al colegio"
-            else:
-                sw_error = False
-
-        except Personal.DoesNotExist:
-            sw_error = True
-            mensaje_error = "No es un personal asociado al colegio"
-
-        if sw_error != True:
+        if validar_roles(roles=roles):
 
             # Cargamos los años
             anio = datetime.today().year
@@ -264,6 +229,7 @@ class DetalleDescuentoView(FormView):
             return {'anios': anios, 'estados': estados}
 
         else:
+            mensaje_error = "No tienes acceso a esta vista"
             return {'mensaje_error': mensaje_error}  # return context
 
     @method_decorator(
