@@ -355,7 +355,7 @@ class DirectorCreateView(MyLoginRequiredMixin, CreateView):
     @method_decorator(permission_required('director.director_create', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
-        roles = ['sistemas']
+        roles = ['sistemas', 'promotor']
 
         if validar_roles(roles=roles):
             return super(DirectorCreateView, self).get(request, args, kwargs)
@@ -368,7 +368,7 @@ class DirectorCreateView(MyLoginRequiredMixin, CreateView):
     def form_valid(self, form):
         logger.debug("Director a crear con DNI: " + form.cleaned_data["numero_documento"])
 
-        roles = ['sistemas']
+        roles = ['sistemas', 'promotor']
 
         if validar_roles(roles=roles):
             personal = SaveGeneric().saveGeneric(padre=Personal, form=form, hijo=Director)
@@ -388,7 +388,7 @@ class DirectorDetailView(MyLoginRequiredMixin, DetailView):
     @method_decorator(permission_required('director.director_detail', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
-        roles = ['sistemas']
+        roles = ['sistemas', 'promotor']
 
         if validar_roles(roles=roles):
             return super(DirectorDetailView, self).get(request, args, kwargs)
