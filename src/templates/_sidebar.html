@@ -58,6 +58,7 @@
               </ul>
             </li>
             {% endif %}
+        {% if perms.personal %}
             <li class="{% if namespace == 'enrollments' %}active treeview orange {% else  %}treeview blue{% endif %} ">
               <a href="#">
                 <img src="{% static 'site/img/svg/notepad.svg' %}" width="22px" height="22px"/>
@@ -67,10 +68,15 @@
                 </span>
               </a>
                 <ul class="treeview-menu">
+                    {% if perms.matricula.Matricula_List %}
                     <li><a href="{% url 'enrollments:matricula_list' %}"><i class="fa fa-circle-o"></i> Matricula</a></li>
+                    {% endif %}
+                    {% if perms.tiposervicio.Tipo_Servicio_List %}
                     <li><a href="{% url 'enrollments:tiposervicio_list' %}"><i class="fa fa-circle-o"></i> Servicios</a></li>
+                    {% endif %}
                 </ul>
         </li>
+        {% endif %}
         <li class="{% if namespace == 'income' %}active treeview orange {% else  %}treeview green{% endif %} ">
           <a href="#">
             <img src="{% static 'site/img/svg/money.svg' %}" width="22px" height="22px"/>
@@ -92,6 +98,7 @@
                 {% endif %}
           </ul>
         </li>
+
         <li class="{% if namespace == 'discounts' %}active treeview orange {% else  %}treeview purple{% endif %} ">
               <a href="#">
                 <img src="{% static 'site/img/svg/tag.svg' %}" width="22px" height="22px"/>
@@ -101,8 +108,9 @@
                 </span>
               </a>
               <ul class="treeview-menu">
-
+                  {% if perms.descuento.Solicitar_Descuento %}
                       <li><a href="{% url 'discounts:tipo_descuento_create' %}"><i class="fa fa-circle-o"></i> Tipo de Descuento</a></li>
+                  {% endif %}
                   {% if perms.descuento.aprobar_descuento %}
                       <li><a href="{% url 'discounts:aprobar_descuentos' %}"><i class="fa fa-circle-o"></i> Aprobar Descuentos</a></li>
                   {% endif %}
@@ -132,7 +140,9 @@
                 </span>
               </a>
               <ul class="treeview-menu">
+                  {% if perms.pago.Registrar_Pago_Create %}
                       <li><a href="{% url 'payments:registrarpago_create' %}"><i class="fa fa-circle-o"></i> Registrar Egresos</a></li>
+                  {% endif %}
                   {% if perms.pago.control_pagos %}
                       <li><a href="{% url 'payments:pago_promotor' %}"><i class="fa fa-circle-o"></i> Control de Pagos</a></li>
                   {% endif %}
