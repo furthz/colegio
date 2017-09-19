@@ -35,6 +35,7 @@ class Roles:
             roles['tesorero'] = 1
             roles['administrativo'] = 1
             roles['apoderado'] = 1
+            roles['sistemas'] = 1
 
             logger.debug("Se asignaron los permisos de SUPERUSUARIO")
             logger.info("Se asignaron los permisos de SUPERUSUARIO")
