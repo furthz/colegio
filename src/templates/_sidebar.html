@@ -28,6 +28,9 @@
                 </span>
               </a>
               <ul class="treeview-menu">
+
+                  <li><a href="{% url 'register_accounts:register_accounts_create' %}"><i class="fa fa-circle-o"></i>Registrar Usuarios </a> </li>
+
                 {% if perms.personal.personal_list %}
                     <li><a href="{% url 'registers:personal_list' %}"><i class="fa fa-circle-o"></i>Listado Personas </a> </li>
                 {% endif %}
