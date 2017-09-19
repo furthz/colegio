@@ -31,6 +31,9 @@ class RegistrarPagoListView(MyLoginRequiredMixin, TemplateView):
     """
     template_name = "registrarpago_form.html"
     cuentas = []
+
+    @method_decorator(permission_required('Cobranza.Registrar_Pago_List', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def get(self, request, *args, **kwargs):
         """tiposervicio = self.model.objects.get(pk = int(request.GET['tiposervicio']))
         for servicio in tiposervicio.getServiciosAsociados():
@@ -40,23 +43,12 @@ class RegistrarPagoListView(MyLoginRequiredMixin, TemplateView):
         tiposervicio.save()
         """
         #cuentas = Cuentascobrar.objects.all()
+        roles = ['cajero']
 
-        try:
-            logger.info("Estoy en el primer GET")
-            user_now = PersonalColegio.objects.get(personal__user=get_current_user(), colegio_id=get_current_colegio())
-            logger.info(user_now)
-            #rol_tesorero = Tesorero.objects.filter(personalcolegio=user_now)
-            rol_cajero = Cajero.objects.filter(personalcolegio=user_now)
-            #logger.info(rol_tesorero)
-            logger.info(rol_cajero)
-            #if (rol_cajero.count() + rol_tesorero.count()) > 0:
-            if (rol_cajero.count()) > 0:
-                logger.info("Se tienen los permisos")
-            else:
-                return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
-        except:
+        if validar_roles(roles=roles):
+            logger.info("Se tienen los permisos de cajero")
+        else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
-
 
 
         logger.info("Estoy en income pagos")

@@ -28,6 +28,7 @@ from datetime import date
 from django.conf import settings
 from utils.middleware import get_current_colegio, get_current_user, validar_roles
 
+
 logger = logging.getLogger("project")
 
 
@@ -77,20 +78,16 @@ class RegistrarPagoCreateView(CreateView):
     success_url = reverse_lazy('payments:registrarpago_create')
     template_name = 'RegistrarPago/registrarpago_form.html'
 
+    @method_decorator(permission_required('pago.Registrar_Pago_Create', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def get(self, request, *args, **kwargs):
-        try:
-            logger.info("Estoy en el Registrar Pago")
-            user_now = PersonalColegio.objects.get(personal__user=get_current_user(), colegio_id= get_current_colegio())
-            logger.info(user_now)
-            rol_tesorero = Tesorero.objects.filter(personalcolegio=user_now)
-            logger.info(rol_tesorero.count())
-            if (rol_tesorero.count()) > 0:
-                logger.info("Tengo los permisos")
-                return super(RegistrarPagoCreateView, self).get(request, *args, **kwargs)
-            else:
-                return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
-        except:
+        roles = ['tesorero']
+
+        if validar_roles(roles=roles):
+            return super(RegistrarPagoCreateView, self).get(request, *args, **kwargs)
+        else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
 
     def form_valid(self, form):
         form.instance.personal = PersonalColegio.objects.get(pagos__proveedor__user=self.request.user)
