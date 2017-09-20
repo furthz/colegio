@@ -4,7 +4,7 @@ from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.conf import settings
 from enrollment.models import Matricula
 from profiles.models import Profile
-from register.models import Colegio, Personal, Promotor, Director, Cajero, Tesorero, Administrativo, Apoderado
+from register.models import Colegio, Personal, Promotor, Director, Cajero, Tesorero, Administrativo, Apoderado, Sistemas
 from utils.middleware import get_current_colegio, get_current_user
 
 import logging
@@ -35,6 +35,7 @@ class Roles:
             roles['tesorero'] = 1
             roles['administrativo'] = 1
             roles['apoderado'] = 1
+            roles['sistemas'] = 1
 
             logger.debug("Se asignaron los permisos de SUPERUSUARIO")
             logger.info("Se asignaron los permisos de SUPERUSUARIO")
@@ -100,6 +101,15 @@ class Roles:
                 except Administrativo.DoesNotExist:
                     roles['administrativo'] = -1
                     logger.debug("No es un profile Administrativo")
+
+                try:
+                    sistemas = Sistemas.objects.get(empleado=empleado, activo_sistemas=True)
+                    roles['sistemas'] = sistemas.id_sistemas
+                    logger.debug("Sistemas: " + str(sistemas.id_sistemas))
+                except Sistemas.DoesNotExist:
+                    roles['sistemas'] = -1
+                    logger.debug("No es un profile Sistemas")
+
 
             # determinar si es un apoderado
             try:

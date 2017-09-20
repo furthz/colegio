@@ -8,18 +8,18 @@ DEBUG = False
 TEMPLATE_DEBUG = False
 
 # Must mention ALLOWED_HOSTS in production!
-# ALLOWED_HOSTS = ["colegio.com"]
+ALLOWED_HOSTS = ["mundopixel.pe"]
 
 # Cache the templates in memory for speed-up
-loaders = [
-    ('django.templates.loaders.cached.Loader', [
-        'django.templates.loaders.filesystem.Loader',
-        'django.templates.loaders.app_directories.Loader',
-    ]),
-]
+#loaders = [
+#    ('django.templates.loaders.cached.Loader', [
+#        'django.templates.loaders.filesystem.Loader',
+#        'django.templates.loaders.app_directories.Loader',
+#    ]),
+#]
 
-TEMPLATES[0]['OPTIONS'].update({"loaders": loaders})
-TEMPLATES[0].update({"APP_DIRS": False})
+#TEMPLATES[0]['OPTIONS'].update({"loaders": loaders})
+#TEMPLATES[0].update({"APP_DIRS": False})
 
 # Define STATIC_ROOT for the collectstatic command
 STATIC_ROOT = join(BASE_DIR, '..', 'site', 'static')
