@@ -1013,7 +1013,7 @@ class ColegioListView(MyLoginRequiredMixin, TemplateView):
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         colegios = Colegio.objects.all()
-        paginator = Paginator(colegios, 5)
+
         return render(request, template_name=self.template_name, context={
             'colegios': colegios,
         })

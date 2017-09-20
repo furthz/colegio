@@ -66,8 +66,8 @@
                                 </form>
                             {% empty %}
                                 <li>
-                                    No hay Alumnos
-                                    <input type="button" value="Registrar Alumno Nuevo" class="btn btn-sucess">
+                                    No hay Alumnos Registrados
+                                    <a href="{% url 'registers:alumno_create' %}" value="Registrar Alumno Nuevo" class="btn btn-sucess">Registrar Nuevo Alumno</a>
                                 </li>
                             {% endfor %}
                                     </tbody>
