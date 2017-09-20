@@ -523,12 +523,16 @@ class ProveedorCreateView(MyLoginRequiredMixin, CreateView):
             instance = form.save()
             instance.save()
 
-            prov_col = ProvedorColegio()
-            id_colegio = self.request.session.get('colegio')
-            cole = Colegio.objects.get(pk=id_colegio)
-            prov_col.colegio = cole
-            prov_col.proveedor = instance
-            prov_col.save()
+            try:
+                id_colegio = self.request.session.get('colegio')
+                cole = Colegio.objects.get(pk=id_colegio)
+
+                prov_col = ProvedorColegio()
+                prov_col.colegio = cole
+                prov_col.proveedor = instance
+                prov_col.save()
+            except Colegio.DoesNotExist:
+                pass
 
             return HttpResponseRedirect(instance.get_absolute_url())
 
