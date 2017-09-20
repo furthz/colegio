@@ -772,7 +772,7 @@ class ProveedorListView(MyLoginRequiredMixin, TemplateView):
                 logger.debug("colegio: " + str(colegio))
 
                 # Obtener los empleados del colegio
-                proveedores = Proveedor.objects.filter(provedorcolegio__activo=True, proveedorcolegio__colegio=colegio)
+                proveedores = Proveedor.objects.filter(proveedores__activo=True, proveedores__colegio=colegio)
                 logger.debug("cantidad de proveedores: " + str(proveedores.count()))
 
             except Colegio.DoesNotExist:
