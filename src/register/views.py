@@ -523,12 +523,16 @@ class ProveedorCreateView(MyLoginRequiredMixin, CreateView):
             instance = form.save()
             instance.save()
 
-            prov_col = ProvedorColegio()
-            id_colegio = self.request.session.get('colegio')
-            cole = Colegio.objects.get(pk=id_colegio)
-            prov_col.colegio = cole
-            prov_col.proveedor = instance
-            prov_col.save()
+            try:
+                id_colegio = self.request.session.get('colegio')
+                cole = Colegio.objects.get(pk=id_colegio)
+
+                prov_col = ProvedorColegio()
+                prov_col.colegio = cole
+                prov_col.proveedor = instance
+                prov_col.save()
+            except Colegio.DoesNotExist:
+                pass
 
             return HttpResponseRedirect(instance.get_absolute_url())
 
@@ -577,14 +581,37 @@ class PersonalDeleteView(MyLoginRequiredMixin, TemplateView):
         roles = ['promotor', 'director', 'coordinador', 'sistemas']
 
         if validar_roles(roles=roles):
-            persona = Personal.objects.get(persona_id=int(request.GET['idpersona']))
+            persona = Profile.objects.get(id_persona=int(request.GET['idpersona']))
+            perfil = request.GET['perfil']
+
             id_colegio = get_current_colegio()
 
-            personales = PersonalColegio.objects.filter(personal=persona, colegio_id=id_colegio)
+            if id_colegio is None:
 
-            for personal in personales:
-                personal.activo = False
-                personal.save()
+                if perfil == "Alumno":
+                    alus = Matricula.objects.filter(alumno__persona=persona)
+
+                    for alu in alus:
+                        alu.activo = False
+                        alu.save()
+                else:
+                    personales = PersonalColegio.objects.filter(personal__id_persona=persona.id_persona)
+
+                    for personal in personales:
+                        personal.activo = False
+                        personal.save()
+            else:
+
+                if perfil == "Alumno":
+                    alu = Matricula.objects.get(alumno__id_persona=persona.id_persona, colegio__id_colegio=id_colegio)
+
+                    alu.activo = False
+                    alu.save()
+                else:
+                    personal = PersonalColegio.objects.get(personal__id_persona=persona.id_persona, colegio__id_colegio=id_colegio)
+
+                    personal.activo = False
+                    personal.save()
 
             return HttpResponseRedirect(reverse('registers:personal_list'))
 
@@ -620,6 +647,57 @@ class PersonalUpdateView(MyLoginRequiredMixin, UpdateView):
         return reverse_lazy('registers:personal_list')
 
 
+class ProveedorListView(MyLoginRequiredMixin, TemplateView):
+    template_name = "proveedor_list.html"
+
+    def get(self, request, *args, **kwargs):
+        roles = ['promotor', 'director', 'coordinador', 'sistemas']
+
+        if validar_roles(roles=roles):
+
+            logger.debug("get_context")
+
+            # Obtener el id del colegio
+            id_colegio = get_current_colegio()
+            logger.debug("colegio id: " + str(id_colegio))
+
+            result = []
+
+            try:
+                colegio = Colegio.objects.get(pk=id_colegio)
+                logger.debug("colegio: " + str(colegio))
+
+                # Obtener los empleados del colegio
+                proveedores = ProvedorColegio.objects.filter(colegio=colegio, activo=True).all().order_by('proveedor__razon_social')
+                logger.debug("cantidad de proveedores: " + str(proveedores.count()))
+
+            except Colegio.DoesNotExist:
+                # Obtener los empleados del colegio
+                proveedores = ProvedorColegio.objects.filter(activo=True).all().order_by('proveedor__razon_social')
+                logger.debug("cantidad de empleados: " + str(proveedores.count()))
+
+            for p in proveedores:
+                result.append(p.proveedor)
+
+            page = request.GET.get('page', 1)
+
+            paginator = Paginator(result, 5)
+
+            try:
+                provs = paginator.page(page)
+            except PageNotAnInteger:
+                # If page is not an integer, deliver first page.
+                provs = paginator.page(1)
+            except EmptyPage:
+                # If page is out of range (e.g. 9999), deliver last page of results.
+                provs = paginator.page(paginator.num_pages)
+
+            logger.debug("Se cargo el contexto")
+            return render(request, self.template_name, {'proveedores': provs})  # return context
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+
 class PersonaListView(MyLoginRequiredMixin, TemplateView):
     template_name = "persona_list.html"
 
@@ -640,39 +718,109 @@ class PersonaListView(MyLoginRequiredMixin, TemplateView):
                 if colegio is None:
                     empleados = Profile.objects.filter(numero_documento=numero_documento,
                                                    personal__Colegios__activo=True)
+
+                    alumnos = Matricula.objects.filter(alumno__numero_documento=numero_documento,
+                                                       activo=True)
+
                 else:
                     empleados = Profile.objects.filter(numero_documento=numero_documento,
                                                    personal__Colegios__id_colegio=colegio,
                                                    personal__Colegios__activo=True)
+
+                    alumnos = Matricula.objects.filter(alumno__numero_documento=numero_documento,
+                                                       activo=True, colegio__id_colegio=colegio)
+
             elif numero_documento and nombres:
                 if colegio is None:
                     empleados = Profile.objects.filter(Q(numero_documento=numero_documento),
                                                        Q(nombre__icontains=nombres.upper()) |
                                                        Q(apellido_pa__icontains=nombres.upper()) |
                                                        Q(apellido_ma__icontains=nombres.upper())).filter(
-                                                                personal__Colegios__activo=True)  # ,
+                                                                personal__Colegios__activo=True)
+
+                    alumnos = Matricula.objects.filter(Q(alumno__numero_documento=numero_documento),
+                                                       Q(alumno__nombre__icontains=nombres.upper()) |
+                                                       Q(alumno__apellido_pa__icontains=nombres.upper()) |
+                                                       Q(alumno__pellido_ma__icontains=nombres.upper())).filter(activo=True)
                 else:
                     empleados = Profile.objects.filter(Q(numero_documento=numero_documento),
                                                        Q(nombre__icontains=nombres.upper()) |
                                                        Q(apellido_pa__icontains=nombres.upper()) |
                                                        Q(apellido_ma__icontains=nombres.upper())).filter(personal__Colegios__id_colegio=colegio,
-                                                                                                         personal__Colegios__activo=True)  # ,
-                # personal__Colegios__id_colegio=colegio)
+                                                                                                         personal__Colegios__activo=True)
+
+                    alumnos = Matricula.objects.filter(Q(alumno__numero_documento=numero_documento),
+                                                       Q(alumno__nombre__icontains=nombres.upper()) |
+                                                       Q(alumno__apellido_pa__icontains=nombres.upper()) |
+                                                       Q(alumno__apellido_ma__icontains=nombres.upper())).filter(colegio__id_colegio=colegio,
+                                                                                                         activo=True)
+
             elif not numero_documento and nombres:
                 if colegio is None:
                     empleados = Profile.objects.filter(Q(nombre__icontains=nombres.upper()) |
                                                        Q(apellido_pa__icontains=nombres.upper()) |
                                                        Q(apellido_ma__icontains=nombres.upper())).filter(
                                                                             personal__Colegios__activo=True)
+
+                    alumnos = Matricula.objects.filter(Q(alumno__nombre__icontains=nombres.upper()) |
+                                                       Q(alumno__apellido_pa__icontains=nombres.upper()) |
+                                                       Q(alumno__apellido_ma__icontains=nombres.upper())).filter(activo=True)
                 else:
                     empleados = Profile.objects.filter(Q(nombre__icontains=nombres.upper()) |
                                                        Q(apellido_pa__icontains=nombres.upper()) |
                                                        Q(apellido_ma__icontains=nombres.upper())).filter(personal__Colegios__id_colegio=colegio,
                                                                                                          personal__Colegios__activo=True)
+
+                    alumnos = Matricula.objects.filter(Q(alumno__nombre__icontains=nombres.upper()) |
+                                                       Q(alumno__apellido_pa__icontains=nombres.upper()) |
+                                                       Q(alumno__apellido_ma__icontains=nombres.upper())).filter(colegio__id_colegio=colegio,activo=True)
             else:
                 return self.get(request)
 
-            paginator = Paginator(empleados, 5)
+            resultado = []
+
+            for al in alumnos:
+                al.rol = "Alumno"
+                resultado.append(al.alumno)
+
+            for em in empleados:
+
+                rol = ""
+
+                try:
+                    if em.personal.promotor:
+                        rol = "Promotor "
+                except Promotor.DoesNotExist:
+                    pass
+
+                try:
+                    if em.personal.director:
+                        rol = "Director "
+                except Director.DoesNotExist:
+                    pass
+
+                try:
+                    if em.personal.cajero:
+                        rol = "Cajero "
+                except Cajero.DoesNotExist:
+                    pass
+
+                try:
+                    if em.personal.administrativo:
+                        rol = "Administrativo "
+                except Administrativo.DoesNotExist:
+                    pass
+
+                try:
+                    if em.personal.tesorero:
+                        rol = "Tesorero "
+                except Tesorero.DoesNotExist:
+                    pass
+
+                em.rol = rol
+                resultado.append(em)
+
+            paginator = Paginator(resultado, 5)
 
             page = request.GET.get('page', 1)
 
@@ -816,7 +964,7 @@ class ColegioCreateView(MyLoginRequiredMixin, TemplateView):
             data_form = form.cleaned_data
             logger.info(data_form)
             logger.info(form.data)
-            logger.info(request.POST['telefono[]'])
+
             colegio = Colegio(
                 nombre=data_form['nombre'],
                 ruc=data_form['ruc'],
@@ -832,16 +980,19 @@ class ColegioCreateView(MyLoginRequiredMixin, TemplateView):
                 distrito= data_form['distrito']
             )
             direccion.save()
-            celulares = form.data['nros']
-            lst_celulares = celulares.split(',')
-            lista_numeros = []
-            for cel in lst_celulares:
-                telef = Telefono(
-                    colegio= colegio,
-                    numero=cel,
-                    tipo="Celular"
-                )
-                telef.save()
+            try:
+                celulares = form.data['nros']
+                lst_celulares = celulares.split(',')
+                lista_numeros = []
+                for cel in lst_celulares:
+                    telef = Telefono(
+                        colegio= colegio,
+                        numero=cel,
+                        tipo="Celular"
+                    )
+                    telef.save()
+            except:
+                logger.info("no se registraron numeros del colegio")
             logger.info("El formulario es valido")
             caja_chica = CajaChica(
                 colegio= colegio,
@@ -862,6 +1013,7 @@ class ColegioListView(MyLoginRequiredMixin, TemplateView):
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         colegios = Colegio.objects.all()
+
         return render(request, template_name=self.template_name, context={
             'colegios': colegios,
         })

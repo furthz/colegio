@@ -56,12 +56,11 @@
                     <li><a href="{% url 'registers:cajero_create' %}"><i class="fa fa-circle-o"></i> Cajero</a></li>
                 {% endif %}
                 {% if perms.proveedor.proveedor_create %}
-                    <li><a href="{% url 'registers:proveedor_create' %}"><i class="fa fa-circle-o"></i> Proveedor</a></li>
+                    <li><a href="{% url 'registers:proveedor_list' %}"><i class="fa fa-circle-o"></i> Proveedores</a></li>
                 {% endif %}
               </ul>
             </li>
             {% endif %}
-        {% if perms.personal %}
             <li class="{% if namespace == 'enrollments' %}active treeview orange {% else  %}treeview blue{% endif %} ">
               <a href="#">
                 <img src="{% static 'site/img/svg/notepad.svg' %}" width="22px" height="22px"/>
@@ -79,7 +78,7 @@
                     {% endif %}
                 </ul>
         </li>
-        {% endif %}
+
         <li class="{% if namespace == 'income' %}active treeview orange {% else  %}treeview green{% endif %} ">
           <a href="#">
             <img src="{% static 'site/img/svg/money.svg' %}" width="22px" height="22px"/>

@@ -22,11 +22,11 @@ function confirmDel()
 </ul>
 {% endif %}
 
-{% for empleado in empleados %}
-    <form id="{{ empleado.id_persona }}">
+{% for proveedor in proveedores %}
+    <form id="{{ proveedor.id_proveedor }}">
         {% csrf_token %}
-        <input hidden value="{{ empleado.id_persona }}" name="idpersona">
-        <input hidden value="{{ empleado.rol }}" name="perfil">
+        <input hidden value="{{ proveedor.id_proveedor }}" name="idproveedor">
+        <input hidden value="{{ proveedor.rol }}" name="perfil">
     </form>
 {% endfor %}
 
@@ -34,7 +34,7 @@ function confirmDel()
     <div class="col-md-12">
         <div class="box box-primary">
             <div class="box-header with-border">
-                <h3 class="box-title">Lista de Registros</h3>
+                <h3 class="box-title">Lista de Proveedores</h3>
             </div>
                 <form role="form" name="search" method="post" class="form-horizontal">
                     {% csrf_token %}
@@ -42,14 +42,15 @@ function confirmDel()
                         <div class="col-md-9">
                             <div class="panel-page">
                                 <div class="toolbar-header">
-                                    <a class="btn btn-success" href="#">
+                                    <a class="btn btn-success" href="{% url 'registers:proveedor_create' %}">
                                         <i class="fa fa-plus" aria-hidden="true">
                                         </i>
-                                        Crear Usuario
+                                        Crear Proveedor
                                     </a>
                                 </div>
                                 <div class="toolbar-search">
                                     <div class="box-body">
+                                        <!--
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label>Número Documento de Identidad</label>
@@ -59,18 +60,19 @@ function confirmDel()
                                                 </div>
                                             </div>
                                         </div>
+                                        -->
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label>Apellidos o Nombres</label>
+                                                <label>Razón Social</label>
                                                 <input type="text" class="form-control" id="nombres"
-                                                       placeholder="Escriba el apellido o nombre para la búsqueda" name="nombres"
+                                                       placeholder="Razón Social" name="nombres"
                                                         value="{{ nombres }}">
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="search-actions">
                                                 <button type="submit" class="btn btn-primary" >
-                                                    <i class="fa fa-search" aria-hidden="true"></i> Buscar Usuario
+                                                    <i class="fa fa-search" aria-hidden="true"></i> Buscar Proveedor
                                                 </button>
                                             </div>
                                         </div>
@@ -82,28 +84,28 @@ function confirmDel()
                                 <tbody>
                                     <tr class="table-header">
                                         <th>Código</th>
-                                        <th>DNI</th>
-                                        <th>Apellidos y Nombres</th>
+                                        <th>RUC</th>
+                                        <th>Razón Social</th>
                                         <th>Perfil</th>
                                         <th class="text-center">Acciones</th>
                                     </tr>
-                                {% for empleado in empleados %}
+                                {% for proveedor in proveedores %}
                                     <tr>
-                                        <td>{{ empleado.id_persona }}</td>
-                                        <td>{{ empleado.numero_documento }}</td>
-                                        <td>{{ empleado.getNombreCompleto }}</td>
-                                        <td>{{ empleado.rol }}</td>
+                                        <td>{{ proveedor.id_proveedor }}</td>
+                                        <td>{{ proveedor.ruc }}</td>
+                                        <td>{{ proveedor.razon_social }}</td>
+                                        <td>Proveedor</td>
                                         <td>
                                             <div class="text-center">
                                                 <div class="btn-group btn-group-sm" role="group" aria-level="">
-                                                    <a title="Editar" href="{% url 'registers:personal_update' pk=empleado.id_persona %}" class="btn btn-default">
+                                                    <a title="Editar" href="{% url 'registers:proveedor_detail' pk=proveedor.id_proveedor %}" class="btn btn-default">
                                                         <i class="fa fa-pencil" aria-hidden="true"></i>
                                                     </a>
-                                                    <a title="Detalle" href="{% url 'registers:personal_detail' pk=empleado.id_persona %}" class="btn btn-default">
+                                                    <a title="Detalle" href="{% url 'registers:proveedor_detail' pk=proveedor.id_proveedor %}" class="btn btn-default">
                                                         <i class="fa fa-info-circle" aria-hidden="true"></i>
                                                     </a>
 
-                                                    <button class="btn btn-default" type="submit" onclick="return confirmDel();" title="Eliminar" formaction="{% url 'registers:personal_delete' %}" formmethod="get" form="{{ empleado.id_persona }}">
+                                                    <button class="btn btn-default" type="submit" onclick="return confirmDel();" title="Eliminar" formaction="" formmethod="get" form="{{ proveedor.id_proveedor }}">
                                                         <i class="fa fa-trash" aria-hidden="true"></i>
                                                     </button>
                                                     <!--
