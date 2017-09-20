@@ -640,39 +640,108 @@ class PersonaListView(MyLoginRequiredMixin, TemplateView):
                 if colegio is None:
                     empleados = Profile.objects.filter(numero_documento=numero_documento,
                                                    personal__Colegios__activo=True)
+
+                    alumnos = Matricula.objects.filter(alumno__numero_documento=numero_documento,
+                                                       activo=True)
+
                 else:
                     empleados = Profile.objects.filter(numero_documento=numero_documento,
                                                    personal__Colegios__id_colegio=colegio,
                                                    personal__Colegios__activo=True)
+
+                    alumnos = Matricula.objects.filter(alumno__numero_documento=numero_documento,
+                                                       activo=True, colegio__id_colegio=colegio)
+
             elif numero_documento and nombres:
                 if colegio is None:
                     empleados = Profile.objects.filter(Q(numero_documento=numero_documento),
                                                        Q(nombre__icontains=nombres.upper()) |
                                                        Q(apellido_pa__icontains=nombres.upper()) |
                                                        Q(apellido_ma__icontains=nombres.upper())).filter(
-                                                                personal__Colegios__activo=True)  # ,
+                                                                personal__Colegios__activo=True)
+
+                    alumnos = Matricula.objects.filter(Q(alumno__numero_documento=numero_documento),
+                                                       Q(alumno__nombre__icontains=nombres.upper()) |
+                                                       Q(alumno__apellido_pa__icontains=nombres.upper()) |
+                                                       Q(alumno__pellido_ma__icontains=nombres.upper())).filter(activo=True)
                 else:
                     empleados = Profile.objects.filter(Q(numero_documento=numero_documento),
                                                        Q(nombre__icontains=nombres.upper()) |
                                                        Q(apellido_pa__icontains=nombres.upper()) |
                                                        Q(apellido_ma__icontains=nombres.upper())).filter(personal__Colegios__id_colegio=colegio,
-                                                                                                         personal__Colegios__activo=True)  # ,
-                # personal__Colegios__id_colegio=colegio)
+                                                                                                         personal__Colegios__activo=True)
+
+                    alumnos = Matricula.objects.filter(Q(alumno__numero_documento=numero_documento),
+                                                       Q(alumno__nombre__icontains=nombres.upper()) |
+                                                       Q(alumno__apellido_pa__icontains=nombres.upper()) |
+                                                       Q(alumno__apellido_ma__icontains=nombres.upper())).filter(colegio__id_colegio=colegio,
+                                                                                                         activo=True)
+
             elif not numero_documento and nombres:
                 if colegio is None:
                     empleados = Profile.objects.filter(Q(nombre__icontains=nombres.upper()) |
                                                        Q(apellido_pa__icontains=nombres.upper()) |
                                                        Q(apellido_ma__icontains=nombres.upper())).filter(
                                                                             personal__Colegios__activo=True)
+
+                    alumnos = Matricula.objects.filter(Q(alumno__nombre__icontains=nombres.upper()) |
+                                                       Q(alumno__apellido_pa__icontains=nombres.upper()) |
+                                                       Q(alumno__apellido_ma__icontains=nombres.upper())).filter(activo=True)
                 else:
                     empleados = Profile.objects.filter(Q(nombre__icontains=nombres.upper()) |
                                                        Q(apellido_pa__icontains=nombres.upper()) |
                                                        Q(apellido_ma__icontains=nombres.upper())).filter(personal__Colegios__id_colegio=colegio,
                                                                                                          personal__Colegios__activo=True)
+
+                    alumnos = Matricula.objects.filter(Q(alumno__nombre__icontains=nombres.upper()) |
+                                                       Q(alumno__apellido_pa__icontains=nombres.upper()) |
+                                                       Q(alumno__apellido_ma__icontains=nombres.upper())).filter(colegio__id_colegio=colegio,activo=True)
             else:
                 return self.get(request)
 
-            paginator = Paginator(empleados, 5)
+            resultado = []
+
+            for al in alumnos:
+                resultado.append(al.alumno)
+
+            for em in empleados:
+
+                rol = ""
+
+                try:
+                    if em.personal.promotor:
+                        rol = "Promotor "
+                except Promotor.DoesNotExist:
+                    pass
+
+                try:
+                    if em.personal.director:
+                        rol = "Director "
+                except Director.DoesNotExist:
+                    pass
+
+                try:
+                    if em.personal.cajero:
+                        rol = "Cajero "
+                except Cajero.DoesNotExist:
+                    pass
+
+                try:
+                    if em.personal.administrativo:
+                        rol = "Administrativo "
+                except Administrativo.DoesNotExist:
+                    pass
+
+                try:
+                    if em.personal.tesorero:
+                        rol = "Tesorero "
+                except Tesorero.DoesNotExist:
+                    pass
+
+                em.rol = rol
+                resultado.append(em)
+
+            paginator = Paginator(resultado, 5)
 
             page = request.GET.get('page', 1)
 
