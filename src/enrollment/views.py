@@ -58,7 +58,7 @@ class TipoServicioListView(MyLoginRequiredMixin, ListView):
     model = TipoServicio
     template_name = "tiposervicio_list.html"
 
-    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
@@ -110,7 +110,7 @@ class TipoServicioDetailView(MyLoginRequiredMixin, DetailView):
     model = TipoServicio
     template_name = "tiposervicio_detail.html"
 
-    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
@@ -128,7 +128,7 @@ class TipoServicioRegularCreateView(MyLoginRequiredMixin, CreateView):
     model = TipoServicio
     form_class = TipoServicioRegularForm
 
-    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
@@ -151,7 +151,7 @@ class TipoServicioExtraCreateView(MyLoginRequiredMixin, CreateView):
     model = TipoServicio
     form_class = TipoServicioExtraForm
 
-    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
@@ -176,7 +176,7 @@ class CargarTipoServicioCreateView(MyLoginRequiredMixin, TemplateView):
     form1 = TipoServicioRegularForm
     form2 = TipoServicioExtraForm
 
-    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
@@ -209,7 +209,7 @@ class TipoServicioRegularUpdateView(MyLoginRequiredMixin, TemplateView):
     model = TipoServicio
     form_class = TipoServicioRegularForm
 
-    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
@@ -245,7 +245,7 @@ class TipoServicioExtraUpdateView(MyLoginRequiredMixin, TemplateView):
     model = TipoServicio
     form_class = TipoServicioExtraForm
 
-    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
@@ -276,18 +276,18 @@ class TipoServicioDeleteView(MyLoginRequiredMixin, TemplateView):
     model = TipoServicio
     template_name = "tiposervicio_confirm_delete.html"
 
-    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
 
         if validar_roles(roles=roles):
             tiposervicio = self.model.objects.get(pk=int(request.GET['tiposervicio']))
-            for servicio in tiposervicio.getServiciosAsociados():
-                servicio.activo = False
-                servicio.save()
-            tiposervicio.activo = False
-            tiposervicio.save()
+            for servicio in enrollment.getServiciosAsociados():
+                enrollment.activo = False
+                enrollment.save()
+            enrollment.activo = False
+            enrollment.save()
             return HttpResponseRedirect(reverse('enrollments:tiposervicio_list'))
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
@@ -316,7 +316,7 @@ class ServicioListView(MyLoginRequiredMixin, ListView):
     model = Servicio
     template_name = "servicio_list.html"
 
-    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
@@ -341,7 +341,7 @@ class ServicioDetailView(MyLoginRequiredMixin, DetailView):
     model = Servicio
     template_name = "servicio_detail.html"
 
-    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
@@ -371,14 +371,14 @@ class ServicioRegularCreateView(MyLoginRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse_lazy('enrollments:tiposervicio_list')
 
-    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
 
         if validar_roles(roles=roles):
             return render(request, template_name=self.template_name, context={
-                'tiposervicio': TipoServicio.objects.filter(is_ordinario=True, activo=True,
+                'tiposervicio': enrollment.objects.filter(is_ordinario=True, activo=True,
                                                             colegio_id=get_current_colegio()).order_by("nivel",
                                                                                                        "grado"),
                 'form': self.form_class,
@@ -406,14 +406,14 @@ class ServicioExtraCreateView(MyLoginRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse_lazy('enrollments:tiposervicio_list')
 
-    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
 
         if validar_roles(roles=roles):
             return render(request, template_name=self.template_name, context={
-                'tiposervicio': TipoServicio.objects.filter(is_ordinario=False, activo=True,
+                'tiposervicio': enrollment.objects.filter(is_ordinario=False, activo=True,
                                                             colegio_id=get_current_colegio()),
                 'form': self.form_class,
             })
@@ -441,11 +441,11 @@ class ServicioRegularEndUpdateView(MyLoginRequiredMixin, TemplateView):
         if form.is_valid():
             data_form = form.cleaned_data
             servicio = self.model.objects.get(pk=request.POST['idser'])
-            servicio.cuotas = data_form['cuotas']
-            servicio.nombre = data_form['nombre']
-            servicio.fecha_facturar = data_form['fecha_facturar']
-            servicio.precio = data_form['precio']
-            servicio.save()
+            enrollment.cuotas = data_form['cuotas']
+            enrollment.nombre = data_form['nombre']
+            enrollment.fecha_facturar = data_form['fecha_facturar']
+            enrollment.precio = data_form['precio']
+            enrollment.save()
             logger.info("El formulario es valido")
             return HttpResponseRedirect(reverse('enrollments:tiposervicio_list'))
         return HttpResponseRedirect(reverse('enrollments:tiposervicio_list'))
@@ -456,7 +456,7 @@ class ServicioRegularUpdateView(MyLoginRequiredMixin, TemplateView):
     model = Servicio
     form_class = ServicioRegularForm
 
-    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
@@ -471,7 +471,7 @@ class ServicioRegularUpdateView(MyLoginRequiredMixin, TemplateView):
         servicio = self.model.objects.get(pk=request.POST["idser"])
         form = self.form_class(instance=servicio)
         return render(request, template_name=self.template_name, context={
-            'tiposervicio': servicio.tipo_servicio,
+            'tiposervicio': enrollment.tipo_servicio,
             'form': form,
             'idser':int(request.POST['idser']),
         })
@@ -493,11 +493,11 @@ class ServicioExtraEndUpdateView(MyLoginRequiredMixin, TemplateView):
         if form.is_valid():
             data_form = form.cleaned_data
             servicio = self.model.objects.get(pk=request.POST['idser'])
-            servicio.cuotas = data_form['cuotas']
-            servicio.nombre = data_form['nombre']
-            servicio.fecha_facturar = data_form['fecha_facturar']
-            servicio.precio = data_form['precio']
-            servicio.save()
+            enrollment.cuotas = data_form['cuotas']
+            enrollment.nombre = data_form['nombre']
+            enrollment.fecha_facturar = data_form['fecha_facturar']
+            enrollment.precio = data_form['precio']
+            enrollment.save()
             logger.info("El formulario es valido")
             return HttpResponseRedirect(reverse('enrollments:tiposervicio_list'))
         return HttpResponseRedirect(reverse('enrollments:tiposervicio_list'))
@@ -509,7 +509,7 @@ class ServicioExtraUpdateView(MyLoginRequiredMixin, TemplateView):
     form_class = ServicioExtraForm
     template_name = "servicioextra_update_form.html"
 
-    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
@@ -525,7 +525,7 @@ class ServicioExtraUpdateView(MyLoginRequiredMixin, TemplateView):
         servicio = self.model.objects.get(pk=request.POST["idser"])
         form = self.form_class(instance=servicio)
         return render(request, template_name=self.template_name, context={
-            'tiposervicio': servicio.tipo_servicio,
+            'tiposervicio': enrollment.tipo_servicio,
             'form': form,
             'idser':(request.POST['idser']),
         })
@@ -539,15 +539,15 @@ class ServicioDeleteView(MyLoginRequiredMixin, TemplateView):
     model = Servicio
     template_name = "servicio_confirm_delete.html"
 
-    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
 
         if validar_roles(roles=roles):
             servicio = self.model.objects.get(pk=request.GET['idser'])
-            servicio.activo = False
-            servicio.save()
+            enrollment.activo = False
+            enrollment.save()
             return HttpResponseRedirect(reverse('enrollments:tiposervicio_list'))
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
@@ -575,7 +575,7 @@ class MatriculaListView(MyLoginRequiredMixin, ListView):
     model = Matricula
     template_name = "matricula_list.html"
 
-    @method_decorator(permission_required('Matricula.Matricula_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Matricula_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
@@ -599,7 +599,7 @@ class MatriculaDetailView(MyLoginRequiredMixin, DetailView):
     model = Matricula
     template_name = "matricula_detail.html"
 
-    @method_decorator(permission_required('Matricula.Matricula_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Matricula_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
@@ -623,7 +623,7 @@ class MatriculaCreateView(MyLoginRequiredMixin, CreateView):
         form.instance.colegio = Colegio.objects.get(pk=self.request.session.get('colegio'))
         return super(MatriculaCreateView, self).form_valid(form)
 
-    @method_decorator(permission_required('Matricula.Matricula_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Matricula_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
@@ -683,7 +683,7 @@ class MatriculaCreateView(MyLoginRequiredMixin, CreateView):
         logger.debug("Inicio de metodo CrearCuantasCobrar")
         logger.info("Inicio de metodo CrearCuantasCobrar")
 
-        list_servicios = Servicio.objects.filter(tipo_servicio_id=data_form["tipo_servicio"])
+        list_servicios = enrollment.objects.filter(tipo_servicio_id=data_form["tipo_servicio"])
         logger.debug(list_servicios.all())
         logger.info(list_servicios.all())
 
@@ -693,22 +693,22 @@ class MatriculaCreateView(MyLoginRequiredMixin, CreateView):
             logger.debug("inicia la lecturas de las cuentas")
             logger.info(servicio)
 
-            fecha_facturar = servicio.fecha_facturar
+            fecha_facturar = enrollment.fecha_facturar
             if fecha_facturar.month < fecha_actual.month:
                 fecha_facturar = fecha_facturar.replace(month= fecha_actual.month)
             logger.info("la fecha a facturar es: {0}".format(fecha_facturar))
 
-            if servicio.is_periodic:
-                logger.debug(str(servicio.is_periodic))
-                logger.info("El servicio es periodico {0}".format(servicio.is_periodic))
+            if enrollment.is_periodic:
+                logger.debug(str(enrollment.is_periodic))
+                logger.info("El servicio es periodico {0}".format(enrollment.is_periodic))
 
-                if servicio.fecha_facturar.month < fecha_actual.month:
-                    numero_cuotas = servicio.cuotas - (fecha_actual.month - servicio.fecha_facturar.month)
+                if enrollment.fecha_facturar.month < fecha_actual.month:
+                    numero_cuotas = enrollment.cuotas - (fecha_actual.month - enrollment.fecha_facturar.month)
                 else:
-                    numero_cuotas = servicio.cuotas
+                    numero_cuotas = enrollment.cuotas
 
                 for cuota in range(numero_cuotas):
-                    logger.info("El servicio tiene {0} cuotas".format(servicio.cuotas))
+                    logger.info("El servicio tiene {0} cuotas".format(enrollment.cuotas))
                     logger.info("El servicio cobrara {0} cuotas".format(numero_cuotas))
                     logger.debug("Cuota Nro. {0}".format(cuota))
 
@@ -718,8 +718,8 @@ class MatriculaCreateView(MyLoginRequiredMixin, CreateView):
                                                 servicio=servicio,
                                                 fecha_ven=fecha_vencimiento,
                                                 estado=True,
-                                                precio=servicio.precio,
-                                                deuda=servicio.precio,
+                                                precio=enrollment.precio,
+                                                deuda=enrollment.precio,
                                                 descuento=0,
                                                 )
                         logger.debug(cuentas.matricula)
@@ -728,15 +728,15 @@ class MatriculaCreateView(MyLoginRequiredMixin, CreateView):
                         cuentas.save()
 
             else:
-                logger.debug(str(servicio.is_periodic))
-                logger.info("El servicio es periodico {0}".format(servicio.is_periodic))
+                logger.debug(str(enrollment.is_periodic))
+                logger.info("El servicio es periodico {0}".format(enrollment.is_periodic))
 
                 cuentas = Cuentascobrar(matricula=matricula,
                                         servicio=servicio,
-                                        fecha_ven=servicio.fecha_facturar,
+                                        fecha_ven=enrollment.fecha_facturar,
                                         estado=True,
-                                        precio=servicio.precio,
-                                        deuda=servicio.precio,
+                                        precio=enrollment.precio,
+                                        deuda=enrollment.precio,
                                         descuento=0
                                         )
                 cuentas.save()
@@ -751,7 +751,7 @@ class MatriculaUpdateView(MyLoginRequiredMixin, UpdateView):
     form_class = MatriculaForm
     template_name = "matricula_form.html"
 
-    @method_decorator(permission_required('Matricula.Matricula_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Matricula_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
@@ -767,7 +767,7 @@ class CargarMatriculaUpdateView(MyLoginRequiredMixin, TemplateView):
     model = Matricula
     form_class = MatriculaForm
 
-    @method_decorator(permission_required('Matricula.Matricula_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Matricula_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
@@ -794,7 +794,7 @@ class MatriculaDeleteView(MyLoginRequiredMixin, DeleteView):
     model = Matricula
     template_name = "matricula_confirm_delete.html"
 
-    @method_decorator(permission_required('Matricula.Matricula_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Matricula_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
@@ -844,7 +844,7 @@ class CargarMatriculaCreateView(TemplateView):
     model = Alumno
     form_class = MatriculaForm
     def post(self, request, *args, **kwargs):
-        tipos_de_servicios = TipoServicio.objects.filter(colegio__id_colegio=self.request.session.get('colegio'), activo=True).order_by("nivel", "grado")
+        tipos_de_servicios = enrollment.objects.filter(colegio__id_colegio=self.request.session.get('colegio'), activo=True).order_by("nivel", "grado")
 
         return render(request, template_name=self.template_name, context={
                 'alumno': self.model.objects.get(pk = request.POST["alumno"]),
@@ -885,7 +885,7 @@ def generar_pdf(request):
     header = Paragraph("Listado de Clientes", styles['Heading1'])
     clientes.append(header)
     headings = ('Activo', 'Fecha Creacion', 'Fecha Modificacion')
-    allclientes = [(p.activo, p.fecha_creacion, p.fecha_modificacion) for p in TipoServicio.objects.all()]
+    allclientes = [(p.activo, p.fecha_creacion, p.fecha_modificacion) for p in enrollment.objects.all()]
     print(allclientes)
 
     t = Table([headings] + allclientes)
