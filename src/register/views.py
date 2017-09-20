@@ -541,6 +541,26 @@ class ProveedorCreateView(CreateView):
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
 
+class ProveedorUpdateView(MyLoginRequiredMixin, UpdateView):
+    model = Proveedor
+    form_class = ProveedorForm
+    template_name = "proveedor_create.html"
+
+    @method_decorator(permission_required('register.proveedor_update', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        roles = ['promotor', 'director', 'coordinador', 'sistemas']
+
+        if validar_roles(roles=roles):
+            return super(ProveedorUpdateView, self).get(request, args, kwargs)
+
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+    def get_success_url(self):
+        return reverse_lazy('registers:proveedor_list')
+
+
 class ProveedorDeleteView(MyLoginRequiredMixin, TemplateView):
     model = Profile
 
