@@ -42,11 +42,13 @@ function confirmDel()
                         <div class="col-md-9">
                             <div class="panel-page">
                                 <div class="toolbar-header">
+                                    {% if perms.register.proveedor_create %}
                                     <a class="btn btn-success" href="{% url 'registers:proveedor_create' %}">
                                         <i class="fa fa-plus" aria-hidden="true">
                                         </i>
                                         Crear Proveedor
                                     </a>
+                                    {% endif %}
                                 </div>
                                 <div class="toolbar-search">
                                     <div class="box-body">

@@ -18,7 +18,7 @@
       {% with request.resolver_match.namespace as namespace %}
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">MENÚ DE NAVEGACIÓN</li>
-            {% if perms.personal %}
+            {% if perms.register %}
             <li class="{% if namespace == 'registers' %}active treeview orange {% else  %}treeview green{% endif %} ">
               <a href="#">
                 <img src="{% static 'site/img/svg/user.svg' %}" width="22px" height="22px"/>
@@ -31,31 +31,31 @@
 
                   <li><a href="{% url 'register_accounts:register_accounts_create' %}"><i class="fa fa-circle-o"></i>Registrar Usuarios </a> </li>
 
-                {% if perms.personal.personal_list %}
+                {% if perms.register.personal_list %}
                     <li><a href="{% url 'registers:personal_list' %}"><i class="fa fa-circle-o"></i>Listado Personas </a> </li>
                 {% endif %}
-                {% if perms.alumno.alumno_create %}
+                {% if perms.register.alumno_create %}
                     <li><a href="{% url 'registers:alumno_create' %}"><i class="fa fa-circle-o"></i> Alumno</a></li>
                 {% endif %}
-                {% if perms.apoderado.apoderado_create %}
+                {% if perms.register.apoderado_create %}
                     <li><a href="{% url 'registers:apoderado_create' %}"><i class="fa fa-circle-o"></i> Apoderado</a></li>
                 {% endif %}
                 {% if perms.sistemas.sistemas_create %}
                     <li><a href="{% url 'registers:sistemas_create' %}"><i class="fa fa-circle-o"></i> Usuario Sistemas</a></li>
                 {% endif %}
-                {% if perms.promotor.promotor_create %}
+                {% if perms.register.promotor_create %}
                     <li><a href="{% url 'registers:promotor_create' %}"><i class="fa fa-circle-o"></i> Promotor</a></li>
                 {% endif %}
-                {% if perms.director.director_create %}
+                {% if perms.register.director_create %}
                     <li><a href="{% url 'registers:director_create' %}"><i class="fa fa-circle-o"></i> Director</a></li>
                 {% endif %}
-                {% if perms.tesorero.tesorero_create %}
+                {% if perms.register.tesorero_create %}
                     <li><a href="{% url 'registers:tesorero_create' %}"><i class="fa fa-circle-o"></i> Tesorero</a></li>
                 {% endif %}
-                {% if perms.cajero.cajero_create %}
+                {% if perms.register.cajero_create %}
                     <li><a href="{% url 'registers:cajero_create' %}"><i class="fa fa-circle-o"></i> Cajero</a></li>
                 {% endif %}
-                {% if perms.proveedor.proveedor_create %}
+                {% if perms.register.proveedor_list %}
                     <li><a href="{% url 'registers:proveedor_list' %}"><i class="fa fa-circle-o"></i> Proveedores</a></li>
                 {% endif %}
               </ul>
