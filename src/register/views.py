@@ -541,6 +541,44 @@ class ProveedorCreateView(CreateView):
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
 
+class ProveedorDeleteView(MyLoginRequiredMixin, TemplateView):
+    model = Profile
+
+    @method_decorator(permission_required('register.proveedor_delete', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        roles = ['promotor', 'director', 'coordinador', 'sistemas']
+
+        if validar_roles(roles=roles):
+            proveedor = Proveedor.objects.get(pk=int(request.GET['idproveedor']))
+
+            id_colegio = get_current_colegio()
+
+            if id_colegio is None:
+
+                provs = ProvedorColegio.objects.filter(proveedor=proveedor)
+
+                for prov in provs:
+                    prov.activo = False
+                    prov.save()
+
+            else:
+
+                try:
+                    prov = ProvedorColegio.objects.get(proveedor=proveedor, colegio__id_colegio=id_colegio, activo=True)
+
+                    prov.activo = False
+                    prov.save()
+
+                except ProvedorColegio.DoesNotExist:
+                    pass
+
+            return HttpResponseRedirect(reverse('registers:proveedor_list'))
+
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+
 class ProveedorDetailView(MyLoginRequiredMixin, DetailView):
     model = Proveedor
     template_name = "proveedor_detail.html"
@@ -671,7 +709,7 @@ class ProveedorListView(MyLoginRequiredMixin, TemplateView):
                 logger.debug("colegio: " + str(colegio))
 
                 # Obtener los empleados del colegio
-                proveedores = ProvedorColegio.objects.filter(colegio=colegio, activo=True).all().order_by('proveedor__razon_social')
+                proveedores = ProvedorColegio.objects.filter(colegio=colegio, activo=True).all()
                 logger.debug("cantidad de proveedores: " + str(proveedores.count()))
 
             except Colegio.DoesNotExist:

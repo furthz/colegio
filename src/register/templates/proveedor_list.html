@@ -107,7 +107,7 @@ function confirmDel()
                                                         <i class="fa fa-info-circle" aria-hidden="true"></i>
                                                     </a>
 
-                                                    <button class="btn btn-default" type="submit" onclick="return confirmDel();" title="Eliminar" formaction="" formmethod="get" form="{{ proveedor.id_proveedor }}">
+                                                    <button class="btn btn-default" type="submit" onclick="return confirmDel();" title="Eliminar" formaction="{% url 'registers:proveedor_delete' %}" formmethod="get" form="{{ proveedor.id_proveedor }}">
                                                         <i class="fa fa-trash" aria-hidden="true"></i>
                                                     </button>
                                                     <!--
