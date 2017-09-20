@@ -5,7 +5,7 @@ from register.views import CreatePersonaView, PersonaDetail, AlumnoCreateView, A
     ApoderadoDetailView, PersonalDetailView, PersonalCreateView, PromotorCreateView, PromotorDetailView, \
     DirectorDetailView, DirectorCreateView, CajeroCreateView, CajeroDetailView, TesoreroCreateView, TesoreroDetailView, \
     ProveedorCreateView, ProveedorDetailView, PersonaListView, PersonaDetailView, ColegioCreateView, ColegioListView, PersonalUpdateView, PersonalDeleteView, \
-    SistemasCreateView, SistemasDetailView
+    SistemasCreateView, SistemasDetailView, ProveedorListView
 from . import views
 
 urlpatterns = [
@@ -39,6 +39,7 @@ urlpatterns = [
 
     url(r'^proveedores/create/$',ProveedorCreateView.as_view(), name="proveedor_create"),
     url(r'^proveedores/(?P<pk>\d+)/$',ProveedorDetailView.as_view(), name='proveedor_detail'),
+    url(r'^proveedores/list/$', ProveedorListView.as_view(), name="proveedor_list"),
 
     url(r'^list/$', PersonaListView.as_view(), name="personal_list"),
     url(r'^registers/(?P<pk>\d+)/$',PersonaDetailView.as_view(), name='personal_detail'),
@@ -47,4 +48,6 @@ urlpatterns = [
 
     url(r'^colegios/create/$', ColegioCreateView.as_view(), name="colegio_create"),
     url(r'^colegios/$', ColegioListView.as_view(), name="colegio_list"),
+
+
 ]
