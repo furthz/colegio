@@ -283,11 +283,11 @@ class TipoServicioDeleteView(MyLoginRequiredMixin, TemplateView):
 
         if validar_roles(roles=roles):
             tiposervicio = self.model.objects.get(pk=int(request.GET['tiposervicio']))
-            for servicio in enrollment.getServiciosAsociados():
-                enrollment.activo = False
-                enrollment.save()
-            enrollment.activo = False
-            enrollment.save()
+            for servicio in tiposervicio.getServiciosAsociados():
+                servicio.activo = False
+                servicio.save()
+            tiposervicio.activo = False
+            tiposervicio.save()
             return HttpResponseRedirect(reverse('enrollments:tiposervicio_list'))
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
@@ -378,7 +378,7 @@ class ServicioRegularCreateView(MyLoginRequiredMixin, CreateView):
 
         if validar_roles(roles=roles):
             return render(request, template_name=self.template_name, context={
-                'tiposervicio': enrollment.objects.filter(is_ordinario=True, activo=True,
+                'tiposervicio': TipoServicio.objects.filter(is_ordinario=True, activo=True,
                                                             colegio_id=get_current_colegio()).order_by("nivel",
                                                                                                        "grado"),
                 'form': self.form_class,
@@ -413,7 +413,7 @@ class ServicioExtraCreateView(MyLoginRequiredMixin, CreateView):
 
         if validar_roles(roles=roles):
             return render(request, template_name=self.template_name, context={
-                'tiposervicio': enrollment.objects.filter(is_ordinario=False, activo=True,
+                'tiposervicio': TipoServicio.objects.filter(is_ordinario=False, activo=True,
                                                             colegio_id=get_current_colegio()),
                 'form': self.form_class,
             })
@@ -441,11 +441,11 @@ class ServicioRegularEndUpdateView(MyLoginRequiredMixin, TemplateView):
         if form.is_valid():
             data_form = form.cleaned_data
             servicio = self.model.objects.get(pk=request.POST['idser'])
-            enrollment.cuotas = data_form['cuotas']
-            enrollment.nombre = data_form['nombre']
-            enrollment.fecha_facturar = data_form['fecha_facturar']
-            enrollment.precio = data_form['precio']
-            enrollment.save()
+            servicio.cuotas = data_form['cuotas']
+            servicio.nombre = data_form['nombre']
+            servicio.fecha_facturar = data_form['fecha_facturar']
+            servicio.precio = data_form['precio']
+            servicio.save()
             logger.info("El formulario es valido")
             return HttpResponseRedirect(reverse('enrollments:tiposervicio_list'))
         return HttpResponseRedirect(reverse('enrollments:tiposervicio_list'))
@@ -471,7 +471,7 @@ class ServicioRegularUpdateView(MyLoginRequiredMixin, TemplateView):
         servicio = self.model.objects.get(pk=request.POST["idser"])
         form = self.form_class(instance=servicio)
         return render(request, template_name=self.template_name, context={
-            'tiposervicio': enrollment.tipo_servicio,
+            'tiposervicio': servicio.tipo_servicio,
             'form': form,
             'idser':int(request.POST['idser']),
         })
@@ -493,11 +493,11 @@ class ServicioExtraEndUpdateView(MyLoginRequiredMixin, TemplateView):
         if form.is_valid():
             data_form = form.cleaned_data
             servicio = self.model.objects.get(pk=request.POST['idser'])
-            enrollment.cuotas = data_form['cuotas']
-            enrollment.nombre = data_form['nombre']
-            enrollment.fecha_facturar = data_form['fecha_facturar']
-            enrollment.precio = data_form['precio']
-            enrollment.save()
+            servicio.cuotas = data_form['cuotas']
+            servicio.nombre = data_form['nombre']
+            servicio.fecha_facturar = data_form['fecha_facturar']
+            servicio.precio = data_form['precio']
+            servicio.save()
             logger.info("El formulario es valido")
             return HttpResponseRedirect(reverse('enrollments:tiposervicio_list'))
         return HttpResponseRedirect(reverse('enrollments:tiposervicio_list'))
@@ -525,7 +525,7 @@ class ServicioExtraUpdateView(MyLoginRequiredMixin, TemplateView):
         servicio = self.model.objects.get(pk=request.POST["idser"])
         form = self.form_class(instance=servicio)
         return render(request, template_name=self.template_name, context={
-            'tiposervicio': enrollment.tipo_servicio,
+            'tiposervicio': servicio.tipo_servicio,
             'form': form,
             'idser':(request.POST['idser']),
         })
@@ -546,8 +546,8 @@ class ServicioDeleteView(MyLoginRequiredMixin, TemplateView):
 
         if validar_roles(roles=roles):
             servicio = self.model.objects.get(pk=request.GET['idser'])
-            enrollment.activo = False
-            enrollment.save()
+            servicio.activo = False
+            servicio.save()
             return HttpResponseRedirect(reverse('enrollments:tiposervicio_list'))
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
@@ -683,7 +683,7 @@ class MatriculaCreateView(MyLoginRequiredMixin, CreateView):
         logger.debug("Inicio de metodo CrearCuantasCobrar")
         logger.info("Inicio de metodo CrearCuantasCobrar")
 
-        list_servicios = enrollment.objects.filter(tipo_servicio_id=data_form["tipo_servicio"])
+        list_servicios = Servicio.objects.filter(tipo_servicio_id=data_form["tipo_servicio"])
         logger.debug(list_servicios.all())
         logger.info(list_servicios.all())
 
@@ -693,22 +693,22 @@ class MatriculaCreateView(MyLoginRequiredMixin, CreateView):
             logger.debug("inicia la lecturas de las cuentas")
             logger.info(servicio)
 
-            fecha_facturar = enrollment.fecha_facturar
+            fecha_facturar = servicio.fecha_facturar
             if fecha_facturar.month < fecha_actual.month:
                 fecha_facturar = fecha_facturar.replace(month= fecha_actual.month)
             logger.info("la fecha a facturar es: {0}".format(fecha_facturar))
 
-            if enrollment.is_periodic:
-                logger.debug(str(enrollment.is_periodic))
-                logger.info("El servicio es periodico {0}".format(enrollment.is_periodic))
+            if servicio.is_periodic:
+                logger.debug(str(servicio.is_periodic))
+                logger.info("El servicio es periodico {0}".format(servicio.is_periodic))
 
-                if enrollment.fecha_facturar.month < fecha_actual.month:
-                    numero_cuotas = enrollment.cuotas - (fecha_actual.month - enrollment.fecha_facturar.month)
+                if servicio.fecha_facturar.month < fecha_actual.month:
+                    numero_cuotas = servicio.cuotas - (fecha_actual.month - servicio.fecha_facturar.month)
                 else:
-                    numero_cuotas = enrollment.cuotas
+                    numero_cuotas = servicio.cuotas
 
                 for cuota in range(numero_cuotas):
-                    logger.info("El servicio tiene {0} cuotas".format(enrollment.cuotas))
+                    logger.info("El servicio tiene {0} cuotas".format(servicio.cuotas))
                     logger.info("El servicio cobrara {0} cuotas".format(numero_cuotas))
                     logger.debug("Cuota Nro. {0}".format(cuota))
 
@@ -718,8 +718,8 @@ class MatriculaCreateView(MyLoginRequiredMixin, CreateView):
                                                 servicio=servicio,
                                                 fecha_ven=fecha_vencimiento,
                                                 estado=True,
-                                                precio=enrollment.precio,
-                                                deuda=enrollment.precio,
+                                                precio=servicio.precio,
+                                                deuda=servicio.precio,
                                                 descuento=0,
                                                 )
                         logger.debug(cuentas.matricula)
@@ -728,15 +728,15 @@ class MatriculaCreateView(MyLoginRequiredMixin, CreateView):
                         cuentas.save()
 
             else:
-                logger.debug(str(enrollment.is_periodic))
-                logger.info("El servicio es periodico {0}".format(enrollment.is_periodic))
+                logger.debug(str(servicio.is_periodic))
+                logger.info("El servicio es periodico {0}".format(servicio.is_periodic))
 
                 cuentas = Cuentascobrar(matricula=matricula,
                                         servicio=servicio,
-                                        fecha_ven=enrollment.fecha_facturar,
+                                        fecha_ven=servicio.fecha_facturar,
                                         estado=True,
-                                        precio=enrollment.precio,
-                                        deuda=enrollment.precio,
+                                        precio=servicio.precio,
+                                        deuda=servicio.precio,
                                         descuento=0
                                         )
                 cuentas.save()
@@ -844,7 +844,7 @@ class CargarMatriculaCreateView(TemplateView):
     model = Alumno
     form_class = MatriculaForm
     def post(self, request, *args, **kwargs):
-        tipos_de_servicios = enrollment.objects.filter(colegio__id_colegio=self.request.session.get('colegio'), activo=True).order_by("nivel", "grado")
+        tipos_de_servicios = TipoServicio.objects.filter(colegio__id_colegio=self.request.session.get('colegio'), activo=True).order_by("nivel", "grado")
 
         return render(request, template_name=self.template_name, context={
                 'alumno': self.model.objects.get(pk = request.POST["alumno"]),
@@ -885,7 +885,7 @@ def generar_pdf(request):
     header = Paragraph("Listado de Clientes", styles['Heading1'])
     clientes.append(header)
     headings = ('Activo', 'Fecha Creacion', 'Fecha Modificacion')
-    allclientes = [(p.activo, p.fecha_creacion, p.fecha_modificacion) for p in enrollment.objects.all()]
+    allclientes = [(p.activo, p.fecha_creacion, p.fecha_modificacion) for p in TipoServicio.objects.all()]
     print(allclientes)
 
     t = Table([headings] + allclientes)
