@@ -14,6 +14,7 @@ from decouple import config, Csv
 
 
 # Build paths inside the project like this: join(BASE_DIR, "directory")
+BASE_ROOT = dirname(dirname(dirname(dirname(__file__))))
 
 BASE_DIR = dirname(dirname(dirname(__file__)))
 
