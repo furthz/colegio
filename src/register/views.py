@@ -691,6 +691,51 @@ class ProveedorListView(MyLoginRequiredMixin, TemplateView):
 
     @method_decorator(permission_required('register.proveedor_list', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
+    def post(self, request, *args, **kwargs):
+
+        roles = ['promotor', 'director', 'coordinador', 'sistemas']
+
+        if validar_roles(roles=roles):
+            colegio = get_current_colegio()
+
+            nombres = request.POST["nombres"]
+
+
+            if nombres:
+                if colegio is None:
+                    proveedores = Proveedor.objects.filter(Q(razon_social__icontains=nombres.upper()))
+
+                else:
+                    proveedores = Proveedor.objects.filter(
+                                                       Q(razon_social__icontains=nombres.upper())
+                                                       ).filter(proveedorcolegio__colegio=colegio, provedorcolegio__activo=True)
+
+
+            else:
+                return self.get(request)
+
+            paginator = Paginator(proveedores, 5)
+
+            page = request.GET.get('page', 1)
+
+            try:
+                buscados = paginator.page(page)
+            except PageNotAnInteger:
+                # If page is not an integer, deliver first page.
+                buscados = paginator.page(1)
+            except EmptyPage:
+                # If page is out of range (e.g. 9999), deliver last page of results.
+                buscados = paginator.page(paginator.num_pages)
+
+            return render(request, self.template_name,
+                          {'proveedores': buscados,
+                           'nombres': nombres})
+
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+    @method_decorator(permission_required('register.proveedor_list', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'coordinador', 'sistemas']
 
@@ -702,27 +747,25 @@ class ProveedorListView(MyLoginRequiredMixin, TemplateView):
             id_colegio = get_current_colegio()
             logger.debug("colegio id: " + str(id_colegio))
 
-            result = []
-
             try:
                 colegio = Colegio.objects.get(pk=id_colegio)
                 logger.debug("colegio: " + str(colegio))
 
                 # Obtener los empleados del colegio
-                proveedores = ProvedorColegio.objects.filter(colegio=colegio, activo=True).all()
+                proveedores = Proveedor.objects.filter(provedorcolegio__activo=True, proveedorcolegio__colegio=colegio)
                 logger.debug("cantidad de proveedores: " + str(proveedores.count()))
 
             except Colegio.DoesNotExist:
                 # Obtener los empleados del colegio
-                proveedores = ProvedorColegio.objects.filter(activo=True).all().order_by('proveedor__razon_social')
+                proveedores = Proveedor.objects.all().order_by('razon_social')
                 logger.debug("cantidad de empleados: " + str(proveedores.count()))
 
-            for p in proveedores:
-                result.append(p.proveedor)
+            #for p in proveedores:
+            #    result.append(p.proveedor)
 
             page = request.GET.get('page', 1)
 
-            paginator = Paginator(result, 5)
+            paginator = Paginator(proveedores, 5)
 
             try:
                 provs = paginator.page(page)
