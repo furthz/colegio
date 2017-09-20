@@ -25,7 +25,7 @@ ALLOWED_HOSTS = ["mundopixel.pe"]
 STATIC_ROOT = join(BASE_DIR, '..', 'site', 'static')
 
 # Log everything to the logs directory at the top
-LOGFILE_ROOT = join(dirname(BASE_ROOT), 'logs')
+LOGFILE_ROOT = join(dirname(BASE_DIR), 'logs')
 
 # Reset logging
 LOGGING_CONFIG = None
