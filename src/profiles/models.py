@@ -13,25 +13,22 @@ from utils.models import CreacionModificacionFechaProfileMixin, CreacionModifica
 from authtools.models import User
 
 
-
+"""
 def useridExist():
-    """
-    Verifica la existencia de un registro en CajaCajero
-    :return: 
-    """
+    #Verifica la existencia de un registro en CajaCajero 
     try:
         userid = User.objects.latest('id')
     except User.DoesNotExist:
         userid = None
         pass
     return userid
-
+"""
 
 class BaseProfile(CreacionModificacionFechaProfileMixin, CreacionModificacionUserProfileMixin, models.Model):
 
 
-    #user = models.OneToOneField(settings.AUTH_USER_MODEL, null=True)
-    user = models.OneToOneField(User, models.DO_NOTHING, db_column='user_id', default=useridExist, null=True)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, null=True)
+    #user = models.OneToOneField(User, models.DO_NOTHING, db_column='user_id', default=useridExist, null=True)
     slug = models.UUIDField(default=uuid.uuid4, blank=True, editable=False, null=True)
     # Add more user profile fields here. Make sure they are nullable
     # or with default values

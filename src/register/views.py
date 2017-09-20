@@ -523,12 +523,16 @@ class ProveedorCreateView(MyLoginRequiredMixin, CreateView):
             instance = form.save()
             instance.save()
 
-            prov_col = ProvedorColegio()
-            id_colegio = self.request.session.get('colegio')
-            cole = Colegio.objects.get(pk=id_colegio)
-            prov_col.colegio = cole
-            prov_col.proveedor = instance
-            prov_col.save()
+            try:
+                id_colegio = self.request.session.get('colegio')
+                cole = Colegio.objects.get(pk=id_colegio)
+
+                prov_col = ProvedorColegio()
+                prov_col.colegio = cole
+                prov_col.proveedor = instance
+                prov_col.save()
+            except Colegio.DoesNotExist:
+                pass
 
             return HttpResponseRedirect(instance.get_absolute_url())
 
@@ -641,6 +645,57 @@ class PersonalUpdateView(MyLoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('registers:personal_list')
+
+
+class ProveedorListView(MyLoginRequiredMixin, TemplateView):
+    template_name = "proveedor_list.html"
+
+    def get(self, request, *args, **kwargs):
+        roles = ['promotor', 'director', 'coordinador', 'sistemas']
+
+        if validar_roles(roles=roles):
+
+            logger.debug("get_context")
+
+            # Obtener el id del colegio
+            id_colegio = get_current_colegio()
+            logger.debug("colegio id: " + str(id_colegio))
+
+            result = []
+
+            try:
+                colegio = Colegio.objects.get(pk=id_colegio)
+                logger.debug("colegio: " + str(colegio))
+
+                # Obtener los empleados del colegio
+                proveedores = ProvedorColegio.objects.filter(colegio=colegio, activo=True).all().order_by('proveedor__razon_social')
+                logger.debug("cantidad de proveedores: " + str(proveedores.count()))
+
+            except Colegio.DoesNotExist:
+                # Obtener los empleados del colegio
+                proveedores = ProvedorColegio.objects.filter(activo=True).all().order_by('proveedor__razon_social')
+                logger.debug("cantidad de empleados: " + str(proveedores.count()))
+
+            for p in proveedores:
+                result.append(p.proveedor)
+
+            page = request.GET.get('page', 1)
+
+            paginator = Paginator(result, 5)
+
+            try:
+                provs = paginator.page(page)
+            except PageNotAnInteger:
+                # If page is not an integer, deliver first page.
+                provs = paginator.page(1)
+            except EmptyPage:
+                # If page is out of range (e.g. 9999), deliver last page of results.
+                provs = paginator.page(paginator.num_pages)
+
+            logger.debug("Se cargo el contexto")
+            return render(request, self.template_name, {'proveedores': provs})  # return context
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
 
 class PersonaListView(MyLoginRequiredMixin, TemplateView):
