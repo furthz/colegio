@@ -26,6 +26,7 @@ function confirmDel()
     <form id="{{ empleado.id_persona }}">
         {% csrf_token %}
         <input hidden value="{{ empleado.id_persona }}" name="idpersona">
+        <input hidden value="{{ empleado.rol }}" name="perfil">
     </form>
 {% endfor %}
 

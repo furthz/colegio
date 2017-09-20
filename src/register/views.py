@@ -577,14 +577,37 @@ class PersonalDeleteView(MyLoginRequiredMixin, TemplateView):
         roles = ['promotor', 'director', 'coordinador', 'sistemas']
 
         if validar_roles(roles=roles):
-            persona = Personal.objects.get(persona_id=int(request.GET['idpersona']))
+            persona = Profile.objects.get(id_persona=int(request.GET['idpersona']))
+            perfil = request.GET['perfil']
+
             id_colegio = get_current_colegio()
 
-            personales = PersonalColegio.objects.filter(personal=persona, colegio_id=id_colegio)
+            if id_colegio is None:
 
-            for personal in personales:
-                personal.activo = False
-                personal.save()
+                if perfil == "Alumno":
+                    alus = Matricula.objects.filter(alumno__persona=persona)
+
+                    for alu in alus:
+                        alu.activo = False
+                        alu.save()
+                else:
+                    personales = PersonalColegio.objects.filter(personal__id_persona=persona.id_persona)
+
+                    for personal in personales:
+                        personal.activo = False
+                        personal.save()
+            else:
+
+                if perfil == "Alumno":
+                    alu = Matricula.objects.get(alumno__id_persona=persona.id_persona, colegio__id_colegio=id_colegio)
+
+                    alu.activo = False
+                    alu.save()
+                else:
+                    personal = PersonalColegio.objects.get(personal__id_persona=persona.id_persona, colegio__id_colegio=id_colegio)
+
+                    personal.activo = False
+                    personal.save()
 
             return HttpResponseRedirect(reverse('registers:personal_list'))
 
@@ -702,6 +725,7 @@ class PersonaListView(MyLoginRequiredMixin, TemplateView):
             resultado = []
 
             for al in alumnos:
+                al.rol = "Alumno"
                 resultado.append(al.alumno)
 
             for em in empleados:
