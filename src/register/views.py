@@ -728,7 +728,7 @@ class ProveedorListView(MyLoginRequiredMixin, TemplateView):
                 else:
                     proveedores = Proveedor.objects.filter(
                                                        Q(razon_social__icontains=nombres.upper())
-                                                       ).filter(proveedorcolegio__colegio=colegio, provedorcolegio__activo=True)
+                                                       ).filter(proveedores__colegio=colegio, proveedores__activo=True)
 
 
             else:
@@ -772,7 +772,7 @@ class ProveedorListView(MyLoginRequiredMixin, TemplateView):
                 logger.debug("colegio: " + str(colegio))
 
                 # Obtener los empleados del colegio
-                proveedores = Proveedor.objects.filter(proveedores__activo=True, proveedores__colegio=colegio)
+                proveedores = Proveedor.objects.filter(proveedores__activo=True, proveedores__colegio=colegio).order_by('razon_social')
                 logger.debug("cantidad de proveedores: " + str(proveedores.count()))
 
             except Colegio.DoesNotExist:
