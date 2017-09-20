@@ -61,7 +61,6 @@
               </ul>
             </li>
             {% endif %}
-        {% if perms.personal %}
             <li class="{% if namespace == 'enrollments' %}active treeview orange {% else  %}treeview blue{% endif %} ">
               <a href="#">
                 <img src="{% static 'site/img/svg/notepad.svg' %}" width="22px" height="22px"/>
@@ -79,7 +78,7 @@
                     {% endif %}
                 </ul>
         </li>
-        {% endif %}
+
         <li class="{% if namespace == 'income' %}active treeview orange {% else  %}treeview green{% endif %} ">
           <a href="#">
             <img src="{% static 'site/img/svg/money.svg' %}" width="22px" height="22px"/>

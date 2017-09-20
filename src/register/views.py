@@ -909,7 +909,7 @@ class ColegioCreateView(MyLoginRequiredMixin, TemplateView):
             data_form = form.cleaned_data
             logger.info(data_form)
             logger.info(form.data)
-            logger.info(request.POST['telefono[]'])
+
             colegio = Colegio(
                 nombre=data_form['nombre'],
                 ruc=data_form['ruc'],
@@ -925,16 +925,19 @@ class ColegioCreateView(MyLoginRequiredMixin, TemplateView):
                 distrito= data_form['distrito']
             )
             direccion.save()
-            celulares = form.data['nros']
-            lst_celulares = celulares.split(',')
-            lista_numeros = []
-            for cel in lst_celulares:
-                telef = Telefono(
-                    colegio= colegio,
-                    numero=cel,
-                    tipo="Celular"
-                )
-                telef.save()
+            try:
+                celulares = form.data['nros']
+                lst_celulares = celulares.split(',')
+                lista_numeros = []
+                for cel in lst_celulares:
+                    telef = Telefono(
+                        colegio= colegio,
+                        numero=cel,
+                        tipo="Celular"
+                    )
+                    telef.save()
+            except:
+                logger.info("no se registraron numeros del colegio")
             logger.info("El formulario es valido")
             caja_chica = CajaChica(
                 colegio= colegio,
@@ -955,6 +958,7 @@ class ColegioListView(MyLoginRequiredMixin, TemplateView):
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         colegios = Colegio.objects.all()
+        paginator = Paginator(colegios, 5)
         return render(request, template_name=self.template_name, context={
             'colegios': colegios,
         })
