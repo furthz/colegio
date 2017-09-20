@@ -42,11 +42,13 @@ function confirmDel()
                         <div class="col-md-9">
                             <div class="panel-page">
                                 <div class="toolbar-header">
+                                    {% if perms.register.proveedor_create %}
                                     <a class="btn btn-success" href="{% url 'registers:proveedor_create' %}">
                                         <i class="fa fa-plus" aria-hidden="true">
                                         </i>
                                         Crear Proveedor
                                     </a>
+                                    {% endif %}
                                 </div>
                                 <div class="toolbar-search">
                                     <div class="box-body">
@@ -105,7 +107,7 @@ function confirmDel()
                                                         <i class="fa fa-info-circle" aria-hidden="true"></i>
                                                     </a>
 
-                                                    <button class="btn btn-default" type="submit" onclick="return confirmDel();" title="Eliminar" formaction="" formmethod="get" form="{{ proveedor.id_proveedor }}">
+                                                    <button class="btn btn-default" type="submit" onclick="return confirmDel();" title="Eliminar" formaction="{% url 'registers:proveedor_delete' %}" formmethod="get" form="{{ proveedor.id_proveedor }}">
                                                         <i class="fa fa-trash" aria-hidden="true"></i>
                                                     </button>
                                                     <!--

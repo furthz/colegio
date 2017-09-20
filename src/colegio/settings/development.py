@@ -28,11 +28,11 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 THUMBNAIL_DEBUG = True
 
 # Allow internal IPs for debugging
-INTERNAL_IPS = ['127.0.0.1', '181.224.250.6']
+INTERNAL_IPS = ['127.0.0.1']
 
 
 # Log everything to the logs directory at the top
-LOGFILE_ROOT = join(dirname(BASE_DIR), 'logs')
+LOGFILE_ROOT = join(dirname(BASE_ROOT), 'logs')
 
 # Reset logging
 # (see http://www.caktusgroup.com/blog/2015/01/27/Django-Logging-Configuration-logging_config-default-settings-logger/)
