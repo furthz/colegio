@@ -150,7 +150,7 @@ class AprobarDescuentoView(ListView):
             return {'mensaje_error': mensaje_error}  # return context
 
     @method_decorator(
-        permission_required('descuento.aprobar_descuento', login_url=settings.REDIRECT_PERMISOS,
+        permission_required('discounts.aprobar_descuento', login_url=settings.REDIRECT_PERMISOS,
                             raise_exception=False))
     def post(self, request, *args, **kwargs):
         logger.info("Estoy en el POST")
@@ -233,7 +233,7 @@ class DetalleDescuentoView(FormView):
             return {'mensaje_error': mensaje_error}  # return context
 
     @method_decorator(
-        permission_required('descuento.detalle_descuento', login_url=settings.REDIRECT_PERMISOS,
+        permission_required('discounts.detalle_descuento', login_url=settings.REDIRECT_PERMISOS,
                             raise_exception=False))
     def get(self, request, *args, **kwargs):
         super(DetalleDescuentoView, self).get(request, *args, **kwargs)
@@ -243,13 +243,13 @@ class DetalleDescuentoView(FormView):
         return render(request, self.template_name, contexto)  # return context
 
     @method_decorator(
-        permission_required('descuento.detalle_descuento', login_url=settings.REDIRECT_PERMISOS,
+        permission_required('discounts.detalle_descuento', login_url=settings.REDIRECT_PERMISOS,
                             raise_exception=False))
     def get_queryset(self):
         return []
 
     @method_decorator(
-        permission_required('descuento.detalle_descuento', login_url=settings.REDIRECT_PERMISOS,
+        permission_required('discounts.detalle_descuento', login_url=settings.REDIRECT_PERMISOS,
                             raise_exception=False))
     def post(self, request, *args, **kwargs):
 
