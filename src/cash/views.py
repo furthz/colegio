@@ -127,7 +127,7 @@ class ConsignmentCreationView(CreateView):
     form_class = ConsignmentForm
     success_url = reverse_lazy('cash:consignment_list')
     template_name = 'consignment/consignment_form.html'
-
+"""
     def post(self, request, *args, **kwargs):
 
         a = request.POST.get('personal_colegio')
@@ -139,7 +139,7 @@ class ConsignmentCreationView(CreateView):
         #print(User.objects.select_related('profile').get(id=a))
 
         return render(request, template_name=self.template_name)
-
+"""
 """
         profile = User.objects.filter(pk=a)
         for prof in profile:

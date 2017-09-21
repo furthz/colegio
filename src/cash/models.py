@@ -106,7 +106,7 @@ class CajaCajero(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, 
     monto_cierre = models.FloatField(default=0.0)  # Caja Final
     comentario_apertura = models.CharField(max_length=500, blank=True, null=True)
     comentario_cierre = models.CharField(max_length=500, blank=True, null=True)
-    total_remesa = models.FloatField(default=getRemesasTotal)
+    total_remesa = models.FloatField(default=getRemesasTotal, blank=True, null=True)
 
     def save(self, *args, **kwargs):
         try:
