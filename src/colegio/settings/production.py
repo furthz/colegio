@@ -22,10 +22,11 @@ ALLOWED_HOSTS = ["mundopixel.pe"]
 #TEMPLATES[0].update({"APP_DIRS": False})
 
 # Define STATIC_ROOT for the collectstatic command
-STATIC_ROOT = join(BASE_DIR, '..', 'site', 'static')
+#STATIC_ROOT = join(BASE_DIR, '..', 'site', 'static')
+STATIC_ROOT = '/home/ubuntu/colegio/src/'
 
 # Log everything to the logs directory at the top
-LOGFILE_ROOT = join(dirname(BASE_ROOT), 'logs')
+LOGFILE_ROOT = join(dirname(BASE_DIR), 'logs')
 
 # Reset logging
 LOGGING_CONFIG = None

@@ -100,7 +100,7 @@ function confirmDel()
                                         <td>
                                             <div class="text-center">
                                                 <div class="btn-group btn-group-sm" role="group" aria-level="">
-                                                    <a title="Editar" href="{% url 'registers:proveedor_detail' pk=proveedor.id_proveedor %}" class="btn btn-default">
+                                                    <a title="Editar" href="{% url 'registers:proveedor_update' pk=proveedor.id_proveedor %}" class="btn btn-default">
                                                         <i class="fa fa-pencil" aria-hidden="true"></i>
                                                     </a>
                                                     <a title="Detalle" href="{% url 'registers:proveedor_detail' pk=proveedor.id_proveedor %}" class="btn btn-default">

@@ -90,3 +90,5 @@ TEST_RUNNER = 'colegio.settings.testing.UseDBTestRunner'
 IS_TESTING = True
 
 IS_MIGRATE = True
+
+STATIC_ROOT = '/home/ubuntu/colegio/src/'

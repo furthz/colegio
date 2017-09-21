@@ -202,4 +202,3 @@ THUMBNAIL_EXTENSION = 'png'     # Or any extn for your thumbnails
 
 REDIRECT_PERMISOS = '/about/'
 
-STATIC_ROOT = '/home/ubuntu/colegio/src/'
