@@ -244,7 +244,7 @@ class ControlIngresosPadresView(FormView):
         else:
             return {'mensaje_error': mensaje_error}  # return context
 
-    @method_decorator(permission_required('cuentascobrar.control_ingresos_padres', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.control_ingresos_padres', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         super(ControlIngresosPadresView, self).get(request, *args, **kwargs)
@@ -256,12 +256,12 @@ class ControlIngresosPadresView(FormView):
         else:
             return render(request, self.template_name, contexto)  # return context
 
-    @method_decorator(permission_required('cuentascobrar.control_ingresos_padres', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.control_ingresos_padres', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get_queryset(self):
         return []
 
-    @method_decorator(permission_required('cuentascobrar.control_ingresos_padres', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.control_ingresos_padres', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def post(self, request, *args, **kwargs):
 
@@ -329,7 +329,7 @@ class ControlIngresosPromotorView(FormView):
 
 
     @method_decorator(
-        permission_required('cuentascobrar.control_ingresos_promotor', login_url=settings.REDIRECT_PERMISOS,
+        permission_required('enrollment.control_ingresos_promotor', login_url=settings.REDIRECT_PERMISOS,
                             raise_exception=False))
     def get(self, request, *args, **kwargs):
         super(ControlIngresosPromotorView, self).get(request, *args, **kwargs)
@@ -342,13 +342,13 @@ class ControlIngresosPromotorView(FormView):
             return render(request, self.template_name, contexto)  # return context
 
     @method_decorator(
-        permission_required('cuentascobrar.control_ingresos_promotor', login_url=settings.REDIRECT_PERMISOS,
+        permission_required('enrollment.control_ingresos_promotor', login_url=settings.REDIRECT_PERMISOS,
                             raise_exception=False))
     def get_queryset(self):
         return []
 
     @method_decorator(
-        permission_required('cuentascobrar.control_ingresos_promotor', login_url=settings.REDIRECT_PERMISOS,
+        permission_required('enrollment.control_ingresos_promotor', login_url=settings.REDIRECT_PERMISOS,
                             raise_exception=False))
     def post(self, request, *args, **kwargs):
 
@@ -431,7 +431,7 @@ class ControlIngresosPromotorDetallesView(FormView):
             return {'mensaje_error': mensaje_error}  # return context
 
     @method_decorator(
-        permission_required('cuentascobrar.control_ingresos_promotor_detalle', login_url=settings.REDIRECT_PERMISOS,
+        permission_required('enrollment.control_ingresos_promotor_detalle', login_url=settings.REDIRECT_PERMISOS,
                             raise_exception=False))
     def get(self, request, *args, **kwargs):
         super(ControlIngresosPromotorDetallesView, self).get(request, *args, **kwargs)
@@ -444,13 +444,13 @@ class ControlIngresosPromotorDetallesView(FormView):
             return render(request, self.template_name, contexto)  # return context
 
     @method_decorator(
-        permission_required('cuentascobrar.control_ingresos_promotor_detalle', login_url=settings.REDIRECT_PERMISOS,
+        permission_required('enrollment.control_ingresos_promotor_detalle', login_url=settings.REDIRECT_PERMISOS,
                             raise_exception=False))
     def get_queryset(self):
         return []
 
     @method_decorator(
-        permission_required('cuentascobrar.control_ingresos_promotor_detalle', login_url=settings.REDIRECT_PERMISOS,
+        permission_required('enrollment.control_ingresos_promotor_detalle', login_url=settings.REDIRECT_PERMISOS,
                             raise_exception=False))
     def post(self, request, *args, **kwargs):
 

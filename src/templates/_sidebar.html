@@ -89,13 +89,13 @@
           </a>
           <ul class="treeview-menu">
                 <li><a href="{% url 'income:register' %}"><i class="fa fa-circle-o"></i> Registrar Ingresos</a></li>
-                {% if perms.income.control_ingresos_padres %}
+                {% if perms.enrollment.control_ingresos_padres %}
                     <li><a href="{% url 'income:cuentas_cobrar_padres' %}"><i class="fa fa-circle-o"></i> Padres</a></li>
                 {% endif %}
-                {% if perms.income.control_ingresos_promotor %}
+                {% if perms.enrollment.control_ingresos_promotor %}
                     <li><a href="{% url 'income:cuentas_cobrar_promotor' %}"><i class="fa fa-circle-o"></i> Promotor</a></li>
                 {% endif %}
-                {% if perms.income.control_ingresos_promotor_detalle %}
+                {% if perms.enrollment.control_ingresos_promotor_detalle %}
                     <li><a href="{% url 'income:cuentas_cobrar_promotor_detalle' %}"><i class="fa fa-circle-o"></i> Promotor detalle</a></li>
                 {% endif %}
           </ul>
