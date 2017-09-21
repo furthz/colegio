@@ -5,8 +5,8 @@ from register.views import CreatePersonaView, PersonaDetail, AlumnoCreateView, A
     ApoderadoDetailView, PersonalDetailView, PersonalCreateView, PromotorCreateView, PromotorDetailView, \
     DirectorDetailView, DirectorCreateView, CajeroCreateView, CajeroDetailView, TesoreroCreateView, TesoreroDetailView, \
     ProveedorCreateView, ProveedorDetailView, PersonaListView, PersonaDetailView, ColegioCreateView, ColegioListView, PersonalUpdateView, PersonalDeleteView, \
-    SistemasCreateView, SistemasDetailView, ProveedorListView
-from . import views
+    SistemasCreateView, SistemasDetailView, ProveedorListView, ProveedorDeleteView, ProveedorUpdateView
+
 
 urlpatterns = [
     # url(r'^person/create/$', CreatePersonaView.as_view(), name="persona_create"),
@@ -40,6 +40,8 @@ urlpatterns = [
     url(r'^proveedores/create/$',ProveedorCreateView.as_view(), name="proveedor_create"),
     url(r'^proveedores/(?P<pk>\d+)/$',ProveedorDetailView.as_view(), name='proveedor_detail'),
     url(r'^proveedores/list/$', ProveedorListView.as_view(), name="proveedor_list"),
+    url(r'^proveedores/delete', ProveedorDeleteView.as_view(), name="proveedor_delete"),
+    url(r'^proveedores/update/(?P<pk>\d+)/$', ProveedorUpdateView.as_view(), name="proveedor_update"),
 
     url(r'^list/$', PersonaListView.as_view(), name="personal_list"),
     url(r'^registers/(?P<pk>\d+)/$',PersonaDetailView.as_view(), name='personal_detail'),

@@ -594,8 +594,8 @@ class ProvedorColegio(ActivoMixin,CreacionModificacionUserProveedorMixin, Creaci
     Proveedor Colegio
     """
     id_proveedor_colegio = models.AutoField(primary_key=True)
-    proveedor = models.ForeignKey(Proveedor, models.DO_NOTHING, db_column="id_proveedor")
-    colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column="id_colegio")
+    proveedor = models.ForeignKey(Proveedor, models.DO_NOTHING, db_column="id_proveedor", related_name="proveedores")
+    colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column="id_colegio", related_name="colegios")
 
     class Meta:
         managed = True

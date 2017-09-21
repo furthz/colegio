@@ -14,6 +14,7 @@ from decouple import config, Csv
 
 
 # Build paths inside the project like this: join(BASE_DIR, "directory")
+BASE_ROOT = dirname(dirname(dirname(dirname(__file__))))
 
 BASE_DIR = dirname(dirname(dirname(__file__)))
 
@@ -200,3 +201,4 @@ LOGIN_URL = reverse_lazy("accounts:login")
 THUMBNAIL_EXTENSION = 'png'     # Or any extn for your thumbnails
 
 REDIRECT_PERMISOS = '/about/'
+

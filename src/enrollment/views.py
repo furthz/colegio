@@ -58,7 +58,7 @@ class TipoServicioListView(MyLoginRequiredMixin, ListView):
     model = TipoServicio
     template_name = "tiposervicio_list.html"
 
-    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
@@ -110,7 +110,7 @@ class TipoServicioDetailView(MyLoginRequiredMixin, DetailView):
     model = TipoServicio
     template_name = "tiposervicio_detail.html"
 
-    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
@@ -128,7 +128,7 @@ class TipoServicioRegularCreateView(MyLoginRequiredMixin, CreateView):
     model = TipoServicio
     form_class = TipoServicioRegularForm
 
-    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
@@ -151,7 +151,7 @@ class TipoServicioExtraCreateView(MyLoginRequiredMixin, CreateView):
     model = TipoServicio
     form_class = TipoServicioExtraForm
 
-    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
@@ -176,7 +176,7 @@ class CargarTipoServicioCreateView(MyLoginRequiredMixin, TemplateView):
     form1 = TipoServicioRegularForm
     form2 = TipoServicioExtraForm
 
-    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
@@ -209,7 +209,7 @@ class TipoServicioRegularUpdateView(MyLoginRequiredMixin, TemplateView):
     model = TipoServicio
     form_class = TipoServicioRegularForm
 
-    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
@@ -245,7 +245,7 @@ class TipoServicioExtraUpdateView(MyLoginRequiredMixin, TemplateView):
     model = TipoServicio
     form_class = TipoServicioExtraForm
 
-    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
@@ -276,7 +276,7 @@ class TipoServicioDeleteView(MyLoginRequiredMixin, TemplateView):
     model = TipoServicio
     template_name = "tiposervicio_confirm_delete.html"
 
-    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
@@ -316,7 +316,7 @@ class ServicioListView(MyLoginRequiredMixin, ListView):
     model = Servicio
     template_name = "servicio_list.html"
 
-    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
@@ -341,7 +341,7 @@ class ServicioDetailView(MyLoginRequiredMixin, DetailView):
     model = Servicio
     template_name = "servicio_detail.html"
 
-    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
@@ -371,7 +371,7 @@ class ServicioRegularCreateView(MyLoginRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse_lazy('enrollments:tiposervicio_list')
 
-    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
@@ -406,7 +406,7 @@ class ServicioExtraCreateView(MyLoginRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse_lazy('enrollments:tiposervicio_list')
 
-    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
@@ -456,7 +456,7 @@ class ServicioRegularUpdateView(MyLoginRequiredMixin, TemplateView):
     model = Servicio
     form_class = ServicioRegularForm
 
-    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
@@ -509,7 +509,7 @@ class ServicioExtraUpdateView(MyLoginRequiredMixin, TemplateView):
     form_class = ServicioExtraForm
     template_name = "servicioextra_update_form.html"
 
-    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
@@ -539,7 +539,7 @@ class ServicioDeleteView(MyLoginRequiredMixin, TemplateView):
     model = Servicio
     template_name = "servicio_confirm_delete.html"
 
-    @method_decorator(permission_required('tiposervicio.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
@@ -575,7 +575,7 @@ class MatriculaListView(MyLoginRequiredMixin, ListView):
     model = Matricula
     template_name = "matricula_list.html"
 
-    @method_decorator(permission_required('Matricula.Matricula_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Matricula_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
@@ -599,7 +599,7 @@ class MatriculaDetailView(MyLoginRequiredMixin, DetailView):
     model = Matricula
     template_name = "matricula_detail.html"
 
-    @method_decorator(permission_required('Matricula.Matricula_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Matricula_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
@@ -623,7 +623,7 @@ class MatriculaCreateView(MyLoginRequiredMixin, CreateView):
         form.instance.colegio = Colegio.objects.get(pk=self.request.session.get('colegio'))
         return super(MatriculaCreateView, self).form_valid(form)
 
-    @method_decorator(permission_required('Matricula.Matricula_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Matricula_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
@@ -751,7 +751,7 @@ class MatriculaUpdateView(MyLoginRequiredMixin, UpdateView):
     form_class = MatriculaForm
     template_name = "matricula_form.html"
 
-    @method_decorator(permission_required('Matricula.Matricula_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Matricula_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
@@ -767,7 +767,7 @@ class CargarMatriculaUpdateView(MyLoginRequiredMixin, TemplateView):
     model = Matricula
     form_class = MatriculaForm
 
-    @method_decorator(permission_required('Matricula.Matricula_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Matricula_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
@@ -794,7 +794,7 @@ class MatriculaDeleteView(MyLoginRequiredMixin, DeleteView):
     model = Matricula
     template_name = "matricula_confirm_delete.html"
 
-    @method_decorator(permission_required('Matricula.Matricula_List', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('enrollment.Matricula_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']

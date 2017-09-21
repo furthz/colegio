@@ -18,7 +18,7 @@
       {% with request.resolver_match.namespace as namespace %}
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">MENÚ DE NAVEGACIÓN</li>
-            {% if perms.personal %}
+            {% if perms.register %}
             <li class="{% if namespace == 'registers' %}active treeview orange {% else  %}treeview green{% endif %} ">
               <a href="#">
                 <img src="{% static 'site/img/svg/user.svg' %}" width="22px" height="22px"/>
@@ -31,31 +31,31 @@
 
                   <li><a href="{% url 'register_accounts:register_accounts_create' %}"><i class="fa fa-circle-o"></i>Registrar Usuarios </a> </li>
 
-                {% if perms.personal.personal_list %}
+                {% if perms.register.personal_list %}
                     <li><a href="{% url 'registers:personal_list' %}"><i class="fa fa-circle-o"></i>Listado Personas </a> </li>
                 {% endif %}
-                {% if perms.alumno.alumno_create %}
+                {% if perms.register.alumno_create %}
                     <li><a href="{% url 'registers:alumno_create' %}"><i class="fa fa-circle-o"></i> Alumno</a></li>
                 {% endif %}
-                {% if perms.apoderado.apoderado_create %}
+                {% if perms.register.apoderado_create %}
                     <li><a href="{% url 'registers:apoderado_create' %}"><i class="fa fa-circle-o"></i> Apoderado</a></li>
                 {% endif %}
                 {% if perms.sistemas.sistemas_create %}
                     <li><a href="{% url 'registers:sistemas_create' %}"><i class="fa fa-circle-o"></i> Usuario Sistemas</a></li>
                 {% endif %}
-                {% if perms.promotor.promotor_create %}
+                {% if perms.register.promotor_create %}
                     <li><a href="{% url 'registers:promotor_create' %}"><i class="fa fa-circle-o"></i> Promotor</a></li>
                 {% endif %}
-                {% if perms.director.director_create %}
+                {% if perms.register.director_create %}
                     <li><a href="{% url 'registers:director_create' %}"><i class="fa fa-circle-o"></i> Director</a></li>
                 {% endif %}
-                {% if perms.tesorero.tesorero_create %}
+                {% if perms.register.tesorero_create %}
                     <li><a href="{% url 'registers:tesorero_create' %}"><i class="fa fa-circle-o"></i> Tesorero</a></li>
                 {% endif %}
-                {% if perms.cajero.cajero_create %}
+                {% if perms.register.cajero_create %}
                     <li><a href="{% url 'registers:cajero_create' %}"><i class="fa fa-circle-o"></i> Cajero</a></li>
                 {% endif %}
-                {% if perms.proveedor.proveedor_create %}
+                {% if perms.register.proveedor_list %}
                     <li><a href="{% url 'registers:proveedor_list' %}"><i class="fa fa-circle-o"></i> Proveedores</a></li>
                 {% endif %}
               </ul>
@@ -70,10 +70,10 @@
                 </span>
               </a>
                 <ul class="treeview-menu">
-                    {% if perms.matricula.Matricula_List %}
+                    {% if perms.enrollment.Matricula_List %}
                     <li><a href="{% url 'enrollments:matricula_list' %}"><i class="fa fa-circle-o"></i> Matricula</a></li>
                     {% endif %}
-                    {% if perms.tiposervicio.Tipo_Servicio_List %}
+                    {% if perms.enrollment.Tipo_Servicio_List %}
                     <li><a href="{% url 'enrollments:tiposervicio_list' %}"><i class="fa fa-circle-o"></i> Servicios</a></li>
                     {% endif %}
                 </ul>
@@ -89,13 +89,13 @@
           </a>
           <ul class="treeview-menu">
                 <li><a href="{% url 'income:register' %}"><i class="fa fa-circle-o"></i> Registrar Ingresos</a></li>
-                {% if perms.cuentascobrar.control_ingresos_padres %}
+                {% if perms.income.control_ingresos_padres %}
                     <li><a href="{% url 'income:cuentas_cobrar_padres' %}"><i class="fa fa-circle-o"></i> Padres</a></li>
                 {% endif %}
-                {% if perms.cuentascobrar.control_ingresos_promotor %}
+                {% if perms.income.control_ingresos_promotor %}
                     <li><a href="{% url 'income:cuentas_cobrar_promotor' %}"><i class="fa fa-circle-o"></i> Promotor</a></li>
                 {% endif %}
-                {% if perms.cuentascobrar.control_ingresos_promotor_detalle %}
+                {% if perms.income.control_ingresos_promotor_detalle %}
                     <li><a href="{% url 'income:cuentas_cobrar_promotor_detalle' %}"><i class="fa fa-circle-o"></i> Promotor detalle</a></li>
                 {% endif %}
           </ul>
@@ -110,13 +110,13 @@
                 </span>
               </a>
               <ul class="treeview-menu">
-                  {% if perms.descuento.Solicitar_Descuento %}
+                  {% if perms.discount.Solicitar_Descuento %}
                       <li><a href="{% url 'discounts:tipo_descuento_create' %}"><i class="fa fa-circle-o"></i> Tipo de Descuento</a></li>
                   {% endif %}
-                  {% if perms.descuento.aprobar_descuento %}
+                  {% if perms.discount.aprobar_descuento %}
                       <li><a href="{% url 'discounts:aprobar_descuentos' %}"><i class="fa fa-circle-o"></i> Aprobar Descuentos</a></li>
                   {% endif %}
-                  {% if perms.descuento.detalle_descuento %}
+                  {% if perms.discount.detalle_descuento %}
                       <li><a href="{% url 'discounts:detalle_descuentos' %}"><i class="fa fa-circle-o"></i> Detalle de Descuentos</a></li>
                   {% endif %}
               </ul>
@@ -142,10 +142,10 @@
                 </span>
               </a>
               <ul class="treeview-menu">
-                  {% if perms.pago.Registrar_Pago_Create %}
+                  {% if perms.payment.Registrar_Pago_Create %}
                       <li><a href="{% url 'payments:registrarpago_create' %}"><i class="fa fa-circle-o"></i> Registrar Egresos</a></li>
                   {% endif %}
-                  {% if perms.pago.control_pagos %}
+                  {% if perms.payment.control_pagos %}
                       <li><a href="{% url 'payments:pago_promotor' %}"><i class="fa fa-circle-o"></i> Control de Pagos</a></li>
                   {% endif %}
               </ul>
