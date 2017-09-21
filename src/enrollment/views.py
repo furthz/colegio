@@ -572,12 +572,15 @@ class MatriculaListView(MyLoginRequiredMixin, ListView):
     """
 
     """
+    #colegio = get_current_colegio()
     model = Matricula
     template_name = "matricula_list.html"
+    queryset = Matricula.objects.filter(colegio=5)
 
     @method_decorator(permission_required('enrollment.Matricula_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
+        colegio = get_current_colegio()
         roles = ['promotor', 'director', 'administrativo']
 
         if validar_roles(roles=roles):
