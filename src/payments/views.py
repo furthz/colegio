@@ -78,7 +78,7 @@ class RegistrarPagoCreateView(CreateView):
     success_url = reverse_lazy('payments:registrarpago_create')
     template_name = 'RegistrarPago/registrarpago_form.html'
 
-    @method_decorator(permission_required('pago.Registrar_Pago_Create', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('payments.Registrar_Pago_Create', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['tesorero']
@@ -174,7 +174,7 @@ class ControlPagosPromotorView(FormView):
             mensaje_error = "No tienes acceso a esta vista"
             return {'mensaje_error': mensaje_error}  # return context
 
-    @method_decorator(permission_required('pago.control_pagos', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('payments.control_pagos', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         super(ControlPagosPromotorView, self).get(request, *args, **kwargs)
@@ -187,12 +187,12 @@ class ControlPagosPromotorView(FormView):
         else:
             return render(request, self.template_name, contexto)  # return context
 
-    @method_decorator(permission_required('pago.control_pagos', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('payments.control_pagos', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get_queryset(self):
         return []
 
-    @method_decorator(permission_required('pago.control_pagos', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('payments.control_pagos', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def post(self, request, *args, **kwargs):
 
