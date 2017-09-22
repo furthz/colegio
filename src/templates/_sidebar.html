@@ -150,22 +150,34 @@
                   {% endif %}
               </ul>
         </li>
-          <li class="treeview yellow">
-          <a href="#">
-            <img src="{% static 'site/img/svg/folder-document.svg' %}" width="22px" height="22px"/>
-            <span>Caja</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="{% url 'cash:cashier_list' %}"><i class="fa fa-circle-o"></i> Cajas</a></li>
-            <li><a href="{% url 'cash:boxcashier_AperturarCaja' %}"><i class="fa fa-circle-o"></i> Abrir Caja</a></li>
-            <li><a href="{% url 'cash:boxcashier_list' %}"><i class="fa fa-circle-o"></i> Cerrar Caja</a></li>
-            <li><a href="{% url 'cash:consignment_list' %}"><i class="fa fa-circle-o"></i> Remesas</a></li>
-            <li><a href="{% url 'cash:consignment_create' %}"><i class="fa fa-circle-o"></i> Crear Remesa</a></li>
-          </ul>
-        </li>
+
+
+            <li class="{% if namespace == 'cash' %}active treeview orange {% else  %}treeview green{% endif %} ">
+                <a href="#">
+                    <img src="{% static 'site/img/svg/folder-document.svg' %}" width="22px" height="22px"/>
+                    <span>Caja</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    {% if perms.cash.Cashier_List %}
+                    <li><a href="{% url 'cash:cashier_list' %}"><i class="fa fa-circle-o"></i> Cajas</a></li>
+                    {% endif %}
+                    {% if perms.cash.Box_Cashier_Creation %}
+                    <li><a href="{% url 'cash:boxcashier_AperturarCaja' %}"><i class="fa fa-circle-o"></i> Abrir Caja</a></li>
+                    {% endif %}
+                    {% if perms.cash.Box_Cashier_List %}
+                    <li><a href="{% url 'cash:boxcashier_list' %}"><i class="fa fa-circle-o"></i> Cerrar Caja</a></li>
+                    {% endif %}
+                    {% if perms.cash.Consigment_List %}
+                    <li><a href="{% url 'cash:consignment_list' %}"><i class="fa fa-circle-o"></i> Remesas</a></li>
+                    {% endif %}
+                    {% if perms.cash.Consigment_Creation %}
+                    <li><a href="{% url 'cash:consignment_create' %}"><i class="fa fa-circle-o"></i> Crear Remesa</a></li>
+                    {% endif %}
+                </ul>
+            </li>
       </ul>
       {% endwith %}
 
