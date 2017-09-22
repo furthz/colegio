@@ -34,6 +34,13 @@ class Migration(migrations.Migration):
             options={
                 'db_table': 'caja',
                 'managed': settings.IS_MIGRATE,
+                'permissions': (
+                    ("Cashier_List", "ver lista de caja"),
+                    ("Cashier_Creation", "crear caja"),
+                    ("Cashier_Detail", "ver detalle de caja"),
+                    ("Cashier_Delete", "eliminar caja"),
+
+                )
             },
         ),
         migrations.CreateModel(
@@ -57,6 +64,12 @@ class Migration(migrations.Migration):
             options={
                 'db_table': 'caja_cajero',
                 'managed': settings.IS_MIGRATE,
+                'permissions': (
+                    ("Box_Cashier_List", "ver lista de apertura y cierre de caja"),
+                    ("Box_Cashier_Creation", "aperturar caja"),
+                    ("Box_Cashier_Update", "cerrar caja"),
+                    ("Box_Cashier_Detail", "ver detalle de apertura y cierre de caja"),
+                )
             },
         ),
         migrations.CreateModel(
@@ -72,6 +85,11 @@ class Migration(migrations.Migration):
             options={
                 'db_table': 'remesa',
                 'managed': settings.IS_MIGRATE,
+                'permissions': (
+                    ("Consigment_List", "ver lista de remesas"),
+                    ("Consigment_Creation", "crear remesas"),
+                    ("Consigment_Detail", "ver detalle de remesas"),
+                )
             },
         ),
     ]
