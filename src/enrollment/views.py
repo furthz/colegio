@@ -814,19 +814,19 @@ class FiltrarAlumnoView(ListView):
     """
     model = Alumno
     template_name = "alumno_form.html"
+    queryset = Alumno.objects.filter(matricula = None)
 
     def post(self, request, *args, **kwargs):
 
-
         # object_list_alumnos1 =  self.model.objects.filter(nombre=request.POST["nombre"])
         nombre = request.POST["nombre"]
-        object_list_alumnos1 = Alumno.objects.filter(nombre__icontains=nombre.upper())
+        object_list_alumnos1 = Alumno.objects.filter(matricula = None).filter(nombre__icontains=nombre.upper())
 
         apellido_pa = request.POST["apellido_pa"]
         # object_list_alumnos2 = self.model.objects.filter(apellido_pa=request.POST["apellido_pa"])
-        object_list_alumnos2 = Alumno.objects.filter(apellido_pa__icontains=apellido_pa.upper())
+        object_list_alumnos2 = Alumno.objects.filter(matricula = None).filter(apellido_pa__icontains=apellido_pa.upper())
 
-        object_list_alumnos3 = Alumno.objects.filter(apellido_pa__icontains=apellido_pa.upper(), nombre__icontains=nombre.upper())
+        object_list_alumnos3 = Alumno.objects.filter(matricula = None).filter(apellido_pa__icontains=apellido_pa.upper(), nombre__icontains=nombre.upper())
         #object_list_alumnos3 = self.model.objects.filter(nombre=request.POST["nombre"],apellido_pa=request.POST["apellido_pa"])
 
         if len(object_list_alumnos3) is not 0:
