@@ -386,7 +386,6 @@ class ControlIngresosPromotorView(FormView):
         contexto['por_cobrar_total'] = por_cobrar_total
         contexto['cobro_total'] = cobro_total
         contexto['deuda_total'] = deuda_total
-        contexto['descuento_total'] = descuento_total
         contexto['mes_labels'] = mes_labels
         contexto['mes_llega'] = mes
         contexto['anio_llega'] = anio
