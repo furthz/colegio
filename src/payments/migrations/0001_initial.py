@@ -77,6 +77,13 @@ class Migration(migrations.Migration):
             options={
                 'db_table': 'tipo_pago',
                 'managed': True,
+                'permissions': (
+                    ("Tipo_Pago_List", "ver lista de tipo de pago"),
+                    ("Tipo_Pago_Detail", "ver detalle de tipo de pago"),
+                    ("Tipo_Pago_Update", "modificar tipo de pago"),
+                    ("Tipo_Pago_Creation", "crear tipo de pago"),
+                    ("Tipo_Pago_Delete", "eliminar tipo de pago"),
+                )
             },
         ),
         migrations.AddField(
