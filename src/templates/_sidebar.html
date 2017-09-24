@@ -159,6 +159,9 @@
                   {% if perms.payments.control_pagos %}
                       <li><a href="{% url 'payments:pago_promotor' %}"><i class="fa fa-circle-o"></i> Control de Pagos</a></li>
                   {% endif %}
+                  {% if perms.payments.add_tipopago %}
+                      <li><a href="{% url 'payments:tipopago_create' %}"><i class="fa fa-circle-o"></i> Crear Tipo de Pagos</a></li>
+                  {% endif %}
               </ul>
         </li>
 

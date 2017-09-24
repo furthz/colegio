@@ -87,6 +87,7 @@ class Pago(CreacionModificacionFechaMixin, CreacionModificacionUserMixin):
         permissions = (
             ('control_pagos', 'Para el control de pagos realizados'),
             ("Registrar_Pago_Create","crear registro de pago"),
+            
         )
 
 

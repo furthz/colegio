@@ -80,12 +80,12 @@
                                             <td>
                                               <div class="checkbox">
                                                 <label>
-                                                  <input id="check{{ cuentas.id_cuentascobrar }}" name="seleccionado{{ cuentas.id_cuentascobrar }}" type="checkbox" checked="checked" onChange="calculototal(this.checked,eleccion1{{ cuentas.id_cuentascobrar }}.checked,montototal{{ cuentas.id_cuentascobrar }}.value,montoparcial{{ cuentas.id_cuentascobrar }}.value,subtotal.value,total.value,subtotal,total)">
+                                                  <input id="check{{ cuentas.id_cuentascobrar }}" name="seleccionado{{ cuentas.id_cuentascobrar }}" type="checkbox" onChange="calculototal(this.checked,eleccion1{{ cuentas.id_cuentascobrar }}.checked,montototal{{ cuentas.id_cuentascobrar }}.value,montoparcial{{ cuentas.id_cuentascobrar }}.value,subtotal.value,total.value,subtotal,total)">
                                                 </label>
                                               </div>
                                             </td>
                                             <td>{{ cuentas.id_cuentascobrar }}</td>
-                                            <td>{{ cuentas.servicio.nombre  }} de {{ cuentas.servicio.tipo_servicio }}</td>
+                                            <td>{{ cuentas.servicio.nombre  }} de {{ cuentas.servicio.tipo_servicio }} del {{ cuentas.fecha_ven }}</td>
                                             <td>{{ cuentas.precio }}</td>
                                             <td>
                                               <div class="radio">
@@ -98,7 +98,7 @@
                                             <td>
                                               <div class="radio">
                                                 <label>
-                                                  <input type="radio" name="optionsRadios{{ cuentas.id_cuentascobrar }}" onchange="nombre()" id="eleccion2{{ cuentas.id_cuentascobrar }}" value="2" checked>
+                                                  <input type="radio" name="optionsRadios{{ cuentas.id_cuentascobrar }}" onchange="nombre()" id="eleccion2{{ cuentas.id_cuentascobrar }}" value="2">
                                                   <input type="text" class="form-control"  name="montoparcial{{ cuentas.id_cuentascobrar }}" id="montoparcial{{ cuentas.id_cuentascobrar }}"  value="0" placeholder="Ingresar monto">
                                                 </label>
                                               </div>
