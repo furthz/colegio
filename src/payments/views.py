@@ -123,7 +123,13 @@ class RegistrarPagoCreateView(CreateView):
 
                 cajachica_actual.saldo = cajachica_actual.saldo - pago.monto
                 cajachica_actual.save()
+            else:
 
+                return render(request, template_name=self.template_name, context={
+                    'form': form,
+
+                    'saldo':CajaChica.objects.get(colegio__id_colegio = self.request.session.get('colegio')).saldo
+                })
             return HttpResponseRedirect(reverse('payments:registrarpago_create'))
         return HttpResponseRedirect(reverse('payments:registrarpago_create'))
 
