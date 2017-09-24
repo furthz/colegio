@@ -13,7 +13,7 @@ class PersonaForm(ModelForm):
 
     direccion = forms.CharField(widget=forms.TextInput(attrs={'tabindex': '13', 'class': 'form-control'}), label="Direccion")
     referencia = forms.CharField(widget=forms.TextInput(attrs={'tabindex': '14', 'class': 'form-control'}), label="Referencia")
-    departamento = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-control'}), label="Departamento")
+    departamento = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-control', "onchange": "myFunction()"}), label="Departamento")
     provincia = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-control'}), label="Provincia")
     distrito = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-control'}), label="Distrito")
     tipo_cel = forms.ChoiceField(widget=forms.Select(attrs={'tabindex': '15', 'class': 'form-control'}), label="Tipo Movil",
