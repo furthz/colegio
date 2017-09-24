@@ -28,6 +28,7 @@
                     <div class="panel-page">
                             <div class="box-body">
                                 <a class="btn btn-success" href="{% url 'registers:proveedor_create' %}" >Crear Nuevo Proveedor</a>
+
                                 <form action="" method="POST" class="form-horizontal" id="1">{% csrf_token %}
                                     {% csrf_token %}
                                     {{ form.as_p}}
@@ -35,14 +36,14 @@
                                 <div class="form-group">
                                     <div class="col-sm-offset-2 col-sm-10">
                                         <a class="btn btn-default" href="{% url 'payments:registrarpago_create' %}">Cancelar</a>
-                                        <button type="submit" class="btn btn-success" formaction="{% url 'payments:registrarpago_create' %}" form="1">Registrar Pago</button>
+                                        <button type="submit" onclick="saldoinsuficiente()" class="btn btn-success" formaction="{% url 'payments:registrarpago_create' %}" form="1">Registrar Pago</button>
                                     </div>
                                 </div>
 
                             </div>
 
                             <label colspan="5" class="table-bold-print">Saldo en Caja Chica</label>
-                            <input disabled value="S/. {{ saldo }}" class="form-control">
+                            S/.<input disabled value=" {{ saldo }}" name="saldo" id= "saldo" class="form-control">
 
 
 
@@ -64,5 +65,13 @@
     //Initialize Select2 Elements
     $('.select2').select2();
   });
+</script>
+<script type="text/javascript">
+function saldoinsuficiente() {
+    //Initialize Select2 Elements
+    if (parseInt(id_monto.value) > parseInt(saldo.value)) {
+        alert("Saldo Insuficiente")
+    }
+};
 </script>
 {% endblock %}

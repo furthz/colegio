@@ -577,6 +577,8 @@ class MatriculaListView(MyLoginRequiredMixin, ListView):
     """
     model = Matricula
     template_name = "matricula_list.html"
+    #colegio = get_current_colegio()
+    #queryset = Matricula.objects.filter(colegio=colegio)
 
     @method_decorator(permission_required('enrollment.Matricula_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
