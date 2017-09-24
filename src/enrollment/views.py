@@ -816,7 +816,7 @@ class CargarMatriculaUpdateView(MyLoginRequiredMixin, TemplateView):
         return render(request, template_name=self.template_name, context={
             'form': form,
             'alumno':matricula.alumno,
-            'tiposervicio': list_tiposervico,
+            'tiposerviciolist': list_tiposervico,
         })
 
 class MatriculaDeleteView(MyLoginRequiredMixin, DeleteView):
@@ -901,27 +901,25 @@ class CargarMatriculaCreateView(TemplateView):
             matricula = Matricula.objects.filter(alumno=alumno, activo=True, colegio__tiposervicio__is_ordinario=True)
             if matricula.count() > 0:
                 tiposervicios = TipoServicio.objects.filter(colegio_id=self.request.session.get('colegio'), activo=True,
-                                                            is_ordinario=False)
+                                                            is_ordinario=False).order_by("nivel", "grado")
             else:
-                tiposervicios = TipoServicio.objects.filter(colegio_id=self.request.session.get('colegio'), activo=True)
+                tiposervicios = TipoServicio.objects.filter(colegio_id=self.request.session.get('colegio'), activo=True).order_by("nivel", "grado")
             if tiposervicios.count() > 1:
                 for tiposer in tiposervicios:
                     if Servicio.objects.filter(tipo_servicio=tiposer, activo=True).count() > 0:
                         list_tiposervicio.append(tiposer)
             elif tiposervicios.count() is 1:
                 if Servicio.objects.filter(tipo_servicio=tiposervicios, activo=True).count() > 0:
-                    list_tiposervicio.append(tiposervicios)
+                    list_tiposervicio = tiposervicios
+
 
             return render(request, template_name=self.template_name, context={
                 'alumno': alumno,
-                'tiposervicio': list_tiposervicio,
+                'tiposerviciolist': list_tiposervicio,
                 'form': self.form_class,
             })
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
-
-
-
 
 #######################################################
 #       Descuentos

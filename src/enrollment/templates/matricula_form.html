@@ -40,8 +40,10 @@
                                 <div class="col-sm-10">
                                     <select name="tipo_servicio" required="" id="id_tipo_servicio" class="form-control">
                                       <option value="" selected="">---------</option>
-                                     {% for servicio in tiposervicio %}
+                                     {% for servicio in tiposerviciolist %}
                                       <option value="{{ servicio.id_tipo_servicio }}">{{ servicio }}</option>
+                                     {% empty %}
+
                                      {% endfor %}
                                     </select>
                                     <a>Solo se muestran los servicios con pagos asociados</a>
