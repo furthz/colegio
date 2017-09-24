@@ -30,6 +30,9 @@ from enrollment.views import CargarMatriculaCreateView
 from enrollment.views import CargarMatriculaUpdateView
 
 from enrollment.views import generar_pdf
+
+from enrollment.views import SolicitarDescuentoView
+from enrollment.views import CrearSolicitudView
 #
 
 
@@ -65,6 +68,11 @@ urlpatterns = [
     url(r'^update', CargarMatriculaUpdateView.as_view(), name="matricula_update"),
     url(r'^delete/', MatriculaDeleteView.as_view(), name="matricula_delete"),
     url(r'^list/$', MatriculaListView.as_view(), name="matricula_list"),
+
+    # URL para descuentos
+    url(r'^solicitar/$', SolicitarDescuentoView.as_view(), name="solicitar_descuento"),
+    url(r'^solicitar/create$', CrearSolicitudView.as_view(), name="crear_solicitud"),
+
 
     # URL para filtrar y crear matriculas
     url(r'^filter', FiltrarAlumnoView.as_view(), name="filtrar_alumno"),

@@ -120,6 +120,7 @@
                 </span>
               </a>
               <ul class="treeview-menu">
+
                   {% if perms.discounts.Solicitar_Descuento %}
                       <li><a href="{% url 'discounts:tipo_descuento_create' %}"><i class="fa fa-circle-o"></i> Tipo de Descuento</a></li>
                   {% endif %}

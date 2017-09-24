@@ -103,10 +103,11 @@ function confirmDel()
                                                     <a title="Editar" href="{% url 'registers:proveedor_update' pk=proveedor.id_proveedor %}" class="btn btn-default">
                                                         <i class="fa fa-pencil" aria-hidden="true"></i>
                                                     </a>
+                                                    <!--
                                                     <a title="Detalle" href="{% url 'registers:proveedor_detail' pk=proveedor.id_proveedor %}" class="btn btn-default">
                                                         <i class="fa fa-info-circle" aria-hidden="true"></i>
                                                     </a>
-
+                                                    -->
                                                     <button class="btn btn-default" type="submit" onclick="return confirmDel();" title="Eliminar" formaction="{% url 'registers:proveedor_delete' %}" formmethod="get" form="{{ proveedor.id_proveedor }}">
                                                         <i class="fa fa-trash" aria-hidden="true"></i>
                                                     </button>

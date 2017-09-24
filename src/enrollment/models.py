@@ -207,6 +207,8 @@ class Matricula(ActivoMixin, CreacionModificacionUserMixin, CreacionModificacion
         """
         return reverse('enrollments:matricula_list')
 
+
+
     class Meta:
         managed = False
         db_table = 'matricula'

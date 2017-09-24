@@ -120,7 +120,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'utils.middleware.ThreadLocalMiddleware',
-    'django.middleware.cache.FetchFromCacheMiddleware',
+    #'django.middleware.cache.FetchFromCacheMiddleware',
 )
 
 """
@@ -148,7 +148,6 @@ SESSION_CACHE_ALIAS = "default"
 
 CACHE_TTL = 60 * 15
 """
-
 
 ROOT_URLCONF = 'colegio.urls'
 

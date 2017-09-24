@@ -10,8 +10,8 @@
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
         <li>Modúlo Matricula</li>
-          <li>Lista de servicios</li>
-        <li class="active">Actualización de servicios</li>
+
+        <li class="active">Solicitar Descuentos</li>
       </ol>
 {% endblock %}
 
@@ -22,7 +22,7 @@
           <div class="col-md-12">
               <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Nuevo de Servicio Regular</h3>
+                    <h3 class="box-title">Solicitar Descuentos</h3>
                 </div>
 
                 <div class="box-body">
@@ -32,8 +32,8 @@
                         </form>
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
-                                <a class="btn btn-default" href="{% url 'enrollments:tiposervicio_list' %}">Cancelar</a>
-                                <button type="submit" class="btn btn-success" formaction="{% url 'discounts:crear_solicitud' %}" form="1">Crear servicio</button>
+                                <a class="btn btn-default" href="javascript:history.back()">Cancelar</a>
+                                <button type="submit" class="btn btn-success" formaction="{% url 'discounts:crear_solicitud' %}" form="1">Crear Solicitud</button>
                             </div>
                         </div>
 
