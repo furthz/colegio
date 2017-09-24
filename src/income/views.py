@@ -367,7 +367,7 @@ class ControlIngresosPromotorView(FormView):
             num_mes = 12
 
         anio = int(anio)
-        por_cobrar_total, cobro_total, deuda_total = calculo_ingresos_promotor(id_colegio, anio, mes)
+        por_cobrar_total, cobro_total, deuda_total, descuento_total = calculo_ingresos_promotor(id_colegio, anio, mes)
         logger.info(por_cobrar_total)
         por_cobrar_nivel, cobro_total_nivel, deuda_total_nivel = calculo_por_nivel_promotor(id_colegio, anio, mes)
 
@@ -386,6 +386,7 @@ class ControlIngresosPromotorView(FormView):
         contexto['por_cobrar_total'] = por_cobrar_total
         contexto['cobro_total'] = cobro_total
         contexto['deuda_total'] = deuda_total
+        contexto['descuento_total'] = descuento_total
         contexto['mes_labels'] = mes_labels
         contexto['mes_llega'] = mes
         contexto['anio_llega'] = anio
