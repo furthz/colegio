@@ -44,6 +44,7 @@
                                       <option value="{{ servicio.id_tipo_servicio }}">{{ servicio }}</option>
                                      {% endfor %}
                                     </select>
+                                    <a>Solo se muestran los servicios con pagos asociados</a>
                                 </div>
                               </div>
 
@@ -61,7 +62,7 @@
 
                               <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">
-                                  <a href="{% url 'enrollments:filtrar_alumno' %}" class="btn btn-default">Cancelar</a>
+                                  <a href="javascript:history.back()" class="btn btn-default">Cancelar</a>
                                   <button type="submit" class="btn btn-success">Matricular</button>
                                 </div>
                               </div>
