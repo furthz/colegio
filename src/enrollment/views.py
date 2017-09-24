@@ -636,14 +636,25 @@ class MatriculaCreateView(MyLoginRequiredMixin, CreateView):
         roles = ['promotor', 'director', 'administrativo']
 
         if validar_roles(roles=roles):
-            tiposervicios = TipoServicio.objects.filter(colegio_id=self.request.session.get('colegio'),activo=True)
-            list_tiposervico = []
-            for tiposer in tiposervicios:
-                if Servicio.objects.filter(tipo_servicio=tiposer, activo=True).count() > 0:
-                    list_tiposervico.append(tiposer)
+
+            list_tiposervicio = []
+            alumno = Alumno.objects.get(pk=request.GET["alumno"])
+            matricula = Matricula.objects.filter(alumno=alumno, activo=True, colegio__tiposervicio__is_ordinario= True)
+            if matricula.count() > 0:
+                tiposervicios = TipoServicio.objects.filter(colegio_id=self.request.session.get('colegio'), activo=True, is_ordinario=False)
+            else:
+                tiposervicios = TipoServicio.objects.filter(colegio_id=self.request.session.get('colegio'), activo=True)
+            if tiposervicios.count() > 1:
+                for tiposer in tiposervicios:
+                    if Servicio.objects.filter(tipo_servicio=tiposer, activo=True).count() > 0:
+                        list_tiposervicio.append(tiposer)
+            elif tiposervicios.count() is 1:
+                if Servicio.objects.filter(tipo_servicio=tiposervicios, activo=True).count() > 0:
+                    list_tiposervicio.append(tiposervicios)
+
             return render(request, template_name=self.template_name, context={
-                'alumno': Alumno.objects.get(pk=request.GET["alumno"]),
-                'tiposervicio': list_tiposervico,
+                'alumno': alumno,
+                'tiposervicio': list_tiposervicio,
                 'form': self.form_class,
             })
         else:
@@ -839,19 +850,24 @@ class FiltrarAlumnoView(ListView):
     """
     model = Alumno
     template_name = "alumno_form.html"
-    queryset = Alumno.objects.filter(matricula = None)
+
+
+    def get(self, request, *args, **kwargs):
+
+        return render(request, template_name=self.template_name)
 
     def post(self, request, *args, **kwargs):
 
         # object_list_alumnos1 =  self.model.objects.filter(nombre=request.POST["nombre"])
         nombre = request.POST["nombre"]
-        object_list_alumnos1 = Alumno.objects.filter(matricula = None).filter(nombre__icontains=nombre.upper())
+        object_list_alumnos1 = Alumno.objects.filter(nombre__icontains=nombre.upper())
 
-        apellido_pa = request.POST["apellido_pa"]
+        apellido_pa = request.POST["nombre"]
         # object_list_alumnos2 = self.model.objects.filter(apellido_pa=request.POST["apellido_pa"])
-        object_list_alumnos2 = Alumno.objects.filter(matricula = None).filter(apellido_pa__icontains=apellido_pa.upper())
+        object_list_alumnos2 = Alumno.objects.filter(apellido_pa__icontains=apellido_pa.upper())
 
-        object_list_alumnos3 = Alumno.objects.filter(matricula = None).filter(apellido_pa__icontains=apellido_pa.upper(), nombre__icontains=nombre.upper())
+        dni = request.POST["dni"]
+        object_list_alumnos3 = Alumno.objects.filter(numero_documento=dni)
         #object_list_alumnos3 = self.model.objects.filter(nombre=request.POST["nombre"],apellido_pa=request.POST["apellido_pa"])
 
         if len(object_list_alumnos3) is not 0:
@@ -876,13 +892,35 @@ class CargarMatriculaCreateView(TemplateView):
     model = Alumno
     form_class = MatriculaForm
     def post(self, request, *args, **kwargs):
-        tipos_de_servicios = TipoServicio.objects.filter(colegio__id_colegio=self.request.session.get('colegio'), activo=True).order_by("nivel", "grado")
+        roles = ['promotor', 'director', 'administrativo']
 
-        return render(request, template_name=self.template_name, context={
-                'alumno': self.model.objects.get(pk = request.POST["alumno"]),
-                'tiposervicio': tipos_de_servicios,
+        if validar_roles(roles=roles):
+
+            list_tiposervicio = []
+            alumno = Alumno.objects.get(pk=request.POST["alumno"])
+            matricula = Matricula.objects.filter(alumno=alumno, activo=True, colegio__tiposervicio__is_ordinario=True)
+            if matricula.count() > 0:
+                tiposervicios = TipoServicio.objects.filter(colegio_id=self.request.session.get('colegio'), activo=True,
+                                                            is_ordinario=False)
+            else:
+                tiposervicios = TipoServicio.objects.filter(colegio_id=self.request.session.get('colegio'), activo=True)
+            if tiposervicios.count() > 1:
+                for tiposer in tiposervicios:
+                    if Servicio.objects.filter(tipo_servicio=tiposer, activo=True).count() > 0:
+                        list_tiposervicio.append(tiposer)
+            elif tiposervicios.count() is 1:
+                if Servicio.objects.filter(tipo_servicio=tiposervicios, activo=True).count() > 0:
+                    list_tiposervicio.append(tiposervicios)
+
+            return render(request, template_name=self.template_name, context={
+                'alumno': alumno,
+                'tiposervicio': list_tiposervicio,
                 'form': self.form_class,
             })
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+
 
 
 #######################################################
