@@ -165,7 +165,7 @@ class ProveedorForm(ModelForm):
         self.helper.form_id = "idproveedor"
         self.helper.form_method = "post"
 
-        self.helper.add_input(Submit('submit', 'Crear', css_class="btn btn-primary btn-block btn-flat"))
+        self.helper.add_input(Submit('submit', 'Grabar', css_class="btn btn-primary btn-block btn-flat"))
 
     class Meta:
         model = Proveedor
