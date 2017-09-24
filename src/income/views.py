@@ -58,10 +58,10 @@ class RegistrarPagoListView(MyLoginRequiredMixin, TemplateView):
 
             logger.info("Ver si existe un GET")
             if request.GET['filter'] is 'DNI':
-                self.cuentas = cuentas_totales.filter(matricula__alumno__numero_documento=request.GET['dato']).order_by("fecha_ven")
+                self.cuentas = cuentas_totales.filter(matricula__alumno__numero_documento=request.GET['dato'],activo=True, estado=True).order_by("fecha_ven")
                 alumno = Alumno.objects.get(numero_documento=request.GET['dato'])
             else:
-                self.cuentas = cuentas_totales.filter(matricula__alumno__apellido_pa = request.GET['dato']).order_by("fecha_ven")
+                self.cuentas = cuentas_totales.filter(matricula__alumno__apellido_pa = request.GET['dato'],activo=True, estado=True).order_by("fecha_ven")
                 alumno = Alumno.objects.get(apellido_pa=request.GET['dato'])
         except:
             self.cuentas = []
@@ -82,7 +82,7 @@ class RegistrarPagoListView(MyLoginRequiredMixin, TemplateView):
         logger.info("Estoy en el POST")
         logger.info(request.POST)
         data_post = request.POST
-        self.cuentas = Cuentascobrar.objects.filter(matricula__alumno__id_alumno=request.POST['persona']).order_by("fecha_ven")
+        self.cuentas = Cuentascobrar.objects.filter(matricula__alumno__id_alumno=request.POST['persona'], activo=True, estado=True).order_by("fecha_ven")
         lista_cuentas = []
         lista_montos = []
         logger.info(self.cuentas)
@@ -99,8 +99,8 @@ class RegistrarPagoListView(MyLoginRequiredMixin, TemplateView):
                     logger.info('Pago Completo')
                     lista_cuentas.append(cuenta)
                     logger.info(lista_cuentas)
-                    lista_montos.append(cuenta.precio)
-                    logger.info('Monto {0}'.format(cuenta.precio))
+                    lista_montos.append(cuenta.deuda)
+                    logger.info('Monto {0}'.format(cuenta.deuda))
                 else:
                     logger.info('Pago Parcial')
                     lista_cuentas.append(cuenta)
@@ -151,6 +151,7 @@ class RegistrarPagoListView(MyLoginRequiredMixin, TemplateView):
 
         for k in range(len(lista_cuentas)):
             cuenta = lista_cuentas[k]
+            print(k)
             monto = lista_montos[k]
             detalle_actual = DetalleCobranza(
                 cuentascobrar=cuenta,
@@ -160,6 +161,7 @@ class RegistrarPagoListView(MyLoginRequiredMixin, TemplateView):
             detalle_actual.save()
             if monto is cuenta.deuda:
                 cuenta.deuda = 0
+                cuenta.estado = False
             else:
                 cuenta.deuda = cuenta.deuda - monto
             cuenta.save()
