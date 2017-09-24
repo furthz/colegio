@@ -105,10 +105,9 @@ def calculo_ingresos_promotor(id_colegio, anio, mes):
         descuento_total.append(0)
         for cuenta in cuenta_mes:
             deuda_total[mes] = deuda_total[mes] + cuenta.deuda  # Cálculo de las deudas totales del mes
-            cobro_total[mes] = cobro_total[mes] + cuenta.precio - cuenta.deuda + cuenta.descuento # Cálculo de los cobros totales del mes
-            por_cobrar_total[mes] = por_cobrar_total[mes] + cuenta.precio
-            descuento_total[mes] = descuento_total[mes] + cuenta.descuento
-    return por_cobrar_total, cobro_total, deuda_total, descuento_total
+            cobro_total[mes] = cobro_total[mes] + cuenta.precio - cuenta.deuda - cuenta.descuento # Cálculo de los cobros totales del mes
+            por_cobrar_total[mes] = por_cobrar_total[mes] + cuenta.precio - cuenta.descuento
+    return por_cobrar_total, cobro_total, deuda_total
 
 
 # FUNCIÓN PARA CÁLCULO DE INGRESOS DE CADA NIVEL PARA UN DETERMINADO AÑO Y MES
