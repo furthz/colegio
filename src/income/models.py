@@ -83,7 +83,7 @@ def calculo_ingresos_promotor(id_colegio, anio, mes):
         mes_rango = 12
     anio = int(anio)
 
-    cuentas_cobrar_colegio = Cuentascobrar.objetos.get_queryset().filter(matricula__colegio__id_colegio=id_colegio)
+    cuentas_cobrar_colegio = Cuentascobrar.objetos.get_queryset().filter(matricula__colegio__id_colegio=id_colegio).filter(activo=True)
 
     porcobrar2 = cuentas_cobrar_colegio.filter(fecha_ven__year=anio)
 
