@@ -9,6 +9,13 @@ from django.contrib.auth import get_user_model
 from django.contrib import auth
 from django.contrib import messages
 
+from django.views.generic import CreateView, ListView, DetailView, UpdateView
+from .forms import RegistroUsuarioForm
+from authtools.models import User as Userss
+
+
+
+
 from authtools import views as authviews
 from braces import views as bracesviews
 from django.conf import settings
@@ -143,3 +150,50 @@ class PasswordResetDoneView(authviews.PasswordResetDoneView):
 class PasswordResetConfirmView(authviews.PasswordResetConfirmAndLoginView):
     template_name = 'accounts/password-reset-confirm.html'
     form_class = forms.SetPasswordForm
+
+#################################################
+#####          CRUD DE USUARIOS             #####
+#################################################
+
+class RegistroUsarioListView(ListView):
+    model = Userss
+    template_name = 'register_accounts/register_accounts_list.html'
+
+
+class RegistroUsarioDetailView(DetailView):
+    model = Userss
+    template_name = 'register_accounts/register_accounts_detail.html'
+
+
+class RegistroUsarioUpdateView(UpdateView):
+    model = Userss
+    template_name = "register_accounts/register_accounts_form.html"
+    form_class = RegistroUsuarioForm
+    success_url = reverse_lazy('accounts:register_accounts_list')
+
+    # Sistemas, Director, Cajero, Tesorero----------------------------------------------
+class RegistroUsarioCreationViewSistema(CreateView):
+    model = Userss
+    template_name = "register_accounts/register_accounts_form.html"
+    form_class = RegistroUsuarioForm
+    success_url = reverse_lazy('registers:sistemas_create')
+
+class RegistroUsarioCreationViewDirector(CreateView):
+    model = Userss
+    template_name = "register_accounts/register_accounts_form.html"
+    form_class = RegistroUsuarioForm
+    success_url = reverse_lazy('registers:director_create')
+
+class RegistroUsarioCreationViewCajero(CreateView):
+    model = Userss
+    template_name = "register_accounts/register_accounts_form.html"
+    form_class = RegistroUsuarioForm
+    success_url = reverse_lazy('registers:cajero_create')
+
+class RegistroUsarioCreationViewTesorero(CreateView):
+    model = Userss
+    template_name = "register_accounts/register_accounts_form.html"
+    form_class = RegistroUsuarioForm
+    success_url = reverse_lazy('registers:tesorero_create')
+
+

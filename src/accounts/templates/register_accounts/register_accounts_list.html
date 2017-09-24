@@ -12,7 +12,8 @@
                             <div class="col-md-9">
                                 <div class="panel-page">
                                     <div class="toolbar-header">
-                                            <a class="btn btn-success" href='{% url "register_accounts:register_accounts_create" %}'><i class="fa fa-plus" aria-hidden="true"></i>  Crear cajero</a>
+
+
                                         </div>
 
 
@@ -39,7 +40,7 @@
                                                     <td>{{ registro.email }}</td>
                                                     <td>
                                                         <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                                                            <a title="Detalle" href='{% url "register_accounts:register_accounts_detail" registro.id %}' class="btn btn-default">
+                                                            <a title="Detalle" href='{% url "accounts:register_accounts_detail" registro.id %}' class="btn btn-default">
                                                                 <i class="fa fa-info-circle" aria-hidden="true"></i>
                                                             </a>
                                                         </div>

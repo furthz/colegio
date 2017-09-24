@@ -22,19 +22,19 @@ urlpatterns = [
     #url(r'^personales/create/$',PersonalCreateView.as_view(), name="personal_create"),
     #url(r'^personales/(?P<pk>\d+)/$',PersonalDetailView.as_view(), name='personal_detail'),
 
-    url(r'^promotores/create/$',PromotorCreateView.as_view(), name="promotor_create"),
+    url(r'^promotores/create/$',PromotorCreateView.as_view(), name="promotor_create"),  #No agregar ---
     url(r'^promotores/(?P<pk>\d+)/$',PromotorDetailView.as_view(), name='promotor_detail'),
 
-    url(r'^sistemas/create/$', SistemasCreateView.as_view(), name="sistemas_create"),
+    url(r'^sistemas/create/$', SistemasCreateView.as_view(), name="sistemas_create"),  #======================================================----------------
     url(r'^sistemas/(?P<pk>\d+)/$', SistemasDetailView.as_view(), name='sistemas_detail'),
 
-    url(r'^directores/create/$',DirectorCreateView.as_view(), name="director_create"),
+    url(r'^directores/create/$',DirectorCreateView.as_view(), name="director_create"),  #======================================================----------------
     url(r'^directores/(?P<pk>\d+)/$',DirectorDetailView.as_view(), name='director_detail'),
 
-    url(r'^cajeros/create/$',CajeroCreateView.as_view(), name="cajero_create"),
+    url(r'^cajeros/create/$',CajeroCreateView.as_view(), name="cajero_create"),  #======================================================----------------
     url(r'^cajeros/(?P<pk>\d+)/$',CajeroDetailView.as_view(), name='cajero_detail'),
 
-    url(r'^tesoreros/create/$',TesoreroCreateView.as_view(), name="tesorero_create"),
+    url(r'^tesoreros/create/$',TesoreroCreateView.as_view(), name="tesorero_create"),  #======================================================----------------
     url(r'^tesoreros/(?P<pk>\d+)/$',TesoreroDetailView.as_view(), name='tesorero_detail'),
 
     url(r'^proveedores/create/$',ProveedorCreateView.as_view(), name="proveedor_create"),
