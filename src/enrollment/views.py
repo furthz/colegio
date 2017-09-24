@@ -835,6 +835,12 @@ class MatriculaDeleteView(MyLoginRequiredMixin, DeleteView):
             matricula = self.model.objects.get(pk=request.GET['matricula'])
             matricula.activo = False
             matricula.save()
+            fecha_actual = date.today()
+            cuentas = Cuentascobrar.objects.filter(matricula=matricula)
+            for cuenta in cuentas:
+                if cuenta.fecha_ven.month >= fecha_actual.month:
+                    cuenta.activo = False
+                    cuenta.save()
             return HttpResponseRedirect(reverse('enrollments:matricula_list'))
 
         else:

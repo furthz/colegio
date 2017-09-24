@@ -463,7 +463,7 @@ class ControlIngresosPromotorDetallesView(FormView):
         colegio = get_current_colegio()
 
         # Proceso de filtrado según el colegio
-        cuentas_cobrar_colegio = self.model.objetos.filter(matricula__colegio__id_colegio=colegio)
+        cuentas_cobrar_colegio = self.model.objetos.filter(matricula__colegio__id_colegio=colegio, activo=True)
 
         # Proceso de filtrado según el alumno
         if alumno == "":
