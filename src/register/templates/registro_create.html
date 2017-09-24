@@ -110,7 +110,7 @@
                                             </div>
                                         </div>
                                         <div style="display: none;">
-                                                                                <!--{{ form.user }}-->
+                                                                                {{ form.user }}
 
                                         </div>
 
@@ -297,3 +297,16 @@
 </div>
 
 {% endblock container %}
+{% block scripts %}
+<script type="text/javascript">
+    function myFunction() {
+        var x = document.getElementById("id_user");
+        var optionVal = [];
+        for (i = 0; i < x.length; i++) {
+            optionVal.push(x.options[i].value);
+        }
+        document.getElementById('id_user').value = Math.max.apply(null, optionVal);
+    }
+    window.onload = myFunction;
+</script>
+{% endblock scripts %}

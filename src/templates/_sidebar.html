@@ -29,7 +29,6 @@
               </a>
               <ul class="treeview-menu">
 
-                  <li><a href="{% url 'register_accounts:register_accounts_create' %}"><i class="fa fa-circle-o"></i>Registrar Usuarios </a> </li>
 
                 {% if perms.register.personal_list %}
                     <li><a href="{% url 'registers:personal_list' %}"><i class="fa fa-circle-o"></i>Listado Personas </a> </li>
@@ -40,11 +39,23 @@
                 {% if perms.register.apoderado_create %}
                     <li><a href="{% url 'registers:apoderado_create' %}"><i class="fa fa-circle-o"></i> Apoderado</a></li>
                 {% endif %}
-                {% if perms.sistemas.sistemas_create %}
-                    <li><a href="{% url 'registers:sistemas_create' %}"><i class="fa fa-circle-o"></i> Usuario Sistemas</a></li>
-                {% endif %}
                 {% if perms.register.promotor_create %}
                     <li><a href="{% url 'registers:promotor_create' %}"><i class="fa fa-circle-o"></i> Promotor</a></li>
+                {% endif %}
+                {% if perms.register.proveedor_list %}
+                    <li><a href="{% url 'registers:proveedor_list' %}"><i class="fa fa-circle-o"></i> Proveedores</a></li>
+                {% endif %}
+
+
+                  <li><a href="{% url 'accounts:register_accounts_createSistema' %}"><i class="fa fa-circle-o"></i> Usuario Sistemas</a></li>
+                  <li><a href="{% url 'accounts:register_accounts_createDirector' %}"><i class="fa fa-circle-o"></i> Director</a></li>
+                  <li><a href="{% url 'accounts:register_accounts_createCajero' %}"><i class="fa fa-circle-o"></i> Cajero</a></li>
+                  <li><a href="{% url 'accounts:register_accounts_createTesorero' %}"><i class="fa fa-circle-o"></i> Tesorero</a></li>
+
+
+                <!--
+                {% if perms.sistemas.sistemas_create %}
+                    <li><a href="{% url 'registers:sistemas_create' %}"><i class="fa fa-circle-o"></i> Usuario Sistemas</a></li>
                 {% endif %}
                 {% if perms.register.director_create %}
                     <li><a href="{% url 'registers:director_create' %}"><i class="fa fa-circle-o"></i> Director</a></li>
@@ -55,9 +66,8 @@
                 {% if perms.register.cajero_create %}
                     <li><a href="{% url 'registers:cajero_create' %}"><i class="fa fa-circle-o"></i> Cajero</a></li>
                 {% endif %}
-                {% if perms.register.proveedor_list %}
-                    <li><a href="{% url 'registers:proveedor_list' %}"><i class="fa fa-circle-o"></i> Proveedores</a></li>
-                {% endif %}
+                 -->
+
               </ul>
             </li>
             {% endif %}
