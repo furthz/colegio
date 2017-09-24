@@ -10,6 +10,9 @@ from authtools import forms as authtoolsforms
 from django.contrib.auth import forms as authforms
 from django.core.urlresolvers import reverse
 
+from authtools.models import User
+from authtools.forms import UserCreationForm
+
 from enrollment.models import Matricula
 from profiles.models import Profile
 from register.models import Personal, Apoderado, Colegio
@@ -156,3 +159,26 @@ class SetPasswordForm(authforms.SetPasswordForm):
             Field('new_password2', placeholder="Enter new password (again)"),
             Submit('pass_change', 'Change Password', css_class="btn-warning"),
         )
+
+
+class RegistroUsuarioForm(UserCreationForm):
+
+    class Meta:
+        model = User
+        fields = [
+            'groups',
+            'email',
+            'name',
+            'password1',
+            'password2',
+
+        ]
+
+        labels = {
+            'groups': 'Grupo',
+            'email': 'Correo',
+            'name': 'Nombre de Usuario',
+            'password1': 'Crea una contraseña',
+            'password2': 'Confirma tu contraseña',
+
+        }

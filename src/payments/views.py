@@ -40,10 +40,29 @@ class TipoPagoListView(ListView):
     model = TipoPago
     template_name = 'TipoPago/tipopago_list.html'
 
+    @method_decorator(permission_required('payments.Tipo_Pago_List', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        roles = ['promotor', 'director', 'tesorero', 'administrativo']
+
+        if validar_roles(roles=roles):
+            return super(TipoPagoListView, self).get(request, *args, **kwargs)
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
 class TipoPagoDetailView(DetailView):
     template_name = 'TipoPago/tipopago_detail.html'
     model = TipoPago
+
+    @method_decorator(permission_required('payments.Tipo_Pago_Detail', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        roles = ['promotor', 'director', 'tesorero', 'administrativo']
+
+        if validar_roles(roles=roles):
+            return super(TipoPagoDetailView, self).get(request, *args, **kwargs)
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
 
 class TipoPagoCreationView(CreateView):
@@ -52,6 +71,16 @@ class TipoPagoCreationView(CreateView):
     success_url = reverse_lazy('payments:tipopago_list')
     template_name = 'TipoPago/tipopago_form.html'
 
+    @method_decorator(permission_required('payments.Tipo_Pago_Creation', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        roles = ['tesorero', 'administrativo']
+
+        if validar_roles(roles=roles):
+            return super(TipoPagoCreationView, self).get(request, *args, **kwargs)
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
 
 class TipoPagoUpdateView(UpdateView):
     model = TipoPago
@@ -59,12 +88,33 @@ class TipoPagoUpdateView(UpdateView):
     success_url = reverse_lazy('payments:tipopago_list')
     template_name = 'TipoPago/tipopago_form.html'
 
+    @method_decorator(permission_required('payments.Tipo_Pago_Update', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        roles = ['tesorero', 'administrativo']
+
+        if validar_roles(roles=roles):
+            return super(TipoPagoUpdateView, self).get(request, *args, **kwargs)
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
 
 class TipoPagoDeleteView(UpdateView):
     model = TipoPago
     form_class = TipoPagoForm
     success_url = reverse_lazy('payments:tipopago_list')
     template_name = 'TipoPago/tipopago_confirm_delete.html'
+
+
+@method_decorator(permission_required('payments.Tipo_Pago_Delete', login_url=settings.REDIRECT_PERMISOS,
+                                      raise_exception=False))
+def get(self, request, *args, **kwargs):
+    roles = ['tesorero', 'administrativo']
+
+    if validar_roles(roles=roles):
+        return super(TipoPagoDeleteView, self).get(request, *args, **kwargs)
+    else:
+        return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
 
 
@@ -113,7 +163,7 @@ class RegistrarPagoCreateView(CreateView):
 
                 pago = self.model(proveedor=data_form['proveedor'],
                                   caja_chica=cajachica_actual,
-                                  personal=PersonalColegio.objects.get(personal__cajero__user=self.request.user),
+                                  personal=PersonalColegio.objects.get(personal__tesorero__user=self.request.user),
                                   tipo_pago=data_form['tipo_pago'],
                                   descripcion=data_form['descripcion'],
                                   monto=data_form['monto'],
@@ -123,7 +173,13 @@ class RegistrarPagoCreateView(CreateView):
 
                 cajachica_actual.saldo = cajachica_actual.saldo - pago.monto
                 cajachica_actual.save()
+            else:
 
+                return render(request, template_name=self.template_name, context={
+                    'form': form,
+
+                    'saldo':CajaChica.objects.get(colegio__id_colegio = self.request.session.get('colegio')).saldo
+                })
             return HttpResponseRedirect(reverse('payments:registrarpago_create'))
         return HttpResponseRedirect(reverse('payments:registrarpago_create'))
 

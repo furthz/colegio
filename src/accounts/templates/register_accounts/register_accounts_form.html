@@ -54,7 +54,7 @@
 
                                 <div class="form-group">
                                     <div class="col-sm-offset-2 col-sm-10">
-                                        <a href="{% url 'register_accounts:register_accounts_list'  %}" class="btn btn-default" >
+                                        <a href="{% url 'accounts:register_accounts_list'  %}" class="btn btn-default" >
                                             <i class="fa fa-arrow-left" aria-hidden="true"></i> Volver a lista
                                         </a>
                                         <button type="submit" class="btn btn-success" tabindex="3">
@@ -79,9 +79,11 @@
 {% block scripts %}
 <script type="text/javascript">
    function myFunction() {
-    var x = document.getElementById("id_groups");
-    x.remove(0);
+    $("#id_groups option[value=1]").remove();
+    $("#id_groups option[value=3]").remove();
 }
+
 window.onload = myFunction;
+
 </script>
 {% endblock scripts %}

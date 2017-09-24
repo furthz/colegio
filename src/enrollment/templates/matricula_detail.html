@@ -2,16 +2,65 @@
 
 {% block title %}{{ block.super }}Matricula{% endblock %}
 
+
+{% block breadcrumb %}
+<h1>
+        Detalles de la Matricula
+        <small>Modúlo Matricula</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+        <li>Modúlo Matricula</li>
+        <li class="active">Detalle de la Matricula</li>
+      </ol>
+{% endblock %}
+
 {% block container %}
-<h1>Detalle Completo Matricula</h1>
-<ul>
-{% for detalles in tiposervicio.full_detail %}
-    <li>{{detalles}}</li>
-{% empty %}
-    <li>No hay tipos de servicio</li>
-{% endfor %}
-</ul>
-<form action="{% url 'enrollments:matricula_list' %}">
-    <input type="submit" value="Volver">
-</form>
+    <section class="content">
+      <div class="row">
+          <div class="col-md-12">
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Detalles de la Matricula</h3>
+                <div class="box-body">
+
+                <form role="form" name="search" action="" class="form-horizontal">
+
+                    <dl class="dl-horizontal">
+                  <dt>Curso</dt>
+                  <dd>{{ matricula.tipo_servicio }}</dd>
+                </dl>
+
+                 <dl class="dl-horizontal">
+                  <dt>Alumno</dt>
+                  <dd>{{ matricula.alumno }}</dd>
+                </dl>
+
+               <dl class="dl-horizontal">
+                  <dt>Fecha Creación</dt>
+                  <dd> {{ matricula.fecha_creacion }} </dd>
+                </dl>
+
+                <dl class="dl-horizontal">
+                  <dt>Fecha Modificación</dt>
+                  <dd>{{ matricula.fecha_modificacion }}</dd>
+                </dl>
+
+
+
+                <div class="form-group">
+                  <div class="col-sm-offset-2 col-sm-10">
+                    <a type="submit" href="javascript:history.back()" class="btn btn-default"><i class="fa fa-reply" aria-hidden="true"></i>Volver</a>
+
+                  </div>
+                </div>
+                </form>
+                </div>
+
+                </div>
+              </div>
+
+              </div>
+          </div>
+      </section>
 {% endblock container %}

@@ -80,25 +80,25 @@
                                             <td>
                                               <div class="checkbox">
                                                 <label>
-                                                  <input id="check{{ cuentas.id_cuentascobrar }}" name="seleccionado{{ cuentas.id_cuentascobrar }}" type="checkbox"  onChange="calculototal(this.checked,eleccion1{{ cuentas.id_cuentascobrar }}.checked,montototal{{ cuentas.id_cuentascobrar }}.value,montoparcial{{ cuentas.id_cuentascobrar }}.value,subtotal.value,total.value,subtotal,total)">
+                                                  <input id="check{{ cuentas.id_cuentascobrar }}" name="seleccionado{{ cuentas.id_cuentascobrar }}" type="checkbox" onChange="calculototal(this.checked,eleccion1{{ cuentas.id_cuentascobrar }}.checked,montototal{{ cuentas.id_cuentascobrar }}.value,montoparcial{{ cuentas.id_cuentascobrar }}.value,subtotal.value,total.value,subtotal,total)">
                                                 </label>
                                               </div>
                                             </td>
                                             <td>{{ cuentas.id_cuentascobrar }}</td>
-                                            <td>{{ cuentas.servicio.nombre  }} de {{ cuentas.servicio.tipo_servicio }}</td>
+                                            <td>{{ cuentas.servicio.nombre  }} de {{ cuentas.servicio.tipo_servicio }} del {{ cuentas.fecha_ven }}</td>
                                             <td>{{ cuentas.precio }}</td>
                                             <td>
                                               <div class="radio">
                                                 <label>
                                                   <input type="radio" name="optionsRadios{{ cuentas.id_cuentascobrar }}" id="eleccion1{{ cuentas.id_cuentascobrar }}" value="1" checked>
-                                                  <input hidden type="text" name="montototal{{ cuentas.id_cuentascobrar }}" id="montototal{{ cuentas.id_cuentascobrar }}" value="{{ cuentas.precio }}">
+                                                  <input hidden type="text" name="montototal{{ cuentas.id_cuentascobrar }}" id="montototal{{ cuentas.id_cuentascobrar }}" value="{{ cuentas.deuda }}">
                                                 </label>
                                               </div>
                                             </td>
                                             <td>
                                               <div class="radio">
                                                 <label>
-                                                  <input type="radio" name="optionsRadios{{ cuentas.id_cuentascobrar }}" onchange="nombre()" id="eleccion2{{ cuentas.id_cuentascobrar }}" value="2" checked>
+                                                  <input type="radio" name="optionsRadios{{ cuentas.id_cuentascobrar }}" onchange="nombre()" id="eleccion2{{ cuentas.id_cuentascobrar }}" value="2">
                                                   <input type="text" class="form-control"  name="montoparcial{{ cuentas.id_cuentascobrar }}" id="montoparcial{{ cuentas.id_cuentascobrar }}"  value="0" placeholder="Ingresar monto">
                                                 </label>
                                               </div>
@@ -111,7 +111,7 @@
 
 
 
-                                   <tr>
+                                  <!-- <tr>
                                     <td colspan="5" class="table-bold-print">Sub Total</td>
                                     <td class="table-price-print">S/.<input type="text" id="subtotal" name="subtotal" value="0" disabled class="form-control"></td>
                                     <td>&nbsp;</td>
@@ -120,7 +120,7 @@
                                     <td colspan="5" class="table-bold-print">Descuento</td>
                                     <td class="table-price-print">S/.0.00</td>
                                     <td>&nbsp;</td>
-                                  </tr>
+                                  </tr>-->
                                   <tr>
                                     <td colspan="5" class="table-bold-print">Total</td>
                                     <td class="table-price-print">S/.<input type="text" id="gato" name="gato" value="0" disabled class="form-control"></td>
@@ -184,7 +184,7 @@ function seleccion(id) {
 <script src="jquery-1.3.2.min.js" type="text/javascript"></script>
 <script>
 function nombre() {
-    alert("Hola");
+
     var temp = 0;
     var arrayoptions = [];
     var arraymontos = [];
@@ -205,8 +205,8 @@ function nombre() {
             temp += arraymontos[i];
         }
     }
-    alert(temp);
-    gato.value = temp
+
+    gato.value = temp;
 }
 
 </script>
