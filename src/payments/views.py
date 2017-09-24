@@ -163,7 +163,7 @@ class RegistrarPagoCreateView(CreateView):
 
                 pago = self.model(proveedor=data_form['proveedor'],
                                   caja_chica=cajachica_actual,
-                                  personal=PersonalColegio.objects.get(personal__cajero__user=self.request.user),
+                                  personal=PersonalColegio.objects.get(personal__tesorero__user=self.request.user),
                                   tipo_pago=data_form['tipo_pago'],
                                   descripcion=data_form['descripcion'],
                                   monto=data_form['monto'],
