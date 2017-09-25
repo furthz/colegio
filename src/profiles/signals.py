@@ -14,7 +14,7 @@ def create_profile_handler(sender, instance, created, **kwargs):
     if not created:
         return
     # Create the profile object, only if it is newly created
-    if instance.is_superuser:
+    if not instance.is_superuser:
         profile = models.Profile(user=instance)
         profile.save()
 
