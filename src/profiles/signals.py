@@ -15,9 +15,10 @@ def create_profile_handler(sender, instance, created, **kwargs):
         return
     # Create the profile object, only if it is newly created
     if settings.IS_TESTING == False:
+        """
         profile = models.Profile(user=instance)
         profile.save()
-
+"""
     #persona = Persona(user=instance)
     #persona.save()
     logger.info('New user profile for {} created'.format(instance))
