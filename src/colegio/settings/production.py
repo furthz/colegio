@@ -8,7 +8,7 @@ DEBUG = False
 TEMPLATE_DEBUG = False
 
 # Must mention ALLOWED_HOSTS in production!
-ALLOWED_HOSTS = ["mundopixel.pe"]
+ALLOWED_HOSTS = ["13.72.73.14"]
 
 # Cache the templates in memory for speed-up
 #loaders = [
@@ -22,8 +22,8 @@ ALLOWED_HOSTS = ["mundopixel.pe"]
 #TEMPLATES[0].update({"APP_DIRS": False})
 
 # Define STATIC_ROOT for the collectstatic command
-STATIC_ROOT = join(BASE_DIR, '..', 'site', 'static')
-#STATIC_ROOT = '/home/ubuntu/colegio/src/'
+#STATIC_ROOT = join(BASE_DIR, '..', 'site', 'static')
+STATIC_ROOT = '/home/ubuntu/colegio/src/'
 
 # Log everything to the logs directory at the top
 LOGFILE_ROOT = join(dirname(BASE_DIR), 'logs')
