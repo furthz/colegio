@@ -52,6 +52,12 @@ class Caja(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, Elimin
         managed = False
         ordering = ["id_caja"]
         db_table = 'caja'
+        permissions = (
+            ("Cashier_List", "ver lista de caja"),
+            ("Cashier_Creation", "crear caja"),
+            ("Cashier_Detail", "ver detalle de caja"),
+            ("Cashier_Delete", "eliminar caja"),
+        )
 
 
 class EstadoCambio(models.Model):
@@ -64,10 +70,10 @@ class EstadoCambio(models.Model):
         # creación
         if not self.pk:
             #Antes era True
-            self.estado = True
+            self.estado = False
 
         else:  # modificacion
-            self.estado = False
+            self.estado = True
 
         super(EstadoCambio, self).save(*args, **kwargs)
 
@@ -136,6 +142,12 @@ class CajaCajero(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, 
     class Meta:
         managed = False
         db_table = 'caja_cajero'
+        permissions = (
+            ("Box_Cashier_List", "ver lista de apertura y cierre de caja"),
+            ("Box_Cashier_Creation", "aperturar caja"),
+            ("Box_Cashier_Update", "cerrar caja"),
+            ("Box_Cashier_Detail", "ver detalle de apertura y cierre de caja"),
+        )
 
 
 def cajeroExist():
@@ -174,3 +186,8 @@ class Remesa(models.Model):
     class Meta:
         managed = False
         db_table = 'remesa'
+        permissions = (
+            ("Consigment_List", "ver lista de remesas"),
+            ("Consigment_Creation", "crear remesas"),
+            ("Consigment_Detail", "ver detalle de remesas"),
+        )

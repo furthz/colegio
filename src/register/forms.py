@@ -112,7 +112,7 @@ class SistemasForm(ValidProfileFormMixin, PersonaForm):
 
     class Meta:
         model = Sistemas
-        fields = ['nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento', 'numero_documento',
+        fields = ['user', 'nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento', 'numero_documento',
                   'sexo', 'correo', 'fecha_nac']
 
 
@@ -132,7 +132,7 @@ class DirectorForm(ValidProfileFormMixin, PersonaForm):
 
     class Meta:
         model = Director
-        fields = ['nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento', 'numero_documento',
+        fields = ['user', 'nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento', 'numero_documento',
                   'sexo', 'correo', 'fecha_nac']
 
 
@@ -142,7 +142,7 @@ class CajeroForm(ValidProfileFormMixin, PersonaForm):
 
     class Meta:
         model = Cajero
-        fields = ['nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento', 'numero_documento',
+        fields = ['user', 'nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento', 'numero_documento',
                   'sexo', 'correo', 'fecha_nac']
 
 
@@ -152,7 +152,7 @@ class TesoreroForm(ValidProfileFormMixin, PersonaForm):
 
     class Meta:
         model = Tesorero
-        fields = ['nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento', 'numero_documento',
+        fields = ['user', 'nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento', 'numero_documento',
                   'sexo', 'correo', 'fecha_nac']
 
 
@@ -165,7 +165,7 @@ class ProveedorForm(ModelForm):
         self.helper.form_id = "idproveedor"
         self.helper.form_method = "post"
 
-        self.helper.add_input(Submit('submit', 'Crear', css_class="btn btn-primary btn-block btn-flat"))
+        self.helper.add_input(Submit('submit', 'Grabar', css_class="btn btn-primary btn-block btn-flat"))
 
     class Meta:
         model = Proveedor

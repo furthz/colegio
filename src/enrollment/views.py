@@ -4,6 +4,9 @@ from django.contrib.auth.decorators import permission_required
 from django.utils.decorators import method_decorator
 from django.conf import settings
 from datetime import date
+
+from discounts.forms import SolicitarDescuentoForm
+from discounts.models import Descuento
 from enrollment.models import Servicio
 from enrollment.models import TipoServicio
 from enrollment.models import Matricula
@@ -20,7 +23,7 @@ from django.views.generic import UpdateView
 from django.views.generic import ListView
 from django.views.generic import FormView
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 from django.core.urlresolvers import reverse_lazy
 from enrollment.forms import ServicioRegularForm
@@ -574,6 +577,8 @@ class MatriculaListView(MyLoginRequiredMixin, ListView):
     """
     model = Matricula
     template_name = "matricula_list.html"
+    #colegio = get_current_colegio()
+    #queryset = Matricula.objects.filter(colegio=colegio)
 
     @method_decorator(permission_required('enrollment.Matricula_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
@@ -581,6 +586,10 @@ class MatriculaListView(MyLoginRequiredMixin, ListView):
         roles = ['promotor', 'director', 'administrativo']
 
         if validar_roles(roles=roles):
+            matriculados = Matricula.objects.filter(colegio_id=self.request.session.get('colegio'), activo=True)
+            return render(request, template_name=self.template_name, context={
+                'matriculados':matriculados,
+            })
             return super(MatriculaListView, self).get(request, *args, **kwargs)
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
@@ -629,8 +638,25 @@ class MatriculaCreateView(MyLoginRequiredMixin, CreateView):
         roles = ['promotor', 'director', 'administrativo']
 
         if validar_roles(roles=roles):
+
+            list_tiposervicio = []
+            alumno = Alumno.objects.get(pk=request.GET["alumno"])
+            matricula = Matricula.objects.filter(alumno=alumno, activo=True, colegio__tiposervicio__is_ordinario= True)
+            if matricula.count() > 0:
+                tiposervicios = TipoServicio.objects.filter(colegio_id=self.request.session.get('colegio'), activo=True, is_ordinario=False)
+            else:
+                tiposervicios = TipoServicio.objects.filter(colegio_id=self.request.session.get('colegio'), activo=True)
+            if tiposervicios.count() > 1:
+                for tiposer in tiposervicios:
+                    if Servicio.objects.filter(tipo_servicio=tiposer, activo=True).count() > 0:
+                        list_tiposervicio.append(tiposer)
+            elif tiposervicios.count() is 1:
+                if Servicio.objects.filter(tipo_servicio=tiposervicios, activo=True).count() > 0:
+                    list_tiposervicio.append(tiposervicios)
+
             return render(request, template_name=self.template_name, context={
-                'alumno': Alumno.objects.get(pk=request.GET["alumno"]),
+                'alumno': alumno,
+                'tiposervicio': list_tiposervicio,
                 'form': self.form_class,
             })
         else:
@@ -762,6 +788,7 @@ class MatriculaUpdateView(MyLoginRequiredMixin, UpdateView):
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
 
+
 class CargarMatriculaUpdateView(MyLoginRequiredMixin, TemplateView):
     template_name = "matricula_form.html"
     model = Matricula
@@ -782,9 +809,16 @@ class CargarMatriculaUpdateView(MyLoginRequiredMixin, TemplateView):
 
         matricula = self.model.objects.get(pk=request.POST["matricula"])
         form = self.form_class(instance=matricula)
+        tiposervicios = TipoServicio.objects.filter(colegio_id=self.request.session.get('colegio'), activo=True)
+        list_tiposervico = []
+        for tiposer in tiposervicios:
+            if Servicio.objects.filter(tipo_servicio=tiposer, activo=True).count() > 0:
+                list_tiposervico.append(tiposer)
+
         return render(request, template_name=self.template_name, context={
             'form': form,
             'alumno':matricula.alumno,
+            'tiposerviciolist': list_tiposervico,
         })
 
 class MatriculaDeleteView(MyLoginRequiredMixin, DeleteView):
@@ -800,13 +834,23 @@ class MatriculaDeleteView(MyLoginRequiredMixin, DeleteView):
         roles = ['promotor', 'director', 'administrativo']
 
         if validar_roles(roles=roles):
-            return super(MatriculaDeleteView, self).get(request, *args, **kwargs)
+            matricula = self.model.objects.get(pk=request.GET['matricula'])
+            matricula.activo = False
+            matricula.save()
+            fecha_actual = date.today()
+            cuentas = Cuentascobrar.objects.filter(matricula=matricula)
+            for cuenta in cuentas:
+                if cuenta.fecha_ven.month >= fecha_actual.month:
+                    cuenta.activo = False
+                    cuenta.save()
+            return HttpResponseRedirect(reverse('enrollments:matricula_list'))
+
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
     def get_success_url(self):
         # tiposervicio = self.object.tipo_servicio
-        return reverse_lazy('enrollments:matricula_list')
+        return reverse('enrollments:matricula_list')
 
 class FiltrarAlumnoView(ListView):
     """
@@ -815,18 +859,23 @@ class FiltrarAlumnoView(ListView):
     model = Alumno
     template_name = "alumno_form.html"
 
-    def post(self, request, *args, **kwargs):
 
+    def get(self, request, *args, **kwargs):
+
+        return render(request, template_name=self.template_name)
+
+    def post(self, request, *args, **kwargs):
 
         # object_list_alumnos1 =  self.model.objects.filter(nombre=request.POST["nombre"])
         nombre = request.POST["nombre"]
         object_list_alumnos1 = Alumno.objects.filter(nombre__icontains=nombre.upper())
 
-        apellido_pa = request.POST["apellido_pa"]
+        apellido_pa = request.POST["nombre"]
         # object_list_alumnos2 = self.model.objects.filter(apellido_pa=request.POST["apellido_pa"])
         object_list_alumnos2 = Alumno.objects.filter(apellido_pa__icontains=apellido_pa.upper())
 
-        object_list_alumnos3 = Alumno.objects.filter(apellido_pa__icontains=apellido_pa.upper(), nombre__icontains=nombre.upper())
+        dni = request.POST["dni"]
+        object_list_alumnos3 = Alumno.objects.filter(numero_documento=dni)
         #object_list_alumnos3 = self.model.objects.filter(nombre=request.POST["nombre"],apellido_pa=request.POST["apellido_pa"])
 
         if len(object_list_alumnos3) is not 0:
@@ -851,13 +900,75 @@ class CargarMatriculaCreateView(TemplateView):
     model = Alumno
     form_class = MatriculaForm
     def post(self, request, *args, **kwargs):
-        tipos_de_servicios = TipoServicio.objects.filter(colegio__id_colegio=self.request.session.get('colegio'), activo=True).order_by("nivel", "grado")
+        roles = ['promotor', 'director', 'administrativo']
 
-        return render(request, template_name=self.template_name, context={
-                'alumno': self.model.objects.get(pk = request.POST["alumno"]),
-                'tiposervicio': tipos_de_servicios,
+        if validar_roles(roles=roles):
+
+            list_tiposervicio = []
+            alumno = Alumno.objects.get(pk=request.POST["alumno"])
+            matricula = Matricula.objects.filter(alumno=alumno, activo=True, colegio__tiposervicio__is_ordinario=True)
+            if matricula.count() > 0:
+                tiposervicios = TipoServicio.objects.filter(colegio_id=self.request.session.get('colegio'), activo=True,
+                                                            is_ordinario=False).order_by("nivel", "grado")
+            else:
+                tiposervicios = TipoServicio.objects.filter(colegio_id=self.request.session.get('colegio'), activo=True).order_by("nivel", "grado")
+            if tiposervicios.count() > 1:
+                for tiposer in tiposervicios:
+                    if Servicio.objects.filter(tipo_servicio=tiposer, activo=True).count() > 0:
+                        list_tiposervicio.append(tiposer)
+            elif tiposervicios.count() is 1:
+                if Servicio.objects.filter(tipo_servicio=tiposervicios, activo=True).count() > 0:
+                    list_tiposervicio = tiposervicios
+
+
+            return render(request, template_name=self.template_name, context={
+                'alumno': alumno,
+                'tiposerviciolist': list_tiposervicio,
                 'form': self.form_class,
             })
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+#######################################################
+#       Descuentos
+#######################################################
+
+class SolicitarDescuentoView(MyLoginRequiredMixin,TemplateView):
+    model = Descuento
+    template_name = "solicitar_descuento.html"
+    form_class = SolicitarDescuentoForm
+
+    def post(self, request, *args, **kwargs):
+        form = SolicitarDescuentoForm(initial={'matricula':Matricula.objects.get(pk=request.POST['matricula'])})
+        return render(request, template_name=self.template_name, context={
+            'form': form,
+        })
+
+class CrearSolicitudView(MyLoginRequiredMixin,TemplateView):
+    model = Descuento
+    form_class = SolicitarDescuentoForm
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        logger.info(form)
+
+        data_form = form.cleaned_data
+        logger.info(data_form)
+        solicitud = Descuento(
+            personal_colegio=PersonalColegio.objects.get(personal__user=request.user),
+            estado=1,
+            fecha_solicitud=date.today(),
+            matricula=data_form['matricula'],
+            comentario=data_form['comentario'],
+            tipo_descuento=data_form['tipo_descuento'],
+            numero_expediente=data_form['numero_expediente'],
+            fecha_aprobacion=date.today()
+        )
+        solicitud.save()
+
+        return HttpResponseRedirect(reverse('enrollments:matricula_list'))
+
+
 
 ########################################################
 #       Generacion de PDF

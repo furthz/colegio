@@ -14,7 +14,7 @@
                 <div class="col-md-9">
                     <div class="panel-page">
                         <div class="box-body">
-                            <form class="form-horizontal" action="" method="post">
+                            <form id="myform" class="form-horizontal" method="post">
                                 {% csrf_token %}
                                 <div style="display: none;">
 
@@ -54,10 +54,10 @@
 
                                 <div class="form-group">
                                     <div class="col-sm-offset-2 col-sm-10">
-                                        <a href="{% url 'register_accounts:register_accounts_list'  %}" class="btn btn-default" >
+                                        <a href="{% url 'accounts:register_accounts_list'  %}" class="btn btn-default" >
                                             <i class="fa fa-arrow-left" aria-hidden="true"></i> Volver a lista
                                         </a>
-                                        <button type="submit" class="btn btn-success" tabindex="3">
+                                        <button type="submit" class="btn btn-success" form="myform">
                                             <i class="fa fa-plus" aria-hidden="true"></i> Registrar Usuario
                                         </button>
                                     </div>
@@ -79,9 +79,11 @@
 {% block scripts %}
 <script type="text/javascript">
    function myFunction() {
-    var x = document.getElementById("id_groups");
-    x.remove(0);
+    $("#id_groups option[value=1]").remove();
+    $("#id_groups option[value=3]").remove();
 }
+
 window.onload = myFunction;
+
 </script>
 {% endblock scripts %}

@@ -41,7 +41,7 @@
                                     <th>Detalle</th>
                                     <th class="text-center">Acciones</th>
                                   </tr>
-                        {% for matricula in object_list %}
+                        {% for matricula in matriculados %}
                             <form id="{{ matricula.id_matricula}}" > {% csrf_token %}
                             <input hidden  value="{{ matricula.id_matricula}}" name="matricula">
                         </form>
@@ -57,10 +57,10 @@
                                             <button type="submit" formaction="{% url 'enrollments:matricula_update' %}" value="Modificar" formmethod="post" class="btn btn-default" form = "{{ matricula.id_matricula}}">
                             <i class="fa fa-pencil" aria-hidden="true"></i>
                         </button>
-                                            <button type="submit" formaction="{% url 'enrollments:matricula_delete'%}" value="Borrar" formmethod="post" class="btn btn-default" form="{{ matricula.id_matricula}}">
+                                            <button type="submit" onclick="return confirmDel();" formaction="{% url 'enrollments:matricula_delete'%}" value="Borrar" formmethod="get" class="btn btn-default" form="{{ matricula.id_matricula}}">
                             <i class="fa fa-trash" aria-hidden="true"></i>
                         </button>
-                                              <button type="submit" formaction="{% url 'discounts:solicitar_descuento'%}" value="Solicitar" formmethod="post" class="btn btn-default" form="{{ matricula.id_matricula}}">
+                                              <button type="submit" formaction="{% url 'enrollments:solicitar_descuento'%}" value="Solicitar" formmethod="post" class="btn btn-default" form="{{ matricula.id_matricula}}">
                             <i class="fa fa-percent" aria-hidden="true"></i>
                         </button>
                                           </div>
@@ -86,3 +86,19 @@
       </div>
 </section>
 {% endblock container %}
+
+{% block scripts %}
+
+<script language="Javascript">
+function confirmDel()
+{
+  var agree=confirm("¿Realmente desea eliminarlo? ");
+  if (agree)
+    return true ;
+  else
+    return false ;
+}
+</script>
+
+
+{% endblock %}

@@ -20,6 +20,7 @@ from payments.models import TipoPago
 from utils.views import MyLoginRequiredMixin
 from discounts.models import Descuento
 from discounts.models import TipoDescuento
+from enrollment.models import Servicio
 from enrollment.models import Matricula
 from enrollment.models import Cuentascobrar
 from income.models import obtener_mes
@@ -92,8 +93,10 @@ class TipoDescuentoCreateView(MyLoginRequiredMixin,CreateView):
 
     def get(self, request, *args, **kwargs):
         form = self.form_class(colegio=get_current_colegio())
+        servicios = Servicio.objects.filter(tipo_servicio__colegio__id_colegio=get_current_colegio(), activo=True)
         return render(request, template_name=self.template_name, context={
             'form': form,
+            'servicios':servicios,
         })
 
 #################################################
@@ -189,8 +192,10 @@ class AprobarDescuentoView(ListView):
                     for cuenta in cuenta_descuento:
                         if cuenta.estado == True:
                             cuenta.descuento = cuenta.precio*porcentaje_descuento
-                            cuenta.precio = cuenta.precio - cuenta.descuento
-                            cuenta.deuda = cuenta.deuda - cuenta.descuento
+                            if cuenta.deuda - cuenta.descuento > 0:
+                                cuenta.deuda = cuenta.deuda - cuenta.descuento
+                            else:
+                                cuenta.deuda = 0
                             cuenta.save()
 
                 else:

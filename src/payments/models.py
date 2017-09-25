@@ -50,6 +50,13 @@ class TipoPago(ActivoMixin, Eliminar, models.Model):
         managed = True
         ordering = ["id_tipo_pago"]
         db_table = 'tipo_pago'
+        permissions = (
+            ("Tipo_Pago_List", "ver lista de tipo de pago"),
+            ("Tipo_Pago_Detail", "ver detalle de tipo de pago"),
+            ("Tipo_Pago_Update", "modificar tipo de pago"),
+            ("Tipo_Pago_Creation", "crear tipo de pago"),
+            ("Tipo_Pago_Delete", "eliminar tipo de pago"),
+        )
 
 
 class CajaChica(CreacionModificacionFechaMixin, CreacionModificacionUserMixin):
@@ -87,6 +94,7 @@ class Pago(CreacionModificacionFechaMixin, CreacionModificacionUserMixin):
         permissions = (
             ('control_pagos', 'Para el control de pagos realizados'),
             ("Registrar_Pago_Create","crear registro de pago"),
+            
         )
 
 

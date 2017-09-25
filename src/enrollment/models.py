@@ -207,6 +207,8 @@ class Matricula(ActivoMixin, CreacionModificacionUserMixin, CreacionModificacion
         """
         return reverse('enrollments:matricula_list')
 
+
+
     class Meta:
         managed = False
         db_table = 'matricula'
@@ -259,6 +261,6 @@ class Cuentascobrar(ActivoMixin, CreacionModificacionFechaMixin, CreacionModific
         Método que calcula los años de una persona
         :return: La cantidad de años de la persona
         """
-        monto = self.precio - self.deuda
+        monto = self.precio - self.deuda - self.descuento
         return monto
 

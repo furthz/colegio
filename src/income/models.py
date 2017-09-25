@@ -83,7 +83,7 @@ def calculo_ingresos_promotor(id_colegio, anio, mes):
         mes_rango = 12
     anio = int(anio)
 
-    cuentas_cobrar_colegio = Cuentascobrar.objetos.get_queryset().filter(matricula__colegio__id_colegio=id_colegio)
+    cuentas_cobrar_colegio = Cuentascobrar.objetos.get_queryset().filter(matricula__colegio__id_colegio=id_colegio).filter(activo=True)
 
     porcobrar2 = cuentas_cobrar_colegio.filter(fecha_ven__year=anio)
 
@@ -96,15 +96,17 @@ def calculo_ingresos_promotor(id_colegio, anio, mes):
     deuda_total = []  # Lista de Deudas totales por mes
     cobro_total = []  # Lista de Cobros totales por mes
     por_cobrar_total =[]
+    descuento_total = []
     for mes in range(0, mes_rango):
         cuenta_mes = porcobrar.filter(Q(fecha_ven__month=mes + 1))
         deuda_total.append(0)  # Declara las Deudas totales iniciales de un mes como '0'
         cobro_total.append(0)  # Declara los Cobros totales iniciales de un mes como '0'
         por_cobrar_total.append(0)
+        descuento_total.append(0)
         for cuenta in cuenta_mes:
             deuda_total[mes] = deuda_total[mes] + cuenta.deuda  # Cálculo de las deudas totales del mes
-            cobro_total[mes] = cobro_total[mes] + cuenta.precio - cuenta.deuda  # Cálculo de los cobros totales del mes
-            por_cobrar_total[mes] = por_cobrar_total[mes] + cuenta.precio
+            cobro_total[mes] = cobro_total[mes] + cuenta.precio - cuenta.deuda - cuenta.descuento # Cálculo de los cobros totales del mes
+            por_cobrar_total[mes] = por_cobrar_total[mes] + cuenta.precio - cuenta.descuento
     return por_cobrar_total, cobro_total, deuda_total
 
 
@@ -126,8 +128,8 @@ def calculo_por_nivel_promotor(id_colegio, anio, mes):
         por_cobrar_nivel.append(0)
         for cuenta in porcobrar_nivel:
             deuda_total_nivel[nivel - 1] = deuda_total_nivel[nivel - 1] + cuenta.deuda
-            cobro_total_nivel[nivel - 1] = cobro_total_nivel[nivel - 1] + cuenta.precio - cuenta.deuda
-            por_cobrar_nivel[nivel - 1] = por_cobrar_nivel[nivel - 1] + cuenta.precio
+            cobro_total_nivel[nivel - 1] = cobro_total_nivel[nivel - 1] + cuenta.precio - cuenta.deuda - cuenta.descuento
+            por_cobrar_nivel[nivel - 1] = por_cobrar_nivel[nivel - 1] + cuenta.precio - cuenta.descuento
     return por_cobrar_nivel, cobro_total_nivel, deuda_total_nivel
 
 
