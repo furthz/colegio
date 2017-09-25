@@ -110,9 +110,10 @@
                                             </div>
                                         </div>
                                         <div style="display: none;">
-                                                                                {{ form.user }}
+                                            {{ form.user }}
 
                                         </div>
+
 
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label">Apellido Paterno</label>
@@ -307,5 +308,6 @@
         }
         document.getElementById('id_user').value = Math.max.apply(null, optionVal);
     }
+    window.onload = myFunction;
 </script>
 {% endblock scripts %}
