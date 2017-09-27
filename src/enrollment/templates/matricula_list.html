@@ -34,7 +34,7 @@
                                 </div>
                             </div>
 
-
+                {% if matriculados %}
                     <table class="table table-hover">
                                   <tr class="table-header">
                                     <th>Apellidos y Nombres</th>
@@ -66,17 +66,13 @@
                                           </div>
                                         </td>
                                   </tr>
-
-
-
-
-
-
-                {% empty %}
-                    <li>No hay ningun alumno matriculado </li>
-                {% endfor %}
-
+                        {% endfor %}
                     </table>
+                {% else %}
+                    <li>No hay alumnos matriculados </li>
+                {% endif %}
+
+
                           </div>
                   </div>
 
