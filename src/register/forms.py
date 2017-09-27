@@ -1,5 +1,6 @@
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
+from dal import autocomplete
 from django import forms
 from django.forms import ModelForm
 
@@ -88,13 +89,31 @@ class ApoderadoForm(ValidProfileFormMixin, PersonaForm):
 
     title = forms.CharField(label="Registrar Apoderado", required=False)
 
+    #alu = forms.CharField(widget=forms.TextInput(attrs={'tabindex': '23', 'class': 'form-control'}), label="Direccion")
+
+    alumno = forms.ModelChoiceField(queryset=Alumno.objects.all(),
+                                 widget=autocomplete.ModelSelect2(url='registers:alumno_autocomplete',attrs={'tabindex': '27', 'class': 'form-control'}))
+
+    #parentesco = forms.CharField(max_length=30, widget=forms.TextInput(attrs={'class' : 'form-control'}))
+
+    def ChoiceParentesco(self):
+        MY_CHOICES = (
+            ('Padre', 'Padre'),
+            ('Madre', 'Madre'),
+            ('Tio', 'Tio'),
+            ('Hermano', 'Hermano'),
+            ('Apoderado', 'Apoderado')
+        )
+        return MY_CHOICES
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['parentesco'] = forms.ChoiceField(choices=self.ChoiceParentesco())
         self.fields['parentesco'].widget.attrs.update({'class': 'form-control'})
 
     class Meta:
         model = Apoderado
-        fields = ['nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'parentesco', 'tipo_documento',
+        fields = ['nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento',
                   'numero_documento', 'sexo', 'correo', 'fecha_nac']
 
 

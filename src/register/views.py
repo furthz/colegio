@@ -1,5 +1,6 @@
 import logging
 
+from dal import autocomplete
 from django.contrib.auth.decorators import permission_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponseRedirect
@@ -30,6 +31,19 @@ from payments.models import CajaChica
 
 logger = logging.getLogger("project")
 
+
+class AlumnoAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        # Don't forget to filter out results depending on the visitor !
+        if not self.request.user.is_authenticated():
+            return Alumno.objects.none()
+
+        qs = Alumno.objects.all()
+
+        if self.q:
+            qs = qs.filter(apellido_pa__istartswith=self.q)
+
+        return qs
 
 class CreatePersonaView(MyLoginRequiredMixin, CreateView):
     """

@@ -139,6 +139,14 @@
                                             {{ form.correo }}
                                             </div>
                                         </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">Alumno</label>
+                                            <div class="col-sm-9">
+                                            {{ form.alumno }}
+                                            </div>
+                                        </div>
+
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -163,16 +171,19 @@
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label">F. Nacimiento</label>
                                             <div class="col-sm-9">
-                                                <div class="input-group input-group-sm">
+                                                <div class="input-group date">
                                                     {{ form.fecha_nac }}
-                                                    <span class="input-group-btn">
+                                                    <span class="input-group-addon">
+                                                        <!--
                                                         <button class="btn btn-default">
                                                             <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                        </button>
+                                                        </button>-->
+                                                        <span class="glyphicon glyphicon-calendar"></span>
                                                     </span>
                                                 </div>
                                             </div>
                                         </div>
+
                                         <div class="form-group">
                                             <!-- atributo parentesco sólo para el apoderado -->
                                             {% if form.parentesco %}
@@ -299,15 +310,18 @@
 
 {% endblock container %}
 {% block scripts %}
-<script type="text/javascript">
-    function myFunction() {
-        var x = document.getElementById("id_user");
-        var optionVal = [];
-        for (i = 0; i < x.length; i++) {
-            optionVal.push(x.options[i].value);
-        }
-        document.getElementById('id_user').value = Math.max.apply(null, optionVal);
-    }
-    window.onload = myFunction;
-</script>
+
+    <script>
+    $(function () {
+      //Date range picker
+        $('#id_fecha_nac').datepicker(
+            {
+                format: 'dd/mm/yyyy'
+            }
+        );
+
+
+    });
+    </script>
+    {{ form.media }}
 {% endblock scripts %}

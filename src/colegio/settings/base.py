@@ -82,6 +82,8 @@ SECRET_KEY = env('SECRET_KEY')
 # Application definition
 
 INSTALLED_APPS = (
+    'dal',
+    'dal_select2',
     'django.contrib.auth',
     'django_admin_bootstrapped',
     'django.contrib.admin',

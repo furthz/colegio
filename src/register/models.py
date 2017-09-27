@@ -179,13 +179,13 @@ class Apoderado(CreacionModificacionUserApoderadoMixin, CreacionModificacionFech
     Clase para identificar a los apoderados de los alumnos
     """
     id_apoderado = models.AutoField(primary_key=True)
-    parentesco = models.CharField(max_length=30)
+    #parentesco = models.CharField(max_length=30)
     persona = models.OneToOneField(Profile, models.DO_NOTHING, parent_link=True, )
 
-    def full_detail(self):
-        lista = Profile.full_detail(self)
-        lista.append("parentesco: {0}".format(self.parentesco))
-        return lista
+    #def full_detail(self):
+    #    lista = Profile.full_detail(self)
+    #    lista.append("parentesco: {0}".format(self.parentesco))
+    #    return lista
 
     def get_absolute_url(self):
         """
@@ -272,6 +272,7 @@ class ApoderadoAlumno(ActivoMixin, CreacionModificacionFechaMixin, CreacionModif
     id_apoderadoalumno = models.AutoField(primary_key=True)
     apoderado = models.ForeignKey(Apoderado, models.DO_NOTHING, db_column='id_apoderado')
     alumno = models.ForeignKey(Alumno, models.DO_NOTHING, db_column='id_alumno')
+    parentesco = models.TextField(max_length=30)
 
     class Meta:
         managed = True

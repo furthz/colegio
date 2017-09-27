@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import AccessMixin
 from django.http import HttpResponseRedirect
 
 from profiles.models import Profile
-from register.models import Personal, Colegio, PersonalColegio, Direccion, Telefono
+from register.models import Personal, Colegio, PersonalColegio, Direccion, Telefono, ApoderadoAlumno, Apoderado
 from utils.middleware import get_current_colegio
 
 logger = logging.getLogger("project")
@@ -72,9 +72,19 @@ class SaveGeneric(MyLoginRequiredMixin):
                 copiarVal(form=form, parent=persona_registrada)
                 logger.debug("Es una nuevo profile a crear")
 
-                rpta = hijo().saveFromPersona(per=persona_registrada, parentesco=form.cleaned_data["parentesco"])
+                rpta = hijo().saveFromPersona(per=persona_registrada, parentesco=form.cleaned_data["parentesco"],
+                                              alumno=form.cleaned_data["alumno"])
                 logger.debug("Se guardó un registró a partir de la persona existente")
                 logger.info("Se creó un registro a partir de la persona existente")
+
+                if hijo is Apoderado:
+                    apo_alu = ApoderadoAlumno()
+                    apo_alu.parentesco = form.cleaned_data['parentesco']
+                    apo_alu.alumno = form.cleaned_data['alumno']
+                    apo_alu.apoderado = rpta
+                    apo_alu.save()
+
+                    #hijo.alumnos.add(apo_alu.alumno)
 
                 direccion.persona = rpta.persona
                 direccion.save()
@@ -102,6 +112,22 @@ class SaveGeneric(MyLoginRequiredMixin):
                 direccion.save()
                 logger.debug("Se guardó la direccion")
                 logger.info("Se guardó la nueva direccion")
+
+                if hijo is Apoderado:
+                    logger.debug("Se guardará la relación Apoderado-Alumno")
+                    apo_alu = ApoderadoAlumno()
+                    apo_alu.parentesco = form.cleaned_data['parentesco']
+                    logger.debug("Parentesco: " + str(form.cleaned_data['parentesco']))
+
+                    apo_alu.alumno = form.cleaned_data['alumno']
+                    logger.debug("Alumno: " + str(form.cleaned_data['alumno']))
+
+                    apo_alu.apoderado = instance
+
+                    rpta = apo_alu.save()
+                    logger.debug("respuesta: " + str(rpta))
+
+                    # instance.alumnos.add(apo_alu.alumno)
 
                 instance.save()
                 logger.debug("Se creó un nuevo registro")
