@@ -8,7 +8,7 @@ DEBUG = False
 TEMPLATE_DEBUG = False
 
 # Must mention ALLOWED_HOSTS in production!
-ALLOWED_HOSTS = ["13.72.73.14"]
+ALLOWED_HOSTS = ["mundopixel.pe"]
 
 # Cache the templates in memory for speed-up
 #loaders = [
