@@ -152,10 +152,12 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="col-sm-3 control-label">Alumno</label>
-                                            <div class="col-sm-9">
-                                            {{ form.alumno }}
-                                            </div>
+                                            {% if form.alumno %}
+                                                <label class="col-sm-3 control-label">Alumno</label>
+                                                <div class="col-sm-9">
+                                                {{ form.alumno }}
+                                                </div>
+                                            {% endif %}
                                         </div>
 
                                     </div>

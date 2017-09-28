@@ -633,7 +633,7 @@ class PersonaDetailView(MyLoginRequiredMixin, DetailView):
     queryset = Profile.objects.select_related()
     template_name = "registro_detail.html"
 
-    @method_decorator(permission_required('register.persona_detail', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('register.personal_detail', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'coordinador', 'tesorero', 'sistemas']
@@ -708,8 +708,8 @@ class PersonalUpdateView(MyLoginRequiredMixin, UpdateView):
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
-    @method_decorator(permission_required('register.personal_update', login_url=settings.REDIRECT_PERMISOS,
-                                          raise_exception=False))
+    # @method_decorator(permission_required('register.personal_update', login_url=settings.REDIRECT_PERMISOS,
+    #                                      raise_exception=False))
     def get_object(self, queryset=None):
 
         obj = Profile.objects.prefetch_related("direcciones").get(pk=self.kwargs['pk'])
