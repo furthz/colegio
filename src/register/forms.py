@@ -67,7 +67,8 @@ class PersonaForm(ModelForm):
         self.fields['apellido_ma'].widget.attrs = {'tabindex': '4', 'class': 'form-control'}
         self.fields['numero_documento'].widget.attrs = {'tabindex': '6', 'class': 'form-control'}
         self.fields['correo'].widget.attrs = {'tabindex': '9', 'class': 'form-control'}
-        self.fields['fecha_nac'].widget.attrs = {'tabindex': '8', 'class': 'form-control'}
+        # self.fields['fecha_nac'] = forms.DateField(widget=forms.DateInput)
+        self.fields['fecha_nac'].widget.attrs = {'tabindex': '8', 'class': 'form-control', 'onChange': 'validarFecNac()'}
 
     class Meta:
         model = Profile

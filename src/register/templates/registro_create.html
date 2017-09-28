@@ -15,6 +15,17 @@
             <div class="box-body">
 
                 <script type="text/javascript">
+                    function validarFecNac() {
+                        var today = new Date();
+                        var from = $('#id_fecha_nac').val().split("/");
+                        var fecnac = new Date(from[2], from[1]-1, from[0]);
+
+                        if (fecnac >= today)
+                        {
+                            alert("La Fecha de Nacimiento no puede ser mayor o igual al día de hoy");
+                            $('#id_fecha_nac').val("");
+                        }
+                    }
                     function enviarTelefono() {
                         var cadena = "";
                         var sw = true;
