@@ -33,13 +33,13 @@
                               <div class="col-sm-9">
                                 <div class="radio">
                                   <label>
-                                    <input name="filter" id="optionsRadios1" value="DNI" checked="" type="radio">
+                                    <input name="filter" id="optionsRadios1" value="DNI" checked="checked" type="radio">
                                     Por DNI Alumno
                                   </label>
                                 </div>
                                 <div class="radio">
                                   <label>
-                                    <input name="filter" id="optionsRadios1" value="Apellido" checked="" type="radio">
+                                    <input name="filter" id="optionsRadios1" value="Apellido"  type="radio">
                                     Por Apellidos Alumno
                                   </label>
                                 </div>
@@ -49,10 +49,24 @@
                               <label class="col-sm-3 control-label"></label>
                               <div class="col-sm-9">
                                 <div class="input-group">
+                                {% if alerta == False %}
+                                    {% if dato == 1 %}
                                   <input id="dato" name="dato" class="form-control" type="text" placeholder="Escriba el DNI o Apellido a buscar">
+                                    {% else %}
+                                    <input id="dato" name="dato" class="form-control" type="text" placeholder="Escriba el DNI o Apellido a buscar" value="{{ dato }}">
+                                    {% if pknum == None %}
+                                        <a>No se encontron coincidencias</a>
+                                    {% else %}
+                                    {% endif %}
+                                    {% endif %}
                                     <span class="input-group-btn">
                                       <button type="submit" form="filtro" formmethod="get" class="btn btn-success">
                                       <i class="fa fa-plus" aria-hidden="true"></i> Asignar</button>
+                                 {% else %}
+                                        <a>No hay ninguna caja abierta---->>>></a>
+
+                                        <a>Para continuar primero aperturar una Caja</a>
+                                  {% endif %}
                                   </span>
                                 </div>
                               </div>
@@ -71,7 +85,7 @@
                                     <th>Pago Completo</th>
                                     <th>Pago en Abonos</th>
                                   </tr>
-                                    <form id="ListaPagos">{% csrf_token %}
+                                    <form name="ListaPagos" id="ListaPagos">{% csrf_token %}
 
                                         <input hidden name="persona" value="{{ pknum }}">
                                     {% for cuentas in cuentascobrar %}
@@ -80,17 +94,17 @@
                                             <td>
                                               <div class="checkbox">
                                                 <label>
-                                                  <input id="check{{ cuentas.id_cuentascobrar }}" name="seleccionado{{ cuentas.id_cuentascobrar }}" type="checkbox" onChange="calculototal(this.checked,eleccion1{{ cuentas.id_cuentascobrar }}.checked,montototal{{ cuentas.id_cuentascobrar }}.value,montoparcial{{ cuentas.id_cuentascobrar }}.value,subtotal.value,total.value,subtotal,total)">
+                                                  <input id="check{{ cuentas.id_cuentascobrar }}" name="seleccionado{{ cuentas.id_cuentascobrar }}" type="checkbox" onChange="nombre(this)">
                                                 </label>
                                               </div>
                                             </td>
                                             <td>{{ cuentas.id_cuentascobrar }}</td>
                                             <td>{{ cuentas.servicio.nombre  }} de {{ cuentas.servicio.tipo_servicio }} del {{ cuentas.fecha_ven }}</td>
-                                            <td>{{ cuentas.precio }}</td>
+                                            <td>{{ cuentas.deuda }}</td>
                                             <td>
                                               <div class="radio">
                                                 <label>
-                                                  <input type="radio" name="optionsRadios{{ cuentas.id_cuentascobrar }}" id="eleccion1{{ cuentas.id_cuentascobrar }}" value="1" checked>
+                                                  <input type="radio" name="optionsRadios{{ cuentas.id_cuentascobrar }}" onchange="nombre()" id="eleccion1{{ cuentas.id_cuentascobrar }}" value="1" checked>
                                                   <input hidden type="text" name="montototal{{ cuentas.id_cuentascobrar }}" id="montototal{{ cuentas.id_cuentascobrar }}" value="{{ cuentas.deuda }}">
                                                 </label>
                                               </div>
@@ -99,7 +113,7 @@
                                               <div class="radio">
                                                 <label>
                                                   <input type="radio" name="optionsRadios{{ cuentas.id_cuentascobrar }}" onchange="nombre()" id="eleccion2{{ cuentas.id_cuentascobrar }}" value="2">
-                                                  <input type="text" class="form-control"  name="montoparcial{{ cuentas.id_cuentascobrar }}" id="montoparcial{{ cuentas.id_cuentascobrar }}"  value="0" placeholder="Ingresar monto">
+                                                  <input type="text" class="form-control"  onchange="nombre()" name="montoparcial{{ cuentas.id_cuentascobrar }}" id="montoparcial{{ cuentas.id_cuentascobrar }}"  value="0">
                                                 </label>
                                               </div>
                                             </td>
@@ -108,9 +122,6 @@
                                         <a>Seleccionar un criterio de busqueda</a>
                                     {% endfor %}
                                     </form>
-
-
-
                                   <!-- <tr>
                                     <td colspan="5" class="table-bold-print">Sub Total</td>
                                     <td class="table-price-print">S/.<input type="text" id="subtotal" name="subtotal" value="0" disabled class="form-control"></td>
@@ -132,10 +143,11 @@
                                 <div class="col-md-12">
                                   <div class="pull-right">
                                     <button type="button" class="btn btn-default">Cancelar</button>
-                                    <button type="submit" form="ListaPagos" formmethod="post" class="btn btn-success"><i class="fa fa-check" aria-hidden="true"></i> Registrar Ingreso</button>
+                                    <button name="enviar" type="submit" form="ListaPagos" formmethod="post" class="btn btn-success" disabled><i class="fa fa-check" aria-hidden="true"></i> Registrar Ingreso</button>
                                   </div>
                                 </div>
                                 </div>
+
                             </div>
                     </div>
                   </div>
@@ -148,66 +160,92 @@
       </div>
 </section>
 
-<script language="Javascript">
-function calculototal(seleccionado,opciontotal,montototal,montoparcial,subtotal,total,inputtext,totaltext) {
 
-    // Calculo del subtotal
-    if (seleccionado) {
-        if(opciontotal) {
-            subtotal_actual = subtotal;
-            inputtext.value = parseFloat(subtotal_actual) + parseFloat(montototal);
-
-            //Calculo del total
-            total_actual = total;
-            totaltext.value = parseFloat(total) + parseFloat(montototal);
-        }
-        else{
-            subtotal_actual = subtotal;
-            inputtext.value = parseFloat(subtotal_actual)+parseFloat(montoparcial);
-
-            //Calculo del total
-            total_actual = total;
-            totaltext.value = parseFloat(total) + parseFloat(montoparcial);
-        }
-    }
-    else{
-        totaltext.value = eval(totaltext.value);
-    }
-}
-</script>
 <script>
 function seleccion(id) {
     var x = document.getElementById(id).checked;
     return x;
 }
+function  seleccionado() {
+    return false;
+}
 </script>
 <script src="jquery-1.3.2.min.js" type="text/javascript"></script>
 <script>
-function nombre() {
+function nombre(obj) {
+    document.ListaPagos.elements.enviar.disabled = true;
+    var seleccionados_array = [];
+    $('input[name^="seleccionado"]').each( function() {
+        if(this.checked == true){
 
-    var temp = 0;
-    var arrayoptions = [];
-    var arraymontos = [];
-    $('input[name^="check"]').each(function () {
-       if(this.checked){
-           arrayoptions.push(true)
-       }
-       else {
-           arrayoptions.push(false)
-       }
-    });
+            seleccionados_array.push(true);
+        }
+        else {
+            seleccionados_array.push(false);
+        }
 
-    $('input[name^="montototal"]').each(function () {
-        arraymontos.push(parseInt(this.value));
     });
-    for (i = 0; i < arrayoptions.length; i++) {
-        if(arrayoptions[i]){
-            temp += arraymontos[i];
+    var parcial_array = [];
+    var total_array = [];
+    $('input[name^="optionsRadios"]').each( function() {
+        if(this.value == 1){
+            if(this.checked == true){
+                total_array.push(true);
+
+            }
+            else{
+                total_array.push(false);
+            }
+        }
+        else {
+            if(this.checked == true){
+                parcial_array.push(true);
+            }
+            else {
+                parcial_array.push(false);
+            }
+        }
+
+    });
+    var monto_total_array = [];
+    $('input[name^="montototal"]').each( function() {
+        monto_total_array.push(this);
+    });
+    var monto_parcial_array = [];
+    $('input[name^="montoparcial"]').each( function() {
+        monto_parcial_array.push(this);
+    });
+    for(var x = 0;x < seleccionados_array.length; x++){
+        if(seleccionados_array[x]==true){
+            if(total_array[x]==false){
+                if(parseFloat(monto_total_array[x].value)<parseFloat(monto_parcial_array[x].value)){
+                    monto_parcial_array[x].value = monto_total_array[x].value;
+                }
+            }
+
         }
     }
 
-    gato.value = temp;
+
+    var total = document.getElementById("gato");
+    var temp = 0;
+    for(var x = 0;x < seleccionados_array.length; x++){
+        if(seleccionados_array[x]==true){
+            if(total_array[x]==true){
+                temp = temp + parseFloat(monto_total_array[x].value);
+            }
+            else{
+                temp = temp + parseFloat(monto_parcial_array[x].value);
+            }
+        }
+    }
+    total.value = temp;
+    if(temp > 0){
+        document.ListaPagos.elements.enviar.disabled = false;
+    }
+    return true;
 }
+
 
 </script>
 

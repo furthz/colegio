@@ -49,21 +49,29 @@ class RegistrarPagoListView(MyLoginRequiredMixin, TemplateView):
             logger.info("Se tienen los permisos de cajero")
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
-
-
+        try:
+            usuario = get_current_user()
+            mov = CajaCajero.objects.get(estado=True, usuario_creacion=str(usuario.id))
+            alerta = False
+        except:
+            alerta = True
+        dato = 1
         logger.info("Estoy en income pagos")
         cuentas_totales = Cuentascobrar.objects.filter(
-            matricula__colegio__id_colegio=self.request.session.get('colegio'), estado=True)
+            matricula__colegio__id_colegio=self.request.session.get('colegio'), estado=True, activo=True)
         try:
-
+            dato = request.GET['dato']
             logger.info("Ver si existe un GET")
-            if request.GET['filter'] is 'DNI':
+            print(request.GET['filter'])
+            if request.GET['filter'] == 'DNI':
+                print("filtro DNI")
                 self.cuentas = cuentas_totales.filter(matricula__alumno__numero_documento=request.GET['dato'],activo=True, estado=True).order_by("fecha_ven")
                 alumno = Alumno.objects.get(numero_documento=request.GET['dato'])
             else:
                 self.cuentas = cuentas_totales.filter(matricula__alumno__apellido_pa = request.GET['dato'],activo=True, estado=True).order_by("fecha_ven")
                 alumno = Alumno.objects.get(apellido_pa=request.GET['dato'])
         except:
+
             self.cuentas = []
         logger.info(self.cuentas)
 
@@ -72,6 +80,8 @@ class RegistrarPagoListView(MyLoginRequiredMixin, TemplateView):
         except:
             pknum = None
         return render(request, template_name=self.template_name, context={
+            'alerta':alerta,
+            'dato':dato,
             'cuentascobrar': self.cuentas,
             'pknum': pknum,
         })
@@ -138,9 +148,10 @@ class RegistrarPagoListView(MyLoginRequiredMixin, TemplateView):
 
     def CrearDetallesCobranza(self,lista_cuentas,lista_montos,total):
         logger.info("Estoy en crear detalles")
-        logger.info(CajaCajero.objects.get(estado=True))
+        #logger.info(CajaCajero.objects.get(estado=True,personal_colegio__personal__user=self.request.user))
+        usuario = get_current_user()
         cobranza_actual = Cobranza(
-            movimiento= CajaCajero.objects.get(estado=True),
+            movimiento= CajaCajero.objects.get(estado=True,usuario_creacion=str(usuario.id)),
             fecha_pago = date.today(),
             monto = total,
             medio_pago = 1,
