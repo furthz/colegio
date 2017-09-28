@@ -272,7 +272,9 @@ class SistemasCreateView(MyLoginRequiredMixin, CreateView):
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
 
-        if request.user.is_superuser:
+        roles = ['sistemas', 'promotor']
+
+        if validar_roles(roles=roles):
             return super(SistemasCreateView, self).get(request, args, kwargs)
 
         else:
@@ -280,10 +282,12 @@ class SistemasCreateView(MyLoginRequiredMixin, CreateView):
 
     #@method_decorator(permission_required('register.sistemas_create', login_url=settings.REDIRECT_PERMISOS,
     #                                      raise_exception=False))
-    def form_valid(self, request, form):
+    def form_valid(self, form):
         logger.debug("Sistemas a crear con DNI: " + form.cleaned_data["numero_documento"])
 
-        if request.user.is_superuser:
+        roles = ['sistemas', 'promotor']
+
+        if validar_roles(roles=roles):
             personal = SaveGeneric().saveGeneric(padre=Personal, form=form, hijo=Sistemas)
             logger.debug("Se creó el usuario de sistemas en la vista")
 
@@ -302,11 +306,14 @@ class SistemasDetailView(MyLoginRequiredMixin, DetailView):
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
 
-        if request.user.is_superuser:
+        roles = ['sistemas', 'promotor']
+
+        if validar_roles(roles=roles):
             return super(SistemasDetailView, self).get(request, args, kwargs)
 
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
 
 
 class PromotorCreateView(MyLoginRequiredMixin, CreateView):
