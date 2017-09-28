@@ -3,9 +3,9 @@
   <component name="FacetManager">
     <facet type="django" name="Django">
       <configuration>
-        <option name="rootFolder" value="$MODULE_DIR$" />
-        <option name="settingsModule" value="src/colegio/settings" />
-        <option name="manageScript" value="src/manage.py" />
+        <option name="rootFolder" value="$MODULE_DIR$/src" />
+        <option name="settingsModule" value="" />
+        <option name="manageScript" value="manage.py" />
         <option name="environment" value="&lt;map/&gt;" />
         <option name="commandsToSkip" value="" />
       </configuration>
@@ -15,7 +15,7 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.6.1 virtualenv at D:\Fuentes\Python\virtualenv\pruebaenv" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.5.2 virtualenv at C:\Users\Marco\Documents\Python Scripts\Entornos\mundopixel-env" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="TemplatesService">
@@ -23,8 +23,6 @@
     <option name="TEMPLATE_FOLDERS">
       <list>
         <option value="$MODULE_DIR$/src/templates" />
-        <option value="$MODULE_DIR$/src/register/templates" />
-        <option value="$MODULE_DIR$/src/profiles/templates" />
       </list>
     </option>
   </component>
