@@ -40,16 +40,16 @@
     </div>
     <div class="col-sm-8">
       <div class="panel panel-default">
-        <div class="panel-heading">{{ show_user.get_full_name }}Perfil
+        <div class="panel-heading">{{ show_user.get_full_name }}
 	  {% if show_user.profile.slug %}
 	    <a href="{% url 'profiles:show' show_user.profile.slug %}">
 	    	<span class="glyphicon glyphicon-link" aria-hidden="true" title="Profile permalink"></span>
 	    	<span class="sr-only">Permalink</span></a>
 	  {% endif %}
 	</div>
-        <div class="panel-body">
+        <!--<div class="panel-body">
 	  <strong>Bio</strong>: {{ show_user.profile.bio }}
-	</div>
+	</div>-->
       </div>
     </div>
   </div>

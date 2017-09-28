@@ -134,7 +134,7 @@ class AlumnoCreateView(MyLoginRequiredMixin, CreateView):
             als = Alumno.objects.all()
 
             logger.info("Se creó el alumno")
-            return HttpResponseRedirect(alu.get_absolute_url())
+            return HttpResponseRedirect(reverse('enrollments:filtrar_alumno'))
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
