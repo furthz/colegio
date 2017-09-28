@@ -46,8 +46,8 @@
                                 <table class="table">
                                     <thead>
                                       <tr>
-                                        <th>Nombres</th>
-                                        <th>Apellidos</th>
+                                        <th>Nombres y Apellidos</th>
+
                                         <th>Acciones</th>
                                       </tr>
                                     </thead>
@@ -56,8 +56,7 @@
                                                 <form id="{{ alumno.id_alumno }}" action="{% url 'enrollments:matricula_create' %}" method="post" class="form-horizontal">{% csrf_token %}
 
                                                         <tr>
-                                                        <td>{{alumno.persona.nombre}} {{alumno.persona.segundo_nombre}}</td>
-                                                        <td>{{alumno.persona.apellido_pa}} {{alumno.persona.apellido_ma}}</td>
+                                                        <td>{{alumno.persona.getNombreCompleto}}</td>
                                                         <td><div class="pull-center">
                                                                     <div class="btn-group btn-group-sm" role="group" aria-label="...">
                                                                         <input hidden type= "text" value="{{ alumno.id_alumno}}" name="alumno">
