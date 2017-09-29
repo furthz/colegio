@@ -108,7 +108,6 @@ INSTALLED_APPS = (
     'import_export',
     'django_filters',
 
-
 )
 
 

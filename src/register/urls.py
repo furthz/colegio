@@ -7,6 +7,7 @@ from register.views import CreatePersonaView, PersonaDetail, AlumnoCreateView, A
     ProveedorCreateView, ProveedorDetailView, PersonaListView, PersonaDetailView, ColegioCreateView, ColegioListView, PersonalUpdateView, PersonalDeleteView, \
     SistemasCreateView, SistemasDetailView, ProveedorListView, ProveedorDeleteView, ProveedorUpdateView, \
     AlumnoAutocomplete
+from utils.views import get_provincias, get_distritos
 
 urlpatterns = [
     # url(r'^person/create/$', CreatePersonaView.as_view(), name="persona_create"),
@@ -53,5 +54,7 @@ urlpatterns = [
 
     url(r'^alumno/autocomplete/$', AlumnoAutocomplete.as_view(), name='alumno_autocomplete'),
 
+    url(r'^api/get_provincias/', get_provincias, name='get_provincias'),
+    url(r'^api/get_distritos/', get_distritos, name='get_distritos'),
 
 ]

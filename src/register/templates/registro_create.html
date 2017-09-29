@@ -8,13 +8,13 @@
 
 {% block container %}
 
-
 <div class="row">
     <div class="col-md-12">
         <div class="box box-primary">
             <div class="box-body">
 
                 <script type="text/javascript">
+
                     function validarFecNac() {
                         var today = new Date();
                         var from = $('#id_fecha_nac').val().split("/");
@@ -82,13 +82,8 @@
                         });
                     }
 
-                    function seleccionarMultiselect() {
-                        $('#id_celulares option').prop('selected', true);
-
-                    }
-
-
                 </script>
+
                         {% if form.errors %}
                             {% for field in form %}
                                 {% for error in field.errors %}
@@ -277,7 +272,7 @@
                                                         <button type="button" class="btn btn-success" name="agregartelefono" id="agregartelefono" onclick="agregarTelefono()">
                                                             <i class="fa fa-plus" aria-hidden="true"></i>
                                                         </button>
-                                                        <button type="button" class="btn btn-danger" name="quitartelefono" id="quitartelefono" onclick="eliminarTelefono()">
+                                                        <button type="button" class="btn btn-danger" name="quitartelefono" id="id_quitartelefono">
                                                             <i class="fa fa-minus" aria-hidden="true"></i>
                                                         </button>
                                                     </div>
@@ -337,4 +332,52 @@
     });
     </script>
 
+    <script type="text/javascript">
+     $('#id_departamento').change(function () {
+            $('#id_provincia').empty();
+            $('#id_distrito').empty();
+            $('#id_provincia').append('<option value="-1">Seleccione</option>');
+            $.ajax({
+                    type: "GET",
+                    url: "/registers/api/get_provincias",
+                    datatype: "Json",
+                    data: { id_dpto: $('#id_departamento').val() },
+                    success: function (data) {
+                        $.each(data, function (index, value) {
+                            $('#id_provincia').append('<option value="' + value["id"] + '">' +
+                                value["value"] + '</option>');
+                        });
+                    },
+                    error: function (error) {
+                        alert("Error Ajax not working: " + error);
+                    }
+                });
+
+     }
+    );
+    </script>
+
+    <script type="text/javascript">
+     $('#id_provincia').change(function () {
+            $('#id_distrito').empty();
+            $('#id_distrito').append('<option value="-1">Seleccione</option>');
+            $.ajax({
+                    type: "GET",
+                    url: "/registers/api/get_distritos",
+                    datatype: "Json",
+                    data: { id_prov: $('#id_provincia').val() },
+                    success: function (data) {
+                        $.each(data, function (index, value) {
+                            $('#id_distrito').append('<option value="' + value["id"] + '">' +
+                                value["value"] + '</option>');
+                        });
+                    },
+                    error: function (error) {
+                        alert("Error Ajax not working: " + error);
+                    }
+                });
+
+     }
+    );
+    </script>
 {% endblock scripts %}

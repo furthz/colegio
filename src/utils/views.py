@@ -1,11 +1,14 @@
 import logging
+import json
 
 from django.contrib.auth.mixins import AccessMixin
+from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 
 from profiles.models import Profile
 from register.models import Personal, Colegio, PersonalColegio, Direccion, Telefono, ApoderadoAlumno, Apoderado
 from utils.middleware import get_current_colegio
+from utils.models import Provincia, Distrito
 
 logger = logging.getLogger("project")
 
@@ -28,6 +31,47 @@ class MyLoginRequiredMixin:
                 return HttpResponseRedirect('/login/')
             # return self.handle_no_permission()
         return super().dispatch(request, *args, **kwargs)
+
+
+def get_provincias(request):
+
+    if request.is_ajax():
+        id_dpto = request.GET.get("id_dpto"," ")
+        provincias = Provincia.objects.filter(departamento__id_departamento=id_dpto)
+        results = []
+        for prov in provincias:
+            prov_json = {}
+            prov_json['id'] = prov.id_provincia
+            prov_json['value'] = prov.descripcion
+            results.append(prov_json)
+        data = json.dumps(results)
+    else:
+        data = 'fail'
+
+    mimetype = 'application/json'
+
+    return HttpResponse(data, mimetype)
+
+
+def get_distritos(request):
+
+    if request.is_ajax():
+        id_prov = request.GET.get("id_prov", " ")
+        distritos = Distrito.objects.filter(provincia__id_provincia=id_prov)
+        results = []
+        for dist in distritos:
+            dist_json = {}
+            dist_json['id'] = dist.id_distrito
+            dist_json['value'] = dist.descripcion
+            results.append(dist_json)
+        data = json.dumps(results)
+    else:
+        data = 'fail'
+
+    mimetype = 'application/json'
+
+    return HttpResponse(data, mimetype)
+
 
 
 class SaveGeneric(MyLoginRequiredMixin):

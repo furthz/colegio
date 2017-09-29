@@ -36,7 +36,16 @@ class PersonaForm(ModelForm):
 
     @property
     def ChoiceDepartamento(self):
-        choices = [(d.id_departamento, d.descripcion) for d in Departamento.objects.all()]
+        choices = []
+
+        choices.append(('-1', 'Seleccione'))
+
+        for d in Departamento.objects.all():
+            choices.append((d.id_departamento, d.descripcion))
+        
+        #choices.append((d.id_departamento, d.descripcion) for d in Departamento.objects.all())
+
+
         return choices
 
     @property
@@ -55,12 +64,10 @@ class PersonaForm(ModelForm):
                                                           widget=forms.Select(attrs={'tabindex': '5', 'class': 'form-control'}))
         self.fields['sexo'] = forms.ChoiceField(choices=self.ChoiceTipoSexo,
                                                 widget=forms.Select(attrs={'tabindex': '7', 'class': 'form-control'}))
-        self.fields['departamento'] = forms.ChoiceField(choices = self.ChoiceDepartamento,
+        self.fields['departamento'] = forms.ChoiceField(choices = self.ChoiceDepartamento, initial='-1',
                                                         widget=forms.Select(attrs={'tabindex': '10', 'class': 'form-control'}))
-        self.fields['provincia']= forms.ChoiceField(choices = self.ChoiceProvincia,
-                                                    widget=forms.Select(attrs={'tabindex': '11', 'class': 'form-control'}))
-        self.fields['distrito'] = forms.ChoiceField(choices = self.ChoiceDistrito,
-                                                    widget=forms.Select(attrs={'tabindex': '12', 'class': 'form-control'}))
+        self.fields['provincia']= forms.ChoiceField(widget=forms.Select(attrs={'tabindex': '11', 'class': 'form-control'}))
+        self.fields['distrito'] = forms.ChoiceField(widget=forms.Select(attrs={'tabindex': '12', 'class': 'form-control'}))
         self.fields['nombre'].widget.attrs = {'tabindex': '1', 'class': 'form-control', 'maxlength': '50'}
         self.fields['segundo_nombre'].widget.attrs = {'tabindex': '2', 'class': 'form-control', 'maxlength': '200'}
         self.fields['apellido_pa'].widget.attrs = {'tabindex': '3', 'class': 'form-control', 'maxlength': '50'}
