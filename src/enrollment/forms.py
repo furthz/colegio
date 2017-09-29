@@ -111,7 +111,7 @@ class ServicioRegularForm(ModelForm):
         self.fields['cuotas'].widget.attrs.update({'class': 'form-control'})
         self.fields['tipo_servicio'].widget.attrs.update({'class': 'form-control'})
         self.fields['precio'].widget.attrs.update({'class': 'form-control'})
-        self.fields['fecha_facturar'].widget.attrs.update({'class': 'form-control'})
+        self.fields['fecha_facturar'].widget.attrs.update({'tabindex': '8','class': 'form-control'})
 
 class ServicioExtraForm(ModelForm):
     """

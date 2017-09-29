@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import permission_required
 from django.utils.decorators import method_decorator
 from django.conf import settings
 from datetime import date
-
+from authtools.models import User
 from discounts.forms import SolicitarDescuentoForm
 from discounts.models import Descuento
 from enrollment.models import Servicio
@@ -787,10 +787,109 @@ class MatriculaUpdateView(MyLoginRequiredMixin, UpdateView):
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
+    def post(self, request, *args, **kwargs):
+        """
 
+        :param request:
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        logger.debug("POST")
+
+        form = self.form_class(request.POST)
+        logger.debug("leer datos request post")
+        matricula = Matricula.objects.get(id_matricula=request.POST["matricula"])
+        if form.is_valid():
+            logger.debug("Formulario valido")
+
+            data_form = form.cleaned_data
+            logger.debug("form en dict")
+            logger.debug(data_form)
+
+            matricula.tipo_servicio = data_form["tipo_servicio"]
+            matricula.save()
+            logger.debug(matricula)
+            logger.info(matricula)
+
+            estado = self.CrearCuentasCobrar(data_form, matricula)
+            logger.debug("se creo la cuantas {0}".format(estado))
+
+            return HttpResponseRedirect(matricula.get_absolute_url())
+
+        return HttpResponseRedirect(reverse('enrollments:matricula_create'))
+    def CrearCuentasCobrar(self, data_form, matricula):
+        """
+        Este metodo permite generar las Cuantas por Cobrar producto de una matricula
+        :param data_form: datos del formulario de matricula como diccionario
+        :param matricula: objeto matricula que tiene la relacion de Alumno, Colegio, Tipo de Servicio
+        :return: retorna un mensaje de exito al concluir el metodo
+        """
+        logger.debug("Inicio de metodo CrearCuantasCobrar")
+        logger.info("Inicio de metodo CrearCuantasCobrar")
+
+        list_servicios = Servicio.objects.filter(tipo_servicio_id=data_form["tipo_servicio"])
+        logger.debug(list_servicios.all())
+        logger.info(list_servicios.all())
+
+        fecha_actual = date.today()
+
+        for servicio in list_servicios:
+            logger.debug("inicia la lecturas de las cuentas")
+            logger.info(servicio)
+
+            fecha_facturar = servicio.fecha_facturar
+            if fecha_facturar.month < fecha_actual.month:
+                fecha_facturar = fecha_facturar.replace(month= fecha_actual.month)
+            logger.info("la fecha a facturar es: {0}".format(fecha_facturar))
+
+            if servicio.is_periodic:
+                logger.debug(str(servicio.is_periodic))
+                logger.info("El servicio es periodico {0}".format(servicio.is_periodic))
+
+                if servicio.fecha_facturar.month < fecha_actual.month:
+                    numero_cuotas = servicio.cuotas - (fecha_actual.month - servicio.fecha_facturar.month)
+                else:
+                    numero_cuotas = servicio.cuotas
+
+                for cuota in range(numero_cuotas):
+                    logger.info("El servicio tiene {0} cuotas".format(servicio.cuotas))
+                    logger.info("El servicio cobrara {0} cuotas".format(numero_cuotas))
+                    logger.debug("Cuota Nro. {0}".format(cuota))
+
+                    if (fecha_facturar.month + cuota) < 13:
+                        fecha_vencimiento = fecha_facturar.replace(month=fecha_facturar.month + cuota)
+                        cuentas = Cuentascobrar(matricula=matricula,
+                                                servicio=servicio,
+                                                fecha_ven=fecha_vencimiento,
+                                                estado=True,
+                                                precio=servicio.precio,
+                                                deuda=servicio.precio,
+                                                descuento=0,
+                                                )
+                        logger.debug(cuentas.matricula)
+                        logger.info(cuentas.matricula)
+
+                        cuentas.save()
+
+            else:
+                logger.debug(str(servicio.is_periodic))
+                logger.info("El servicio es periodico {0}".format(servicio.is_periodic))
+
+                cuentas = Cuentascobrar(matricula=matricula,
+                                        servicio=servicio,
+                                        fecha_ven=servicio.fecha_facturar,
+                                        estado=True,
+                                        precio=servicio.precio,
+                                        deuda=servicio.precio,
+                                        descuento=0
+                                        )
+                cuentas.save()
+
+        return "Exito"
 
 class CargarMatriculaUpdateView(MyLoginRequiredMixin, TemplateView):
-    template_name = "matricula_form.html"
+    template_name = "matricula_form_update.html"
     model = Matricula
     form_class = MatriculaForm
 
@@ -819,6 +918,7 @@ class CargarMatriculaUpdateView(MyLoginRequiredMixin, TemplateView):
             'form': form,
             'alumno':matricula.alumno,
             'tiposerviciolist': list_tiposervico,
+            'matricula':matricula,
         })
 
 class MatriculaDeleteView(MyLoginRequiredMixin, DeleteView):
@@ -861,19 +961,32 @@ class FiltrarAlumnoView(ListView):
 
 
     def get(self, request, *args, **kwargs):
-
-        return render(request, template_name=self.template_name)
+        personas = Profile.objects.filter(personal__Colegios__id_colegio = get_current_colegio())
+        id_personas = []
+        for persona in personas:
+            id_personas.append(persona.user_id)
+        print(id_personas)
+        lista_alumnos = []
+        for id_persona in id_personas:
+            lista_alumnos.extend(Alumno.objects.filter(usuario_creacion_persona=id_persona))
+        #usuarios = personas.user_id
+        return render(request, template_name=self.template_name, context={
+            'object_list':lista_alumnos,
+            #'object_list': Alumno.objects.all(),
+        })
 
     def post(self, request, *args, **kwargs):
 
         # object_list_alumnos1 =  self.model.objects.filter(nombre=request.POST["nombre"])
         nombre = request.POST["nombre"]
-        object_list_alumnos1 = Alumno.objects.filter(nombre__icontains=nombre.upper())
-
+        object_list_alumnos1 = []
+        object_list_alumnos1.extend(Alumno.objects.filter(nombre__icontains=nombre.upper()))
+        object_list_alumnos1.extend(Alumno.objects.filter(segundo_nombre__icontains=nombre.upper()))
         apellido_pa = request.POST["nombre"]
         # object_list_alumnos2 = self.model.objects.filter(apellido_pa=request.POST["apellido_pa"])
-        object_list_alumnos2 = Alumno.objects.filter(apellido_pa__icontains=apellido_pa.upper())
-
+        object_list_alumnos2 = []
+        object_list_alumnos2.extend(Alumno.objects.filter(apellido_pa__icontains=apellido_pa.upper()))
+        object_list_alumnos2.extend(Alumno.objects.filter(apellido_ma__icontains=apellido_pa.upper()))
         dni = request.POST["dni"]
         object_list_alumnos3 = Alumno.objects.filter(numero_documento=dni)
         #object_list_alumnos3 = self.model.objects.filter(nombre=request.POST["nombre"],apellido_pa=request.POST["apellido_pa"])
@@ -881,18 +994,26 @@ class FiltrarAlumnoView(ListView):
         if len(object_list_alumnos3) is not 0:
             return render(request, template_name=self.template_name, context={
                 'object_list': object_list_alumnos3,
+                'dni':dni,
+                'nombre':nombre,
             })
         elif len(object_list_alumnos1) is not 0:
             return render(request, template_name=self.template_name, context={
                 'object_list': object_list_alumnos1,
+                'dni': dni,
+                'nombre': nombre,
             })
         elif len(object_list_alumnos2) is not 0:
             return render(request, template_name=self.template_name, context={
                 'object_list': object_list_alumnos2,
+                'dni': dni,
+                'nombre': nombre,
             })
         else:
             return render(request, template_name=self.template_name, context={
                 'object_list': [],
+                'dni': dni,
+                'nombre': nombre,
             })
 
 class CargarMatriculaCreateView(TemplateView):

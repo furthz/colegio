@@ -35,13 +35,13 @@
                                         <div class="col-md-4">
                                           <div class="form-group">
                                           <label>Alumno</label>
-                                            <input type="text" name="alumno" class="form-control">
+                                            <input type="text" name="alumno" class="form-control" placeholder="Escriba el apellido o nombre">
                                           </div>
                                         </div>
                                         <div class="col-md-2">
                                           <div class="form-group">
                                           <label>N° expediente</label>
-                                            <input type="text" name="numero_expediente" class="form-control">
+                                            <input type="text" name="numero_expediente" class="form-control" placeholder="Escriba el número">
                                           </div>
                                         </div>
                                         <div class="col-md-2">
@@ -75,6 +75,7 @@
                                 </form>
                             </div>
                         </div>
+                        {% if object_list %}
                             <table class="table table-hover">
                                 <tbody>
                                 <tr>
@@ -113,13 +114,13 @@
                                 </tbody>
                                 </div>
                             </table>
-
-                            <div class="col-md-2">
+                        {% endif %}
+                            <div class="col-md-3">
                                 <div class="search-actions">
                                     <form action="{% url 'discounts:aprobar_descuentos' %}">
                                         <button type="submit" value="Volver" class="btn btn-default">
                                             <i class="fa fa-reply" aria-hidden="true"></i>
-                                            Volver
+                                            Ver solicitudes
                                         </button>
                                     </form>
                                 </div>

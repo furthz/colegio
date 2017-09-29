@@ -29,8 +29,8 @@
                      <div class="toolbar-search">
                         <form action="{% url 'enrollments:filtrar_alumno' %}" method="post" class="form-inline" id="filtro">{% csrf_token %}
                              <div class="form-group">
-                              DNI:<input type="text" name="dni" class="form-control">
-                                Nombre o Apellido:<input type="text" name="nombre" class="form-control">
+                              DNI:<input type="text" name="dni" class="form-control" value="{{ dni }}">
+                                Apellidos o Nombres:<input type="text" name="nombre" class="form-control" value="{{ nombre }}">
                               <button form="filtro" formmethod="post" type="submit" class="btn btn-default"><i class="fa fa-filter" aria-hidden="true"></i> Filtrar</button>
                             </div>
 
@@ -41,11 +41,13 @@
 
                         <div  role="tabpanel" >
                             <div class="panel-body">
+
+                                {% if object_list %}
                                 <table class="table">
                                     <thead>
                                       <tr>
-                                        <th>Nombres</th>
-                                        <th>Apellidos</th>
+                                        <th>Nombres y Apellidos</th>
+
                                         <th>Acciones</th>
                                       </tr>
                                     </thead>
@@ -54,8 +56,7 @@
                                                 <form id="{{ alumno.id_alumno }}" action="{% url 'enrollments:matricula_create' %}" method="post" class="form-horizontal">{% csrf_token %}
 
                                                         <tr>
-                                                        <td>{{alumno.persona.nombre}} {{alumno.persona.segundo_nombre}}</td>
-                                                        <td>{{alumno.persona.apellido_pa}} {{alumno.persona.apellido_ma}}</td>
+                                                        <td>{{alumno.persona.getNombreCompleto}}</td>
                                                         <td><div class="pull-center">
                                                                     <div class="btn-group btn-group-sm" role="group" aria-label="...">
                                                                         <input hidden type= "text" value="{{ alumno.id_alumno}}" name="alumno">
@@ -64,14 +65,15 @@
                                                         </div></td>
                                                         </tr>
                                                 </form>
-                                        {% empty %}
-                                            <li>
-                                                No hay Alumnos Registrados
-                                                <a href="{% url 'registers:alumno_create' %}" value="Registrar Alumno Nuevo" class="btn btn-sucess">Registrar Nuevo Alumno</a>
-                                            </li>
                                         {% endfor %}
                                     </tbody>
                                 </table>
+                                    <a href="{% url 'registers:alumno_create' %}" class="btn btn-success" role="button"><i class="fa fa-plus" aria-hidden="true"></i>Registrar Nuevo Alumno</a>
+                            {% else %}
+                                <li>
+                                    <a href="{% url 'registers:alumno_create' %}" class="btn btn-success" role="button"><i class="fa fa-plus" aria-hidden="true"></i>Registrar Nuevo Alumno</a>
+                                </li>
+                            {% endif %}
                             </div>
                         </div>
                     </div>

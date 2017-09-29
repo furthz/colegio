@@ -179,20 +179,20 @@ class Apoderado(CreacionModificacionUserApoderadoMixin, CreacionModificacionFech
     Clase para identificar a los apoderados de los alumnos
     """
     id_apoderado = models.AutoField(primary_key=True)
-    parentesco = models.CharField(max_length=30)
+    #parentesco = models.CharField(max_length=30)
     persona = models.OneToOneField(Profile, models.DO_NOTHING, parent_link=True, )
 
-    def full_detail(self):
-        lista = Profile.full_detail(self)
-        lista.append("parentesco: {0}".format(self.parentesco))
-        return lista
+    #def full_detail(self):
+    #    lista = Profile.full_detail(self)
+    #    lista.append("parentesco: {0}".format(self.parentesco))
+    #    return lista
 
     def get_absolute_url(self):
         """
         Redirecciona las views que usan como modelo esta clase
         :return: url de detalles de la persona
         """
-        return reverse('registers:apoderado_detail', kwargs={'pk': self.pk})
+        return reverse('registers:personal_detail', kwargs={'pk': self.pk})
 
     @staticmethod
     def saveFromPersona(per: Profile, **atributos):
@@ -234,7 +234,7 @@ class Alumno(CreacionModificacionUserAlumnoMixin, CreacionModificacionFechaAlumn
         Redirecciona las views que usan como modelo esta clase
         :return: url de detalles de la persona
         """
-        return reverse('registers:alumno_detail', kwargs={'pk': self.pk})
+        return reverse('registers:personal_detail', kwargs={'pk': self.pk})
 
     @staticmethod
     def saveFromPersona(per: Profile, **atributos):
@@ -272,6 +272,7 @@ class ApoderadoAlumno(ActivoMixin, CreacionModificacionFechaMixin, CreacionModif
     id_apoderadoalumno = models.AutoField(primary_key=True)
     apoderado = models.ForeignKey(Apoderado, models.DO_NOTHING, db_column='id_apoderado')
     alumno = models.ForeignKey(Alumno, models.DO_NOTHING, db_column='id_alumno')
+    parentesco = models.TextField(max_length=30)
 
     class Meta:
         managed = True
@@ -293,7 +294,7 @@ class Tesorero(CreacionModificacionUserTesoreroMixin, CreacionModificacionFechaT
         Redirecciona las views que usan como modelo esta clase
         :return: url de detalles de la persona
         """
-        return reverse('registers:tesorero_detail', kwargs={'pk': self.pk})
+        return reverse('registers:personal_detail', kwargs={'pk': self.pk})
 
     @staticmethod
     def saveFromPersonal(per: Personal, **atributos):
@@ -337,7 +338,7 @@ class Sistemas(CreacionModificacionUserSistemasMixin, CreacionModificacionFechaS
         Redirecciona las views que usan como modelo esta clase
         :return: url de detalles de la persona
         """
-        return reverse('registers:sistemas_detail', kwargs={'pk': self.pk})
+        return reverse('registers:personal_detail', kwargs={'pk': self.pk})
 
     @staticmethod
     def saveFromPersonal(per: Personal, **atributos):
@@ -381,7 +382,7 @@ class Promotor(CreacionModificacionUserPromotorMixin, CreacionModificacionFechaP
         Redirecciona las views que usan como modelo esta clase
         :return: url de detalles de la persona
         """
-        return reverse('registers:promotor_detail', kwargs={'pk': self.pk})
+        return reverse('registers:personal_detail', kwargs={'pk': self.pk})
 
     @staticmethod
     def saveFromPersonal(per: Personal, **atributos):
@@ -425,7 +426,7 @@ class Cajero(CreacionModificacionUserCajeroMixin, CreacionModificacionFechaCajer
         Redirecciona las views que usan como modelo esta clase
         :return: url de detalles de la persona
         """
-        return reverse('registers:cajero_detail', kwargs={'pk': self.pk})
+        return reverse('registers:personal_detail', kwargs={'pk': self.pk})
 
     @staticmethod
     def saveFromPersonal(per: Personal, **atributos):
@@ -469,7 +470,7 @@ class Director(CreacionModificacionUserDirectorMixin, CreacionModificacionFechaD
         Redirecciona las views que usan como modelo esta clase
         :return: url de detalles de la persona
         """
-        return reverse('registers:director_detail', kwargs={'pk': self.pk})
+        return reverse('registers:personal_detail', kwargs={'pk': self.pk})
 
     @staticmethod
     def saveFromPersonal(per: Personal, **atributos):

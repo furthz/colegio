@@ -980,7 +980,7 @@ class Distrito(ActivoMixin, models.Model):
 
     id_distrito = models.AutoField(primary_key=True)
     descripcion = models.CharField(max_length=200)
-    provincia = models.ForeignKey(Departamento, models.DO_NOTHING, db_column='id_provincia', related_name="distritos")
+    provincia = models.ForeignKey(Provincia, models.DO_NOTHING, db_column='id_provincia', related_name="distritos")
 
     class Meta:
         managed = True

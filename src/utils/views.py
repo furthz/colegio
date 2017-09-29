@@ -1,11 +1,14 @@
 import logging
+import json
 
 from django.contrib.auth.mixins import AccessMixin
+from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 
 from profiles.models import Profile
-from register.models import Personal, Colegio, PersonalColegio, Direccion, Telefono
+from register.models import Personal, Colegio, PersonalColegio, Direccion, Telefono, ApoderadoAlumno, Apoderado
 from utils.middleware import get_current_colegio
+from utils.models import Provincia, Distrito
 
 logger = logging.getLogger("project")
 
@@ -30,6 +33,47 @@ class MyLoginRequiredMixin:
         return super().dispatch(request, *args, **kwargs)
 
 
+def get_provincias(request):
+
+    if request.is_ajax():
+        id_dpto = request.GET.get("id_dpto"," ")
+        provincias = Provincia.objects.filter(departamento__id_departamento=id_dpto)
+        results = []
+        for prov in provincias:
+            prov_json = {}
+            prov_json['id'] = prov.id_provincia
+            prov_json['value'] = prov.descripcion
+            results.append(prov_json)
+        data = json.dumps(results)
+    else:
+        data = 'fail'
+
+    mimetype = 'application/json'
+
+    return HttpResponse(data, mimetype)
+
+
+def get_distritos(request):
+
+    if request.is_ajax():
+        id_prov = request.GET.get("id_prov", " ")
+        distritos = Distrito.objects.filter(provincia__id_provincia=id_prov)
+        results = []
+        for dist in distritos:
+            dist_json = {}
+            dist_json['id'] = dist.id_distrito
+            dist_json['value'] = dist.descripcion
+            results.append(dist_json)
+        data = json.dumps(results)
+    else:
+        data = 'fail'
+
+    mimetype = 'application/json'
+
+    return HttpResponse(data, mimetype)
+
+
+
 class SaveGeneric(MyLoginRequiredMixin):
 
     @staticmethod
@@ -48,8 +92,8 @@ class SaveGeneric(MyLoginRequiredMixin):
         direccion.calle = form.cleaned_data["direccion"]
         direccion.referencia = form.cleaned_data["referencia"]
         direccion.dpto = form.cleaned_data["departamento"]
-        direccion.provincia = form.cleaned_data["provincia"]
-        direccion.distrito = form.cleaned_data["distrito"]
+        direccion.provincia = form.data["provincia"]
+        direccion.distrito = form.data["distrito"]
 
         logger.debug("Se obtuvieron los datos de la direccion")
 
@@ -72,9 +116,23 @@ class SaveGeneric(MyLoginRequiredMixin):
                 copiarVal(form=form, parent=persona_registrada)
                 logger.debug("Es una nuevo profile a crear")
 
-                rpta = hijo().saveFromPersona(per=persona_registrada, parentesco=form.cleaned_data["parentesco"])
+                rpta = hijo().saveFromPersona(per=persona_registrada, parentesco=form.cleaned_data["parentesco"],
+                                              alumno=form.cleaned_data["alumno"])
                 logger.debug("Se guardó un registró a partir de la persona existente")
                 logger.info("Se creó un registro a partir de la persona existente")
+
+                if hijo is Apoderado:
+
+                    alumnos = form.cleaned_data['alumno']
+
+                    for alumno in alumnos:
+                        apo_alu = ApoderadoAlumno()
+                        apo_alu.parentesco = form.cleaned_data['parentesco']
+                        apo_alu.alumno = alumno
+                        apo_alu.apoderado = rpta
+                        apo_alu.save()
+
+                    #hijo.alumnos.add(apo_alu.alumno)
 
                 direccion.persona = rpta.persona
                 direccion.save()
@@ -102,6 +160,25 @@ class SaveGeneric(MyLoginRequiredMixin):
                 direccion.save()
                 logger.debug("Se guardó la direccion")
                 logger.info("Se guardó la nueva direccion")
+
+                if hijo is Apoderado:
+                    logger.debug("Se guardará la relación Apoderado-Alumno")
+                    alumnos = form.cleaned_data['alumno']
+
+                    for alumno in alumnos:
+                        apo_alu = ApoderadoAlumno()
+                        apo_alu.parentesco = form.cleaned_data['parentesco']
+                        logger.debug("Parentesco: " + str(form.cleaned_data['parentesco']))
+
+                        apo_alu.alumno = alumno
+                        logger.debug("Alumno: " + str(form.cleaned_data['alumno']))
+
+                        apo_alu.apoderado = instance
+
+                        rpta = apo_alu.save()
+                        logger.debug("respuesta: " + str(rpta))
+
+                    # instance.alumnos.add(apo_alu.alumno)
 
                 instance.save()
                 logger.debug("Se creó un nuevo registro")

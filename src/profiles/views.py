@@ -3,11 +3,11 @@ from django.views import generic
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+from utils.middleware import get_current_colegio
 from utils.views import MyLoginRequiredMixin
 from . import forms
 from . import models
-
+from enrollment.models import Colegio
 
 class ShowProfile(MyLoginRequiredMixin, generic.TemplateView):
     template_name = "profiles/show_profile.html"
@@ -24,6 +24,7 @@ class ShowProfile(MyLoginRequiredMixin, generic.TemplateView):
         if user == self.request.user:
             kwargs["editable"] = True
         kwargs["show_user"] = user
+        #kwargs["colegio1"] = Colegio.objects.get(pk = self.request.session.get('colegio'))
         return super(ShowProfile, self).get(request, *args, **kwargs)
 
 

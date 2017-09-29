@@ -5,7 +5,7 @@
 {% for detalles in proveedor.full_detail %}
     <li>{{detalles}}</li>
 {% empty %}
-    <li>No hay tipos de servicio</li>
+    <li>No hay proveedores registrados</li>
 {% endfor %}
 </ul>
 <form action={% url 'registers:proveedor_list' %}>

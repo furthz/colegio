@@ -5,8 +5,9 @@ from register.views import CreatePersonaView, PersonaDetail, AlumnoCreateView, A
     ApoderadoDetailView, PersonalDetailView, PersonalCreateView, PromotorCreateView, PromotorDetailView, \
     DirectorDetailView, DirectorCreateView, CajeroCreateView, CajeroDetailView, TesoreroCreateView, TesoreroDetailView, \
     ProveedorCreateView, ProveedorDetailView, PersonaListView, PersonaDetailView, ColegioCreateView, ColegioListView, PersonalUpdateView, PersonalDeleteView, \
-    SistemasCreateView, SistemasDetailView, ProveedorListView, ProveedorDeleteView, ProveedorUpdateView
-
+    SistemasCreateView, SistemasDetailView, ProveedorListView, ProveedorDeleteView, ProveedorUpdateView, \
+    AlumnoAutocomplete
+from utils.views import get_provincias, get_distritos
 
 urlpatterns = [
     # url(r'^person/create/$', CreatePersonaView.as_view(), name="persona_create"),
@@ -25,16 +26,16 @@ urlpatterns = [
     url(r'^promotores/create/$',PromotorCreateView.as_view(), name="promotor_create"),  #No agregar ---
     url(r'^promotores/(?P<pk>\d+)/$',PromotorDetailView.as_view(), name='promotor_detail'),
 
-    url(r'^sistemas/create/$', SistemasCreateView.as_view(), name="sistemas_create"),  #======================================================----------------
+    url(r'^sistemas/create/$', SistemasCreateView.as_view(), name="sistemas_create"),
     url(r'^sistemas/(?P<pk>\d+)/$', SistemasDetailView.as_view(), name='sistemas_detail'),
 
-    url(r'^directores/create/$',DirectorCreateView.as_view(), name="director_create"),  #======================================================----------------
+    url(r'^directores/create/$',DirectorCreateView.as_view(), name="director_create"),
     url(r'^directores/(?P<pk>\d+)/$',DirectorDetailView.as_view(), name='director_detail'),
 
-    url(r'^cajeros/create/$',CajeroCreateView.as_view(), name="cajero_create"),  #======================================================----------------
+    url(r'^cajeros/create/$',CajeroCreateView.as_view(), name="cajero_create"),
     url(r'^cajeros/(?P<pk>\d+)/$',CajeroDetailView.as_view(), name='cajero_detail'),
 
-    url(r'^tesoreros/create/$',TesoreroCreateView.as_view(), name="tesorero_create"),  #======================================================----------------
+    url(r'^tesoreros/create/$',TesoreroCreateView.as_view(), name="tesorero_create"),
     url(r'^tesoreros/(?P<pk>\d+)/$',TesoreroDetailView.as_view(), name='tesorero_detail'),
 
     url(r'^proveedores/create/$',ProveedorCreateView.as_view(), name="proveedor_create"),
@@ -51,5 +52,9 @@ urlpatterns = [
     url(r'^colegios/create/$', ColegioCreateView.as_view(), name="colegio_create"),
     url(r'^colegios/$', ColegioListView.as_view(), name="colegio_list"),
 
+    url(r'^alumno/autocomplete/$', AlumnoAutocomplete.as_view(), name='alumno_autocomplete'),
+
+    url(r'^api/get_provincias/', get_provincias, name='get_provincias'),
+    url(r'^api/get_distritos/', get_distritos, name='get_distritos'),
 
 ]

@@ -1,5 +1,6 @@
 import logging
 
+from dal import autocomplete
 from django.contrib.auth.decorators import permission_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponseRedirect
@@ -30,6 +31,19 @@ from payments.models import CajaChica
 
 logger = logging.getLogger("project")
 
+
+class AlumnoAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        # Don't forget to filter out results depending on the visitor !
+        if not self.request.user.is_authenticated():
+            return Alumno.objects.none()
+
+        qs = Alumno.objects.all()
+
+        if self.q:
+            qs = qs.filter(apellido_pa__istartswith=self.q)
+
+        return qs
 
 class CreatePersonaView(MyLoginRequiredMixin, CreateView):
     """
@@ -120,7 +134,7 @@ class AlumnoCreateView(MyLoginRequiredMixin, CreateView):
             als = Alumno.objects.all()
 
             logger.info("Se creó el alumno")
-            return HttpResponseRedirect(alu.get_absolute_url())
+            return HttpResponseRedirect(reverse('enrollments:filtrar_alumno'))
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
@@ -258,7 +272,9 @@ class SistemasCreateView(MyLoginRequiredMixin, CreateView):
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
 
-        if request.user.is_superuser:
+        roles = ['sistemas', 'promotor']
+
+        if validar_roles(roles=roles):
             return super(SistemasCreateView, self).get(request, args, kwargs)
 
         else:
@@ -266,10 +282,12 @@ class SistemasCreateView(MyLoginRequiredMixin, CreateView):
 
     #@method_decorator(permission_required('register.sistemas_create', login_url=settings.REDIRECT_PERMISOS,
     #                                      raise_exception=False))
-    def form_valid(self, request, form):
+    def form_valid(self, form):
         logger.debug("Sistemas a crear con DNI: " + form.cleaned_data["numero_documento"])
 
-        if request.user.is_superuser:
+        roles = ['sistemas', 'promotor']
+
+        if validar_roles(roles=roles):
             personal = SaveGeneric().saveGeneric(padre=Personal, form=form, hijo=Sistemas)
             logger.debug("Se creó el usuario de sistemas en la vista")
 
@@ -288,11 +306,14 @@ class SistemasDetailView(MyLoginRequiredMixin, DetailView):
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
 
-        if request.user.is_superuser:
+        roles = ['sistemas', 'promotor']
+
+        if validar_roles(roles=roles):
             return super(SistemasDetailView, self).get(request, args, kwargs)
 
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
 
 
 class PromotorCreateView(MyLoginRequiredMixin, CreateView):
@@ -619,7 +640,7 @@ class PersonaDetailView(MyLoginRequiredMixin, DetailView):
     queryset = Profile.objects.select_related()
     template_name = "registro_detail.html"
 
-    @method_decorator(permission_required('register.persona_detail', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('register.personal_detail', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'coordinador', 'tesorero', 'sistemas']
@@ -694,8 +715,8 @@ class PersonalUpdateView(MyLoginRequiredMixin, UpdateView):
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
-    @method_decorator(permission_required('register.personal_update', login_url=settings.REDIRECT_PERMISOS,
-                                          raise_exception=False))
+    # @method_decorator(permission_required('register.personal_update', login_url=settings.REDIRECT_PERMISOS,
+    #                                      raise_exception=False))
     def get_object(self, queryset=None):
 
         obj = Profile.objects.prefetch_related("direcciones").get(pk=self.kwargs['pk'])
