@@ -18,6 +18,22 @@
       {% with request.resolver_match.namespace as namespace %}
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">MENÚ DE NAVEGACIÓN</li>
+
+            {% if perms.register.colegio_create %}
+            <li class="treeview yellow">
+                  <a href="#">
+                    <img src="{% static 'site/img/svg/folder-document.svg' %}" width="22px" height="22px"/>
+                    <span>Administración</span>
+                    <span class="pull-right-container">
+                      <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                  </a>
+                  <ul class="treeview-menu">
+                    <li><a href="{% url 'registers:colegio_list' %}"><i class="fa fa-circle-o"></i> Registrar Colegio</a></li>
+                  </ul>
+            </li>
+            {% endif %}
+
             {% if perms.register %}
             <li class="{% if namespace == 'registers' %}active treeview orange {% else  %}treeview green{% endif %} ">
               <a href="#">
@@ -31,26 +47,26 @@
 
 
                 {% if perms.register.personal_list %}
-                    <li><a href="{% url 'registers:personal_list' %}"><i class="fa fa-circle-o"></i>Listado Personas </a> </li>
+                    <li><a href="{% url 'registers:personal_list' %}"><i class="fa fa-circle-o"></i>Listado de Personas </a> </li>
                 {% endif %}
                 {% if perms.register.alumno_create %}
-                    <li><a href="{% url 'registers:alumno_create' %}"><i class="fa fa-circle-o"></i> Alumno</a></li>
+                    <li><a href="{% url 'registers:alumno_create' %}"><i class="fa fa-circle-o"></i> Registrar Alumno</a></li>
                 {% endif %}
                 {% if perms.register.apoderado_create %}
-                    <li><a href="{% url 'registers:apoderado_create' %}"><i class="fa fa-circle-o"></i> Apoderado</a></li>
+                    <li><a href="{% url 'registers:apoderado_create' %}"><i class="fa fa-circle-o"></i> Registrar Apoderado</a></li>
                 {% endif %}
                 {% if perms.register.promotor_create %}
-                    <li><a href="{% url 'registers:promotor_create' %}"><i class="fa fa-circle-o"></i> Promotor</a></li>
+                    <li><a href="{% url 'registers:promotor_create' %}"><i class="fa fa-circle-o"></i> Registrar Promotor</a></li>
                 {% endif %}
                 {% if perms.register.proveedor_list %}
-                    <li><a href="{% url 'registers:proveedor_list' %}"><i class="fa fa-circle-o"></i> Proveedores</a></li>
+                    <li><a href="{% url 'registers:proveedor_list' %}"><i class="fa fa-circle-o"></i> Registrar Proveedores</a></li>
                 {% endif %}
 
 
-                  <li><a href="{% url 'accounts:register_accounts_createSistema' %}"><i class="fa fa-circle-o"></i> Usuario Sistemas</a></li>
-                  <li><a href="{% url 'accounts:register_accounts_createDirector' %}"><i class="fa fa-circle-o"></i> Director</a></li>
-                  <li><a href="{% url 'accounts:register_accounts_createCajero' %}"><i class="fa fa-circle-o"></i> Cajero</a></li>
-                  <li><a href="{% url 'accounts:register_accounts_createTesorero' %}"><i class="fa fa-circle-o"></i> Tesorero</a></li>
+                  <li><a href="{% url 'accounts:register_accounts_createSistema' %}"><i class="fa fa-circle-o"></i> Registrar Usuario de Sistemas</a></li>
+                  <li><a href="{% url 'accounts:register_accounts_createDirector' %}"><i class="fa fa-circle-o"></i> Registrar Director</a></li>
+                  <li><a href="{% url 'accounts:register_accounts_createCajero' %}"><i class="fa fa-circle-o"></i> Registrar Cajero</a></li>
+                  <li><a href="{% url 'accounts:register_accounts_createTesorero' %}"><i class="fa fa-circle-o"></i> Registrar Tesorero</a></li>
 
 
                 <!--
@@ -71,102 +87,24 @@
               </ul>
             </li>
             {% endif %}
+
             <li class="{% if namespace == 'enrollments' %}active treeview orange {% else  %}treeview blue{% endif %} ">
               <a href="#">
                 <img src="{% static 'site/img/svg/notepad.svg' %}" width="22px" height="22px"/>
-                <span>Matricula</span>
+                <span>Matrícula</span>
                 <span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
                 </span>
               </a>
                 <ul class="treeview-menu">
                     {% if perms.enrollment.Matricula_List %}
-                    <li><a href="{% url 'enrollments:matricula_list' %}"><i class="fa fa-circle-o"></i> Matricula</a></li>
+                    <li><a href="{% url 'enrollments:matricula_list' %}"><i class="fa fa-circle-o"></i> Matrícula</a></li>
                     {% endif %}
                     {% if perms.enrollment.Tipo_Servicio_List %}
-                    <li><a href="{% url 'enrollments:tiposervicio_list' %}"><i class="fa fa-circle-o"></i> Servicios</a></li>
+                    <li><a href="{% url 'enrollments:tiposervicio_list' %}"><i class="fa fa-circle-o"></i> Manejo  de Servicios</a></li>
                     {% endif %}
                 </ul>
-        </li>
-
-        <li class="{% if namespace == 'income' %}active treeview orange {% else  %}treeview green{% endif %} ">
-          <a href="#">
-            <img src="{% static 'site/img/svg/money.svg' %}" width="22px" height="22px"/>
-            <span>Controlar Ingresos</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-                <li><a href="{% url 'income:register' %}"><i class="fa fa-circle-o"></i> Registrar Ingresos</a></li>
-                {% if perms.enrollment.control_ingresos_padres %}
-                    <li><a href="{% url 'income:cuentas_cobrar_padres' %}"><i class="fa fa-circle-o"></i> Padres</a></li>
-                {% endif %}
-                {% if perms.enrollment.control_ingresos_promotor %}
-                    <li><a href="{% url 'income:cuentas_cobrar_promotor' %}"><i class="fa fa-circle-o"></i> Promotor</a></li>
-                {% endif %}
-                {% if perms.enrollment.control_ingresos_promotor_detalle %}
-                    <li><a href="{% url 'income:cuentas_cobrar_promotor_detalle' %}"><i class="fa fa-circle-o"></i> Promotor detalle</a></li>
-                {% endif %}
-          </ul>
-        </li>
-
-        <li class="{% if namespace == 'discounts' %}active treeview orange {% else  %}treeview purple{% endif %} ">
-              <a href="#">
-                <img src="{% static 'site/img/svg/tag.svg' %}" width="22px" height="22px"/>
-                <span>Descuentos</span>
-                <span class="pull-right-container">
-                  <i class="fa fa-angle-left pull-right"></i>
-                </span>
-              </a>
-              <ul class="treeview-menu">
-
-                  {% if perms.discounts.Solicitar_Descuento %}
-                      <li><a href="{% url 'discounts:tipo_descuento_create' %}"><i class="fa fa-circle-o"></i> Tipo de Descuento</a></li>
-                  {% endif %}
-                  {% if perms.discounts.aprobar_descuento %}
-                      <li><a href="{% url 'discounts:aprobar_descuentos' %}"><i class="fa fa-circle-o"></i> Aprobar Descuentos</a></li>
-                  {% endif %}
-                  {% if perms.discounts.detalle_descuento %}
-                      <li><a href="{% url 'discounts:detalle_descuentos' %}"><i class="fa fa-circle-o"></i> Detalle de Descuentos</a></li>
-                  {% endif %}
-              </ul>
-        </li>
-        {% if perms.register.colegio_create %}
-        <li class="treeview yellow">
-              <a href="#">
-                <img src="{% static 'site/img/svg/folder-document.svg' %}" width="22px" height="22px"/>
-                <span>Administracion Interna</span>
-                <span class="pull-right-container">
-                  <i class="fa fa-angle-left pull-right"></i>
-                </span>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="{% url 'registers:colegio_list' %}"><i class="fa fa-circle-o"></i> Registrar Colegio</a></li>
-              </ul>
-        </li>
-        {% endif %}
-            <li class="{% if namespace == 'payments' %}active treeview orange {% else  %}treeview yellow{% endif %} ">
-              <a href="#">
-                <img src="{% static 'site/img/svg/folder-document.svg' %}" width="22px" height="22px"/>
-                <span>Pagos</span>
-                <span class="pull-right-container">
-                  <i class="fa fa-angle-left pull-right"></i>
-                </span>
-              </a>
-              <ul class="treeview-menu">
-                  {% if perms.payments.Registrar_Pago_Create %}
-                      <li><a href="{% url 'payments:registrarpago_create' %}"><i class="fa fa-circle-o"></i> Registrar Egresos</a></li>
-                  {% endif %}
-                  {% if perms.payments.control_pagos %}
-                      <li><a href="{% url 'payments:pago_promotor' %}"><i class="fa fa-circle-o"></i> Control de Pagos</a></li>
-                  {% endif %}
-                  {% if perms.payments.add_tipopago %}
-                      <li><a href="{% url 'payments:tipopago_create' %}"><i class="fa fa-circle-o"></i> Crear Tipo de Pagos</a></li>
-                  {% endif %}
-              </ul>
-        </li>
-
+            </li>
 
             <li class="{% if namespace == 'cash' %}active treeview orange {% else  %}treeview green{% endif %} ">
                 <a href="#">
@@ -178,22 +116,88 @@
                 </a>
                 <ul class="treeview-menu">
                     {% if perms.cash.Cashier_List %}
-                        <li><a href="{% url 'cash:cashier_list' %}"><i class="fa fa-circle-o"></i> Cajas</a></li>
+                        <li><a href="{% url 'cash:cashier_list' %}"><i class="fa fa-circle-o"></i> Detalle de Cajas</a></li>
                     {% endif %}
                     {% if perms.cash.Box_Cashier_Creation %}
-                        <li><a href="{% url 'cash:boxcashier_AperturarCaja' %}"><i class="fa fa-circle-o"></i> Abrir Caja</a></li>
+                        <li><a href="{% url 'cash:boxcashier_AperturarCaja' %}"><i class="fa fa-circle-o"></i> Aperturar Caja</a></li>
                     {% endif %}
                     {% if perms.cash.Box_Cashier_List %}
                         <li><a href="{% url 'cash:boxcashier_list' %}"><i class="fa fa-circle-o"></i> Cerrar Caja</a></li>
                     {% endif %}
                     {% if perms.cash.Consigment_List %}
-                        <li><a href="{% url 'cash:consignment_list' %}"><i class="fa fa-circle-o"></i> Remesas</a></li>
+                        <li><a href="{% url 'cash:consignment_list' %}"><i class="fa fa-circle-o"></i> Detalle de Remesas</a></li>
                     {% endif %}
                     {% if perms.cash.Consigment_Creation %}
                         <li><a href="{% url 'cash:consignment_create' %}"><i class="fa fa-circle-o"></i> Crear Remesa</a></li>
                     {% endif %}
                 </ul>
             </li>
+
+            <li class="{% if namespace == 'income' %}active treeview orange {% else  %}treeview green{% endif %} ">
+              <a href="#">
+                <img src="{% static 'site/img/svg/money.svg' %}" width="22px" height="22px"/>
+                <span>Ingresos</span>
+                <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+              </a>
+              <ul class="treeview-menu">
+                    <li><a href="{% url 'income:register' %}"><i class="fa fa-circle-o"></i> Registrar Ingreso</a></li>
+                    {% if perms.enrollment.control_ingresos_padres %}
+                        <li><a href="{% url 'income:cuentas_cobrar_padres' %}"><i class="fa fa-circle-o"></i> Control de Ingresos</a></li>
+                    {% endif %}
+                    {% if perms.enrollment.control_ingresos_promotor %}
+                        <li><a href="{% url 'income:cuentas_cobrar_promotor' %}"><i class="fa fa-circle-o"></i> Reportes de Recaudación</a></li>
+                    {% endif %}
+                    {% if perms.enrollment.control_ingresos_promotor_detalle %}
+                        <li><a href="{% url 'income:cuentas_cobrar_promotor_detalle' %}"><i class="fa fa-circle-o"></i> Detalle de Ingresos</a></li>
+                    {% endif %}
+              </ul>
+            </li>
+
+            <li class="{% if namespace == 'payments' %}active treeview orange {% else  %}treeview yellow{% endif %} ">
+                  <a href="#">
+                    <img src="{% static 'site/img/svg/folder-document.svg' %}" width="22px" height="22px"/>
+                    <span>Pagos</span>
+                    <span class="pull-right-container">
+                      <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                  </a>
+                  <ul class="treeview-menu">
+                      {% if perms.payments.Registrar_Pago_Create %}
+                          <li><a href="{% url 'payments:registrarpago_create' %}"><i class="fa fa-circle-o"></i> Registrar Egreso</a></li>
+                      {% endif %}
+                      {% if perms.payments.control_pagos %}
+                          <li><a href="{% url 'payments:pago_promotor' %}"><i class="fa fa-circle-o"></i> Control de Pagos</a></li>
+                      {% endif %}
+                      {% if perms.payments.add_tipopago %}
+                          <li><a href="{% url 'payments:tipopago_create' %}"><i class="fa fa-circle-o"></i> Manejo de Tipo de Pagos</a></li>
+                      {% endif %}
+                  </ul>
+            </li>
+
+            <li class="{% if namespace == 'discounts' %}active treeview orange {% else  %}treeview purple{% endif %} ">
+                  <a href="#">
+                    <img src="{% static 'site/img/svg/tag.svg' %}" width="22px" height="22px"/>
+                    <span>Descuentos</span>
+                    <span class="pull-right-container">
+                      <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                  </a>
+                  <ul class="treeview-menu">
+
+                      {% if perms.discounts.Solicitar_Descuento %}
+                          <li><a href="{% url 'discounts:tipo_descuento_create' %}"><i class="fa fa-circle-o"></i> Manejo de Descuentos</a></li>
+                      {% endif %}
+                      {% if perms.discounts.aprobar_descuento %}
+                          <li><a href="{% url 'discounts:aprobar_descuentos' %}"><i class="fa fa-circle-o"></i> Aprobar Solicitudes</a></li>
+                      {% endif %}
+                      {% if perms.discounts.detalle_descuento %}
+                          <li><a href="{% url 'discounts:detalle_descuentos' %}"><i class="fa fa-circle-o"></i> Detalle de Solicitudes</a></li>
+                      {% endif %}
+                  </ul>
+            </li>
+
       </ul>
       {% endwith %}
 
