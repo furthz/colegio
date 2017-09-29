@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
                 ('usuario_modificacion', models.CharField(max_length=10, null=True))
             ],
             options={
-                'db_table': 'colegio',
+                # 'db_table': 'colegio',
                 'managed': settings.IS_MIGRATE,
                 'permissions': (
                     ("colegio_create", "crear colegio"),
@@ -61,7 +61,7 @@ class Migration(migrations.Migration):
                 ('fecha_modificacion', models.DateTimeField(blank=True, null=True))
             ],
             options={
-                'db_table': 'telefono',
+                # 'db_table': 'telefono',
                 'managed': settings.IS_MIGRATE,
             },
         ),
@@ -85,7 +85,7 @@ class Migration(migrations.Migration):
                 ('fecha_modificacion', models.DateTimeField(blank=True, null=True))
             ],
             options={
-                'db_table': 'direccion',
+                # 'db_table': 'direccion',
                 'managed': settings.IS_MIGRATE,
             },
         ),
@@ -103,7 +103,7 @@ class Migration(migrations.Migration):
 
             ],
             options={
-                'db_table': 'alumno',
+                # 'db_table': 'alumno',
                 'managed': settings.IS_MIGRATE,
                 'permissions': (
                     ("alumno_create", "crear alumno"),
@@ -128,7 +128,7 @@ class Migration(migrations.Migration):
                 ('usuario_modificacion', models.CharField(max_length=10, null=True))
             ],
             options={
-                'db_table': 'apoderado',
+                # 'db_table': 'apoderado',
                 'managed': settings.IS_MIGRATE,
                 'permissions': (
                     ("apoderado_create", "crear apoderado"),
@@ -156,7 +156,7 @@ class Migration(migrations.Migration):
 
             ],
             options={
-                'db_table': 'apoderado_alumno',
+                # 'db_table': 'apoderado_alumno',
                 'managed': settings.IS_MIGRATE,
                 'unique_together': (('alumno', 'apoderado'),)
 
@@ -175,7 +175,7 @@ class Migration(migrations.Migration):
                 ('usuario_modificacion', models.CharField(max_length=10, null=True))
             ],
             options={
-                'db_table': 'personal',
+                #'db_table': 'personal',
                 'managed': settings.IS_MIGRATE,
                 'permissions': (("personal_create", "crear un personal"),
                     ("personal_detail", "verificar el detalle"),
@@ -197,7 +197,7 @@ class Migration(migrations.Migration):
                 ('usuario_modificacion', models.CharField(max_length=10, null=True))
             ],
             options={
-                'db_table': 'sistemas',
+                # 'db_table': 'sistemas',
                 'managed': settings.IS_MIGRATE,
                 'permissions': (
                     ("sistemas_create", "crear usuario sistemas"),
@@ -221,7 +221,7 @@ class Migration(migrations.Migration):
                 ('usuario_modificacion', models.CharField(max_length=10, null=True))
             ],
             options={
-                'db_table': 'promotor',
+                # 'db_table': 'promotor',
                 'managed': settings.IS_MIGRATE,
                 'permissions': (
                     ("promotor_create", "crear promotor"),
@@ -245,7 +245,7 @@ class Migration(migrations.Migration):
                 ('usuario_modificacion', models.CharField(max_length=10, null=True))
             ],
             options={
-                'db_table': 'cajero',
+                # 'db_table': 'cajero',
                 'managed': settings.IS_MIGRATE,
                 'permissions': (
                     ("cajero_create", "crear cajero"),
@@ -269,7 +269,7 @@ class Migration(migrations.Migration):
                 ('usuario_modificacion', models.CharField(max_length=10, null=True))
             ],
             options={
-                'db_table': 'tesorero',
+                # 'db_table': 'tesorero',
                 'managed': settings.IS_MIGRATE,
                 'permissions': (
                     ("tesorero_create", "crear tesorero"),
@@ -293,7 +293,7 @@ class Migration(migrations.Migration):
                 ('usuario_modificacion', models.CharField(max_length=10, null=True))
             ],
             options={
-                'db_table': 'director',
+                # 'db_table': 'director',
                 'managed': settings.IS_MIGRATE,
                 'permissions': (
                     ("director_create", "crear director"),
@@ -319,7 +319,7 @@ class Migration(migrations.Migration):
 
             ],
             options={
-                'db_table': 'personal_colegio',
+                # 'db_table': 'personal_colegio',
                 'managed': settings.IS_MIGRATE,
                 'unique_together': (('personal', 'colegio'),)
 
@@ -344,7 +344,7 @@ class Migration(migrations.Migration):
                 ('activo_administrativo', models.BooleanField(db_column='activo', default=True)),
             ],
             options={
-                'db_table': 'administrativo',
+                # 'db_table': 'administrativo',
                 'managed': True,
                 'permissions': (
                     ("administrativo_create", "crear administrativo"),
@@ -373,7 +373,7 @@ class Migration(migrations.Migration):
                  models.DateTimeField(blank=True, db_column='fecha_modificacion', null=True)),
             ],
             options={
-                'db_table': 'proveedor',
+                # 'db_table': 'proveedor',
                 'managed': True,
                 'permissions': (
                     ("proveedor_create", "crear proveedor"),
@@ -399,7 +399,7 @@ class Migration(migrations.Migration):
 
             ],
             options={
-                'db_table': 'proveedor_colegio',
+                # 'db_table': 'proveedor_colegio',
                 'managed': settings.IS_MIGRATE,
             },
         ),

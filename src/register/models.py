@@ -56,7 +56,7 @@ class Personal(CreacionModificacionUserPersonalMixin, CreacionModificacionFechaP
 
     class Meta:
         managed = True
-        db_table = 'personal'
+        #db_table = 'personal'
         permissions = (
             ("personal_create", "crear un personal"),
             ("personal_detail", "verificar el detalle"),
@@ -82,7 +82,7 @@ class Colegio(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionU
 
     class Meta:
         managed = True
-        db_table = 'colegio'
+        # db_table = 'colegio'
         permissions = (
             ("colegio_create","crear colegio"),
             ("colegio_detail", "detalle del colegio"),
@@ -108,7 +108,7 @@ class Telefono(ActivoMixin, CreacionModificacionUserMixin, CreacionModificacionF
 
     class Meta:
         managed = True
-        db_table = 'telefono'
+        # db_table = 'telefono'
 
 
 class Direccion(CreacionModificacionUserMixin, CreacionModificacionFechaMixin, models.Model):
@@ -171,7 +171,7 @@ class Direccion(CreacionModificacionUserMixin, CreacionModificacionFechaMixin, m
 
     class Meta:
         managed = True
-        db_table = 'direccion'
+        # db_table = 'direccion'
 
 
 class Apoderado(CreacionModificacionUserApoderadoMixin, CreacionModificacionFechaApoderadoMixin, Profile, models.Model):
@@ -210,7 +210,7 @@ class Apoderado(CreacionModificacionUserApoderadoMixin, CreacionModificacionFech
 
     class Meta:
         managed = True
-        db_table = 'apoderado'
+        # db_table = 'apoderado'
         permissions = (
             ("apoderado_create", "crear apoderado"),
             ("apoderado_detail", "detalle del apoderado"),
@@ -255,7 +255,7 @@ class Alumno(CreacionModificacionUserAlumnoMixin, CreacionModificacionFechaAlumn
 
     class Meta:
         managed = True
-        db_table = 'alumno'
+        # db_table = 'alumno'
         permissions = (
             ("alumno_create", "crear alumno"),
             ("alumno_detail", "detalle alumno"),
@@ -276,7 +276,7 @@ class ApoderadoAlumno(ActivoMixin, CreacionModificacionFechaMixin, CreacionModif
 
     class Meta:
         managed = True
-        db_table = 'apoderado_alumno'
+        # db_table = 'apoderado_alumno'
         unique_together = (("apoderado", "alumno"),)
 
 
@@ -312,7 +312,7 @@ class Tesorero(CreacionModificacionUserTesoreroMixin, CreacionModificacionFechaT
 
     class Meta:
         managed = True
-        db_table = 'tesorero'
+        # db_table = 'tesorero'
         permissions = (
             ("tesorero_create", "crear tesorero"),
             ("tesorero_update", "update tesorero"),
@@ -356,7 +356,7 @@ class Sistemas(CreacionModificacionUserSistemasMixin, CreacionModificacionFechaS
 
     class Meta:
         managed = True
-        db_table = 'sistemas'
+        # db_table = 'sistemas'
         permissions = (
             ("sistemas_create", "crear usuario sistemas"),
             ("sistemas_update", "update usuario sistemas"),
@@ -400,7 +400,7 @@ class Promotor(CreacionModificacionUserPromotorMixin, CreacionModificacionFechaP
 
     class Meta:
         managed = True
-        db_table = 'promotor'
+        # db_table = 'promotor'
         permissions = (
             ("promotor_create", "crear promotor"),
             ("promotor_update", "update promotor"),
@@ -444,7 +444,7 @@ class Cajero(CreacionModificacionUserCajeroMixin, CreacionModificacionFechaCajer
 
     class Meta:
         managed = True
-        db_table = 'cajero'
+        # db_table = 'cajero'
         permissions = (
             ("cajero_create", "crear cajero"),
             ("cajero_update", "update cajero"),
@@ -487,7 +487,7 @@ class Director(CreacionModificacionUserDirectorMixin, CreacionModificacionFechaD
 
     class Meta:
         managed = True
-        db_table = 'director'
+        # db_table = 'director'
         permissions = (
             ("director_create", "crear director"),
             ("director_update", "update director"),
@@ -507,7 +507,7 @@ class PersonalColegio(ActivoMixin, CreacionModificacionUserMixin, CreacionModifi
 
     class Meta:
         managed = True
-        db_table = 'personal_colegio'
+        # db_table = 'personal_colegio'
 
 
 class Administrativo(CreacionModificacionUserAdministrativoMixin, CreacionModificacionFechaAdministrativoMixin,
@@ -545,7 +545,7 @@ class Administrativo(CreacionModificacionUserAdministrativoMixin, CreacionModifi
 
     class Meta:
         managed = True
-        db_table = 'administrativo'
+        # db_table = 'administrativo'
         permissions = (
             ("administrativo_create", "crear administrativo"),
             ("administrativo_update", "update administrativo"),
@@ -580,7 +580,7 @@ class Proveedor(CreacionModificacionUserProveedorMixin, CreacionModificacionFech
 
     class Meta:
         managed = True
-        db_table = 'proveedor'
+        # db_table = 'proveedor'
         permissions = (
             ("proveedor_create", "crear proveedor"),
             ("proveedor_update", "update proveedor"),
@@ -600,7 +600,7 @@ class ProvedorColegio(ActivoMixin,CreacionModificacionUserProveedorMixin, Creaci
 
     class Meta:
         managed = True
-        db_table = 'proveedor_colegio'
+        # db_table = 'proveedor_colegio'
 
     def __str__(self):
         return self.proveedor.razon_social
