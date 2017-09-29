@@ -192,7 +192,7 @@ class Apoderado(CreacionModificacionUserApoderadoMixin, CreacionModificacionFech
         Redirecciona las views que usan como modelo esta clase
         :return: url de detalles de la persona
         """
-        return reverse('registers:apoderado_detail', kwargs={'pk': self.pk})
+        return reverse('registers:personal_detail', kwargs={'pk': self.pk})
 
     @staticmethod
     def saveFromPersona(per: Profile, **atributos):
@@ -234,7 +234,7 @@ class Alumno(CreacionModificacionUserAlumnoMixin, CreacionModificacionFechaAlumn
         Redirecciona las views que usan como modelo esta clase
         :return: url de detalles de la persona
         """
-        return reverse('registers:alumno_detail', kwargs={'pk': self.pk})
+        return reverse('registers:personal_detail', kwargs={'pk': self.pk})
 
     @staticmethod
     def saveFromPersona(per: Profile, **atributos):
@@ -294,7 +294,7 @@ class Tesorero(CreacionModificacionUserTesoreroMixin, CreacionModificacionFechaT
         Redirecciona las views que usan como modelo esta clase
         :return: url de detalles de la persona
         """
-        return reverse('registers:tesorero_detail', kwargs={'pk': self.pk})
+        return reverse('registers:personal_detail', kwargs={'pk': self.pk})
 
     @staticmethod
     def saveFromPersonal(per: Personal, **atributos):
@@ -338,7 +338,7 @@ class Sistemas(CreacionModificacionUserSistemasMixin, CreacionModificacionFechaS
         Redirecciona las views que usan como modelo esta clase
         :return: url de detalles de la persona
         """
-        return reverse('registers:sistemas_detail', kwargs={'pk': self.pk})
+        return reverse('registers:personal_detail', kwargs={'pk': self.pk})
 
     @staticmethod
     def saveFromPersonal(per: Personal, **atributos):
@@ -382,7 +382,7 @@ class Promotor(CreacionModificacionUserPromotorMixin, CreacionModificacionFechaP
         Redirecciona las views que usan como modelo esta clase
         :return: url de detalles de la persona
         """
-        return reverse('registers:promotor_detail', kwargs={'pk': self.pk})
+        return reverse('registers:personal_detail', kwargs={'pk': self.pk})
 
     @staticmethod
     def saveFromPersonal(per: Personal, **atributos):
@@ -426,7 +426,7 @@ class Cajero(CreacionModificacionUserCajeroMixin, CreacionModificacionFechaCajer
         Redirecciona las views que usan como modelo esta clase
         :return: url de detalles de la persona
         """
-        return reverse('registers:cajero_detail', kwargs={'pk': self.pk})
+        return reverse('registers:personal_detail', kwargs={'pk': self.pk})
 
     @staticmethod
     def saveFromPersonal(per: Personal, **atributos):
@@ -470,7 +470,7 @@ class Director(CreacionModificacionUserDirectorMixin, CreacionModificacionFechaD
         Redirecciona las views que usan como modelo esta clase
         :return: url de detalles de la persona
         """
-        return reverse('registers:director_detail', kwargs={'pk': self.pk})
+        return reverse('registers:personal_detail', kwargs={'pk': self.pk})
 
     @staticmethod
     def saveFromPersonal(per: Personal, **atributos):
