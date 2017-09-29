@@ -87,7 +87,7 @@ class AsignColegioView(LoginRequiredMixin, View):
             colegios = form.cleaned_data['colegios']
             logger.debug("Colegio seleccionado: " + str(colegios.id_colegio))
             request.session['colegio'] = colegios.id_colegio
-
+            request.session['colegio_name'] = colegios.nombre
         logger.info("Usuario Logueado")
 
         try:
