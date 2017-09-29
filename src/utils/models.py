@@ -871,7 +871,7 @@ class TipoDocumento(ActivoMixin, models.Model):
 
     class Meta:
         managed = True
-        db_table = 'tipo_documento'
+        # db_table = 'tipo_documento'
 
     def __str__(self):
         return self.descripcion
@@ -893,7 +893,7 @@ class TipoSexo(ActivoMixin, models.Model):
 
     class Meta:
         managed = True
-        db_table = 'tipo_sexo'
+        # db_table = 'tipo_sexo'
 
 
 class TiposMedioPago(ActivoMixin, models.Model):
@@ -909,7 +909,7 @@ class TiposMedioPago(ActivoMixin, models.Model):
 
     class Meta:
         managed = True
-        db_table = 'tipos_medio_pago'
+        # db_table = 'tipos_medio_pago'
 
 
 class TiposNivel(ActivoMixin, models.Model):
@@ -925,7 +925,7 @@ class TiposNivel(ActivoMixin, models.Model):
 
     class Meta:
         managed = True
-        db_table = 'tipos_nivel'
+        # db_table = 'tipos_nivel'
 
 
 class TiposGrados(ActivoMixin, models.Model):
@@ -942,7 +942,7 @@ class TiposGrados(ActivoMixin, models.Model):
 
     class Meta:
         managed = True
-        db_table = 'tipos_grados'
+        # db_table = 'tipos_grados'
 
 
 class Departamento(ActivoMixin, models.Model):
@@ -955,7 +955,7 @@ class Departamento(ActivoMixin, models.Model):
 
     class Meta:
         managed = True
-        db_table = 'departamento'
+        # db_table = 'departamento'
 
 
 class Provincia(ActivoMixin, models.Model):
@@ -970,7 +970,7 @@ class Provincia(ActivoMixin, models.Model):
 
     class Meta:
         managed = True
-        db_table = 'provincia'
+        # db_table = 'provincia'
 
 
 class Distrito(ActivoMixin, models.Model):
@@ -984,5 +984,5 @@ class Distrito(ActivoMixin, models.Model):
 
     class Meta:
         managed = True
-        db_table = 'distrito'
+        # db_table = 'distrito'
 

@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
                 ('descripcion', models.CharField(max_length=25, null=True)),
             ],
             options={
-                'db_table': 'tipo_documento',
+                # 'db_table': 'tipo_documento',
                 'managed': settings.IS_MIGRATE,
             },
         ),
@@ -37,7 +37,7 @@ class Migration(migrations.Migration):
                 ('descripcion', models.CharField(max_length=10)),
             ],
             options={
-                'db_table': 'tipo_sexo',
+                # 'db_table': 'tipo_sexo',
                 'managed': settings.IS_MIGRATE,
             },
         ),
@@ -50,7 +50,7 @@ class Migration(migrations.Migration):
                 ('descripcion', models.CharField(max_length=15)),
             ],
             options={
-                'db_table': 'tipos_medio_pago',
+                # 'db_table': 'tipos_medio_pago',
                 'managed': settings.IS_MIGRATE,
             },
         ),
@@ -62,7 +62,7 @@ class Migration(migrations.Migration):
                 ('descripcion', models.CharField(max_length=15)),
             ],
             options={
-                'db_table': 'tipos_nivel',
+                # 'db_table': 'tipos_nivel',
                 'managed': settings.IS_MIGRATE,
             },
         ),
@@ -75,7 +75,7 @@ class Migration(migrations.Migration):
                 ('nivel', models.ForeignKey(db_column='id_tipo_nivel', to='utils.TiposNivel')),
             ],
             options={
-                'db_table': 'tipos_grados',
+                # 'db_table': 'tipos_grados',
                 'managed': settings.IS_MIGRATE,
             },
         ),
@@ -87,7 +87,7 @@ class Migration(migrations.Migration):
                 ('descripcion', models.CharField(max_length=100)),
             ],
             options={
-                'db_table': 'departamento',
+                # 'db_table': 'departamento',
                 'managed': settings.IS_MIGRATE,
             },
         ),
@@ -101,7 +101,7 @@ class Migration(migrations.Migration):
 
             ],
             options={
-                'db_table': 'provincia',
+                # 'db_table': 'provincia',
                 'managed': settings.IS_MIGRATE,
             },
         ),
@@ -115,7 +115,7 @@ class Migration(migrations.Migration):
 
             ],
             options={
-                'db_table': 'distrito',
+                # 'db_table': 'distrito',
                 'managed': settings.IS_MIGRATE,
             },
         ),
