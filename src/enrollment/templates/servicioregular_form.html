@@ -60,7 +60,12 @@
                               <div class="form-group">
                                 <label for="id_fecha_facturar" class="col-sm-2 control-label">Dia generacion de deuda</label>
                                 <div class="col-sm-10">
-                                  {{ form.fecha_facturar }}
+                                  <div class="input-group date">
+                                                    {{ form.fecha_facturar }}
+                                                    <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                                </div>
                                 </div>
                               </div>
 
@@ -95,3 +100,20 @@
 
 
 {% endblock container %}
+
+{% block scripts %}
+    {{ form.media }}
+    <script>
+    $(function () {
+      //Date range picker
+        $('#id_fecha_facturar').datepicker(
+            {
+                format: 'dd/mm/yyyy'
+            }
+        );
+
+
+    });
+    </script>
+
+{% endblock scripts %}
