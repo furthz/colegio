@@ -223,7 +223,10 @@
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label">Distrito</label>
                                                 <div class="col-sm-9">
-                                                    {{ form.distrito }}
+                                                    <!--{{ form.distrito }}-->
+                                                    <select id="id_distrito" name="distrito" class="form-control">
+
+                                                    </select>
                                                 </div>
                                             </div>
 
@@ -232,7 +235,10 @@
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label">Provincia</label>
                                                 <div class="col-sm-9">
-                                                    {{ form.provincia }}
+                                                    <!--{{ form.provincia }}-->
+                                                    <select id="id_provincia" name="provincia" class="form-control">
+
+                                                    </select>
                                                 </div>
                                             </div>
 
@@ -324,7 +330,7 @@
       //Date range picker
         $('#id_fecha_nac').datepicker(
             {
-                format: 'dd/mm/yyyy'
+                format: 'yyyy-mm-dd'
             }
         );
 

@@ -15,8 +15,8 @@ class PersonaForm(ModelForm):
     direccion = forms.CharField(widget=forms.TextInput(attrs={'tabindex': '13', 'class': 'form-control'}), label="Direccion")
     referencia = forms.CharField(widget=forms.TextInput(attrs={'tabindex': '14', 'class': 'form-control'}), label="Referencia")
     departamento = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-control'}), label="Departamento")
-    provincia = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-control'}), label="Provincia")
-    distrito = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-control'}), label="Distrito")
+    # provincia = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-control'}), label="Provincia")
+    # sdistrito = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-control'}), label="Distrito")
     tipo_cel = forms.ChoiceField(widget=forms.Select(attrs={'tabindex': '15', 'class': 'form-control'}), label="Tipo Movil",
                                  required=False)
     celular = forms.CharField(widget=forms.NumberInput(attrs={'tabindex': '16', 'class': 'form-control'}), label="Celular",
@@ -36,15 +36,13 @@ class PersonaForm(ModelForm):
 
     @property
     def ChoiceDepartamento(self):
+
         choices = []
 
         choices.append(('-1', 'Seleccione'))
 
         for d in Departamento.objects.all():
             choices.append((d.id_departamento, d.descripcion))
-        
-        #choices.append((d.id_departamento, d.descripcion) for d in Departamento.objects.all())
-
 
         return choices
 
@@ -66,15 +64,15 @@ class PersonaForm(ModelForm):
                                                 widget=forms.Select(attrs={'tabindex': '7', 'class': 'form-control'}))
         self.fields['departamento'] = forms.ChoiceField(choices = self.ChoiceDepartamento, initial='-1',
                                                         widget=forms.Select(attrs={'tabindex': '10', 'class': 'form-control'}))
-        self.fields['provincia']= forms.ChoiceField(widget=forms.Select(attrs={'tabindex': '11', 'class': 'form-control'}))
-        self.fields['distrito'] = forms.ChoiceField(widget=forms.Select(attrs={'tabindex': '12', 'class': 'form-control'}))
+        #self.fields['provincia']= forms.ChoiceField(widget=forms.Select(attrs={'tabindex': '11', 'class': 'form-control'}))
+        #self.fields['distrito'] = forms.ChoiceField(widget=forms.Select(attrs={'tabindex': '12', 'class': 'form-control'}))
         self.fields['nombre'].widget.attrs = {'tabindex': '1', 'class': 'form-control', 'maxlength': '50'}
         self.fields['segundo_nombre'].widget.attrs = {'tabindex': '2', 'class': 'form-control', 'maxlength': '200'}
         self.fields['apellido_pa'].widget.attrs = {'tabindex': '3', 'class': 'form-control', 'maxlength': '50'}
         self.fields['apellido_ma'].widget.attrs = {'tabindex': '4', 'class': 'form-control', 'maxlength': '50'}
         self.fields['numero_documento'].widget.attrs = {'tabindex': '6', 'class': 'form-control', 'maxlength': '15'}
         self.fields['correo'].widget.attrs = {'tabindex': '9', 'class': 'form-control'}
-        # self.fields['fecha_nac'] = forms.DateField(widget=forms.DateInput)
+        self.fields['fecha_nac'] = forms.DateField(widget=forms.DateInput, input_formats=['%Y-%m-%d'])
         self.fields['fecha_nac'].widget.attrs = {'tabindex': '8', 'class': 'form-control', 'onChange': 'validarFecNac()'}
 
     class Meta:
@@ -99,8 +97,8 @@ class ApoderadoForm(ValidProfileFormMixin, PersonaForm):
 
     #alu = forms.CharField(widget=forms.TextInput(attrs={'tabindex': '23', 'class': 'form-control'}), label="Direccion")
 
-    alumno = forms.ModelChoiceField(queryset=Alumno.objects.all(),
-                                 widget=autocomplete.ModelSelect2(url='registers:alumno_autocomplete',attrs={'tabindex': '27', 'class': 'form-control'}))
+    alumno = forms.ModelMultipleChoiceField(queryset=Alumno.objects.all(),required= False,
+                                 widget=autocomplete.ModelSelect2Multiple(url='registers:alumno_autocomplete',attrs={'tabindex': '27', 'class': 'form-control'}))
 
     #parentesco = forms.CharField(max_length=30, widget=forms.TextInput(attrs={'class' : 'form-control'}))
 

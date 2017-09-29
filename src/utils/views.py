@@ -92,8 +92,8 @@ class SaveGeneric(MyLoginRequiredMixin):
         direccion.calle = form.cleaned_data["direccion"]
         direccion.referencia = form.cleaned_data["referencia"]
         direccion.dpto = form.cleaned_data["departamento"]
-        direccion.provincia = form.cleaned_data["provincia"]
-        direccion.distrito = form.cleaned_data["distrito"]
+        direccion.provincia = form.data["provincia"]
+        direccion.distrito = form.data["distrito"]
 
         logger.debug("Se obtuvieron los datos de la direccion")
 
@@ -122,11 +122,15 @@ class SaveGeneric(MyLoginRequiredMixin):
                 logger.info("Se creó un registro a partir de la persona existente")
 
                 if hijo is Apoderado:
-                    apo_alu = ApoderadoAlumno()
-                    apo_alu.parentesco = form.cleaned_data['parentesco']
-                    apo_alu.alumno = form.cleaned_data['alumno']
-                    apo_alu.apoderado = rpta
-                    apo_alu.save()
+
+                    alumnos = form.cleaned_data['alumno']
+
+                    for alumno in alumnos:
+                        apo_alu = ApoderadoAlumno()
+                        apo_alu.parentesco = form.cleaned_data['parentesco']
+                        apo_alu.alumno = alumno
+                        apo_alu.apoderado = rpta
+                        apo_alu.save()
 
                     #hijo.alumnos.add(apo_alu.alumno)
 
@@ -159,17 +163,20 @@ class SaveGeneric(MyLoginRequiredMixin):
 
                 if hijo is Apoderado:
                     logger.debug("Se guardará la relación Apoderado-Alumno")
-                    apo_alu = ApoderadoAlumno()
-                    apo_alu.parentesco = form.cleaned_data['parentesco']
-                    logger.debug("Parentesco: " + str(form.cleaned_data['parentesco']))
+                    alumnos = form.cleaned_data['alumno']
 
-                    apo_alu.alumno = form.cleaned_data['alumno']
-                    logger.debug("Alumno: " + str(form.cleaned_data['alumno']))
+                    for alumno in alumnos:
+                        apo_alu = ApoderadoAlumno()
+                        apo_alu.parentesco = form.cleaned_data['parentesco']
+                        logger.debug("Parentesco: " + str(form.cleaned_data['parentesco']))
 
-                    apo_alu.apoderado = instance
+                        apo_alu.alumno = alumno
+                        logger.debug("Alumno: " + str(form.cleaned_data['alumno']))
 
-                    rpta = apo_alu.save()
-                    logger.debug("respuesta: " + str(rpta))
+                        apo_alu.apoderado = instance
+
+                        rpta = apo_alu.save()
+                        logger.debug("respuesta: " + str(rpta))
 
                     # instance.alumnos.add(apo_alu.alumno)
 
