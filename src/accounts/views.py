@@ -29,6 +29,10 @@ from register.models import Personal, Colegio, Promotor, Director, Cajero, Tesor
 from django.shortcuts import render
 from django.views import View
 
+from django.contrib.auth.decorators import permission_required
+from utils.middleware import get_current_colegio, validar_roles, get_current_user
+
+
 from . import forms
 
 import logging
@@ -178,11 +182,32 @@ class RegistroUsarioCreationViewSistema(CreateView):
     form_class = RegistroUsuarioForm
     success_url = reverse_lazy('registers:sistemas_create')
 
+    @method_decorator(permission_required('register.sistemas_create', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+
+        if request.user.is_superuser:
+            return super(RegistroUsarioCreationViewSistema, self).get(request, args, kwargs)
+
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
 class RegistroUsarioCreationViewDirector(CreateView):
     model = Userss
     template_name = "register_accounts/register_accounts_form.html"
     form_class = RegistroUsuarioForm
     success_url = reverse_lazy('registers:director_create')
+
+    @method_decorator(permission_required('register.director_create', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        roles = ['sistemas', 'promotor']
+
+        if validar_roles(roles=roles):
+            return super(RegistroUsarioCreationViewDirector, self).get(request, args, kwargs)
+
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
 class RegistroUsarioCreationViewCajero(CreateView):
     model = Userss
@@ -190,10 +215,33 @@ class RegistroUsarioCreationViewCajero(CreateView):
     form_class = RegistroUsuarioForm
     success_url = reverse_lazy('registers:cajero_create')
 
+    @method_decorator(permission_required('register.cajero_create', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+
+        roles = ['promotor', 'director', 'tesorero']
+
+        if validar_roles(roles=roles):
+            return super(RegistroUsarioCreationViewCajero, self).get(request, args, kwargs)
+
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
 class RegistroUsarioCreationViewTesorero(CreateView):
     model = Userss
     template_name = "register_accounts/register_accounts_form.html"
     form_class = RegistroUsuarioForm
     success_url = reverse_lazy('registers:tesorero_create')
+
+    @method_decorator(permission_required('register.tesorero_create', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        roles = ['promotor', 'director', 'sistemas']
+
+        if validar_roles(roles=roles):
+            return super(RegistroUsarioCreationViewTesorero, self).get(request, args, kwargs)
+
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
 
