@@ -245,4 +245,3 @@ class RegistroUsarioCreationViewTesorero(CreateView):
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
 
-
