@@ -144,10 +144,10 @@
               <ul class="treeview-menu">
                     <li><a href="{% url 'income:register' %}"><i class="fa fa-circle-o"></i> Registrar Ingreso</a></li>
                     {% if perms.enrollment.control_ingresos_padres %}
-                        <li><a href="{% url 'income:cuentas_cobrar_padres' %}"><i class="fa fa-circle-o"></i> Control de Recaudación Padres</a></li>
+                        <li><a href="{% url 'income:cuentas_cobrar_padres' %}"><i class="fa fa-circle-o"></i> Control de Ingresos</a></li>
                     {% endif %}
                     {% if perms.enrollment.control_ingresos_promotor %}
-                        <li><a href="{% url 'income:cuentas_cobrar_promotor' %}"><i class="fa fa-circle-o"></i> Control de Recaudación</a></li>
+                        <li><a href="{% url 'income:cuentas_cobrar_promotor' %}"><i class="fa fa-circle-o"></i> Reportes de Recaudación</a></li>
                     {% endif %}
                     {% if perms.enrollment.control_ingresos_promotor_detalle %}
                         <li><a href="{% url 'income:cuentas_cobrar_promotor_detalle' %}"><i class="fa fa-circle-o"></i> Detalle de Ingresos</a></li>
