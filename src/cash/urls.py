@@ -37,8 +37,8 @@ urlpatterns = [
     # URL's del CRUD de Remesas
 
     #url(r'^search/$', search, name='search'),
-    url(r'^consignment/$', ConsignmentListView.as_view(), name='consignment_list'),
-    #url(r'^consignment/$', search, name='consignment_list'),
+    #url(r'^consignment/$', ConsignmentListView.as_view(), name='consignment_list'),
+    url(r'^consignment/$', search, name='consignment_list'),
     url(r'^consignment/(?P<pk>\d+)$', ConsignmentDetailView.as_view(), name='consignment_detail'),
     url(r'^consignment/create$', ConsignmentCreationView.as_view(), name='consignment_create'),
     url(r'^consignment/update/(?P<pk>\d+)$', ConsignmentUpdateView.as_view(), name='consignment_edit'),

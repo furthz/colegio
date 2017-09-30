@@ -37,7 +37,7 @@ class Caja(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, Elimin
     id_caja = models.AutoField(primary_key=True)
     colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column='id_colegio', default=get_current_colegio)
     numero = models.IntegerField()
-    descripcion = models.CharField(max_length=500, blank=True, null=True)
+    descripcion = models.CharField(max_length=200, blank=True, null=True)
     activo = models.BooleanField(default=True)
 
     def __str__(self):
@@ -110,8 +110,8 @@ class CajaCajero(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, 
     saldo = models.FloatField(default=0)  # Sobrante o Faltante al Final de la caja
     monto_apertura = models.FloatField(default=0.0)  # Caja Inicial
     monto_cierre = models.FloatField(default=0.0)  # Caja Final
-    comentario_apertura = models.CharField(max_length=500, blank=True, null=True)
-    comentario_cierre = models.CharField(max_length=500, blank=True, null=True)
+    comentario_apertura = models.CharField(max_length=250, blank=True, null=True)
+    comentario_cierre = models.CharField(max_length=250, blank=True, null=True)
     total_remesa = models.FloatField(default=getRemesasTotal, blank=True, null=True)
 
     def save(self, *args, **kwargs):
@@ -173,7 +173,7 @@ class Remesa(models.Model):
     movimiento = models.ForeignKey(CajaCajero, models.DO_NOTHING, db_column='id_movimiento', default=cajeroExist)
     fechacreacion = models.DateTimeField(default=timezone.now)
     monto = models.FloatField()
-    comentario = models.CharField(max_length=500, blank=True, null=True)
+    comentario = models.CharField(max_length=200, blank=True, null=True)
 
     def __str__(self):
         """
