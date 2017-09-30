@@ -24,7 +24,7 @@ from django.views.generic import CreateView
 from register.forms import PersonaForm, AlumnoForm, ApoderadoForm, PersonalForm, PromotorForm, DirectorForm, CajeroForm, \
     TesoreroForm, ProveedorForm, ColegioForm, SistemasForm
 from register.models import Alumno, Apoderado, Personal, Promotor, Director, Cajero, Tesorero, Colegio, Proveedor, \
-    ProvedorColegio, PersonalColegio, Administrativo, Direccion, Telefono, Sistemas
+    ProveedorColegio, PersonalColegio, Administrativo, Direccion, Telefono, Sistemas
 from utils.middleware import get_current_colegio, validar_roles, get_current_user
 from utils.views import SaveGeneric, MyLoginRequiredMixin
 from payments.models import CajaChica
@@ -549,7 +549,7 @@ class ProveedorCreateView(CreateView):
                 id_colegio = self.request.session.get('colegio')
                 cole = Colegio.objects.get(pk=id_colegio)
 
-                prov_col = ProvedorColegio()
+                prov_col = ProveedorColegio()
                 prov_col.colegio = cole
                 prov_col.proveedor = instance
                 prov_col.save()
@@ -597,7 +597,7 @@ class ProveedorDeleteView(MyLoginRequiredMixin, TemplateView):
 
             if id_colegio is None:
 
-                provs = ProvedorColegio.objects.filter(proveedor=proveedor)
+                provs = ProveedorColegio.objects.filter(proveedor=proveedor)
 
                 for prov in provs:
                     prov.activo = False
@@ -606,12 +606,12 @@ class ProveedorDeleteView(MyLoginRequiredMixin, TemplateView):
             else:
 
                 try:
-                    prov = ProvedorColegio.objects.get(proveedor=proveedor, colegio__id_colegio=id_colegio, activo=True)
+                    prov = ProveedorColegio.objects.get(proveedor=proveedor, colegio__id_colegio=id_colegio, activo=True)
 
                     prov.activo = False
                     prov.save()
 
-                except ProvedorColegio.DoesNotExist:
+                except ProveedorColegio.DoesNotExist:
                     pass
 
             return HttpResponseRedirect(reverse('registers:proveedor_list'))
