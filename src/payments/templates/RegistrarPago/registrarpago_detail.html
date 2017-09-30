@@ -4,13 +4,13 @@
 
 {% block breadcrumb %}
 <h1>
-        Registrar pago de ingreso
+        Registrar pago de servicio
         <small>Modúlo de facturación</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
         <li>Modúlo de facturación</li>
-        <li class="active">Registrar pago de ingreso</li>
+        <li class="active">Registrar pago de servicio</li>
       </ol>
 {% endblock %}
 
@@ -20,7 +20,7 @@
           <div class="col-md-12">
               <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Detalle de registro de ingreso</h3>
+                    <h3 class="box-title">Detalle de pago de servicio</h3>
                 </div>
                 <div class="box-body">
 
@@ -39,8 +39,8 @@
                               <div class="logotipo">
                                 Logotipo
                               </div>
-                              <h3>{{ colegio.nombre }}</h3>
-                              <p>RUC {{ colegio.ruc }}</p>
+                              <h3>{{ pago.caja_chica.colegio.nombre }}</h3>
+                              <p>RUC {{ pago.caja_chica.colegio.ruc }}</p>
                           </div>
                           <div class="col-md-6">
                             <dl class="dl-horizontal">
@@ -48,20 +48,15 @@
                                   N° de Recibo:
                               </dt>
                               <dd>
-                                  011 - 2016
+                                  {{ pago.id_pago }}
                               </dd>
                               <dt>
                                   Nombres del cliente:
                               </dt>
                               <dd>
-                                  {{ alumno }}
+                                  {{ pago.proveedor }}
                               </dd>
-                              <dt>
-                                  Grado y Sección:
-                              </dt>
-                              <dd>
-                                  {{ tiposervicio }}
-                              </dd>
+
                               <dt>
                                   Fecha de pago:
                               </dt>
@@ -72,7 +67,7 @@
                                   Cajero de registro:
                               </dt>
                               <dd>
-                                  {{ cajero }}
+                                  {{ pago.personal.personal.persona }}
                               </dd>
                             </dl>
                           </div>
@@ -88,54 +83,29 @@
                               <th>Precio/Costo</th>
 
                             </tr>
-                              {% for servicio in servicios %}
+
                             <tr>
-                              <td>183</td>
-                              <td>{{ servicio.cuentascobrar.servicio.nombre }}</td>
-                              <td>{{ servicio.monto }}</td>
+                              <td>{{ pago.id_pago }}</td>
+                              <td>{{ pago.tipo_pago.descripcion }}</td>
+                              <td>{{ pago.monto }}</td>
 
                             </tr>
-                              {% empty %}
-                              {% endfor %}
+
 
                             </tr>
-                            <tr>
-                              <td colspan="2" class="table-bold-print">Sub Total</td>
-                              <td class="table-price-print">S/.{{ subtotal }}</td>
-                            </tr>
-                            <tr>
-                              <td colspan="2" class="table-bold-print">Descuento</td>
-                              <td class="table-price-print">S/.{{ descuento }}</td>
-                            </tr>
+
+
                             <tr>
                               <td colspan="2" class="table-bold-print">Total</td>
-                              <td class="table-price-print">S/.{{ total }}</td>
+                              <td class="table-price-print">S/.{{ pago.monto }}</td>
                             </tr>
 
                           </table>
                       </div>
                       <div class="border-detalle">
-                          <div class="col-md-7">
-                          <form class="form-inline">
-                            <div class="form-group">
-                              <div class="input-group">
-                                <div class="input-group-addon">
-                                  <i class="fa fa-envelope" aria-hidden="true"></i>
-                                </div>
-                                <input type="text" class="form-control" id="exampleInputAmount" placeholder="Ingresar correo electronico">
 
-                              </div>
-                              <button type="submit" class="btn btn-primary">Enviar constancia de pago</button>
-                            </div>
-                          </form>
-                          </div>
-                          <form name="imprimirconstancia" id="imprimirconstancia">{% csrf_token %}
-                              <div class="col-md-5">
-                                  <input hidden id="cobranza" name="cobranza" value="{{ cobranza }}" >
-                                  <input hidden id="alumno" name="alumno" value="{{ alumno.id_alumno }}" >
-                                  <button formmethod="post" formaction="{% url 'income:generar_pdf' %}" form="imprimirconstancia" class="btn btn-success" ><i class="fa fa-print" aria-hidden="true"></i> Imprimir constancia de pago</button>
-                          </div>
-                          </form>
+                          <a class="btn btn-success" href="{% url 'payments:registrarpago_create' %}">Volver</a>
+
 
                         </div>
                     </div>

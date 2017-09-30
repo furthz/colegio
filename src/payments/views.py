@@ -180,8 +180,16 @@ class RegistrarPagoCreateView(CreateView):
 
                     'saldo':CajaChica.objects.get(colegio__id_colegio = self.request.session.get('colegio')).saldo
                 })
-            return HttpResponseRedirect(reverse('payments:registrarpago_create'))
+            return render(request, template_name='RegistrarPago/registrarpago_detail.html', context={
+                'pago':pago,
+                'fecha':timezone_now(),
+            })
         return HttpResponseRedirect(reverse('payments:registrarpago_create'))
+
+
+
+
+
 
 
 """
@@ -196,7 +204,7 @@ class ControlPagosPromotorView(FormView):
 
     def cargarformPromotorpagos(self, request):
 
-        roles = ['promotor', 'director']
+        roles = ['promotor', 'director', 'tesorero']
 
         if validar_roles(roles=roles):
 
@@ -313,7 +321,7 @@ class ControlPagosDirectorView(FormView):
 
     def cargarformPromotorpagos(self, request):
 
-        roles = ['promotor', 'director']
+        roles = ['promotor', 'director', 'tesorero']
 
         if validar_roles(roles=roles):
 

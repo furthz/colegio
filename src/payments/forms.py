@@ -56,7 +56,7 @@ class PagoForm(ModelForm):
             'proveedor':_('Proveedor'),
             'tipo_pago':_('Tipo de Pago'),
             'descripcion':_('Descripción'),
-            'monto':_('Monto'),
+            'monto':_('Monto(S/.)'),
             'numero_comprobante':_('Nro Comprobante'),
         }
 
