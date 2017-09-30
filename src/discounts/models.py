@@ -38,7 +38,7 @@ class TipoDescuento(ActivoMixin, CreacionModificacionFechaMixin, CreacionModific
 
     class Meta:
         managed = False
-        db_table = 'tipo_descuento'
+        #db_table = 'tipo_descuento'
         #unique_together = (('id_tipo_servicio', 'colegio'),)
 
 class Descuento(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
@@ -62,7 +62,7 @@ class Descuento(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacio
 
     class Meta:
         managed = False
-        db_table = 'descuento'
+        #db_table = 'descuento'
         permissions = (
             ('aprobar_descuento', 'Para aprobar descuento'),
             ('detalle_descuento', 'Para ver detalles descuento'),
