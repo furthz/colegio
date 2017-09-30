@@ -1,0 +1,122 @@
+{%  extends "page.html" %}
+
+{% block title %}{{ block.super }} Modulo de Facturación {% endblock %}
+
+{% block breadcrumb %}
+<h1>
+        Registrar pago de servicio
+        <small>Modúlo de facturación</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+        <li>Modúlo de facturación</li>
+        <li class="active">Registrar pago de servicio</li>
+      </ol>
+{% endblock %}
+
+{% block container %}
+<section class="content">
+      <div class="row">
+          <div class="col-md-12">
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Detalle de pago de servicio</h3>
+                </div>
+                <div class="box-body">
+
+                  <div id="detalle" class="detalle">
+
+                    <div class="col-md-8">
+                      <div class="alert alert-info" role="alert">
+                        <p>
+                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                        El registro se realizó con exito, a continuación puede imprimir o enviar por correo el detalle del pago
+                        </p>
+                      </div>
+                      <div class="border-detalle">
+                        <div class="row">
+                          <div class="col-md-6">
+                              <div class="logotipo">
+                                Logotipo
+                              </div>
+                              <h3>{{ pago.caja_chica.colegio.nombre }}</h3>
+                              <p>RUC {{ pago.caja_chica.colegio.ruc }}</p>
+                          </div>
+                          <div class="col-md-6">
+                            <dl class="dl-horizontal">
+                              <dt>
+                                  N° de Recibo:
+                              </dt>
+                              <dd>
+                                  {{ pago.id_pago }}
+                              </dd>
+                              <dt>
+                                  Nombres del cliente:
+                              </dt>
+                              <dd>
+                                  {{ pago.proveedor }}
+                              </dd>
+
+                              <dt>
+                                  Fecha de pago:
+                              </dt>
+                              <dd>
+                                  {{ fecha }}
+                              </dd>
+                              <dt>
+                                  Cajero de registro:
+                              </dt>
+                              <dd>
+                                  {{ pago.personal.personal.persona }}
+                              </dd>
+                            </dl>
+                          </div>
+
+                        </div>
+
+                      </div>
+                      <div class="border-detalle">
+                          <table class="table table-bordered">
+                            <tr class="table-header">
+                              <th>ID</th>
+                              <th>Descripción Producto</th>
+                              <th>Precio/Costo</th>
+
+                            </tr>
+
+                            <tr>
+                              <td>{{ pago.id_pago }}</td>
+                              <td>{{ pago.tipo_pago.descripcion }}</td>
+                              <td>{{ pago.monto }}</td>
+
+                            </tr>
+
+
+                            </tr>
+
+
+                            <tr>
+                              <td colspan="2" class="table-bold-print">Total</td>
+                              <td class="table-price-print">S/.{{ pago.monto }}</td>
+                            </tr>
+
+                          </table>
+                      </div>
+                      <div class="border-detalle">
+
+                          <a class="btn btn-success" href="{% url 'payments:registrarpago_create' %}">Volver</a>
+
+
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+          </div>
+      </div>
+</section>
+{% endblock %}
