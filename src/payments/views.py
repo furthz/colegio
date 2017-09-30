@@ -196,7 +196,7 @@ class ControlPagosPromotorView(FormView):
 
     def cargarformPromotorpagos(self, request):
 
-        roles = ['promotor', 'director']
+        roles = ['promotor', 'director', 'tesorero']
 
         if validar_roles(roles=roles):
 
@@ -313,7 +313,7 @@ class ControlPagosDirectorView(FormView):
 
     def cargarformPromotorpagos(self, request):
 
-        roles = ['promotor', 'director']
+        roles = ['promotor', 'director', 'tesorero']
 
         if validar_roles(roles=roles):
 
