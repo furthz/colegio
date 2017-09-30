@@ -36,7 +36,7 @@ class CashierForm(forms.ModelForm):
         widgets = {
 
             'colegio': forms.Select(attrs={'class': 'hidden'}),
-            'numero': forms.TextInput(attrs={'class': 'form-control', 'onKeyPress': 'return soloNumeros(event)', 'tabindex': '1'}),
+            'numero': forms.TextInput(attrs={'class': 'form-control', 'onKeyPress': 'return soloNumeros(event)', 'tabindex': '1', 'maxlength': 4}),
             'descripcion': forms.Textarea(attrs={'class': 'form-control', 'rows': '3', 'tabindex': '2'}),
             'activo': forms.CheckboxInput(),
             'eliminado': forms.CheckboxInput(),
