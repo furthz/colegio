@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Tiposdocumentos',
+            name='Tipodocumento',
             fields=[
                 ('activo', models.BooleanField(default=True)),
                 ('id_tipo', models.AutoField(primary_key=True, serialize=False)),
