@@ -79,7 +79,10 @@
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">Distrito</label>
                                         <div class="col-sm-9">
-                                            {{ form.distrito }}
+                                            <!--{{ form.distrito }}-->
+                                            <select id="id_distrito" name="distrito" class="form-control">
+
+                                                    </select>
                                         </div>
                                     </div>
 
@@ -88,7 +91,10 @@
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">Provincia</label>
                                         <div class="col-sm-9">
-                                            {{ form.provincia }}
+                                            <!--{{ form.provincia }}-->
+                                            <select id="id_provincia" name="provincia" class="form-control">
+
+                                                    </select>
                                         </div>
                                     </div>
 
@@ -235,6 +241,58 @@
     }
 
 </script>
+
+    <script type="text/javascript">
+     $('#id_departamento').change(function () {
+            $('#id_provincia').empty();
+            $('#id_distrito').empty();
+            $('#id_provincia').append('<option value="-1">Seleccione</option>');
+            $.ajax({
+                    type: "GET",
+                    url: "/registers/api/get_provincias",
+                    datatype: "Json",
+                    data: { id_dpto: $('#id_departamento').val() },
+                    success: function (data) {
+                        $.each(data, function (index, value) {
+                            $('#id_provincia').append('<option value="' + value["id"] + '">' +
+                                value["value"] + '</option>');
+                        });
+                    },
+                    error: function (error) {
+                        alert("Error Ajax not working: " + error);
+                    }
+                });
+
+     }
+    );
+    </script>
+
+    <script type="text/javascript">
+     $('#id_provincia').change(function () {
+            $('#id_distrito').empty();
+            $('#id_distrito').append('<option value="-1">Seleccione</option>');
+            $.ajax({
+                    type: "GET",
+                    url: "/registers/api/get_distritos",
+                    datatype: "Json",
+                    data: { id_prov: $('#id_provincia').val() },
+                    success: function (data) {
+                        $.each(data, function (index, value) {
+                            $('#id_distrito').append('<option value="' + value["id"] + '">' +
+                                value["value"] + '</option>');
+                        });
+                    },
+                    error: function (error) {
+                        alert("Error Ajax not working: " + error);
+                    }
+                });
+
+     }
+    );
+    </script>
+
+
+
 {% endblock scripts %}
 
 

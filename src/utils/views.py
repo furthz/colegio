@@ -8,7 +8,7 @@ from django.http import HttpResponseRedirect
 from profiles.models import Profile
 from register.models import Personal, Colegio, PersonalColegio, Direccion, Telefono, ApoderadoAlumno, Apoderado
 from utils.middleware import get_current_colegio
-from utils.models import Provincia, Distrito
+from utils.models import Provincia, Distrito, TiposGrados, TiposNivel
 
 logger = logging.getLogger("project")
 
@@ -72,7 +72,24 @@ def get_distritos(request):
 
     return HttpResponse(data, mimetype)
 
+def get_grados(request):
 
+    if request.is_ajax():
+        id_nivel = request.GET.get("id_nivel", " ")
+        grados = TiposGrados.objects.filter(nivel__id_tipo=id_nivel)
+        results = []
+        for grado in grados:
+            grado_json = {}
+            grado_json['id'] = grado.id_tipo_grado
+            grado_json['value'] = grado.descripcion
+            results.append(grado_json)
+        data = json.dumps(results)
+    else:
+        data = 'fail'
+
+    mimetype = 'application/json'
+
+    return HttpResponse(data, mimetype)
 
 class SaveGeneric(MyLoginRequiredMixin):
 

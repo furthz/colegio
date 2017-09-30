@@ -27,8 +27,21 @@
 
                 <div class="box-body">
                     <form action="" method="POST" class="form-horizontal" id="1">{% csrf_token %}
-                        {% csrf_token %}
-                        {{ form1.as_p}}
+
+                        <p><label for="id_nivel">Nivel:</label> <select name="nivel" class="form-control" id="id_nivel">
+                          <option value="1">Inicial</option>
+
+                          <option value="2">Primaria</option>
+
+                          <option value="3">Secundaria</option>
+
+                        </select></p>
+                        <p><label for="id_grado">Grado:</label> <select name="grado" class="form-control" id="id_grado">
+
+
+                        </select></p>
+
+                        <p><label for="id_codigo_modular">Codigo Modular:</label> <input type="text" name="codigo_modular" class="form-control" id="id_codigo_modular" maxlength="10"></p>
                     </form>
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
@@ -62,3 +75,32 @@
 
 
 {% endblock container %}
+
+{% block scripts %}
+<script type="text/javascript">
+     $('#id_nivel').change(function () {
+            $('#id_grado').empty();
+
+            $('#id_grado').append('<option value="-1">Seleccione</option>');
+            $.ajax({
+                    type: "GET",
+                    url: "/enrollments/api/get_grados",
+                    datatype: "Json",
+                    data: { id_nivel: $('#id_nivel').val() },
+                    success: function (data) {
+                        $.each(data, function (index, value) {
+                            $('#id_grado').append('<option value="' + value["id"] + '">' +
+                                value["value"] + '</option>');
+                        });
+                    },
+                    error: function (error) {
+                        alert("Error Ajax not working: " + error);
+                    }
+                });
+
+     }
+    );
+    </script>
+
+
+{% endblock scripts %}

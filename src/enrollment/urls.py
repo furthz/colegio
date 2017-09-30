@@ -33,6 +33,9 @@ from enrollment.views import generar_pdf
 
 from enrollment.views import SolicitarDescuentoView
 from enrollment.views import CrearSolicitudView
+
+
+from utils.views import get_grados
 #
 
 
@@ -79,4 +82,6 @@ urlpatterns = [
 
     url(r'^pdf/$', generar_pdf, name="generar_pdf"),
 
+
+    url(r'^api/get_grados',get_grados, name='get_grados'),
 ]
