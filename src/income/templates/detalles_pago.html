@@ -132,6 +132,7 @@
                           <form name="imprimirconstancia" id="imprimirconstancia">{% csrf_token %}
                               <div class="col-md-5">
                                   <input hidden id="cobranza" name="cobranza" value="{{ cobranza }}" >
+                                  <input hidden id="alumno" name="alumno" value="{{ alumno.id_alumno }}" >
                                   <button formmethod="post" formaction="{% url 'income:generar_pdf' %}" form="imprimirconstancia" class="btn btn-success" ><i class="fa fa-print" aria-hidden="true"></i> Imprimir constancia de pago</button>
                           </div>
                           </form>
