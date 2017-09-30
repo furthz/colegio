@@ -592,7 +592,7 @@ class Proveedor(CreacionModificacionUserProveedorMixin, CreacionModificacionFech
 
 class ProveedorColegio(ActivoMixin,CreacionModificacionUserProveedorMixin, CreacionModificacionFechaProveedorMixin,models.Model):
     """
-    Proveedor Colegio
+    Proveedor Colegio d
     """
     id_proveedor_colegio = models.AutoField(primary_key=True)
     proveedor = models.ForeignKey(Proveedor, models.DO_NOTHING, db_column="id_proveedor", related_name="proveedores")
