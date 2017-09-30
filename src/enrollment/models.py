@@ -104,7 +104,7 @@ class TipoServicio(ActivoMixin, CreacionModificacionFechaMixin, CreacionModifica
 
     class Meta:
         managed = False
-        db_table = 'tipo_servicio'
+        #db_table = 'tipo_servicio'
         permissions = (
             ("Cargar_Tipo_Servicio_Create", "cargar tipo de servicio"),
             ("Tipo_Servicio_Regular_Create","cargar tipo de servicio regular"),
@@ -171,7 +171,7 @@ class Servicio(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacion
 
     class Meta:
         managed = False
-        db_table = 'servicio'
+        #db_table = 'servicio'
         permissions = (
             ("Servicio_Regular_Create", "crear un servicio regular"),
             ("Servicio_Extra_Create", "crear un servicios extra"),
@@ -211,7 +211,7 @@ class Matricula(ActivoMixin, CreacionModificacionUserMixin, CreacionModificacion
 
     class Meta:
         managed = False
-        db_table = 'matricula'
+        #db_table = 'matricula'
         permissions = (
             ("Matricula_Create","crear una matricula"),
             ("Cargar_Matricula_Create","cargar una matricula"),
@@ -247,7 +247,7 @@ class Cuentascobrar(ActivoMixin, CreacionModificacionFechaMixin, CreacionModific
 
     class Meta:
         managed = False
-        db_table = 'cuentascobrar'
+        #db_table = 'cuentascobrar'
         permissions = (
             ('control_ingresos_padres', 'Para el control de ingresos de los padres'),
             ('control_ingresos_promotor', 'Para el control de ingresos del promotor'),

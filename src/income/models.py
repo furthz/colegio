@@ -29,7 +29,7 @@ class Cobranza(CreacionModificacionUserMixin, CreacionModificacionFechaMixin, mo
 
     class Meta:
         managed = False
-        db_table = 'cobranza'
+        #db_table = 'cobranza'
 
 
 class DetalleCobranza(models.Model):
@@ -40,7 +40,7 @@ class DetalleCobranza(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'detalle_cobranza'
+        #db_table = 'detalle_cobranza'
 
 
 # FUNCIÓN PARA OBTENER EN MES SEGÚN LO ELEGIDO EN EL FORMULARIO

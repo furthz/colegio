@@ -31,7 +31,7 @@ class Migration(migrations.Migration):
                 ('activo', models.BooleanField()),
             ],
             options={
-                'db_table': 'tipo_descuento',
+                #'db_table': 'tipo_descuento',
                 'managed': settings.IS_MIGRATE
             },
         ),
@@ -54,7 +54,7 @@ class Migration(migrations.Migration):
                 ('activo', models.BooleanField()),
             ],
             options={
-                'db_table': 'descuento',
+                #'db_table': 'descuento',
                 'managed': settings.IS_MIGRATE,
                 'permissions': (
                     ('aprobar_descuento', 'Para aprobar descuento'),
