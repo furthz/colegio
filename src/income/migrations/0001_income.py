@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
                 ('usuario_modificacion', models.CharField(max_length=10, null=True)),
             ],
             options = {
-                      'db_table': 'cobranza',
+                      #'db_table': 'cobranza',
                       'managed': settings.IS_MIGRATE,
 
             },
@@ -44,7 +44,7 @@ class Migration(migrations.Migration):
                 ('monto', models.FloatField(null=False)),
             ],
             options={
-                'db_table': 'detalle_cobranza',
+                #'db_table': 'detalle_cobranza',
                 'managed': settings.IS_MIGRATE,
             }
         )
