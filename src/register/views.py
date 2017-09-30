@@ -734,7 +734,7 @@ class ProveedorListView(MyLoginRequiredMixin, TemplateView):
                                           raise_exception=False))
     def post(self, request, *args, **kwargs):
 
-        roles = ['promotor', 'director', 'coordinador', 'sistemas']
+        roles = ['promotor', 'director', 'tesorero', 'sistemas']
 
         if validar_roles(roles=roles):
             colegio = get_current_colegio()
@@ -778,7 +778,7 @@ class ProveedorListView(MyLoginRequiredMixin, TemplateView):
     @method_decorator(permission_required('register.proveedor_list', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
-        roles = ['promotor', 'director', 'coordinador', 'sistemas']
+        roles = ['promotor', 'director', 'tesorero', 'sistemas']
 
         if validar_roles(roles=roles):
 
