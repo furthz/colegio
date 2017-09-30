@@ -528,7 +528,7 @@ class ProveedorCreateView(CreateView):
                                           raise_exception=False))
 
     def get(self, request, *args, **kwargs):
-        roles = ['promotor', 'director', 'tesorero']
+        roles = ['promotor', 'director', 'tesorero', 'sistemas']
 
         if validar_roles(roles=roles):
             return super(ProveedorCreateView, self).get(request, args, kwargs)
@@ -538,7 +538,7 @@ class ProveedorCreateView(CreateView):
     #@method_decorator(permission_required('register.proveedor_create', login_url=settings.REDIRECT_PERMISOS,
     #                                      raise_exception=True))
     def form_valid(self, form):
-
+        'sistemas'
         roles = ['promotor', 'director', 'tesorero', 'sistemas']
 
         if validar_roles(roles=roles):
