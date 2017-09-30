@@ -540,11 +540,12 @@ def generar_pdf(request):
     # la linea 26 es por si deseas descargar el pdf a tu computadora
     # response['Content-Disposition'] = 'attachment; filename=%s' % pdf_name
     id_cobranza_actual = request.POST["cobranza"]
+    id_alumno = request.POST["alumno"]
     cobranza_actual = Cobranza.objects.get(id_cobranza=id_cobranza_actual)
 
     colegio =  Colegio.objects.get(pk=get_current_colegio())
     detalle_cobranza = DetalleCobranza.objects.filter(cobranza=cobranza_actual)
-    alumno = detalle_cobranza.cuentascobrar.matricula.alumno
+    alumno = Alumno.objects.get(id_alumno=id_alumno)
     cajero = Profile.objects.get(user=get_current_user())
 
 
@@ -563,7 +564,7 @@ def generar_pdf(request):
     header1 = Paragraph("Cajero:", styles['Heading2'])
     header2 = Paragraph("{0}".format(cajero), styles['Heading3'])
     header3 = Paragraph("Nombre del alumno:", styles['Heading2'])
-    header4 = Paragraph("{0}".format(Alumno), styles['Heading3'])
+    header4 = Paragraph("{0}".format(alumno), styles['Heading3'])
 
     clientes.append(header)
     clientes.append(fecha)

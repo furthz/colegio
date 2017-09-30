@@ -27,17 +27,10 @@
 
                 <div class="box-body">
                     <form action="" method="POST" class="form-horizontal" id="1">{% csrf_token %}
-
-                        <p><label for="id_nivel">Nivel:</label> <select name="nivel" class="form-control" id="id_nivel">
-                          <option value="1">Inicial</option>
-
-                          <option value="2">Primaria</option>
-
-                          <option value="3">Secundaria</option>
-
-                        </select></p>
+                        <p><label for="id_nivel">Nivel:</label>
+                        {{ form1.nivel }}
                         <p><label for="id_grado">Grado:</label> <select name="grado" class="form-control" id="id_grado">
-
+                           <option value="1">3 Años</option><option value="2">4 Años</option><option value="3">5 Años</option>
 
                         </select></p>
 
@@ -81,7 +74,7 @@
      $('#id_nivel').change(function () {
             $('#id_grado').empty();
 
-            $('#id_grado').append('<option value="-1">Seleccione</option>');
+
             $.ajax({
                     type: "GET",
                     url: "/enrollments/api/get_grados",

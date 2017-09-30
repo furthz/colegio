@@ -76,7 +76,7 @@ def get_grados(request):
 
     if request.is_ajax():
         id_nivel = request.GET.get("id_nivel", " ")
-        grados = TiposGrados.objects.filter(nivel__id_tipo=id_nivel)
+        grados = TiposGrados.objects.filter(nivel__id_tipo = int(id_nivel))
         results = []
         for grado in grados:
             grado_json = {}
