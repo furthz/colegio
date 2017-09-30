@@ -32,7 +32,7 @@ class Migration(migrations.Migration):
                 ('fecha_modificacion', models.DateTimeField(blank=True, null=True)),
             ],
             options={
-                'db_table': 'caja_chica',
+                #'db_table': 'caja_chica',
                 'managed': True,
             },
         ),
@@ -55,7 +55,7 @@ class Migration(migrations.Migration):
                 ('fecha_modificacion', models.DateTimeField(blank=True, null=True)),
             ],
             options={
-                'db_table': 'pago',
+                #'db_table': 'pago',
                 'managed': True,
                 'permissions': (
                     ('control_pagos', 'Para el control de pagos realizados'),
@@ -75,7 +75,7 @@ class Migration(migrations.Migration):
                 ('eliminado', models.BooleanField(default=False)),
             ],
             options={
-                'db_table': 'tipo_pago',
+                #'db_table': 'tipo_pago',
                 'managed': True,
                 'permissions': (
                     ("Tipo_Pago_List", "ver lista de tipo de pago"),
