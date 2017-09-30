@@ -129,9 +129,13 @@
                             </div>
                           </form>
                           </div>
-                          <div class="col-md-5">
-                            <a class="btn btn-success"><i class="fa fa-print" aria-hidden="true"></i> Imprimir constancia de pago</a>
+                          <form name="imprimirconstancia" id="imprimirconstancia">
+                              <div class="col-md-5">
+                                  <input hidden id="cobranza" name="cobranza" value="{{ cobranza }}" >
+                                  <button formmethod="post" formaction="{% url 'income:generar_pdf' %}" form="imprimirconstancia" class="btn btn-success" ><i class="fa fa-print" aria-hidden="true"></i> Imprimir constancia de pago</button>
                           </div>
+                          </form>
+
                         </div>
                     </div>
                     <div class="col-md-4">

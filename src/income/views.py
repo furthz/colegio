@@ -139,7 +139,7 @@ class RegistrarPagoListView(MyLoginRequiredMixin, TemplateView):
         datos_contexto['fecha'] = datetime.today()
         datos_contexto['cajero'] = Profile.objects.get(user=self.request.user)
         datos_contexto['servicios'] = DetalleCobranza.objects.filter(cobranza=cobranza_actual)
-
+        datos_contexto['cobranza'] = cobranza_actual.id_cobranza
         datos_contexto['subtotal'] = total
         datos_contexto['descuento'] = 0
         datos_contexto['total'] = total
@@ -539,6 +539,15 @@ def generar_pdf(request):
     pdf_name = "clientes.pdf"  # llamado clientes
     # la linea 26 es por si deseas descargar el pdf a tu computadora
     # response['Content-Disposition'] = 'attachment; filename=%s' % pdf_name
+    id_cobranza_actual = request.POST["cobranza"]
+    cobranza_actual = Cobranza.objects.get(id_cobranza=id_cobranza_actual)
+
+    colegio =  Colegio.objects.get(pk=get_current_colegio())
+    detalle_cobranza = DetalleCobranza.objects.filter(cobranza=cobranza_actual)
+    alumno = detalle_cobranza.cuentascobrar.matricula.alumno
+    cajero = Profile.objects.get(user=get_current_user())
+
+
     buff = BytesIO()
     doc = SimpleDocTemplate(buff,
                             pagesize=A6,
@@ -549,17 +558,26 @@ def generar_pdf(request):
                             )
     clientes = []
     styles = getSampleStyleSheet()
-    header = Paragraph("Lista de Cuentas por Cobrar", styles['Heading1'])
-    header1 = Paragraph("Nombre del alumno:", styles['Heading2'])
-    header1 = Paragraph("{0}".format("Perez"), styles['Heading3'])
+    header = Paragraph("Detalle del Pago", styles['Heading1'])
+    fecha = Paragraph("Fecha y hora:".format(datetime.today()), styles['Heading2'])
+    header1 = Paragraph("Cajero:", styles['Heading2'])
+    header2 = Paragraph("{0}".format(cajero), styles['Heading3'])
+    header3 = Paragraph("Nombre del alumno:", styles['Heading2'])
+    header4 = Paragraph("{0}".format(Alumno), styles['Heading3'])
+
     clientes.append(header)
+    clientes.append(fecha)
     clientes.append(header1)
-    headings = ('Servicio', 'Precio')
-    allclientes = [(p.servicio, p.precio) for p in Cuentascobrar.objects.all()]
-    print(allclientes)
+    clientes.append(header2)
+    clientes.append(header3)
+    clientes.append(header4)
+    headings = ('Servicio', 'Monto')
+    allclientes = [(p.cuentascobrar.servicio, p.monto) for p in detalle_cobranza]
+    #print(allclientes)
 
     t = Table([headings] + allclientes)
     clientes.append(t)
+
     doc.build(clientes)
     response.write(buff.getvalue())
     buff.close()
