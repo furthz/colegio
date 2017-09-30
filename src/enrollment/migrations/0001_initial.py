@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
                 ('activo', models.BooleanField()),
             ],
             options={
-                'db_table': 'tipo_servicio',
+                #'db_table': 'tipo_servicio',
                 'managed': settings.IS_MIGRATE,
                 #'managed': False,
                 'permissions': (
@@ -67,7 +67,7 @@ class Migration(migrations.Migration):
                 ('activo', models.BooleanField()),
             ],
             options={
-                'db_table': 'servicio',
+                #'db_table': 'servicio',
                 'managed': settings.IS_MIGRATE,
                 #'managed': False,
                 'permissions' : (
@@ -97,7 +97,7 @@ class Migration(migrations.Migration):
                 ('activo', models.BooleanField()),
             ],
             options={
-                'db_table': 'matricula',
+                #'db_table': 'matricula',
                 'managed': settings.IS_MIGRATE,
                 # 'managed': False,
                 'permissions': (
@@ -130,7 +130,7 @@ class Migration(migrations.Migration):
                 ('activo', models.BooleanField()),
             ],
             options={
-                'db_table': 'cuentascobrar',
+                #'db_table': 'cuentascobrar',
                 'managed': settings.IS_MIGRATE,
                 'permissions': (
                     ('control_ingresos_padres', 'Para el control de ingresos de los padres'),
