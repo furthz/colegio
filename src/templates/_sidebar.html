@@ -35,7 +35,7 @@
             {% endif %}
 
             {% if perms.register %}
-            <li class="{% if namespace == 'registers' %}active treeview orange {% else  %}treeview green{% endif %} ">
+            <li class="{% if namespace == 'registers' or namespace == 'accounts' %}active treeview orange {% else  %}treeview green{% endif %} ">
               <a href="#">
                 <img src="{% static 'site/img/svg/user.svg' %}" width="22px" height="22px"/>
                 <span>Registros</span>
