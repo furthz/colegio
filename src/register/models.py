@@ -590,7 +590,7 @@ class Proveedor(CreacionModificacionUserProveedorMixin, CreacionModificacionFech
         )
 
 
-class ProvedorColegio(ActivoMixin,CreacionModificacionUserProveedorMixin, CreacionModificacionFechaProveedorMixin,models.Model):
+class ProveedorColegio(ActivoMixin,CreacionModificacionUserProveedorMixin, CreacionModificacionFechaProveedorMixin,models.Model):
     """
     Proveedor Colegio
     """
