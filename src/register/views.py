@@ -539,7 +539,7 @@ class ProveedorCreateView(CreateView):
     #                                      raise_exception=True))
     def form_valid(self, form):
 
-        roles = ['promotor', 'director', 'tesorero']
+        roles = ['promotor', 'director', 'tesorero', 'sistemas']
 
         if validar_roles(roles=roles):
             instance = form.save()
@@ -570,7 +570,7 @@ class ProveedorUpdateView(MyLoginRequiredMixin, UpdateView):
     @method_decorator(permission_required('register.proveedor_update', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
-        roles = ['promotor', 'director', 'coordinador', 'sistemas']
+        roles = ['promotor', 'director', 'sistemas', 'tesorero']
 
         if validar_roles(roles=roles):
             return super(ProveedorUpdateView, self).get(request, args, kwargs)
@@ -588,7 +588,7 @@ class ProveedorDeleteView(MyLoginRequiredMixin, TemplateView):
     @method_decorator(permission_required('register.proveedor_delete', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
-        roles = ['promotor', 'director', 'coordinador', 'sistemas']
+        roles = ['promotor', 'director', 'tesorero', 'sistemas']
 
         if validar_roles(roles=roles):
             proveedor = Proveedor.objects.get(pk=int(request.GET['idproveedor']))
@@ -627,7 +627,7 @@ class ProveedorDetailView(MyLoginRequiredMixin, DetailView):
     @method_decorator(permission_required('register.proveedor_detail', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
-        roles = ['promotor', 'director', 'tesorero']
+        roles = ['promotor', 'director', 'tesorero', 'sistemas']
 
         if validar_roles(roles=roles):
             return super(ProveedorDetailView, self).get(request, args, kwargs)
