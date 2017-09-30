@@ -3,7 +3,7 @@
 {% load staticfiles %}
 {% load crispy_forms_tags %}
 
-{% block title %}{{ block.super }}Home{% endblock %}
+{% block title %}{{ block.super }}Inicio{% endblock %}
 
 {% block navbar-left %}
   {% include "_navbar.html" with active_link="home" %}
@@ -23,9 +23,10 @@
     <div class="container">
       <div class="row">
         <div class="col-md-8 col-sm-8">
+            <!--
           <h1>{% include "_brandname.html" %}</h1>
           <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
-	  <!--<a class="btn btn-primary" href="{% url 'accounts:signup' %}" role="button">Sign up for Free!</a>-->
+	  <a class="btn btn-primary" href="{% url 'accounts:signup' %}" role="button">Sign up for Free!</a>-->
         </div>
         <div class="col-md-4 col-sm-4">
 
@@ -42,19 +43,19 @@
 <div class="container">
   <div class="row">
     <div class="col-lg-4">
-      <h2>Heading</h2>
-      <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-      <p><a class="btn btn-primary" href="#" role="button">View details &raquo;</a></p>
+      <h2>Gestión</h2>
+      <p>Gestión de alumnos adaptada al centro, evaluación flexible, gestión económica avanzada, transporte, comedor, gestión integral de actividades extraescolares, herramientas de seguimiento del alumno, informes y listados personalizables, documentación oficial garantizada… </p>
+      <!--<p><a class="btn btn-primary" href="#" role="button">View details &raquo;</a></p> -->
     </div>
     <div class="col-lg-4">
-      <h2>Heading</h2>
-      <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-      <p><a class="btn btn-primary" href="#" role="button">View details &raquo;</a></p>
+      <h2>Comunicación</h2>
+      <p>Totalmente web, permite la comunicación en tiempo real a través de múltiples canales: web, sms, email, APP. Todas las herramientas para conectar a tu comunidad educativa. </p>
+      <!-- <p><a class="btn btn-primary" href="#" role="button">View details &raquo;</a></p> -->
     </div>
     <div class="col-lg-4">
-      <h2>Heading</h2>
-      <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa.</p>
-      <p><a class="btn btn-primary" href="#" role="button">View details &raquo;</a></p>
+      <h2>Integración</h2>
+      <p>Mundo Pixel se conecta con herramientas de aprendizaje, horarios, bibliotecas, calidad o contabilidad, permitiendo una gestión mucho más eficiente. Además, dispone de diversos métodos poder extraer información e incluirla en otras herramientas del centro.</p>
+       <!--<p><a class="btn btn-primary" href="#" role="button">View details &raquo;</a></p>-->
     </div>
   </div>
 </div>

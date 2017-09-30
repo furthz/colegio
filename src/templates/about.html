@@ -17,7 +17,7 @@
     <div class="row">
       <div class="col-md-12 text-center">
         <h1>{% include "_brandname.html" %}</h1>
-        <p class="lead">An Awesome Tagline Goes Here</p>
+        <p class="lead">Nosotros estamos comprometidos con el desarrollo de la educación, por lo que nos aseguraremos de brindar sistemas con altos estándares de calidad y un excelente servicio, satisfaciendo las necesidades de la comunidad educativa por encima de sus expectativas. Además, altos niveles de seguridad desde la nube.</p>
       </div>
     </div>
   </div>
@@ -27,28 +27,35 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12 text-center">
-        <h2>Meet The Team</h2>
-        <p class="lead">The Wonderful People Behind the Site</p>
+        <h2>Nuestros Productos</h2>
+        <p class="lead">Sistema de facturación y administración en la nube para colegios en Perú</p>
       </div>
     </div>
     <div class="row">
       <div class="col-lg-4">
-        <div class="text-center"><img class="img-circle centered" src="http://lorempixel.com/128/128/people/9/" alt="profile pic"></div>
+        <div class="text-center"><img class="img-circle centered" src="{% static 'site/img/Gestion.jpg' %}" alt="profile pic" width="300" height="200"></div>
         <p class="heavy text-center">Cassidy Coder</p>
-        <h2>Front-end developer</h2>
-        <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+        <h2>Sistema de gestión</h2>
+        <p>Generación de boletas, facturas y recibos simples en distintos formatos o tamaños. Control detallado y clasificado de ingresos y egresos. Configuración de precios, descuentos y becas. Posibilidad de realizar pagos parciales. Seguimiento de estado de los recibos: cobrados, pendientes, devueltos, pagos parciales entre muchos más. </p>
       </div>
       <div class="col-lg-4">
-        <div class="text-center"><img class="img-circle centered" src="http://lorempixel.com/128/128/people/2/" alt="profile pic"></div>
+        <div class="text-center"><img class="img-circle centered" src="{% static 'site/img/Movil.jpg' %}" alt="profile pic" width="300" height="200"></div>
         <p class="heavy text-center">James King</p>
-        <h2>CEO</h2>
-        <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+        <h2>Agenda móvil</h2>
+        <p>Revisión de agendas de una manera más fácil y directa. No más agendas rotas ni extraviadas. Logra comunicaciones instantaneas entre tutores y padres de familia. Gestión de citas entre padres y personal del centro educativo mediante el aplicativo móvil. Todo esto y mucho más desde tu móvil. </p>
       </div>
       <div class="col-lg-4">
-        <div class="text-center"><img class="img-circle centered" src="http://lorempixel.com/128/128/people/1/" alt="profile pic"></div>
+        <!--
+          <div class="text-center"><img class="img-circle centered" src="http://lorempixel.com/128/128/people/1/" alt="profile pic"></div>
         <p class="heavy text-center">Kate Lamport</p>
-        <h2>Front-end designer</h2>
-        <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+         -->
+        <h2>Envíanos un mensaje</h2>
+          <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fmundopixeloficial%2F&tabs=messages%2C%20%20timeline&width=340&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" width="340" height="500" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+                <!--
+
+          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+         -->
+
       </div>
     </div>
     </div>
@@ -60,14 +67,14 @@
     <div class="row">
       <div id="map-outer" class="col-md-12">
         <div id="address" class="col-md-4">
-          <h2>Our Location</h2>
+          <h2>Nuestras oficinas</h2>
           <address>
-            <strong>Edge Solutions Ltd.</strong><br>
-            Taj Mahal<br>
-            Agra<br>
-            Uttar Pradesh<br>
-            India - 282001<br>
-            <abbr>P:</abbr> +91 0562 222 6431
+            <strong>Jr. Natalio Sanchez 220 Of. 503</strong>
+            <br>
+            Jesus Maria - Lima<br>
+            info@mundopixel.pe<br>
+            www.mundopixel.pe<br>
+            <abbr>Teléfono:</abbr> (01) 758 3337
           </address>
         </div>
         <div id="map-container" class="col-md-8"></div>
@@ -83,7 +90,7 @@
 
    function init_map() {
      // Enter the latitude and longitude of your office here
-	 var myLocation = new google.maps.LatLng(27.176141, 78.042370);
+	 var myLocation = new google.maps.LatLng(-12.0704506, -77.0381903);
 
      var mapOptions = {
           center: myLocation,
