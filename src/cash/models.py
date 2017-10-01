@@ -51,7 +51,7 @@ class Caja(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, Elimin
     class Meta:
         managed = False
         ordering = ["id_caja"]
-        db_table = 'caja'
+        # db_table = 'caja'
         permissions = (
             ("Cashier_List", "ver lista de caja"),
             ("Cashier_Creation", "crear caja"),
@@ -141,7 +141,7 @@ class CajaCajero(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, 
 
     class Meta:
         managed = False
-        db_table = 'caja_cajero'
+        # db_table = 'caja_cajero'
         permissions = (
             ("Box_Cashier_List", "ver lista de apertura y cierre de caja"),
             ("Box_Cashier_Creation", "aperturar caja"),
@@ -185,7 +185,7 @@ class Remesa(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'remesa'
+        # db_table = 'remesa'
         permissions = (
             ("Consigment_List", "ver lista de remesas"),
             ("Consigment_Creation", "crear remesas"),
