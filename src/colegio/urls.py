@@ -1,4 +1,6 @@
 from django.conf.urls import include, url
+from django.conf.urls import handler404
+from colegio.views import mi_error_404
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
@@ -11,6 +13,8 @@ import cash.urls
 import payments.urls
 import discounts.urls
 from . import views
+
+handler404 = mi_error_404
 
 urlpatterns = [
     url(r'^$', views.HomePage.as_view(), name='home'),

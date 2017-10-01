@@ -613,6 +613,7 @@ class MatriculaDetailView(MyLoginRequiredMixin, DetailView):
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
 
+
         if validar_roles(roles=roles):
             return super(MatriculaDetailView, self).get(request, *args, **kwargs)
         else:
