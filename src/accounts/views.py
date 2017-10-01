@@ -10,6 +10,8 @@ from django.contrib import auth
 from django.contrib import messages
 
 from django.views.generic import CreateView, ListView, DetailView, UpdateView
+
+from register.views import renderToRegistro
 from .forms import RegistroUsuarioForm
 from authtools.models import User as Userss
 
@@ -176,6 +178,52 @@ class RegistroUsarioUpdateView(UpdateView):
     success_url = reverse_lazy('accounts:register_accounts_list')
 
     # Sistemas, Director, Cajero, Tesorero----------------------------------------------
+
+
+class RegistroUsuario(CreateView):
+    model = Userss
+    template_name = "register_accounts/register_accounts_form.html"
+    form_class = RegistroUsuarioForm
+    success_url = reverse_lazy('registers:persona_create')
+
+    def get(self, request, *args, **kwargs):
+
+        if request.user.is_superuser:
+            return super(RegistroUsuario, self).get(request, args, kwargs)
+
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+    def post(self, request, *args, **kwargs):
+
+        usuario = Userss()
+
+        form = self.form_class(request.POST)
+
+        # redirect = super(RegistroUsuario, self).form_valid(form)
+
+        if form.is_valid():
+            data_form = form.cleaned_data
+            usuario.name = data_form['name']
+            usuario.email = data_form['email']
+            #usuario.password = data_form['password1']
+            usuario.set_password(data_form['password1'])
+
+            grupos = data_form['groups']
+
+            usuario.save()
+
+            from django.contrib.auth.models import Group
+
+            for g in grupos:
+                g.user_set.add(usuario)
+
+            request.session['usuario_creado'] = usuario.id
+            # request['grupos'] = grupos
+
+        return HttpResponseRedirect(self.success_url)
+
+
 class RegistroUsarioCreationViewSistema(CreateView):
     model = Userss
     template_name = "register_accounts/register_accounts_form.html"

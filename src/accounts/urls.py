@@ -14,7 +14,7 @@ from .views import (
     RegistroUsarioCreationViewCajero,
     RegistroUsarioCreationViewTesorero,
 
-)
+    RegistroUsuario)
 
 urlpatterns = [
     url(r'^login/$', views.LoginView.as_view(), name="login"),
@@ -41,4 +41,6 @@ urlpatterns = [
     url(r'^register/createCajero$', RegistroUsarioCreationViewCajero.as_view(), name='register_accounts_createCajero'),
     url(r'^register/createTesorero$', RegistroUsarioCreationViewTesorero.as_view(), name='register_accounts_createTesorero'),
 
+
+    url(r'^register/create$', RegistroUsuario.as_view(), name='register_create'),
 ]

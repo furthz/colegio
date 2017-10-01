@@ -29,6 +29,8 @@ from utils.middleware import get_current_colegio, validar_roles, get_current_use
 from utils.views import SaveGeneric, MyLoginRequiredMixin
 from payments.models import CajaChica
 
+from authtools.models import User as Userss
+
 logger = logging.getLogger("project")
 
 
@@ -60,21 +62,71 @@ class CreatePersonaView(MyLoginRequiredMixin, CreateView):
         roles = ['promotor', 'director', 'coordinador', 'tesorero', 'sistemas']
 
         if validar_roles(roles=roles):
-            return super(CreatePersonaView, self).get(request, args, kwargs)
+            usuario_creado_id = self.request.session['usuario_creado']
+            usuario_creado = Userss.objects.get(pk = usuario_creado_id)
+
+            is_sistemas = usuario_creado.groups.filter(name="Sistemas").exists()
+            colegios = Colegio.objects.filter(activo=True)
+
+            return render(request, template_name=self.template_name, context={'isSistemas': is_sistemas, 'colegios': colegios, 'form': self.form_class})  #super(CreatePersonaView, self).get(request, args, kwargs)
+
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
     #@method_decorator(permission_required('register.persona_create', login_url=settings.REDIRECT_PERMISOS,
     #                                      raise_exception=False))
+
+    def post(self, request, *args, **kwargs):
+        roles = ['promotor', 'director', 'coordinador', 'tesorero', 'sistemas']
+
+        if validar_roles(roles=roles):
+
+            usuario_creado_id = self.request.session['usuario_creado']
+            usuario_creado = Userss.objects.get(pk=usuario_creado_id)
+
+            # redirect = super(CreatePersonaView, self).form_valid(form)
+            colegio = request.POST['colegio']
+
+            for gr in usuario_creado.groups.all():
+                if gr.name == "Sistemas":
+                    self.model = Sistemas
+                    self.form_class = SistemasForm
+                    self.request.session['colegio'] = str(colegio)
+
+                    f1 = self.form_class(request.POST)
+                    f1.is_valid()
+
+                    sist = SaveGeneric().saveGeneric(padre=Personal, form=f1, hijo=Sistemas)
+
+            return HttpResponseRedirect(reverse('registers:personal_list'))  # super(CreatePersonaView, self).form_valid(form)
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+    """
     def form_valid(self, form):
 
         roles = ['promotor', 'director', 'coordinador', 'tesorero', 'sistemas']
 
         if validar_roles(roles=roles):
-            return super(CreatePersonaView, self).form_valid(form)
+
+            usuario_creado_id = self.request.session['usuario_creado']
+            usuario_creado = Userss.objects.get(pk=usuario_creado_id)
+
+            #redirect = super(CreatePersonaView, self).form_valid(form)
+            colegio = form.data['colegio']
+
+            for gr in usuario_creado.groups.all():
+                if gr.name == "Sistemas":
+                    self.model = Sistemas
+                    self.form_class = SistemasForm
+                    self.request.session['colegio'] = str(colegio)
+                    dic = form.cleaned_data
+                    sist = SaveGeneric().saveGeneric(padre=Personal, form=SistemasForm(initial=dic), hijo=Sistemas)
+
+            return sist.get_absolute_url() #super(CreatePersonaView, self).form_valid(form)
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
-
+    """
 
 class PersonaDetail(MyLoginRequiredMixin, DetailView):
     model = Profile
@@ -1143,3 +1195,6 @@ class ColegioListView(MyLoginRequiredMixin, TemplateView):
             'colegios': colegios,
         })
 
+
+def renderToRegistro(request, template_name, context):
+    return render(request, template_name=template_name, context=context)

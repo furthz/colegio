@@ -203,6 +203,19 @@
 
                                         </div>
 
+                                        {% if isSistemas %}
+                                            <div class="form-group">
+                                                <label class="col-sm-5 control-label">Colegio</label>
+                                                <div class="col-sm-7">
+                                                    <select id="id_colegio" name="colegio">
+                                                        {% for c in colegios %}
+                                                            <option value="{{ c.id_colegio }}">{{ c.nombre }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+
                                     </div>
                                 </div>
                             <!-- TERMINA DATOS PERSONALES -->

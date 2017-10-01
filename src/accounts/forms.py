@@ -8,6 +8,7 @@ from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field
 from crispy_forms.bootstrap import AppendedText, PrependedText, FormActions
 from authtools import forms as authtoolsforms
 from django.contrib.auth import forms as authforms
+from django.contrib.auth.models import Group
 from django.core.urlresolvers import reverse
 
 from authtools.models import User
@@ -162,6 +163,7 @@ class SetPasswordForm(authforms.SetPasswordForm):
 
 
 class RegistroUsuarioForm(UserCreationForm):
+    groups = forms.ModelMultipleChoiceField(queryset=Group.objects.all(), required=True)
 
     class Meta:
         model = User
