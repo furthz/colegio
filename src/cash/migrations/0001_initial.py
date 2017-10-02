@@ -32,7 +32,7 @@ class Migration(migrations.Migration):
                 ('usuario_modificacion', models.CharField(blank=True, max_length=10, null=True)),
             ],
             options={
-                'db_table': 'caja',
+                # 'db_table': 'caja',
                 'managed': settings.IS_MIGRATE,
                 'permissions': (
                     ("Cashier_List", "ver lista de caja"),
@@ -62,7 +62,7 @@ class Migration(migrations.Migration):
                 ('usuario_modificacion', models.CharField(blank=True, max_length=10, null=True)),
             ],
             options={
-                'db_table': 'caja_cajero',
+                # 'db_table': 'caja_cajero',
                 'managed': settings.IS_MIGRATE,
                 'permissions': (
                     ("Box_Cashier_List", "ver lista de apertura y cierre de caja"),
@@ -83,7 +83,7 @@ class Migration(migrations.Migration):
                 ('comentario', models.CharField(blank=True, max_length=500, null=True)),
             ],
             options={
-                'db_table': 'remesa',
+                # 'db_table': 'remesa',
                 'managed': settings.IS_MIGRATE,
                 'permissions': (
                     ("Consigment_List", "ver lista de remesas"),
