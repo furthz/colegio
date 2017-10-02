@@ -256,7 +256,7 @@ class RegistroUsuario(CreateView):
 
             usuario.save()
 
-            grupos = form.data['groups']
+            grupos = form.data_form['groups']
 
             #from django.contrib.auth.models import Group
 
