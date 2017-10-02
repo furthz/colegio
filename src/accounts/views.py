@@ -242,6 +242,8 @@ class RegistroUsuario(CreateView):
     def post(self, request, *args, **kwargs):
         logger.debug("Inicio POST RegistroUsuario")
 
+        roles = ['sistemas', 'director', 'promotor']
+
         usuario = Userss()
 
         form = self.form_class(request.POST)
@@ -252,11 +254,11 @@ class RegistroUsuario(CreateView):
             usuario.email = data_form['email']
             usuario.set_password(data_form['password1'])
 
-            grupos = data_form['groups']
-
             usuario.save()
 
-            from django.contrib.auth.models import Group
+            grupos = form.data['groups']
+
+            #from django.contrib.auth.models import Group
 
             for g in grupos:
                 g.user_set.add(usuario)
@@ -264,7 +266,34 @@ class RegistroUsuario(CreateView):
             request.session['usuario_creado'] = usuario.id
             # request['grupos'] = grupos
 
-        return HttpResponseRedirect(self.success_url)
+            return HttpResponseRedirect(self.success_url)
+
+        else:
+
+            if request.user.is_superuser:
+                logger.info("Es super usuario")
+
+                grupos = []
+                grup = Group.objects.get(id=10)
+                grupos.append(grup)
+                logger.debug("Grupo con permiso: " + str(grup.name))
+
+                logger.info("Se asignó el usuario al grupo: " + str(grup.name))
+
+            elif validar_roles(roles):
+                logger.debug("No es super usuario")
+
+                lista_roles = [2, 3, 4, 5, 6]
+                grupos = []
+                for rol in lista_roles:
+                    grup = Group.objects.get(id=rol)
+                    logger.debug("Grupo: " + str(grup.name))
+
+                    grupos.append(grup)
+
+                logger.info("Se asignó el usuario a los grupos: " + str(lista_roles))
+
+            return render(request=request, template_name=self.template_name, context={'form': form, 'grupos': grupos})
 
 
 class RegistroUsarioCreationViewSistema(CreateView):
