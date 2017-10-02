@@ -305,7 +305,7 @@ class Tesorero(CreacionModificacionUserTesoreroMixin, CreacionModificacionFechaT
         # :return: Objeto Promotor creado
         """
         try:
-            tesorero = Tesorero.objects.get(persona=per)
+            tesorero = Tesorero.objects.get(empleado=per)
             return tesorero
         except Tesorero.DoesNotExist:
             return insert_child(obj=per, child_model=Tesorero, **atributos)
@@ -349,7 +349,7 @@ class Sistemas(CreacionModificacionUserSistemasMixin, CreacionModificacionFechaS
         # :return: Objeto Promotor creado
         """
         try:
-            sistemas = Sistemas.objects.get(persona=per)
+            sistemas = Sistemas.objects.get(empleado=per)
             return sistemas
         except Sistemas.DoesNotExist:
             return insert_child(obj=per, child_model=Sistemas, **atributos)
@@ -393,7 +393,7 @@ class Promotor(CreacionModificacionUserPromotorMixin, CreacionModificacionFechaP
         # :return: Objeto Promotor creado
         """
         try:
-            promotor = Promotor.objects.get(persona=per)
+            promotor = Promotor.objects.get(empleado=per)
             return promotor
         except Promotor.DoesNotExist:
             return insert_child(obj=per, child_model=Promotor, **atributos)
@@ -437,7 +437,7 @@ class Cajero(CreacionModificacionUserCajeroMixin, CreacionModificacionFechaCajer
         # :return: Objeto Promotor creado
         """
         try:
-            cajero = Cajero.objects.get(persona=per)
+            cajero = Cajero.objects.get(empleado=per)
             return cajero
         except Cajero.DoesNotExist:
             return insert_child(obj=per, child_model=Cajero, **atributos)
@@ -480,7 +480,7 @@ class Director(CreacionModificacionUserDirectorMixin, CreacionModificacionFechaD
         # :param atributos: Nuevos atributos propios de Apoderado
         # :return: Objeto Promotor creado        """
         try:
-            alu = Director.objects.get(persona=per)
+            alu = Director.objects.get(empleado=per)
             return alu
         except Director.DoesNotExist:
             return insert_child(obj=per, child_model=Director, **atributos)
@@ -520,7 +520,7 @@ class Administrativo(CreacionModificacionUserAdministrativoMixin, CreacionModifi
     activo_administrativo = models.BooleanField(default=True, db_column="activo")
 
     def __str__(self):
-        return "Id Administrativo: {0}".format(self.id_tesorero)
+        return "Id Administrativo: {0}".format(self.id_administrativo)
 
     def get_absolute_url(self):
         """
@@ -538,7 +538,7 @@ class Administrativo(CreacionModificacionUserAdministrativoMixin, CreacionModifi
         # :return: Objeto Promotor creado
         """
         try:
-            admin = Administrativo.objects.get(persona=per)
+            admin = Administrativo.objects.get(empleado=per)
             return admin
         except Administrativo.DoesNotExist:
             return insert_child(obj=per, child_model=Administrativo, **atributos)

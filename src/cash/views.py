@@ -42,6 +42,7 @@ class CashierListView(ListView):
         roles = ['promotor', 'director', 'administrativo', 'tesorero', 'cajero']
 
         if validar_roles(roles=roles):
+
             return super(CashierListView, self).get(request, *args, **kwargs)
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)

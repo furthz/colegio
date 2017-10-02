@@ -5,7 +5,7 @@ from django import forms
 from django.forms import ModelForm
 
 from profiles.models import Profile
-from register.models import Alumno, Apoderado, Personal, Promotor, Director, Cajero, Tesorero, Proveedor, Colegio, Sistemas
+from register.models import Alumno, Apoderado, Personal, Promotor, Director, Cajero, Tesorero, Proveedor, Colegio, Sistemas, Administrativo
 from utils.forms import ValidProfileFormMixin
 from utils.models import TipoDocumento, TipoSexo, Departamento, Provincia, Distrito
 
@@ -157,7 +157,7 @@ class DirectorForm(ValidProfileFormMixin, PersonaForm):
 
     class Meta:
         model = Director
-        fields = ['user', 'nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento', 'numero_documento',
+        fields = [ 'nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento', 'numero_documento',
                   'sexo', 'correo', 'fecha_nac']
 
 
@@ -167,7 +167,7 @@ class CajeroForm(ValidProfileFormMixin, PersonaForm):
 
     class Meta:
         model = Cajero
-        fields = ['user', 'nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento', 'numero_documento',
+        fields = [ 'nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento', 'numero_documento',
                   'sexo', 'correo', 'fecha_nac']
 
 
@@ -177,9 +177,17 @@ class TesoreroForm(ValidProfileFormMixin, PersonaForm):
 
     class Meta:
         model = Tesorero
-        fields = ['user', 'nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento', 'numero_documento',
+        fields = [ 'nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento', 'numero_documento',
                   'sexo', 'correo', 'fecha_nac']
 
+class AdministrativoForm(ValidProfileFormMixin, PersonaForm):
+
+    title = forms.CharField(label="Registrar Administrativo", required=False)
+
+    class Meta:
+        model = Administrativo
+        fields = ['nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento', 'numero_documento',
+                  'sexo', 'correo', 'fecha_nac']
 
 class ProveedorForm(ModelForm):
 

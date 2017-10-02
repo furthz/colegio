@@ -22,7 +22,7 @@ from django.shortcuts import render
 from django.views.generic import CreateView
 
 from register.forms import PersonaForm, AlumnoForm, ApoderadoForm, PersonalForm, PromotorForm, DirectorForm, CajeroForm, \
-    TesoreroForm, ProveedorForm, ColegioForm, SistemasForm
+    TesoreroForm, ProveedorForm, ColegioForm, SistemasForm, AdministrativoForm
 from register.models import Alumno, Apoderado, Personal, Promotor, Director, Cajero, Tesorero, Colegio, Proveedor, \
     ProveedorColegio, PersonalColegio, Administrativo, Direccion, Telefono, Sistemas
 from utils.middleware import get_current_colegio, validar_roles, get_current_user
@@ -55,7 +55,7 @@ class CreatePersonaView(MyLoginRequiredMixin, CreateView):
     form_class = PersonaForm
     template_name = "registro_create.html"
 
-    @method_decorator(permission_required('register.persona_create', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('register.personal_create', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
 
@@ -85,18 +85,80 @@ class CreatePersonaView(MyLoginRequiredMixin, CreateView):
             usuario_creado = Userss.objects.get(pk=usuario_creado_id)
 
             # redirect = super(CreatePersonaView, self).form_valid(form)
-            colegio = request.POST['colegio']
+            try:
+                colegio = request.POST['colegio']
+                self.request.session['colegio'] = str(colegio)
+            except:
+                pass
 
             for gr in usuario_creado.groups.all():
                 if gr.name == "Sistemas":
                     self.model = Sistemas
                     self.form_class = SistemasForm
-                    self.request.session['colegio'] = str(colegio)
+
 
                     f1 = self.form_class(request.POST)
                     f1.is_valid()
 
                     sist = SaveGeneric().saveGeneric(padre=Personal, form=f1, hijo=Sistemas)
+                    sist.user = usuario_creado
+                    sist.save()
+                elif gr.name == "Administradores":
+                    self.model = Administrativo
+                    self.form_class = AdministrativoForm
+                    #self.request.session['colegio'] = str(colegio)
+
+                    f1 = self.form_class(request.POST)
+                    f1.is_valid()
+
+                    sist = SaveGeneric().saveGeneric(padre=Personal, form=f1, hijo=Administrativo)
+                    sist.user = usuario_creado
+                    sist.save()
+                elif gr.name == "Promotores":
+                    self.model = Promotor
+                    self.form_class = PromotorForm
+                    #self.request.session['colegio'] = str(colegio)
+
+                    f1 = self.form_class(request.POST)
+                    f1.is_valid()
+
+                    sist = SaveGeneric().saveGeneric(padre=Personal, form=f1, hijo=Promotor)
+                    sist.user = usuario_creado
+                    sist.save()
+                elif gr.name == "Directores":
+                    self.model = Director
+                    self.form_class = DirectorForm
+                    #self.request.session['colegio'] = str(colegio)
+
+                    f1 = self.form_class(request.POST)
+                    f1.is_valid()
+
+                    sist = SaveGeneric().saveGeneric(padre=Personal, form=f1, hijo=Director)
+                    sist.user = usuario_creado
+                    sist.save()
+                elif gr.name == "Tesoreros":
+                    self.model = Tesorero
+                    self.form_class = TesoreroForm
+                    #self.request.session['colegio'] = str(colegio)
+
+                    f1 = self.form_class(request.POST)
+                    f1.is_valid()
+
+                    sist = SaveGeneric().saveGeneric(padre=Personal, form=f1, hijo=Tesorero)
+                    sist.user = usuario_creado
+                    sist.save()
+                elif gr.name == "Cajeros":
+                    self.model = Cajero
+                    self.form_class = CajeroForm
+                    #self.request.session['colegio'] = str(colegio)
+
+                    f1 = self.form_class(request.POST)
+                    f1.is_valid()
+
+                    sist = SaveGeneric().saveGeneric(padre=Personal, form=f1, hijo=Cajero)
+                    sist.user = usuario_creado
+                    sist.save()
+            del self.request.session['colegio']
 
             return HttpResponseRedirect(reverse('registers:personal_list'))  # super(CreatePersonaView, self).form_valid(form)
         else:

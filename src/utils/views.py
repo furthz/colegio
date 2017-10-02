@@ -223,9 +223,9 @@ class SaveGeneric(MyLoginRequiredMixin):
             if persona_registrada is not None:
 
                 copiarVal(form=form, parent=persona_registrada)
-                rpta = hijo().saveFromPersonal(per=persona_registrada, **atributos)
-                logger.debug("se creó un personal a partir de la persona")
-                logger.info("se creo un personal a partir de la persona")
+                rpta = hijo().saveFromPersonal(per=persona_registrada.personal, **atributos)
+                logger.debug("se creó un personal a partir de la personal")
+                logger.info("se creo un personal a partir de la personal")
 
                 #agregar la dirección
                 direccion.persona = rpta.personal.persona
@@ -246,14 +246,14 @@ class SaveGeneric(MyLoginRequiredMixin):
 
                 # Verificar que no exista la relación del personal con el colegio previamente
                 try:
-                    per_col = PersonalColegio.objects.get(personal=rpta)
+                    per_col = PersonalColegio.objects.get(personal=rpta.personal)
                     per_col.activo = True
                     per_col.save()
                     logger.debug("Se actualiza la relación colegio y personal a activo")
                     logger.info("Se actualiza la relacion del colegio y personal a activo")
                 except PersonalColegio.DoesNotExist:
                     per_col = PersonalColegio()
-                    per_col.personal = rpta
+                    per_col.personal = rpta.personal
                     per_col.colegio = colegio
                     per_col.save()
                     logger.debug("Se creó la relación personal colegio")

@@ -15,7 +15,7 @@ from register.views import renderToRegistro
 from .forms import RegistroUsuarioForm
 from authtools.models import User as Userss
 
-
+from django.contrib.auth.models import Group
 
 
 from authtools import views as authviews
@@ -187,10 +187,24 @@ class RegistroUsuario(CreateView):
     success_url = reverse_lazy('registers:persona_create')
 
     def get(self, request, *args, **kwargs):
-
+        roles = ['sistemas', 'director', 'promotor']
         if request.user.is_superuser:
-            return super(RegistroUsuario, self).get(request, args, kwargs)
+            grupos = []
+            grupos.append(Group.objects.get(id=10))
 
+            return render(request, template_name=self.template_name, context={
+                'form': self.form_class,
+                'grupos': grupos,
+            })
+        elif validar_roles(roles):
+            lista_roles = [2,3,4,5,6]
+            grupos = []
+            for rol in lista_roles:
+                grupos.append(Group.objects.get(id = rol))
+            return render(request, template_name=self.template_name, context={
+                'form':self.form_class,
+                'grupos': grupos,
+            })
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 

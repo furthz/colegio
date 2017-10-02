@@ -4,13 +4,13 @@
 
 {% block breadcrumb %}
 <h1>
-        Registrar pago de ingreso
+        Registrar Ingreso
         <small>Modúlo de facturación</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
         <li>Modúlo de facturación</li>
-        <li class="active">Registrar pago de ingreso</li>
+        <li class="active">Registrar Ingreso</li>
       </ol>
 {% endblock %}
 
@@ -20,7 +20,7 @@
           <div class="col-md-12">
               <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Registrar pago de ingreso</h3>
+                    <h3 class="box-title">Registrar Ingreso</h3>
                 </div>
                 <div class="box-body">
                   <div class="col-md-9">
@@ -61,7 +61,7 @@
                                     {% endif %}
                                     <span class="input-group-btn">
                                       <button type="submit" form="filtro" formmethod="get" class="btn btn-success">
-                                      <i class="fa fa-plus" aria-hidden="true"></i> Asignar</button>
+                                      <i class="fa fa-plus" aria-hidden="true"></i> Buscar</button>
                                  {% else %}
                                         <a>No hay ninguna caja abierta---->>>></a>
 
@@ -83,7 +83,7 @@
                                     <th>Descripción Producto</th>
                                     <th>Monto Total</th>
                                     <th>Pago Completo</th>
-                                    <th>Pago en Abonos</th>
+                                    <th>Pago en Cuotas</th>
                                   </tr>
                                     <form name="ListaPagos" id="ListaPagos">{% csrf_token %}
 

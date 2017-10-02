@@ -53,26 +53,12 @@
                 {% if perms.register.personal_list %}
                     <li><a href="{% url 'registers:personal_list' %}"><i class="fa fa-circle-o"></i>Listado Personas </a> </li>
                 {% endif %}
-                <!--
-                {% if perms.register.alumno_create %}
-                    <li><a href="{% url 'registers:alumno_create' %}"><i class="fa fa-circle-o"></i> Registrar Alumno</a></li>
-                {% endif %}
-                -->
-                {% if perms.register.promotor_create %}
-                    <li><a href="{% url 'registers:promotor_create' %}"><i class="fa fa-circle-o"></i> Registrar Promotor</a></li>
+
+                {% if perms.register.personal_create %}
+                    <li><a href="{% url 'accounts:register_create' %}"><i class="fa fa-circle-o"></i> Registrar Personal</a></li>
                 {% endif %}
 
-                {% if perms.register.director_create %}
-                  <li><a href="{% url 'accounts:register_accounts_createDirector' %}"><i class="fa fa-circle-o"></i> Registrar Director</a></li>
-                {% endif %}
 
-                {% if perms.register.tesorero_create %}
-                  <li><a href="{% url 'accounts:register_accounts_createTesorero' %}"><i class="fa fa-circle-o"></i> Registrar Tesorero</a></li>
-                {% endif %}
-
-                {% if perms.register.cajero_create %}
-                  <li><a href="{% url 'accounts:register_accounts_createCajero' %}"><i class="fa fa-circle-o"></i> Registrar Cajero</a></li>
-                {% endif %}
 
                 {% if perms.register.apoderado_create %}
                     <li><a href="{% url 'registers:apoderado_create' %}"><i class="fa fa-circle-o"></i> Registrar Apoderado</a></li>
