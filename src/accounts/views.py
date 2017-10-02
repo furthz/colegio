@@ -11,12 +11,10 @@ from django.contrib import messages
 
 from django.views.generic import CreateView, ListView, DetailView, UpdateView
 
-from register.views import renderToRegistro
 from .forms import RegistroUsuarioForm
 from authtools.models import User as Userss
 
 from django.contrib.auth.models import Group
-
 
 from authtools import views as authviews
 from braces import views as bracesviews
@@ -24,16 +22,12 @@ from django.conf import settings
 from django.views.decorators.cache import cache_page
 
 from accounts.services import Roles
-from enrollment.models import Matricula
-from profiles.models import Profile
 from django.contrib.auth.mixins import LoginRequiredMixin
-from register.models import Personal, Colegio, Promotor, Director, Cajero, Tesorero, Administrativo, Apoderado
 from django.shortcuts import render
 from django.views import View
 
 from django.contrib.auth.decorators import permission_required
-from utils.middleware import get_current_colegio, validar_roles, get_current_user
-
+from utils.middleware import validar_roles
 
 from . import forms
 
@@ -54,19 +48,32 @@ class LoginView(bracesviews.AnonymousRequiredMixin,
     form_class = forms.LoginForm
 
     def form_valid(self, form):
+        logger.debug("Inicio LoginView")
         superuser = form.user_cache.is_superuser
+
         redirect = super(LoginView, self).form_valid(form)
+        logger.info("Se logueo")
+
         if superuser:
+            logger.info("Es un Superusuario")
+
             roles = Roles.get_roles()
+            logger.debug("Roles: " + str(roles))
+
             self.request.session['roles'] = roles
+
+            logger.debug("Fin LoginView")
             return HttpResponseRedirect('/users/me')
         else:
-
             remember_me = form.cleaned_data.get('remember_me')
+            logger.debug("Remember: " + str(remember_me))
+
             if remember_me is True:
                 ONE_MONTH = 30 * 24 * 60 * 60
                 expiry = getattr(settings, "KEEP_LOGGED_DURATION", ONE_MONTH)
                 self.request.session.set_expiry(expiry)
+
+            logger.debug("Fin LoginView")
             return redirect
 
 
@@ -77,7 +84,7 @@ class AsignColegioView(LoginRequiredMixin, View):
     template_name = "accounts/asign_colegio.html"
 
     def get(self, request, *args, **kwargs):
-        logger.debug("GET formulario")
+        logger.debug("Inicio GET AsignColegioView")
 
         form = forms.AsignColegioForm(request.POST, user=request.user)
         logger.debug("Formulario para mostrar selección de colegios")
@@ -85,23 +92,30 @@ class AsignColegioView(LoginRequiredMixin, View):
         return render(request, self.template_name, {'form': form})
 
     @method_decorator(cache_page(CACHE_TTL))
-    def post(self, request, *args, **kwargs):
+    def post(self, request, **kwargs):
+        logger.debug("Inicio POST AsignColegioView")
 
         form = forms.AsignColegioForm(request.POST, user=request.user)
+        logger.info("Se asignó el colegio")
 
         if form.is_valid():
             colegios = form.cleaned_data['colegios']
             logger.debug("Colegio seleccionado: " + str(colegios.id_colegio))
+
             request.session['colegio'] = colegios.id_colegio
             request.session['colegio_name'] = colegios.nombre
+            logger.info("Se asignó a las variables de session el colegio")
+
         logger.info("Usuario Logueado")
 
         try:
             if request.session['roles']:
                 roles = request.session['roles']
+                logger.debug("Se asignaron los roles desde la sesion")
         except:
             roles = Roles.get_roles()
             request.session['roles'] = roles
+            logger.debug("Se obtuvieron los roles desde la BD")
 
         return HttpResponseRedirect('/users/me')
 
@@ -157,6 +171,7 @@ class PasswordResetConfirmView(authviews.PasswordResetConfirmAndLoginView):
     template_name = 'accounts/password-reset-confirm.html'
     form_class = forms.SetPasswordForm
 
+
 #################################################
 #####          CRUD DE USUARIOS             #####
 #################################################
@@ -187,40 +202,54 @@ class RegistroUsuario(CreateView):
     success_url = reverse_lazy('registers:persona_create')
 
     def get(self, request, *args, **kwargs):
-        roles = ['sistemas', 'director', 'promotor']
-        if request.user.is_superuser:
-            grupos = []
-            grupos.append(Group.objects.get(id=10))
+        logger.debug("Inicio GET RegistroUsuario")
 
+        roles = ['sistemas', 'director', 'promotor']
+        logger.info("Roles: " + str(roles))
+
+        if request.user.is_superuser:
+            logger.info("Es super usuario")
+
+            grupos = []
+            grup = Group.objects.get(id=10)
+            grupos.append(grup)
+            logger.debug("Grupo con permiso: " + str(grup.name))
+
+            logger.info("Se asignó el usuario al grupo: " + str(grup.name))
             return render(request, template_name=self.template_name, context={
                 'form': self.form_class,
                 'grupos': grupos,
             })
         elif validar_roles(roles):
-            lista_roles = [2,3,4,5,6]
+            logger.debug("No es super usuario")
+
+            lista_roles = [2, 3, 4, 5, 6]
             grupos = []
             for rol in lista_roles:
-                grupos.append(Group.objects.get(id = rol))
+                grup = Group.objects.get(id=rol)
+                logger.debug("Grupo: " + str(grup.name))
+
+                grupos.append(grup)
+
+            logger.info("Se asignó el usuario a los grupos: " + str(lista_roles))
             return render(request, template_name=self.template_name, context={
-                'form':self.form_class,
+                'form': self.form_class,
                 'grupos': grupos,
             })
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
     def post(self, request, *args, **kwargs):
+        logger.debug("Inicio POST RegistroUsuario")
 
         usuario = Userss()
 
         form = self.form_class(request.POST)
 
-        # redirect = super(RegistroUsuario, self).form_valid(form)
-
         if form.is_valid():
             data_form = form.cleaned_data
             usuario.name = data_form['name']
             usuario.email = data_form['email']
-            #usuario.password = data_form['password1']
             usuario.set_password(data_form['password1'])
 
             grupos = data_form['groups']
@@ -254,6 +283,7 @@ class RegistroUsarioCreationViewSistema(CreateView):
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
+
 class RegistroUsarioCreationViewDirector(CreateView):
     model = Userss
     template_name = "register_accounts/register_accounts_form.html"
@@ -270,6 +300,7 @@ class RegistroUsarioCreationViewDirector(CreateView):
 
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
 
 class RegistroUsarioCreationViewCajero(CreateView):
     model = Userss
@@ -289,6 +320,7 @@ class RegistroUsarioCreationViewCajero(CreateView):
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
+
 class RegistroUsarioCreationViewTesorero(CreateView):
     model = Userss
     template_name = "register_accounts/register_accounts_form.html"
@@ -305,5 +337,3 @@ class RegistroUsarioCreationViewTesorero(CreateView):
 
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
-
-
