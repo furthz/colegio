@@ -49,6 +49,7 @@ BoxCashier List
                 <th></th>
             </tr>
             {% for cajacajero in object_list %}
+            {% if cajacajero.caja.colegio.id_colegio == idcolegio %}
             <tr>
                 <td>{{ forloop.counter }}</td>
 
@@ -60,6 +61,8 @@ BoxCashier List
                 <td>{{ cajacajero.monto_cierre }}</td>
                 <td>{{ cajacajero.saldo }}</td>
                 <td>{{ cajacajero.fecha_creacion }}</td>
+
+
                 <td class="text-center">
                     {% if cajacajero.estado == 1 %}
                     <div class="btn-group btn-group-sm" role="group" aria-label="...">
@@ -82,6 +85,7 @@ BoxCashier List
                     {% endif %}
                 </td>
             </tr>
+            {% endif %}
             {% endfor %}
         </table>
     </body>

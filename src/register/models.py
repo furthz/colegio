@@ -509,6 +509,10 @@ class PersonalColegio(ActivoMixin, CreacionModificacionUserMixin, CreacionModifi
         managed = True
         # db_table = 'personal_colegio'
 
+    def __str__(self):
+
+        return "{0} {1} {2}".format(self.personal.persona.nombre, self.personal.persona.apellido_pa, self.personal.persona.apellido_ma)
+
 
 class Administrativo(CreacionModificacionUserAdministrativoMixin, CreacionModificacionFechaAdministrativoMixin,
                      Personal, models.Model):

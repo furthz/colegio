@@ -21,18 +21,22 @@ from django.http import HttpResponse
 from django.db import models
 from profiles.models import BaseProfile as Profile
 
+from utils.middleware import get_current_request
+
+
+from utils.views import MyLoginRequiredMixin
+
 
 
 def index(request):
     return render(request, 'cash/index.html')
 
 
-
 #################################################
 #####          CRUD DE CAJA                 #####
 #################################################
 
-class CashierListView(ListView):
+class CashierListView(MyLoginRequiredMixin, ListView):
     model = Caja
     template_name = 'cashier/cashier_list.html'
 
@@ -47,6 +51,16 @@ class CashierListView(ListView):
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
+    def get_context_data(self, **kwargs):
+            context = super(CashierListView, self).get_context_data(**kwargs)
+
+
+            request = get_current_request()
+
+            if request.session.get('colegio'):
+                id = request.session.get('colegio')
+                context['idcolegio'] = id
+            return context
 """
 class CashierDetailView(DetailView):
     template_name = 'cashier/cashier_detail.html'
@@ -137,6 +151,17 @@ class BoxCashierListView(ListView):
             return super(BoxCashierListView, self).get(request, *args, **kwargs)
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+    def get_context_data(self, **kwargs):
+            context = super(BoxCashierListView, self).get_context_data(**kwargs)
+
+
+            request = get_current_request()
+
+            if request.session.get('colegio'):
+                id = request.session.get('colegio')
+                context['idcolegio'] = id
+            return context
 
 
 class BoxCashierDetailView(DetailView):

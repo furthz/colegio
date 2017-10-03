@@ -36,12 +36,14 @@
 
                                                 </tr>
                                                 {% for cashier in object_list %}
+                                                {% if cashier.colegio.id_colegio == idcolegio %}
                                                 <tr>
                                                     {% if cashier.eliminado == 1 %}
                                                     {% else %}
                                                     <td>{{ forloop.counter }}</td>
                                                     <td>{{ cashier.numero }}</td>
                                                     <td>{{ cashier.descripcion }}</td>
+
 
                                                     <!--
 
@@ -68,6 +70,8 @@
                                                             </a>
                                                         </div>
                                                     </td>
+                                                    {% endif %}
+
                                                 </tr>
                                                 {% endif %}
                                                 {% endfor %}
