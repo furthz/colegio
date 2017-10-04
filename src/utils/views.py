@@ -299,6 +299,7 @@ class SaveGeneric(MyLoginRequiredMixin):
 
 
 def copiarVal(form, parent: Profile):
+    """
     parent.nombre = form.cleaned_data["nombre"]
     logger.debug("se modificó nombre: " + form.cleaned_data["nombre"])
 
@@ -316,3 +317,5 @@ def copiarVal(form, parent: Profile):
 
     parent.save()
     logger.debug("actualizado los campos del profile")
+    """
+    pass

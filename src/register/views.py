@@ -973,23 +973,27 @@ class PersonaListView(MyLoginRequiredMixin, TemplateView):
                 if colegio is None:
                     empleados = Profile.objects.filter(Q(numero_documento=numero_documento),
                                                        Q(nombre__icontains=nombres.upper()) |
+                                                       Q(segundo_nombre__icontains=nombres.upper()) |
                                                        Q(apellido_pa__icontains=nombres.upper()) |
                                                        Q(apellido_ma__icontains=nombres.upper())).filter(
                                                                 personal__Colegios__activo=True)
 
                     alumnos = Matricula.objects.filter(Q(alumno__numero_documento=numero_documento),
                                                        Q(alumno__nombre__icontains=nombres.upper()) |
+                                                       Q(alumno__segundo_nombre__icontains=nombres.upper()) |
                                                        Q(alumno__apellido_pa__icontains=nombres.upper()) |
                                                        Q(alumno__pellido_ma__icontains=nombres.upper())).filter(activo=True)
                 else:
                     empleados = Profile.objects.filter(Q(numero_documento=numero_documento),
                                                        Q(nombre__icontains=nombres.upper()) |
+                                                       Q(segundo_nombre__icontains=nombres.upper()) |
                                                        Q(apellido_pa__icontains=nombres.upper()) |
                                                        Q(apellido_ma__icontains=nombres.upper())).filter(personal__Colegios__id_colegio=colegio,
                                                                                                          personal__Colegios__activo=True)
 
                     alumnos = Matricula.objects.filter(Q(alumno__numero_documento=numero_documento),
                                                        Q(alumno__nombre__icontains=nombres.upper()) |
+                                                       Q(alummno__segundo_nombre__icontains=nombres.upper()) |
                                                        Q(alumno__apellido_pa__icontains=nombres.upper()) |
                                                        Q(alumno__apellido_ma__icontains=nombres.upper())).filter(colegio__id_colegio=colegio,
                                                                                                          activo=True)
@@ -997,21 +1001,25 @@ class PersonaListView(MyLoginRequiredMixin, TemplateView):
             elif not numero_documento and nombres:
                 if colegio is None:
                     empleados = Profile.objects.filter(Q(nombre__icontains=nombres.upper()) |
+                                                       Q(segundo_nombre__icontains=nombres.upper())|
                                                        Q(apellido_pa__icontains=nombres.upper()) |
                                                        Q(apellido_ma__icontains=nombres.upper())).filter(
                                                                             personal__Colegios__activo=True)
 
                     alumnos = Matricula.objects.filter(Q(alumno__nombre__icontains=nombres.upper()) |
+                                                       Q(alumno__segundo_nombre__icontains=nombres.upper()) |
                                                        Q(alumno__apellido_pa__icontains=nombres.upper()) |
                                                        Q(alumno__apellido_ma__icontains=nombres.upper())).filter(activo=True)
                 else:
                     empleados = Profile.objects.filter(Q(nombre__icontains=nombres.upper()) |
                                                        Q(apellido_pa__icontains=nombres.upper()) |
+                                                       Q(segundo_nombre__icontains=nombres.upper()) |
                                                        Q(apellido_ma__icontains=nombres.upper())).filter(personal__Colegios__id_colegio=colegio,
                                                                                                          personal__Colegios__activo=True)
 
                     alumnos = Matricula.objects.filter(Q(alumno__nombre__icontains=nombres.upper()) |
                                                        Q(alumno__apellido_pa__icontains=nombres.upper()) |
+                                                       Q(alumno__segundo_nombre__icontains=nombres.upper()) |
                                                        Q(alumno__apellido_ma__icontains=nombres.upper())).filter(colegio__id_colegio=colegio,activo=True)
             else:
                 return self.get(request)
