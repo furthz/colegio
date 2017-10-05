@@ -1064,6 +1064,13 @@ class PersonaListView(MyLoginRequiredMixin, TemplateView):
                 except Tesorero.DoesNotExist:
                     pass
 
+                try:
+                    if em.personal.sistemas:
+                        rol = "Sistemas "
+                except Sistemas.DoesNotExist:
+                    pass
+
+
                 em.rol = rol
                 resultado.append(em)
 
@@ -1153,6 +1160,12 @@ class PersonaListView(MyLoginRequiredMixin, TemplateView):
                     if empleado.personal.tesorero:
                         rol = "Tesorero "
                 except Tesorero.DoesNotExist:
+                    pass
+
+                try:
+                    if empleado.personal.sistemas:
+                        rol = "Sistemas "
+                except Sistemas.DoesNotExist:
                     pass
 
                 empleado.personal.persona.rol = rol
