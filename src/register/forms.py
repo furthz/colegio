@@ -5,7 +5,8 @@ from django import forms
 from django.forms import ModelForm
 
 from profiles.models import Profile
-from register.models import Alumno, Apoderado, Personal, Promotor, Director, Cajero, Tesorero, Proveedor, Colegio, Sistemas, Administrativo
+from register.models import Alumno, Apoderado, Personal, Promotor, Director, Cajero, Tesorero, Proveedor, Colegio, Sistemas, Administrativo, \
+    Direccion
 from utils.forms import ValidProfileFormMixin
 from utils.models import TipoDocumento, TipoSexo, Departamento, Provincia, Distrito
 
@@ -15,8 +16,8 @@ class PersonaForm(ModelForm):
     direccion = forms.CharField(widget=forms.TextInput(attrs={'tabindex': '13', 'class': 'form-control'}), label="Direccion")
     referencia = forms.CharField(widget=forms.TextInput(attrs={'tabindex': '14', 'class': 'form-control'}), label="Referencia")
     departamento = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-control'}), label="Departamento")
-    # provincia = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-control'}), label="Provincia")
-    # sdistrito = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-control'}), label="Distrito")
+    provincia = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-control'}), label="Provincia", required=False)
+    distrito = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-control'}), label="Distrito", required=False)
     tipo_cel = forms.ChoiceField(widget=forms.Select(attrs={'tabindex': '15', 'class': 'form-control'}), label="Tipo Movil",
                                  required=False)
     celular = forms.CharField(widget=forms.NumberInput(attrs={'tabindex': '16', 'class': 'form-control'}), label="Celular",
@@ -46,13 +47,16 @@ class PersonaForm(ModelForm):
 
         return choices
 
-    @property
+    # @property
     def ChoiceProvincia(self):
-        choices = [(p.id_provincia, p.descripcion) for p in Provincia.objects.all()]
+        # choices = [(p.id_provincia, p.descripcion) for p in Provincia.objects.filter(departamento__id_departamento=dpto)]
+        choices = [(p.id_provincia, p.descripcion) for p in
+                   Provincia.objects.all()]
         return choices
 
-    @property
+    # @property
     def ChoiceDistrito(self):
+        # choices = [(d.id_distrito, d.descripcion) for d in Distrito.objects.filter(provincia__id_provincia=prov)]
         choices = [(d.id_distrito, d.descripcion) for d in Distrito.objects.all()]
         return choices
 
@@ -64,8 +68,6 @@ class PersonaForm(ModelForm):
                                                 widget=forms.Select(attrs={'tabindex': '7', 'class': 'form-control'}))
         self.fields['departamento'] = forms.ChoiceField(choices = self.ChoiceDepartamento, initial='-1',
                                                         widget=forms.Select(attrs={'tabindex': '10', 'class': 'form-control'}))
-        #self.fields['provincia']= forms.ChoiceField(widget=forms.Select(attrs={'tabindex': '11', 'class': 'form-control'}))
-        #self.fields['distrito'] = forms.ChoiceField(widget=forms.Select(attrs={'tabindex': '12', 'class': 'form-control'}))
         self.fields['nombre'].widget.attrs = {'tabindex': '1', 'class': 'form-control', 'maxlength': '50'}
         self.fields['segundo_nombre'].widget.attrs = {'tabindex': '2', 'class': 'form-control', 'maxlength': '200'}
         self.fields['apellido_pa'].widget.attrs = {'tabindex': '3', 'class': 'form-control', 'maxlength': '50'}
@@ -74,6 +76,32 @@ class PersonaForm(ModelForm):
         self.fields['correo'].widget.attrs = {'tabindex': '9', 'class': 'form-control'}
         self.fields['fecha_nac'] = forms.DateField(widget=forms.DateInput, input_formats=['%Y-%m-%d'])
         self.fields['fecha_nac'].widget.attrs = {'tabindex': '8', 'class': 'form-control', 'onChange': 'validarFecNac()'}
+
+        try:
+            #cargar los valores guardados en la dirección
+            if kwargs['instance'].pk is not None:
+                direc = Direccion.objects.get(persona__id_persona=kwargs['instance'].pk)
+                self.fields['departamento'].initial = direc.dpto
+
+                opciones_provincias = self.ChoiceProvincia()
+                opciones_distritos = self.ChoiceDistrito()
+
+                self.fields['provincia'] = forms.ChoiceField(choices=opciones_provincias,
+                    widget=forms.Select(attrs={'tabindex': '11', 'class': 'form-control'}))
+                self.fields['distrito'] = forms.ChoiceField(choices=opciones_distritos,
+                    widget=forms.Select(attrs={'tabindex': '12', 'class': 'form-control'}))
+
+                self.fields['provincia'].initial = direc.provincia
+                self.fields['distrito'].initial = direc.distrito
+                self.fields['direccion'].initial = direc.calle
+                self.fields['referencia'].initial = direc.referencia
+        except:
+            self.fields['provincia'] = forms.ChoiceField(choices=self.ChoiceProvincia, initial='-1',
+                                                            widget=forms.Select(
+                                                                attrs={'tabindex': '10', 'class': 'form-control'}))
+            self.fields['distrito'] = forms.ChoiceField(choices=self.ChoiceDistrito, initial='-1',
+                                                            widget=forms.Select(
+                                                                attrs={'tabindex': '10', 'class': 'form-control'}))
 
     class Meta:
         model = Profile
@@ -267,5 +295,3 @@ class ColegioForm(ModelForm):
                                                      widget=forms.Select(attrs={'class': 'form-control'}))
         self.fields['distrito'] = forms.ChoiceField(choices=self.ChoiceDistrito,
                                                     widget=forms.Select(attrs={'class': 'form-control'}))
-
-

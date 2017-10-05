@@ -29,14 +29,13 @@ class MyLoginRequiredMixin:
         if not request.user.is_authenticated():
             if not request.user.is_superuser and not request.session.get('colegio'):
                 return HttpResponseRedirect('/login/')
-            # return self.handle_no_permission()
+                # return self.handle_no_permission()
         return super().dispatch(request, *args, **kwargs)
 
 
 def get_provincias(request):
-
     if request.is_ajax():
-        id_dpto = request.GET.get("id_dpto"," ")
+        id_dpto = request.GET.get("id_dpto", " ")
         provincias = Provincia.objects.filter(departamento__id_departamento=id_dpto)
         results = []
         for prov in provincias:
@@ -54,7 +53,6 @@ def get_provincias(request):
 
 
 def get_distritos(request):
-
     if request.is_ajax():
         id_prov = request.GET.get("id_prov", " ")
         distritos = Distrito.objects.filter(provincia__id_provincia=id_prov)
@@ -72,11 +70,11 @@ def get_distritos(request):
 
     return HttpResponse(data, mimetype)
 
-def get_grados(request):
 
+def get_grados(request):
     if request.is_ajax():
         id_nivel = request.GET.get("id_nivel", " ")
-        grados = TiposGrados.objects.filter(nivel__id_tipo = int(id_nivel))
+        grados = TiposGrados.objects.filter(nivel__id_tipo=int(id_nivel))
         results = []
         for grado in grados:
             grado_json = {}
@@ -91,8 +89,8 @@ def get_grados(request):
 
     return HttpResponse(data, mimetype)
 
-class SaveGeneric(MyLoginRequiredMixin):
 
+class SaveGeneric(MyLoginRequiredMixin):
     @staticmethod
     def saveGeneric(padre, form, hijo, **atributos):
 
@@ -117,7 +115,7 @@ class SaveGeneric(MyLoginRequiredMixin):
         # obtener los telefonos que vienen en el formulario
         celulares = form.data['nros']
         lst_celulares = celulares.split(',')
-        lista_numeros=[]
+        lista_numeros = []
         for cel in lst_celulares:
             telef = Telefono(numero=cel, tipo="Celular")
             lista_numeros.append(telef)
@@ -149,7 +147,7 @@ class SaveGeneric(MyLoginRequiredMixin):
                         apo_alu.apoderado = rpta
                         apo_alu.save()
 
-                    #hijo.alumnos.add(apo_alu.alumno)
+                        # hijo.alumnos.add(apo_alu.alumno)
 
                 direccion.persona = rpta.persona
                 direccion.save()
@@ -195,7 +193,7 @@ class SaveGeneric(MyLoginRequiredMixin):
                         rpta = apo_alu.save()
                         logger.debug("respuesta: " + str(rpta))
 
-                    # instance.alumnos.add(apo_alu.alumno)
+                        # instance.alumnos.add(apo_alu.alumno)
 
                 instance.save()
                 logger.debug("Se creó un nuevo registro")
@@ -227,7 +225,7 @@ class SaveGeneric(MyLoginRequiredMixin):
                 logger.debug("se creó un personal a partir de la personal")
                 logger.info("se creo un personal a partir de la personal")
 
-                #agregar la dirección
+                # agregar la dirección
                 direccion.persona = rpta.personal.persona
                 direccion.save()
                 logger.debug("Se guardo la direccion asociada a la persona")
@@ -262,40 +260,46 @@ class SaveGeneric(MyLoginRequiredMixin):
 
             else:  # Si la persona no existe
 
-                instance = form.save()
-                logger.debug("Instancia guardada: " + str(instance))
+                if form.is_valid():
+                    instance = form.save()
+                    logger.debug("Instancia guardada: " + str(instance))
 
-                instance.save()
-                logger.debug("Se creó el registro")
-                logger.info("Se creo el registro de la persona")
+                    instance.save()
+                    logger.debug("Se creó el registro")
+                    logger.info("Se creo el registro de la persona")
 
-                direccion.persona = instance.personal.persona
-                direccion.save()
-                logger.debug("se guardo la direccion")
-                logger.info("Se guardo la direcion")
+                    direccion.persona = instance.personal.persona
+                    direccion.save()
+                    logger.debug("se guardo la direccion")
+                    logger.info("Se guardo la direcion")
 
-                try:
-                    for t in lista_numeros:
-                        t.persona = instance.personal.persona
-                        t.save()
-                    logger.debug("Se guardaron los numeros de telefono")
-                    logger.info("Se guardaron los numeros de telefono")
-                except:
-                    logger.debug("Error")
-                    logger.error("Error a la hora de guardar los telefonos")
-                    pass
+                    try:
+                        for t in lista_numeros:
+                            t.persona = instance.personal.persona
+                            t.save()
+                        logger.debug("Se guardaron los numeros de telefono")
+                        logger.info("Se guardaron los numeros de telefono")
+                    except:
+                        logger.debug("Error")
+                        logger.error("Error a la hora de guardar los telefonos")
+                        pass
 
-                # Crear la relación del personal con el colegio logueado
-                personal_colegio = PersonalColegio()
-                personal_colegio.personal = instance.empleado
-                personal_colegio.colegio = colegio
-                personal_colegio.save()
-                logger.debug(
-                    "Se creó la relación del personal: " + str(instance.personal) + " en el Colegio: " + str(colegio))
-                logger.info("Se creó la relación del personal: " + str(instance.personal) + " en el Colegio: " + str(colegio))
+                    # Crear la relación del personal con el colegio logueado
+                    personal_colegio = PersonalColegio()
+                    personal_colegio.personal = instance.empleado
+                    personal_colegio.colegio = colegio
+                    personal_colegio.save()
+                    logger.debug(
+                        "Se creó la relación del personal: " + str(instance.personal) + " en el Colegio: " + str(
+                            colegio))
+                    logger.info(
+                        "Se creó la relación del personal: " + str(instance.personal) + " en el Colegio: " + str(
+                            colegio))
 
-                logger.debug("Se creó un nuevo personal")
-                return instance
+                    logger.debug("Se creó un nuevo personal")
+                    return instance
+                else:
+                    return None
 
 
 def copiarVal(form, parent: Profile):
