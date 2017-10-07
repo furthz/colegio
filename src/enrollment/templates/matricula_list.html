@@ -25,7 +25,7 @@
                 </div>
 
                   <div class="box-body">
-                          <div class="col-md-9">
+                          <div class="col-md-12">
                             <div class="panel-page">
                                 <div class="toolbar-header">
 
@@ -69,7 +69,9 @@
                         {% endfor %}
                     </table>
                 {% else %}
-                    <li>No hay alumnos matriculados </li>
+                    <div class="alert alert-danger">
+                        <strong>No hay alumnos matriculados</strong>
+                        </div>
                 {% endif %}
 
 
