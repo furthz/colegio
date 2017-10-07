@@ -19,47 +19,114 @@
 {% endblock %}
 
 {% block splash %}
-  <div class="jumbotron jumbotron-carousel corporate-jumbo">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-8 col-sm-8">
-            <!--
-          <h1>{% include "_brandname.html" %}</h1>
-          <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
-	  <a class="btn btn-primary" href="{% url 'accounts:signup' %}" role="button">Sign up for Free!</a>-->
-        </div>
-        <div class="col-md-4 col-sm-4">
 
-        </div>
-      </div>
-    </div>
-  </div>
 {% endblock splash %}
 
 {% block container %}
-<!-- Benefits of the Django application -->
-<a name="about"></a>
 
-<div class="container">
-  <div class="row">
-    <div class="col-lg-4">
-      <h2>Gestión</h2>
-      <p>Gestión de alumnos adaptada al centro, evaluación flexible, gestión económica avanzada, transporte, comedor, gestión integral de actividades extraescolares, herramientas de seguimiento del alumno, informes y listados personalizables, documentación oficial garantizada… </p>
-      <!--<p><a class="btn btn-primary" href="#" role="button">View details &raquo;</a></p> -->
-    </div>
-    <div class="col-lg-4">
-      <h2>Comunicación</h2>
-      <p>Totalmente web, permite la comunicación en tiempo real a través de múltiples canales: web, sms, email, APP. Todas las herramientas para conectar a tu comunidad educativa. </p>
-      <!-- <p><a class="btn btn-primary" href="#" role="button">View details &raquo;</a></p> -->
-    </div>
-    <div class="col-lg-4">
-      <h2>Integración</h2>
-      <p>Mundo Pixel se conecta con herramientas de aprendizaje, horarios, bibliotecas, calidad o contabilidad, permitiendo una gestión mucho más eficiente. Además, dispone de diversos métodos poder extraer información e incluirla en otras herramientas del centro.</p>
-       <!--<p><a class="btn btn-primary" href="#" role="button">View details &raquo;</a></p>-->
-    </div>
-  </div>
-</div>
+    <!-- BANNER PRINCIPAL -->
+			<section id="banner">
+				<div class="content">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <div class="panel-welcome">
+                                    <h1>Acerca de nosotros</h1>
+                                    <p>
+                                        En Mundo Pixel S.A.C estamos comprometidos con el desarrollo de la educación, por lo que nos aseguraremos de brindar sistemas con altos estándares de calidad y un excelente servicio, satisfaciendo las necesidades de la comunidad educativa por encima de sus expectativas. Además, altos niveles de seguridad desde la nube.
+                                    </p>
+                                    <ul class="actions">
+                                        <li><a href="#one" class="button scrolly">Conoce nuestro producto</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <img class="img-responsive" src="{% static 'site/img/phone.png' %}">
+                            </div>
+                        </div>
 
+                    </div>
+				</div>
+			</section>
+
+    <!-- SECCION UNO -->
+			<section id="one" class="wrapper">
+                <div class="title">
+                    <h2>Especialistas en tecnología educativa</h2>
+                </div>
+				<div class="inner flex flex-3">
+					<div class="flex-item left">
+						<div>
+							<h3>Super fácil de usar</h3>
+							<p>Morbi in sem quis dui plalorem ipsum<br /> euismod in, pharetra sed ultricies.</p>
+						</div>
+						<div>
+							<h3>Reducción de tiempos y costos</h3>
+							<p>Tristique yonve cursus jam nulla quam<br /> loreipsu gravida adipiscing lorem</p>
+						</div>
+					</div>
+					<div class="flex-item image fit round">
+						<img class="img-responsive" src="{% static 'site/img/laptop_app.png' %}" alt="Apps" />
+					</div>
+					<div class="flex-item right">
+						<div>
+							<h3>Soporte 24/7 siempre</h3>
+							<p>Sed adipiscing ornare risus. Morbi estes<br /> blandit sit et amet, sagittis magna.</p>
+						</div>
+						<div>
+							<h3>No requiere inversión adicional</h3>
+							<p>Pellentesque egestas sem. Suspendisse<br /> modo ullamcorper feugiat lorem.</p>
+						</div>
+					</div>
+				</div>
+			</section>
+    <!-- SECCION DOS -->
+			<section id="two" class="wrapper style1 special">
+				<div class="inner">
+					<h2>Feugiat lorem</h2>
+					<figure>
+					    <blockquote>
+					        "Morbi in sem quis dui placerat ornare. Pellentesque odio nisi, euismod in, pharetra<br /> magna etiam lorem ultricies in diam. Sed arcu cras consequat."
+					    </blockquote>
+					    <footer>
+					        <cite class="author">Jane Anderson</cite>
+					        <cite class="company">CEO, Untitled</cite>
+					    </footer>
+					</figure>
+				</div>
+			</section>
+    <!-- SECCION TRES -->
+			<section id="three" class="wrapper">
+				<div class="inner flex flex-3">
+					<div class="flex-item box">
+						<div class="image fit">
+							<img src="images/pic02.jpg" alt="" />
+						</div>
+						<div class="content">
+							<h3>Consequat</h3>
+							<p>Placerat ornare. Pellentesque od sed euismod in, pharetra ltricies edarcu cas consequat.</p>
+						</div>
+					</div>
+					<div class="flex-item box">
+						<div class="image fit">
+							<img src="images/pic03.jpg" alt="" />
+						</div>
+						<div class="content">
+							<h3>Adipiscing</h3>
+							<p>Morbi in sem quis dui placerat Pellentesque odio nisi, euismod pharetra lorem ipsum.</p>
+						</div>
+					</div>
+					<div class="flex-item box">
+						<div class="image fit">
+							<img src="images/pic04.jpg" alt="" />
+						</div>
+						<div class="content">
+							<h3>Malesuada</h3>
+							<p>Nam dui mi, tincidunt quis, accu an porttitor, facilisis luctus que metus vulputate sem magna.</p>
+						</div>
+					</div>
+				</div>
+			</section>
 {% endblock container %}
 
 {% block scripts %}
