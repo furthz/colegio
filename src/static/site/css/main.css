@@ -19,11 +19,6 @@ html, body{
   border-top: 1px solid #eee;
 }
 
-.alert {
-    margin-top: 55px;
-    margin-bottom: 0;
-}
-
 body>.navbar-transparent {
     background-color: transparent;
     border-color: transparent;
@@ -306,7 +301,7 @@ nav.navbar.navbar-static-top a{
 }
 .content-wrapper {
     min-height: 100%;
-    background-color: #DEE6EE;
+    background-color: #ffffff;
     z-index: 800;
 }
 .sidebar-menu .treeview{
@@ -491,11 +486,7 @@ nav.navbar.navbar-static-top a{
 	padding-top: 25px;
 }
 /* Alertas */
-.alert-success {
-    color: #3c763d !important;
-    background-color: #dff0d8 !important;
-    border-color: #d6e9c6 !important;
-}
+
 .panel-body .panel-group .pull-right{
 	top: -24px;
 	position: relative;
@@ -542,4 +533,13 @@ nav.navbar.navbar-static-top a{
     color: #a94442;
     background-color: #f2dede;
     border-color: #ebccd1;
+}
+.box{
+    box-shadow: none;
+}
+.section-title{
+    padding-top: 10px;
+    padding-bottom: 0;
+    margin-left: 16px !important;
+    color: #007ED6;
 }

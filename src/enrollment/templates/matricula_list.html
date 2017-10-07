@@ -3,14 +3,7 @@
 {% block title %}{{ block.super }}Matricula{% endblock %}
 
 {% block breadcrumb %}
-<h1>
-        Lista de Matriculados
-        <small>Modúlo Matricula</small>
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-        <li class="active">Modúlo Matricula</li>
-      </ol>
+    <h1 class="section-title">Matriculas</h1>
 {% endblock %}
 
 
@@ -69,9 +62,9 @@
                         {% endfor %}
                     </table>
                 {% else %}
-                    <div class="alert alert-danger">
-                        <strong>No hay alumnos matriculados</strong>
-                        </div>
+                    <div class="alert alert-warning">
+                        No se encuentran <strong>alumnos matriculados</strong>
+                    </div>
                 {% endif %}
 
 
