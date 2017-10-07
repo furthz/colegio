@@ -2,7 +2,7 @@
 
 {% block titulo %}
     <h1>{{ form.title.label }}
-        <small>Módulo de Facturación</small>
+        <small>Módulo de Administración</small>
     </h1>
 {% endblock %}
 
@@ -32,43 +32,48 @@
                 <form id="registro" name="registro" action="" method="POST" class="form-horizontal">
                     {% csrf_token %}
 
-                    <div class="col-md-9">
+                    <div class="col-md-12">
                     <!-- DATOS PERSONALES -->
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Datos personales</h3>
+                        <div class="page-header">
+                            <h4 >Datos del colegio</h4>
                         </div>
                         <div class="box-body">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">Nombre del Colegio</label>
+                                    <label class="col-sm-3 control-label">Colegio</label>
                                     <div class="col-sm-9">
                                         {{ form.nombre }}
                                     </div>
                                 </div>
+                            </div>
+
+                                <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">RUC</label>
                                     <div class="col-sm-9">
                                         {{ form.ruc }}
                                     </div>
                                 </div>
+                                </div>
+
+                               <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">UGEL</label>
                                     <div class="col-sm-9">
                                         {{ form.ugel }}
                                     </div>
                                 </div>
-
+                               </div>
                             </div>
-
-                        </div>
+                            </div>
                     <!-- TERMINA DATOS PERSONALES -->
 
                     <!-- DATOS DE CONTACTO -->
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Datos contacto y dirección</h3>
+                    <div class="col-md-12">
+                        <div class="page-header">
+                            <h4>Datos contacto y dirección</h4>
                         </div>
-                        <div class="box-body">
-                            <div class="col-md-12">
+                               <div class="col-md-12">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">Departamento</label>
@@ -163,13 +168,12 @@
                                 </div>
                             </div>
 
-                        </div>
 
                     </div>
-                    <div class="col-md-3">
+
                         <!-- BLOQUE DE AYUDA -->
                         <!-- FIN DE BLOQUE DE AYUDA -->
-                    </div>
+
 
                 </form>
             </div>
