@@ -27,6 +27,8 @@ class TipoDescuento(ActivoMixin, CreacionModificacionFechaMixin, CreacionModific
     def __str__(self):
 
         return self.descripcion
+    def porcentaje_entero(self):
+        return float(self.porcentaje*100)
 
     def full_detail(self):
         """

@@ -92,12 +92,98 @@ class TipoDescuentoCreateView(MyLoginRequiredMixin,CreateView):
         return super(TipoDescuentoCreateView, self).form_valid(form)
 
     def get(self, request, *args, **kwargs):
-        form = self.form_class(colegio=get_current_colegio())
-        servicios = Servicio.objects.filter(tipo_servicio__colegio__id_colegio=get_current_colegio(), activo=True)
-        return render(request, template_name=self.template_name, context={
-            'form': form,
-            'servicios':servicios,
-        })
+        roles = ['promotor', 'director','administrativo']
+
+        if validar_roles(roles=roles):
+            form = self.form_class(colegio=get_current_colegio())
+            servicios = Servicio.objects.filter(tipo_servicio__colegio__id_colegio=get_current_colegio(), activo=True)
+            return render(request, template_name=self.template_name, context={
+                'form': form,
+                'servicios': servicios,
+            })
+
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+class TipoDescuentoListView(MyLoginRequiredMixin, ListView):
+
+    model = TipoDescuento
+    template_name = "tipo_descuento_list.html"
+
+    def get(self, request, *args, **kwargs):
+        roles = ['promotor', 'director', 'administrativo', 'cajero']
+
+        if validar_roles(roles=roles):
+            descuentos = TipoDescuento.objects.filter(colegio_id=get_current_colegio(), activo=True)
+
+            return render(request, template_name=self.template_name, context={
+                'descuentos': descuentos,
+            })
+
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+class TipoDescuentoUpdateView(MyLoginRequiredMixin, UpdateView):
+    model = TipoDescuento
+    template_name = "tipo_descuento_update.html"
+    form_class = TipoDescuentForm
+
+    def post(self, request, *args, **kwargs):
+        roles = ['promotor', 'director', 'administrativo', 'cajero']
+
+        if validar_roles(roles=roles):
+            form = self.form_class(colegio=get_current_colegio())
+            servicios = Servicio.objects.filter(tipo_servicio__colegio__id_colegio=get_current_colegio(), activo=True)
+            tipo_descuento = TipoDescuento.objects.get(id_tipo_descuento=request.POST["id_descuento"])
+            return render(request, template_name=self.template_name, context={
+                'form': form,
+                'servicios': servicios,
+                'tipo_descuento': tipo_descuento,
+            })
+
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+class TipoDescuentoUpdateEndView(MyLoginRequiredMixin, UpdateView):
+    model = TipoDescuento
+    template_name = "tipo_descuento_update.html"
+    form_class = TipoDescuentForm
+
+    def post(self, request, *args, **kwargs):
+        roles = ['promotor', 'director', 'administrativo', 'cajero']
+
+        if validar_roles(roles=roles):
+
+            tipo_descuento = TipoDescuento.objects.get(id_tipo_descuento=request.POST["id_tipo_descuento"])
+            tipo_descuento.servicio = Servicio.objects.get(id_servicio= request.POST["servicio"])
+            tipo_descuento.descripcion = request.POST["descripcion"]
+            tipo_descuento.porcentaje = request.POST["porcentaje"]
+            tipo_descuento.save()
+            return HttpResponseRedirect(reverse("discounts:tipo_descuento_list"))
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+class TipoDescuentoDeleteView(MyLoginRequiredMixin, TemplateView):
+    """
+
+    """
+    model = TipoDescuento
+    template_name = "servicio_confirm_delete.html"
+
+    @method_decorator(permission_required('enrollment.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        roles = ['promotor', 'director', 'administrativo']
+
+        if validar_roles(roles=roles):
+            servicio = self.model.objects.get(pk=request.GET['idser'])
+            servicio.activo = False
+            servicio.save()
+            return HttpResponseRedirect(reverse('enrollments:tiposervicio_list'))
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+
 
 #################################################
 #       Aprobar Descuentos
