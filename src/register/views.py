@@ -158,7 +158,13 @@ class CreatePersonaView(MyLoginRequiredMixin, CreateView):
                     sist = SaveGeneric().saveGeneric(padre=Personal, form=f1, hijo=Cajero)
                     sist.user = usuario_creado
                     sist.save()
-            del self.request.session['colegio']
+            try:
+                colegio = request.POST['colegio']
+                self.request.session['colegio'] = str(colegio)
+                del self.request.session['colegio']
+            except:
+                pass
+
 
             return HttpResponseRedirect(reverse('registers:personal_list'))  # super(CreatePersonaView, self).form_valid(form)
         else:
