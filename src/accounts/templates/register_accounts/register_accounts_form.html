@@ -11,7 +11,7 @@
     <div class="box-header with-border">
         <h3 class="box-title">Registrar Usuarios</h3>
             <div class="box-body">
-                <div class="col-md-9">
+                <div class="col-md-12">
                     <div class="panel-page">
                         <div class="box-body">
                             <form id="myform" class="form-horizontal" method="post">
@@ -19,81 +19,104 @@
                                 <div style="display: none;">
 
                                 </div>
-                                 {% csrf_token %}
+                                <div class="row">
+                                  <div class="col-md-6">
+                                     {% csrf_token %}
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">Tipo de Usuario</label>
-                                    <div class="col-sm-10">
-                                        <select name="groups" multiple="multiple" required="" id="id_groups">
+                                    <label class="col-sm-4 control-label">Tipo de Usuario</label>
+                                    <div class="col-sm-8">
+                                        <select name="groups" class="form-control" required="" id="id_groups">
+                                            <option value="0">selecciona tipo de usuario</option>
                                             {% for grupo in grupos %}
                                                 <option value="{{ grupo.id }}">{{ grupo.name }}</option>
-
                                             {% endfor %}
-
-
-
                                         </select>
+                                    </div>
+                                </div>
 
-                                    </div>
+                                  </div>
+
+                                  <div class="col-md-6">
+                                  </div>
+
                                 </div>
-                                <div class="form-group">
-                                    {%  if form.email.errors %}
-                                        <div class="alert alert-danger">
-                                            <li> El correo electrónico ya ha sido usado en otra cuenta</li>
-                                        </div>
-                                    {% endif %}
-                                    <label class="col-sm-2 control-label">Correo Electronico</label>
-                                    <div class="col-sm-10">
-                                        {{ form.email }}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    {%  if form.name.errors %}
+
+                            <div class="row">
+                              <div class="col-md-6">
+                                {%  if form.name.errors %}
                                         <div class="alert alert-danger">
                                             <li>El Nombre de usuario ya ha sido utilizado en otra cuenta</li>
                                         </div>
                                     {% endif %}
-                                    <label class="col-sm-2 control-label">Nombre de Usuario</label>
-                                    <div class="col-sm-10">
+                                  <div class="form-group">
+                                  <label class="col-sm-4 control-label">Nombre de Usuario</label>
+                                    <div class="col-sm-8">
                                         {{ form.name }}
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    {{ form.password1.errors }}
-                                    <label class="col-sm-2 control-label">Crea una contraseña</label>
-                                    <div class="col-sm-10">
+                                  </div>
+                              </div>
+
+                              <div class="col-md-6">
+                                {%  if form.email.errors %}
+                                        <div class="alert alert-danger">
+                                            <li> El correo electrónico ya ha sido usado en otra cuenta</li>
+                                        </div>
+                                    {% endif %}
+                                  <div class="form-group">
+                                    <label class="col-sm-4 control-label">Correo Electronico</label>
+                                    <div class="col-sm-8">
+                                        {{ form.email }}
+                                    </div>
+                                  </div>
+
+                              </div>
+
+                            </div>
+
+                            <div class="row">
+                              <div class="col-md-6">
+                               {{ form.password1.errors }}
+                                  <div class="form-group">
+                                  <label class="col-sm-4 control-label">Crea una contraseña</label>
+                                    <div class="col-sm-8">
                                         {{ form.password1 }}
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    {%  if form.password2.errors %}
+                                  </div>
+
+                              </div>
+                              <div class="col-md-6">
+                                 {%  if form.password2.errors %}
                                         <div class="alert alert-danger">
                                             <li>Las contraseñas introducidas no coinciden</li>
                                         </div>
                                     {% endif %}
-                                    <label class="col-sm-2 control-label">Confirma tu contraseña</label>
-                                    <div class="col-sm-10">
+                                  <div class="form-group">
+                                  <label class="col-sm-4 control-label">Confirma contraseña</label>
+                                    <div class="col-sm-8">
                                         {{ form.password2 }}
                                     </div>
-                                </div>
+                                  </div>
+                              </div>
+                            </div>
 
 
                                 <div class="form-group">
-                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <div class="col-sm-offset-7 col-sm-5">
+
                                         <a href="{% url 'accounts:register_accounts_list'  %}" class="btn btn-default" >
                                             <i class="fa fa-arrow-left" aria-hidden="true"></i> Volver a lista
                                         </a>
-                                        <button type="submit" class="btn btn-success" form="myform">
+                                            <button type="submit" class="btn btn-success" form="myform">
                                             <i class="fa fa-plus" aria-hidden="true"></i> Registrar Usuario
                                         </button>
+
                                     </div>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
 
-                </div>
             </div>
         </div>
     </div>
