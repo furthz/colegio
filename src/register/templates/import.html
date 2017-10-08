@@ -1,0 +1,23 @@
+{% extends "page.html" %}
+
+{% block titulo %}
+    <h1>{{ form.title.label }}
+        <small>Importación de Alumnos</small>
+    </h1>
+{% endblock %}
+
+{% block container %}
+
+
+ <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="myfile">
+    <button type="submit">Subir</button>
+  </form>
+
+
+{% endblock container %}
+
+{% block scripts %}
+
+{% endblock scripts %}

@@ -9,6 +9,8 @@ from register.views import CreatePersonaView, PersonaDetail, AlumnoCreateView, A
     AlumnoAutocomplete
 from utils.views import get_provincias, get_distritos
 
+from .import_export import exportCSV,exportJSON, simple_upload
+
 urlpatterns = [
     # url(r'^person/create/$', CreatePersonaView.as_view(), name="persona_create"),
     url(r'^personas/create/$',CreatePersonaView.as_view(), name="persona_create"),
@@ -56,5 +58,11 @@ urlpatterns = [
 
     url(r'^api/get_provincias/', get_provincias, name='get_provincias'),
     url(r'^api/get_distritos/', get_distritos, name='get_distritos'),
+
+
+
+    url(r'^exportCSV/', exportCSV, name='export'),
+    url(r'^exportJSON/', exportJSON, name='export'),
+    url(r'^import/', simple_upload, name='import'),
 
 ]

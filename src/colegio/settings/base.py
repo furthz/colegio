@@ -109,7 +109,7 @@ INSTALLED_APPS = (
     'django_filters',
 
 )
-
+IMPORT_EXPORT_USE_TRANSACTIONS = True
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.cache.UpdateCacheMiddleware',
