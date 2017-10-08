@@ -65,11 +65,11 @@ class RegistrarPagoListView(MyLoginRequiredMixin, TemplateView):
             print(request.GET['filter'])
             if request.GET['filter'] == 'DNI':
                 print("filtro DNI")
-                self.cuentas = cuentas_totales.filter(matricula__alumno__numero_documento=request.GET['dato'],activo=True, estado=True).order_by("fecha_ven")
+                self.cuentas = cuentas_totales.filter(matricula__alumno__numero_documento=request.GET['dato'].upper(),activo=True, estado=True).order_by("fecha_ven")
                 alumno = Alumno.objects.get(numero_documento=request.GET['dato'])
             else:
-                self.cuentas = cuentas_totales.filter(matricula__alumno__apellido_pa = request.GET['dato'],activo=True, estado=True).order_by("fecha_ven")
-                alumno = Alumno.objects.get(apellido_pa=request.GET['dato'])
+                self.cuentas = cuentas_totales.filter(matricula__alumno__apellido_pa__icontains=  request.GET['dato'].upper(),activo=True, estado=True).order_by("fecha_ven")
+                alumno = Alumno.objects.get(apellido_pa__icontains = request.GET['dato'].upper())
         except:
 
             self.cuentas = []
