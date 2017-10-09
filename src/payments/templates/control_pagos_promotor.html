@@ -138,6 +138,18 @@
                                     </tr>
                                 </tbody>
                             </table>
+
+                          <div class="col-md-2">
+                                <div class="search-actions">
+                                    <form action="{% url 'payments:exportPago' %}">
+                                        <button type="submit" value="Detalle" class="btn btn-default">
+                                            <i class="fa fa-circle" aria-hidden="true"></i>
+                                            Exportar
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+
                           {% endif %}
                           </div>
 
