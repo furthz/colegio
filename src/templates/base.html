@@ -38,6 +38,7 @@
             <img src="{% static 'site/img/mundopixel.png' %}" class="img-responsive" alt="Mundo Pixel S.A">
         </a>
         <nav class="right">
+
             {% if user.is_authenticated %}
                 {% if user.is_staff %}
 
@@ -55,8 +56,9 @@
                   </ul>
                 </div>
             {% else %}
-                <a href="{% url 'accounts:login' %}" class="button alt">Iniciar sessión</a>
+                <a href="{% url 'accounts:login' %}" class="button alt">Iniciar sesión</a>
             {% endif %}
+
         </nav>
     </header>
 
@@ -64,9 +66,10 @@
     <nav id="menu">
         {% block navbar %}
             <ul class="links">
-                <li><a href="index.html">Inicio</a></li>
+                {% include "_navbar.html" with active_link="home" %}
+                <!--<li><a href="index.html">Inicio</a></li>
                 <li><a href="generic.html">Sobre Nosotros</a></li>
-                <li><a href="elements.html">Contacto</a></li>
+                <li><a href="elements.html">Contacto</a></li>-->
             </ul>
             <ul class="actions vertical">
                 <li><a href="{% url 'accounts:login' %}" class="button fit">Login</a></li>

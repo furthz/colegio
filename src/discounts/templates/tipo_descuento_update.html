@@ -1,0 +1,64 @@
+{% extends "page.html" %}
+
+{% block title %}{{ block.super }}Matricula{% endblock %}
+
+
+{% block breadcrumb %}
+<h1>
+        Registrar Tipo de Descuento
+        <small>Modúlo de facturación</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+        <li>Modúlo de facturación</li>
+        <li class="active">Registrar pago de ingreso</li>
+      </ol>
+{% endblock %}
+
+{% block container %}
+<section class="content">
+      <div class="row">
+          <div class="col-md-12">
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Actualizar Tipo de Descuento</h3>
+                </div>
+                <div class="box-body">
+                  <div class="col-md-9">
+                    <div class="panel-page">
+                            <div class="box-body">
+
+                                <form action="" method="POST" class="form-horizontal" id="1">{% csrf_token %}
+                                    <p><label for="id_servicio">Servicio:</label> <select name="servicio" class="form-control" required id="id_servicio">
+                                      <option value="{{ tipo_descuento.servicio.id_servicio }}" selected> {{ tipo_descuento.servicio.tipo_servicio }} -- {{ tipo_descuento.servicio }}</option>
+                                        {% for servicio in servicios %}
+                                        <option value="{{ servicio.id_servicio }}">{{ servicio.tipo_servicio }} -- {{ servicio }}    </option>
+                                        {% endfor %}
+
+
+
+                                    </select></p>
+                                    <p><label for="id_descripcion">Descripción:</label> <input type="text" name="descripcion" required class="form-control" id="id_descripcion" maxlength="50" value="{{ tipo_descuento.descripcion }}" /></p>
+                                    <p><label for="id_porcentaje">Porcentaje:</label> <input type="number" name="porcentaje" class="form-control" required step="1e-10" id="id_porcentaje" value="{{ tipo_descuento.porcentaje }}"/></p>
+                                    <input hidden value="{{ tipo_descuento.id_tipo_descuento }}" name="id_tipo_descuento">
+                                </form>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <a class="btn btn-default" href="javascript:history.back()">Cancelar</a>
+                                        <button type="submit" class="btn btn-success" formaction="{% url 'discounts:tipo_descuento_update_end' %}"  form="1">Actualizar Tipo Descuento</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+      </div>
+</section>
+
+
+
+{% endblock container %}
+
