@@ -4,11 +4,11 @@ from import_export import resources
 from django.http import HttpResponse
 from tablib import Dataset
 from profiles.models import Profile
+from payments.models import Pago
 
 class AlumnoResource(resources.ModelResource):
     class Meta:
         model = Profile
-
 
 def exportJSON(request):
     person_resource = AlumnoResource()

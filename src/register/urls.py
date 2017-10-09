@@ -59,10 +59,7 @@ urlpatterns = [
     url(r'^api/get_provincias/', get_provincias, name='get_provincias'),
     url(r'^api/get_distritos/', get_distritos, name='get_distritos'),
 
-
-
     url(r'^exportCSV/', exportCSV, name='export'),
     url(r'^exportJSON/', exportJSON, name='export'),
     url(r'^import/', simple_upload, name='import'),
-
 ]
