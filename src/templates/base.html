@@ -56,7 +56,7 @@
                   </ul>
                 </div>
             {% else %}
-                <a href="{% url 'accounts:login' %}" class="button alt">Iniciar sesión</a>
+                <a href="{% url 'accounts:login' %}" class="button alt">Iniciar sessión</a>
             {% endif %}
 
         </nav>
@@ -67,7 +67,7 @@
         {% block navbar %}
             <ul class="links">
                 {% include "_navbar.html" with active_link="home" %}
-                <!--<li><a href="index.html">Inicio</a></li>
+                <!--<li><a href="home.html">Inicio</a></li>
                 <li><a href="generic.html">Sobre Nosotros</a></li>
                 <li><a href="elements.html">Contacto</a></li>-->
             </ul>
@@ -115,6 +115,7 @@
 
     <!-- SCRIPTS TEMPLATES -->
         <script src="{% static 'components/jquery/dist/jquery.min.js' %}"></script>
+        <script src="{% static 'components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
         <script src="{% static 'site/js/jquery.scrolly.min.js' %}"></script>
         <script src="{% static 'site/js/skel.min.js' %}"></script>
         <script src="{% static 'site/js/util.js' %}"></script>
