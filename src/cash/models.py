@@ -70,10 +70,10 @@ class EstadoCambio(models.Model):
         # creación
         if not self.pk:
             #Antes era True
-            self.estado = True
+            self.estado = False
 
         else:  # modificacion
-            self.estado = False
+            self.estado = True
 
         super(EstadoCambio, self).save(*args, **kwargs)
 
