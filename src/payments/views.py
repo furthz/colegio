@@ -421,3 +421,20 @@ class ControlPagosDirectorView(FormView):
             contexto['pagos_colegio'] = []
             contexto['monto_mes_total'] = []
             return render(request, template_name=self.template_name,context=contexto)
+
+
+
+
+from import_export import resources
+from django.http import HttpResponse
+
+class PagoResource(resources.ModelResource):
+    class Meta:
+        model = Pago
+
+def exportPagoCSV(request):
+    pago_resource = PagoResource()
+    dataset = pago_resource.export()
+    response = HttpResponse(dataset.csv, content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="pagos.csv"'
+    return response

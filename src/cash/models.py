@@ -98,7 +98,7 @@ def getRemesasTotal():
 #Cajacajero.movimiento
 
 
-class CajaCajero(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, EstadoCambio, models.Model):
+class CajaCajero(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
     """
     Clase para CajaCajero
     """
@@ -114,7 +114,17 @@ class CajaCajero(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, 
     comentario_cierre = models.CharField(max_length=250, blank=True, null=True)
     total_remesa = models.FloatField(default=getRemesasTotal, blank=True, null=True)
 
+    estado = models.BooleanField()
+
+
     def save(self, *args, **kwargs):
+        if not self.pk:
+            #Antes era True
+            self.estado = True
+
+        else:  # modificacion
+            self.estado = False
+
         try:
             remesa = Remesa.objects.latest('id_remesa')
 

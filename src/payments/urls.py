@@ -4,7 +4,7 @@ from .views import (
     TipoPagoListView, TipoPagoDetailView, TipoPagoCreationView, TipoPagoUpdateView, TipoPagoDeleteView,
 
 )
-from payments.views import ControlPagosPromotorView
+from payments.views import ControlPagosPromotorView, exportPagoCSV
 from payments.views import RegistrarPagoCreateView, ControlPagosDirectorView
 
 
@@ -19,5 +19,6 @@ urlpatterns = [
     url(r'^pago_promotor/filter', ControlPagosPromotorView.as_view(), name="pago_promotor"),
     url(r'^lista/$', ControlPagosDirectorView.as_view(), name="lista"),
 
+    url(r'^exportPagoCSV/', exportPagoCSV, name='exportPago'),
 ]
 
