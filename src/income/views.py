@@ -51,7 +51,7 @@ class RegistrarPagoListView(MyLoginRequiredMixin, TemplateView):
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
         try:
             usuario = get_current_user()
-            mov = CajaCajero.objects.get(estado=True, usuario_creacion=str(usuario.id))
+            mov = CajaCajero.objects.get(estado=True, usuario_modificacion= str(usuario.id))
             alerta = False
         except:
             alerta = True
