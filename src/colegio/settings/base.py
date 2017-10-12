@@ -106,6 +106,7 @@ INSTALLED_APPS = (
     'payments',
     'discounts',
     'import_export',
+    'AE_academico',
     'django_filters',
 
 )
