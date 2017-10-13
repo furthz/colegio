@@ -403,7 +403,6 @@ class Migration(migrations.Migration):
                 'managed': settings.IS_MIGRATE,
             },
         ),
-
     ]
 
 
