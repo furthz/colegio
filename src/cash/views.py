@@ -185,6 +185,7 @@ class BoxCashierCreationView(CreateView):
     success_url = reverse_lazy('cash:boxcashier_list')
     template_name = 'boxcashier/boxcashier_formApertura.html'
 
+
     @method_decorator(permission_required('cash.Box_Cashier_Creation', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):

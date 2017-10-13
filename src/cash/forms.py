@@ -125,7 +125,7 @@ class ConsignmentForm(forms.ModelForm):
             'movimiento': forms.Select(attrs={'class': 'form-control'}),
             'fechacreacion': forms.HiddenInput(attrs={'class': 'form-control'}),
             'monto': forms.TextInput(
-                attrs={'class': 'form-control', 'name': 'inputMonto', 'onKeyPress': 'return soloNumeros(event)',
+                attrs={'class': 'form-control', 'name': 'inputMonto', 'onKeyPress': 'return NumCheck(event, this)',
                        'placeholder': 'Escribe el monto a entregar',
                        "onchange": "document.getElementById('monto').innerHTML = montodine = this.value", 'tabindex': '2'}),
             'comentario': forms.Textarea(attrs={'class': 'form-control', 'rows': '3', 'tabindex': '3'}),
