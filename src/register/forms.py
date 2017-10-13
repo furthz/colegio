@@ -6,7 +6,7 @@ from django.forms import ModelForm
 
 from profiles.models import Profile
 from register.models import Alumno, Apoderado, Personal, Promotor, Director, Cajero, Tesorero, Proveedor, Colegio, Sistemas, Administrativo, \
-    Direccion, Docente
+    Direccion
 from utils.forms import ValidProfileFormMixin
 from utils.models import TipoDocumento, TipoSexo, Departamento, Provincia, Distrito
 

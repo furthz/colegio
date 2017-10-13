@@ -22,9 +22,9 @@ from django.shortcuts import render
 from django.views.generic import CreateView
 
 from register.forms import PersonaForm, AlumnoForm, ApoderadoForm, PersonalForm, PromotorForm, DirectorForm, CajeroForm, \
-    TesoreroForm, ProveedorForm, ColegioForm, SistemasForm, AdministrativoForm, DocenteForm
+    TesoreroForm, ProveedorForm, ColegioForm, SistemasForm, AdministrativoForm
 from register.models import Alumno, Apoderado, Personal, Promotor, Director, Cajero, Tesorero, Colegio, Proveedor, \
-    ProveedorColegio, PersonalColegio, Administrativo, Direccion, Telefono, Sistemas, Docente
+    ProveedorColegio, PersonalColegio, Administrativo, Direccion, Telefono, Sistemas
 from utils.middleware import get_current_colegio, validar_roles, get_current_user
 from utils.views import SaveGeneric, MyLoginRequiredMixin
 from payments.models import CajaChica
