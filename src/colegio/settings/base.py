@@ -106,8 +106,11 @@ INSTALLED_APPS = (
     'payments',
     'discounts',
     'import_export',
-    'AE_academico',
     'django_filters',
+    'AE_academico',
+    'AE_agenda',
+    'AE_chat',
+    'AE_social',
 
 )
 IMPORT_EXPORT_USE_TRANSACTIONS = True
