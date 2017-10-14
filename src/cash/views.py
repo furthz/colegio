@@ -186,6 +186,31 @@ class BoxCashierCreationView(CreateView):
     template_name = 'boxcashier/boxcashier_formApertura.html'
 
 
+    #Paso el ID del usuario al template y en el template selecciono la opción con ese ID del usuario que crea
+
+    def get_context_data(self, **kwargs):
+            context = super(BoxCashierCreationView, self).get_context_data(**kwargs)
+
+            from utils.middleware import get_current_user
+
+            usuario = get_current_user()
+            if usuario is not None:
+                iduser = usuario.id
+            else:
+                iduser = -1
+
+            # creacion
+            context['yolencios'] = iduser
+            return context
+
+    """
+    function myFunction() {
+    document.getElementById("mySelect").value = "ID-USUARIO";
+    }
+    """
+
+
+
     @method_decorator(permission_required('cash.Box_Cashier_Creation', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):

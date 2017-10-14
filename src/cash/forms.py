@@ -83,7 +83,7 @@ class BoxCashierForm(forms.ModelForm):
 
         widgets = {
 
-            'personal_colegio': forms.Select(attrs={'class': 'hidden'}),
+            'personal_colegio': forms.Select(attrs={'class': 'form-control'}),
             'caja': forms.Select(attrs={'class': 'form-control'}),
             'saldo': forms.TextInput(attrs={'class': 'form-control'}),
             'monto_apertura': forms.TextInput(attrs={'class': 'form-control'}),
