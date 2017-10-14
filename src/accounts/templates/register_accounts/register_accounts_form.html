@@ -25,8 +25,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-4 control-label">Tipo de Usuario</label>
                                     <div class="col-sm-8">
-                                        <select name="groups" class="form-control" required="" id="id_groups">
-                                            <option value="0">selecciona tipo de usuario</option>
+                                        <select multiple name="groups" class="form-control" required="" id="id_groups">
                                             {% for grupo in grupos %}
                                                 <option value="{{ grupo.id }}">{{ grupo.name }}</option>
                                             {% endfor %}
