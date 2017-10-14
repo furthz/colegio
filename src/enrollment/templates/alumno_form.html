@@ -29,9 +29,9 @@
                      <div class="toolbar-search">
                         <form action="{% url 'enrollments:filtrar_alumno' %}" method="post" class="form-inline" id="filtro">{% csrf_token %}
                              <div class="form-group">
-                              DNI:<input type="text" name="dni" class="form-control" value="{{ dni }}">
-                                Apellidos o Nombres:<input type="text" name="nombre" class="form-control" value="{{ nombre }}">
-                              <button form="filtro" formmethod="post" type="submit" class="btn btn-default"><i class="fa fa-filter" aria-hidden="true"></i> Filtrar</button>
+                              DNI <input type="text" name="dni" class="form-control" value="{{ dni }}">
+                                Apellidos o Nombres  <input type="text" name="nombre" class="form-control" value="{{ nombre }}">
+                              <button form="filtro" formmethod="post" type="submit" class="btn btn-default"><i class="fa fa-search" aria-hidden="true"></i>  Buscar</button>
                             </div>
 
                         </form>
@@ -70,9 +70,9 @@
                                 </table>
                                     <a href="{% url 'registers:alumno_create' %}" class="btn btn-success" role="button"><i class="fa fa-plus" aria-hidden="true"></i>Registrar Nuevo Alumno</a>
                             {% else %}
-                                <li>
+
                                     <a href="{% url 'registers:alumno_create' %}" class="btn btn-success" role="button"><i class="fa fa-plus" aria-hidden="true"></i>Registrar Nuevo Alumno</a>
-                                </li>
+
                             {% endif %}
                             </div>
                         </div>
