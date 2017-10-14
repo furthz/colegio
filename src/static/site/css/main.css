@@ -542,3 +542,9 @@ nav.navbar.navbar-static-top a{
     margin-left: 16px !important;
     color: #007ED6;
 }
+.select2-container--default .select2-selection--multiple {
+    background-color: white;
+    border: 1px solid #d2d6de !important;
+    border-radius: 0px !important;
+    cursor: text;
+}
