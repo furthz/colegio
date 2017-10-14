@@ -1583,7 +1583,7 @@
 
 	.inner {
 		margin: 0 auto;
-		max-width: 65em;
+		max-width: 80em;
 	}
 
 		@media screen and (max-width: 1280px) {
@@ -1733,7 +1733,7 @@
 	}
 
 	blockquote {
-		font-style: italic;
+		font-size: 16px;
 		margin: 0 0 2em 0;
 	}
 
@@ -2623,11 +2623,12 @@
 
 		.wrapper h1, .wrapper h2, .wrapper h3, .wrapper h4, .wrapper h5 {
 			color: #008cce;
+			text-transform: uppercase;
 		}
 
 		.wrapper.style1 {
-			background: #f6755e;
-			color: #fcdcd6;
+			background: url("../../site/img/textura.png") #f6755e;
+			color: #ffffff;
 		}
 
 			.wrapper.style1 h1, .wrapper.style1 h2, .wrapper.style1 h3, .wrapper.style1 h4, .wrapper.style1 h5 {
@@ -3216,4 +3217,11 @@
 }
 .wrapper .title{
     text-align: center;
+}
+.data-center{
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+.server{
+	padding-top: 2.5em;
 }
