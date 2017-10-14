@@ -1,3 +1,4 @@
+"""
 from django.conf.urls import url
 
 from AE_academico.views import AulaListView, AulaDetailView, AulaCreationView, AulaUpdateView, AulaDeleteView
@@ -14,3 +15,4 @@ urlpatterns = [
     url(r'^aula/delete/(?P<pk>\d+)$', AulaDeleteView.as_view(), name='aula_delete'),
 
 ]
+"""

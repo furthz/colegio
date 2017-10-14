@@ -1,3 +1,4 @@
+"""
 from django import forms
 from AE_academico.models import Aula
 
@@ -20,3 +21,5 @@ class AulaForm(forms.ModelForm):
             'tipo_servicio': forms.Select(attrs={'class': 'form-control'}),
             'nombre': forms.TextInput(attrs={'class': 'form-control'}),
         }
+
+"""

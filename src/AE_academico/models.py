@@ -1,3 +1,4 @@
+"""
 from django.db import models
 
 from enrollment.models import TipoServicio
@@ -95,3 +96,5 @@ class PeriodoAcademico(models.Model):  # Primer Trimestre, Segundo Bimestre, etc
 
     class Meta:
         managed = False
+
+"""
