@@ -15,7 +15,7 @@
 		border: 0;
 		font-size: 100%;
 		font: inherit;
-		vertical-align: baseline;
+		vertical-align: middle;
 	}
 
 	article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
@@ -2668,9 +2668,7 @@
 		align-items: center;
 		background: #fff;
 		cursor: default;
-		height: 6em;
 		left: 0;
-		line-height: 6em;
 		position: fixed;
 		top: 0;
 		width: 100%;
@@ -2684,7 +2682,7 @@
 			font-family: "Pacifico", cursive;
 			font-size: 2.5em;
 			letter-spacing: 2px;
-			margin-top: -5px;
+			margin-top: 10px;
 			text-decoration: none;
 			display: inline-block;
 		}
@@ -2694,6 +2692,7 @@
 			top: 0;
 			height: inherit;
 			line-height: inherit;
+			padding-top: 20px;
 		}
 
 			#header nav.left {
@@ -2748,7 +2747,7 @@
 		}
 
 		#header {
-			height: 44px;
+			height: auto;
 			line-height: 44px;
 		}
 
@@ -2762,7 +2761,7 @@
 			}
 
 			#header nav.left {
-				left: 1em;
+				left: 0.51em;
 			}
 
 			#header nav.right {
@@ -2775,6 +2774,10 @@
 
 		#header {
 			min-width: 320px;
+		}
+		#header .logo {
+			width: 230px;
+
 		}
 
 	}
@@ -3224,4 +3227,7 @@
 }
 .server{
 	padding-top: 2.5em;
+}
+figure .img-responsive{
+	display: initial;
 }
