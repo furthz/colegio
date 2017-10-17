@@ -199,9 +199,20 @@ class BoxCashierCreationView(CreateView):
             else:
                 iduser = -1
 
+            from register.models import PersonalColegio,Personal,Profile
+
+            a = Profile.objects.get(user_id=iduser)
+            b = Personal.objects.get(persona_id=a)
+            c = PersonalColegio.objects.get(personal_id=b)
+            d = PersonalColegio.objects.filter(personal_id=b).values('pk')
+#            print(PersonalColegio.objects.values('pk').filter(personal_id=b)[0]['pk'])
+
             # creacion
-            context['yolencios'] = iduser
+            #context['yolencios'] = d
+            context['yolencios'] = PersonalColegio.objects.values('pk').filter(personal_id=b)[0]['pk']
             return context
+    #Luego de obtener el id del usuario filtro la persona mediante el id de usuario por ser one to one field
+    # para luego obtener el id de profile
 
     """
     function myFunction() {
