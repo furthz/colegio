@@ -1,4 +1,4 @@
-"""
+
 from django import forms
 from AE_academico.models import Aula
 from AE_academico.models import CursoDocente
@@ -41,4 +41,4 @@ class CursoDocenteForm(forms.ModelForm):
             'docente': forms.Select(attrs={'class': 'form-control'}),
             'curso': forms.Select(attrs={'class': 'form-control'}),
         }
-"""
+

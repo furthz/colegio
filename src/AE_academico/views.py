@@ -1,4 +1,4 @@
-"""
+
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
@@ -119,4 +119,3 @@ class CursoDocenteCreateView(CreateView):
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
-"""
