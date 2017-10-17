@@ -15,7 +15,7 @@
 		border: 0;
 		font-size: 100%;
 		font: inherit;
-		vertical-align: baseline;
+		vertical-align: middle;
 	}
 
 	article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
@@ -1583,7 +1583,7 @@
 
 	.inner {
 		margin: 0 auto;
-		max-width: 65em;
+		max-width: 80em;
 	}
 
 		@media screen and (max-width: 1280px) {
@@ -1733,7 +1733,7 @@
 	}
 
 	blockquote {
-		font-style: italic;
+		font-size: 16px;
 		margin: 0 0 2em 0;
 	}
 
@@ -2623,11 +2623,12 @@
 
 		.wrapper h1, .wrapper h2, .wrapper h3, .wrapper h4, .wrapper h5 {
 			color: #008cce;
+			text-transform: uppercase;
 		}
 
 		.wrapper.style1 {
-			background: #f6755e;
-			color: #fcdcd6;
+			background: url("../../site/img/textura.png") #f6755e;
+			color: #ffffff;
 		}
 
 			.wrapper.style1 h1, .wrapper.style1 h2, .wrapper.style1 h3, .wrapper.style1 h4, .wrapper.style1 h5 {
@@ -2667,9 +2668,7 @@
 		align-items: center;
 		background: #fff;
 		cursor: default;
-		height: 6em;
 		left: 0;
-		line-height: 6em;
 		position: fixed;
 		top: 0;
 		width: 100%;
@@ -2683,7 +2682,7 @@
 			font-family: "Pacifico", cursive;
 			font-size: 2.5em;
 			letter-spacing: 2px;
-			margin-top: -5px;
+			margin-top: 10px;
 			text-decoration: none;
 			display: inline-block;
 		}
@@ -2693,6 +2692,7 @@
 			top: 0;
 			height: inherit;
 			line-height: inherit;
+			padding-top: 20px;
 		}
 
 			#header nav.left {
@@ -2747,7 +2747,7 @@
 		}
 
 		#header {
-			height: 44px;
+			height: auto;
 			line-height: 44px;
 		}
 
@@ -2761,7 +2761,7 @@
 			}
 
 			#header nav.left {
-				left: 1em;
+				left: 0.51em;
 			}
 
 			#header nav.right {
@@ -2774,6 +2774,10 @@
 
 		#header {
 			min-width: 320px;
+		}
+		#header .logo {
+			width: 230px;
+
 		}
 
 	}
@@ -3216,4 +3220,14 @@
 }
 .wrapper .title{
     text-align: center;
+}
+.data-center{
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+.server{
+	padding-top: 2.5em;
+}
+figure .img-responsive{
+	display: initial;
 }

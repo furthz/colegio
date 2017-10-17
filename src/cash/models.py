@@ -104,8 +104,7 @@ class CajaCajero(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, 
     """
     id_movimiento = models.AutoField(primary_key=True)
     personal_colegio = models.ForeignKey(PersonalColegio, models.DO_NOTHING,
-                                         db_column="id_personal_colegio",
-                                         default=get_current_userID)  # Persona encargada de la Caja
+                                         db_column="id_personal_colegio")  # Persona encargada de la Caja
     caja = models.ForeignKey(Caja, models.DO_NOTHING, db_column='id_caja')  # Caja en la que se apertura la sesión
     saldo = models.FloatField(default=0)  # Sobrante o Faltante al Final de la caja
     monto_apertura = models.FloatField(default=0.0)  # Caja Inicial
@@ -118,6 +117,7 @@ class CajaCajero(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, 
 
 
     def save(self, *args, **kwargs):
+
         if not self.pk:
             #Antes era True
             self.estado = True

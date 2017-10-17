@@ -4,11 +4,11 @@ from django.db import models
 from enrollment.models import TipoServicio
 from register.models import Colegio, Alumno, Apoderado, Personal, Docente
 from profiles.models import Profile
-from utils.models import CreacionModificacionUserMixin
+from utils.models import CreacionModificacionUserMixin, ActivoMixin
 from utils.models import CreacionModificacionFechaMixin
 
 
-class Aula(models.Model):
+class Aula(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
     id_aula = models.AutoField(primary_key=True)
     tipo_servicio = models.ForeignKey(TipoServicio, models.DO_NOTHING, db_column="id_tipo_servicio")
     nombre = models.CharField(max_length=100, blank=True, null=True)
@@ -17,7 +17,7 @@ class Aula(models.Model):
         managed = False
 
 
-class Curso(models.Model):
+class Curso(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin,models.Model):
     id_curso = models.AutoField(primary_key=True)
     aula = models.ForeignKey(Aula, models.DO_NOTHING, db_column="id_aula")
     nombre = models.CharField(max_length=100, blank=True, null=True)
@@ -27,7 +27,7 @@ class Curso(models.Model):
         managed = False
 
 
-class CursoDocente(models.Model):
+class CursoDocente(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin,models.Model):
     id_curso_docente = models.AutoField(primary_key=True)
     docente = models.ForeignKey(Docente, models.DO_NOTHING, db_column="id_docente")
     curso = models.ForeignKey(Curso, models.DO_NOTHING, db_column="id_curso")
@@ -36,7 +36,7 @@ class CursoDocente(models.Model):
         managed = False
 
 
-class HorarioAula(models.Model):
+class HorarioAula(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin,models.Model):
     id_horario_aula = models.AutoField(primary_key=True)
     curso = models.ForeignKey(Curso, models.DO_NOTHING, db_column="id_curso")
     docente = models.ForeignKey(Docente, models.DO_NOTHING, db_column="id_docente")
@@ -49,7 +49,7 @@ class HorarioAula(models.Model):
         managed = False
 
 
-class Evento(models.Model):
+class Evento(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin,models.Model):
     id_evento = models.AutoField(primary_key=True)
     colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column="id_colegio")
     encargado = models.ForeignKey(Personal, models.DO_NOTHING, db_column="id_personal")
@@ -66,7 +66,7 @@ class Evento(models.Model):
         managed = False
 
 
-class Asistencia(models.Model):
+class Asistencia(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin,models.Model):
     id_asistencia = models.AutoField(primary_key=True)
     alumno = models.ForeignKey(Alumno, models.DO_NOTHING, db_column='id_alumno')
     fecha = models.DateField()
@@ -77,7 +77,15 @@ class Asistencia(models.Model):
         managed = False
 
 
-class Notas(models.Model):
+class PeriodoAcademico(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin,models.Model):  # Primer Trimestre, Segundo Bimestre, etc.
+    id_periodo_academico = models.AutoField(primary_key=True)
+    colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column="id_colegio")
+    nombre = models.CharField(max_length=50)
+
+    class Meta:
+        managed = False
+
+class Notas(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin,models.Model):
     id_nota = models.AutoField(primary_key=True)
     curso = models.ForeignKey(Curso, models.DO_NOTHING, db_column="id_curso")
     colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column="id_colegio")
@@ -89,12 +97,5 @@ class Notas(models.Model):
         managed = False
 
 
-class PeriodoAcademico(models.Model):  # Primer Trimestre, Segundo Bimestre, etc.
-    id_periodo_academico = models.AutoField(primary_key=True)
-    colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column="id_colegio")
-    nombre = models.CharField(max_length=50)
-
-    class Meta:
-        managed = False
 
 """

@@ -31,35 +31,42 @@
 
     <!-- HEADER DE PAGE -->
     <header id="header">
-        <nav class="left">
-            <a href="#menu"><span>Menu</span></a>
-        </nav>
-        <a href="{% url 'home' %}" class="logo">
-            <img src="{% static 'site/img/mundopixel.png' %}" class="img-responsive" alt="Mundo Pixel S.A">
-        </a>
-        <nav class="right">
-
-            {% if user.is_authenticated %}
+        <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <nav class="left">
+                    <a href="#menu"><span>Menu</span></a>
+                </nav>
+            </div>
+            <div class="col-md-4">
+                <a href="{% url 'home' %}" class="logo">
+                    <img src="{% static 'site/img/mundopixel.png' %}" class="img-responsive" alt="Mundo Pixel S.A">
+                </a>
+            </div>
+            <div class="col-md-4">
+             <nav class="right">
+                {% if user.is_authenticated %}
                 {% if user.is_staff %}
 
                 {% endif %}
                 <div class="dropdown">
-                    <a href="#" class="dropdown-toggle profile-menu" data-toggle="dropdown">
-                    <img src="{% thumbnail user.profile.picture|default:'default_profile.png' 30x30 crop %}" alt="" />
+                    <button class="btn btn-default dropdown-toggle" type="button" id="profile-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <img src="{% thumbnail user.profile.picture|default:'default_profile.png' 30x30 crop %}" alt="" />
                     {{ user.get_full_name|truncatechars:20 }}
-                        <span class="caret"></span>
-		            </a>
-
+                    <span class="caret"></span>
+                    </button>
                   <ul class="dropdown-menu" role="menu">
-                    <li><a href="{% url 'profiles:show_self' %}">Profile</a></li>
-                    <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
+                    <li><a href="{% url 'profiles:show_self' %}">Mi perfil</a></li>
+                    <li><a href="{% url 'accounts:logout' %}">Cerrar sesión</a></li>
                   </ul>
                 </div>
             {% else %}
-                <a href="{% url 'accounts:login' %}" class="button alt">Iniciar sessión</a>
+                <a href="{% url 'accounts:login' %}" class="btn btn-default"><i class="fa fa-sign-in" aria-hidden="true"></i></a>
             {% endif %}
-
-        </nav>
+             </nav>
+            </div>
+        </div>
+    </div>
     </header>
 
     <!-- MENU DE PAGE -->
@@ -72,7 +79,25 @@
                 <li><a href="elements.html">Contacto</a></li>-->
             </ul>
             <ul class="actions vertical">
-                <li><a href="{% url 'accounts:login' %}" class="button fit">Login</a></li>
+                {% if user.is_authenticated %}
+                {% if user.is_staff %}
+
+                {% endif %}
+                <div class="dropdown">
+                    <a href="#" class="dropdown-toggle profile-sidebar" data-toggle="dropdown">
+                    <img src="{% thumbnail user.profile.picture|default:'default_profile.png' 30x30 crop %}" alt="" />
+                    {{ user.get_full_name|truncatechars:20 }}
+                        <span class="caret"></span>
+		            </a>
+
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="{% url 'profiles:show_self' %}">Mi perfil</a></li>
+                    <li><a href="{% url 'accounts:logout' %}">Cerrar sesión</a></li>
+                  </ul>
+                </div>
+            {% else %}
+                <a href="{% url 'accounts:login' %}" class="btn btn-default"><i class="fa fa-sign-in" aria-hidden="true"></i></a>
+            {% endif %}
             </ul>
         {% endblock navbar %}
     </nav>

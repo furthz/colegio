@@ -73,7 +73,7 @@ class PersonaForm(ModelForm):
         self.fields['apellido_pa'].widget.attrs = {'tabindex': '3', 'class': 'form-control', 'maxlength': '50'}
         self.fields['apellido_ma'].widget.attrs = {'tabindex': '4', 'class': 'form-control', 'maxlength': '50'}
         self.fields['numero_documento'].widget.attrs = {'tabindex': '6', 'class': 'form-control', 'maxlength': '15'}
-        self.fields['correo'].widget.attrs = {'tabindex': '9', 'class': 'form-control'}
+        self.fields['correo'].widget.attrs = {'tabindex': '7', 'class': 'form-control'}
         self.fields['fecha_nac'] = forms.DateField(widget=forms.DateInput, input_formats=['%Y-%m-%d'])
         self.fields['fecha_nac'].widget.attrs = {'tabindex': '8', 'class': 'form-control', 'onChange': 'validarFecNac()'}
 
@@ -119,6 +119,7 @@ class AlumnoForm(ValidProfileFormMixin, PersonaForm):
                   'sexo', 'correo', 'fecha_nac']
 
 
+
 class ApoderadoForm(ValidProfileFormMixin, PersonaForm):
 
     title = forms.CharField(label="Registrar Apoderado", required=False)
@@ -143,12 +144,13 @@ class ApoderadoForm(ValidProfileFormMixin, PersonaForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['parentesco'] = forms.ChoiceField(choices=self.ChoiceParentesco())
-        self.fields['parentesco'].widget.attrs.update({'class': 'form-control'})
+        self.fields['parentesco'].widget.attrs.update({'tabindex': '10', 'class': 'form-control'})
 
     class Meta:
         model = Apoderado
         fields = ['nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento',
                   'numero_documento', 'sexo', 'correo', 'fecha_nac']
+
 
 
 class PersonalForm(ValidProfileFormMixin, PersonaForm):

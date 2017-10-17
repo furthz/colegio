@@ -186,6 +186,42 @@ class BoxCashierCreationView(CreateView):
     template_name = 'boxcashier/boxcashier_formApertura.html'
 
 
+    #Paso el ID del usuario al template y en el template selecciono la opción con ese ID del usuario que crea
+
+    def get_context_data(self, **kwargs):
+            context = super(BoxCashierCreationView, self).get_context_data(**kwargs)
+
+            from utils.middleware import get_current_user
+
+            usuario = get_current_user()
+            if usuario is not None:
+                iduser = usuario.id
+            else:
+                iduser = -1
+
+            from register.models import PersonalColegio,Personal,Profile
+
+            a = Profile.objects.get(user_id=iduser)
+            b = Personal.objects.get(persona_id=a)
+            c = PersonalColegio.objects.get(personal_id=b)
+            d = PersonalColegio.objects.filter(personal_id=b).values('pk')
+#            print(PersonalColegio.objects.values('pk').filter(personal_id=b)[0]['pk'])
+
+            # creacion
+            #context['yolencios'] = d
+            context['yolencios'] = PersonalColegio.objects.values('pk').filter(personal_id=b)[0]['pk']
+            return context
+    #Luego de obtener el id del usuario filtro la persona mediante el id de usuario por ser one to one field
+    # para luego obtener el id de profile
+
+    """
+    function myFunction() {
+    document.getElementById("mySelect").value = "ID-USUARIO";
+    }
+    """
+
+
+
     @method_decorator(permission_required('cash.Box_Cashier_Creation', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):

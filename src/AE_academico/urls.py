@@ -2,7 +2,7 @@
 from django.conf.urls import url
 
 from AE_academico.views import AulaListView, AulaDetailView, AulaCreationView, AulaUpdateView, AulaDeleteView
-
+from AE_academico.views import CursoDocenteCreateView
 urlpatterns = [
 
     # URL's del CRUD de AULA
@@ -14,5 +14,8 @@ urlpatterns = [
     url(r'^aula/update/(?P<pk>\d+)$', AulaUpdateView.as_view(), name='aula_edit'),
     url(r'^aula/delete/(?P<pk>\d+)$', AulaDeleteView.as_view(), name='aula_delete'),
 
+
+
+    url(r'^curso/create/$', CursoDocenteCreateView.as_view(), name='cursodocente_create'),
 ]
 """

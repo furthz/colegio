@@ -67,7 +67,13 @@
                                 <td>{{ forloop.counter }}</td>
                                 <td>{{ remesa.personal_colegio }}</td>
                                 <td>S/ {{ remesa.monto }}</td>
-                                <td>{{ remesa.comentario }}</td>
+
+                                {% if remesa.comentario == None %}
+                                    <td></td>
+                                {% else %}
+                                    <td>{{ remesa.comentario }}</td>
+                                {% endif %}
+
                                 <td>{{ remesa.fechacreacion }}</td>
                                 <td class="text-center">
                                     <div class="btn-group btn-group-sm" role="group" aria-label="...">

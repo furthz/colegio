@@ -102,7 +102,7 @@
                         <form id="registro" name="registro" action="" method="POST" class="form-horizontal">
                             {% csrf_token %}
 
-                            <div class="col-md-9">
+                            <div class="col-md-12">
                             <!-- DATOS PERSONALES -->
                                 <div class="box-header with-border">
                                     <h3 class="box-title">Datos personales</h3>
@@ -195,8 +195,8 @@
                                         <div class="form-group">
                                             <!-- atributo parentesco sólo para el apoderado -->
                                             {% if form.parentesco %}
-                                                <label class="col-sm-5 control-label">Parentesco</label>
-                                                <div class="col-sm-7">
+                                                <label class="col-sm-3 control-label">Parentesco</label>
+                                                <div class="col-sm-9">
                                                     {{ form.parentesco }}
                                                 </div>
                                             {% endif %}
@@ -225,7 +225,7 @@
                                     <h3 class="box-title">Datos contacto y dirección</h3>
                                 </div>
                                 <div class="box-body">
-                                    <div class="col-md-12">
+
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label">Departamento</label>
@@ -242,7 +242,6 @@
                                                     </select>
                                                 </div>
                                             </div>
-
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
@@ -256,8 +255,7 @@
                                             </div>
 
                                     </div>
-                                    </div>
-                                    <div class="col-md-12">
+
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label">Dirección</label>
@@ -274,8 +272,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-12">
+
 
                                         <div class="col-md-6">
                                             <!--
@@ -309,7 +306,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+
                                 </div>
                             <div class="box-body">
 
@@ -327,10 +324,9 @@
                             </div>
 
                             </div>
-                            <div class="col-md-3">
+
                                 <!-- BLOQUE DE AYUDA -->
                                 <!-- FIN DE BLOQUE DE AYUDA -->
-                            </div>
 
                         </form>
             </div>

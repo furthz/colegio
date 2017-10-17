@@ -3,7 +3,7 @@
 
 
 {% block container %}
-
+<body onload="usuariocrea()">
     <!--Comienza el contenido!!!!!!!!!!!!!!!!!!!-->
     <!-- INICIA CONTENDOR DE FORMULARIOS -->
     <div class="content-wrapper">
@@ -40,8 +40,10 @@
                                                 {{ form.monto_cierre }}
                                                 {{ form.estado }}
                                                 {{ form.comentario_cierre }}
+                                                {{ form.personal_colegio }}
                                             </div>
-                                            {{ form.personal_colegio }}                                                                                                                                               {{ form.total_remesa }}
+                                            {{ form.total_remesa }}
+
                                             <div class="form-group">
                                                 <label  class="col-sm-3 control-label">Caja</label>
                                                 <div class="col-sm-9">
@@ -84,5 +86,15 @@
     <!-- /.FIN DE CONTENEDOR DE FORMULARIO  -->
 
     <!--Fin del contenido!!!!!!!!!!!-->
-
+</body>
 {% endblock container %}
+
+{% block scripts %}
+    <script type="text/javascript">
+    function usuariocrea() {
+        document.getElementById("id_personal_colegio").value = {{ yolencios }};
+    }
+
+    </script>
+
+{% endblock scripts %}
