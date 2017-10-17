@@ -534,7 +534,7 @@ from reportlab.platypus import Table
 
 
 def generar_pdf(request):
-    print("Genero el PDF")
+    #print("Genero el PDF")
     response = HttpResponse(content_type='application/pdf')
     pdf_name = "clientes.pdf"  # llamado clientes
     # la linea 26 es por si deseas descargar el pdf a tu computadora
@@ -559,21 +559,20 @@ def generar_pdf(request):
                             )
     clientes = []
     styles = getSampleStyleSheet()
-    header = Paragraph("Detalle del Pago", styles['Heading1'])
-    fecha = Paragraph("Fecha y hora:".format(datetime.today()), styles['Heading2'])
-    header1 = Paragraph("Cajero:", styles['Heading2'])
-    header2 = Paragraph("{0}".format(cajero), styles['Heading3'])
-    header3 = Paragraph("Nombre del alumno:", styles['Heading2'])
-    header4 = Paragraph("{0}".format(alumno), styles['Heading3'])
-
+    header5 = Paragraph("{0}".format(colegio), styles['Heading3'])
+    header = Paragraph("Detalle del Pago", styles['Heading4'])
+    fecha = Paragraph("Fecha y hora:    {0}".format(datetime.today()), styles['Heading4'])
+    header1 = Paragraph("Cajero:    {0}".format(cajero), styles['Heading4'])
+    header3 = Paragraph("Nombre del alumno:   {0}".format(alumno), styles['Heading4'])
+    clientes.append(header5)
     clientes.append(header)
     clientes.append(fecha)
     clientes.append(header1)
-    clientes.append(header2)
+
     clientes.append(header3)
-    clientes.append(header4)
-    headings = ('Servicio', 'Monto')
-    allclientes = [(p.cuentascobrar.servicio, p.monto) for p in detalle_cobranza]
+
+    headings = ('Concepto', 'Grado', 'Monto Pagado')
+    allclientes = [(p.cuentascobrar.servicio.nombre, p.cuentascobrar.servicio.tipo_servicio,  p.monto) for p in detalle_cobranza]
     #print(allclientes)
 
     t = Table([headings] + allclientes)
