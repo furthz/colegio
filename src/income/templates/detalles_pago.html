@@ -91,7 +91,7 @@
                               {% for servicio in servicios %}
                             <tr>
                               <td>183</td>
-                              <td>{{ servicio.cuentascobrar.servicio.nombre }}</td>
+                              <td>{{ servicio.cuentascobrar.servicio.nombre }} de {{ servicio.cuentascobrar.servicio.tipo_servicio }} del {{ servicio.cuentascobrar.fecha_ven }}</td>
                               <td>{{ servicio.monto }}</td>
 
                             </tr>

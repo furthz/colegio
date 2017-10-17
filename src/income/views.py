@@ -559,7 +559,7 @@ def generar_pdf(request):
                             )
     clientes = []
     styles = getSampleStyleSheet()
-    header5 = Paragraph("{0}".format(colegio), styles['Heading3'])
+    header5 = Paragraph("{0}  RUC: {1}".format(colegio, colegio.ruc), styles['Heading3'])
     header = Paragraph("Detalle del Pago", styles['Heading4'])
     fecha = Paragraph("Fecha y hora:    {0}".format(datetime.today()), styles['Heading4'])
     header1 = Paragraph("Cajero:    {0}".format(cajero), styles['Heading4'])
