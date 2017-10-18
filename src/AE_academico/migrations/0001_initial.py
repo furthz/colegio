@@ -136,7 +136,6 @@ class Migration(migrations.Migration):
                 ('fecha_modificacion', models.DateField()),
                 ('usuario_creacion', models.CharField(max_length=10, null=True)),
                 ('usuario_modificacion', models.CharField(max_length=10, null=True)),
-                ('activo', models.BooleanField()),
             ],
             options={
                 # 'db_table': 'matricula',

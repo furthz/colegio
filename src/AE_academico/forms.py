@@ -1,6 +1,6 @@
 
 from django import forms
-from AE_academico.models import Aula
+from AE_academico.models import Aula, Asistencia, Notas
 from AE_academico.models import CursoDocente
 
 class AulaForm(forms.ModelForm):
@@ -42,3 +42,26 @@ class CursoDocenteForm(forms.ModelForm):
             'curso': forms.Select(attrs={'class': 'form-control'}),
         }
 
+class MarcarAsistenciaForm(forms.Form):
+
+    estado_asistencia = forms.BooleanField()
+
+    def ChoiceEstado(self):
+        MY_CHOICES = (
+            (True, 'Presente'),
+            (False, 'Ausente'),
+        )
+        return MY_CHOICES
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['estado_asistencia'] = forms.ChoiceField(choices=self.ChoiceEstado())
+        self.fields['estado_asistencia'].widget.attrs.update({'class': 'form-control'})
+
+class SubirNotasForm(forms.Form):
+
+    nota = forms.IntegerField()
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['nota'].widget.attrs.update({'class': 'form-control'})

@@ -66,7 +66,7 @@ class Evento(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUs
         managed = False
 
 
-class Asistencia(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin,models.Model):
+class Asistencia(CreacionModificacionFechaMixin, CreacionModificacionUserMixin,models.Model):
     id_asistencia = models.AutoField(primary_key=True)
     alumno = models.ForeignKey(Alumno, models.DO_NOTHING, db_column='id_alumno')
     fecha = models.DateField()
