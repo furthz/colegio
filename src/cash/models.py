@@ -151,6 +151,7 @@ class CajaCajero(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, 
 
     class Meta:
         managed = False
+        ordering = ["id_movimiento"]
         # db_table = 'caja_cajero'
         permissions = (
             ("Box_Cashier_List", "ver lista de apertura y cierre de caja"),
@@ -195,6 +196,7 @@ class Remesa(models.Model):
 
     class Meta:
         managed = False
+        ordering = ["id_remesa"]
         # db_table = 'remesa'
         permissions = (
             ("Consigment_List", "ver lista de remesas"),
