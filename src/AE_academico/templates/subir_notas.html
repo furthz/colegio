@@ -1,0 +1,65 @@
+{% extends "page.html" %}
+{% block titulo %}
+    <h1>Notas de cursos
+        {{ block.super }}
+        <small>Módulo Académico</small>
+    </h1>
+{% endblock %}
+{% block container %}
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">Registrar notas</h3>
+            <div class="box-body">
+                <div class="col-md-9">
+                    <div class="panel-page">
+                        <div class="box-body">
+                            <table class="table table-hover">
+                                    <tbody>
+                                        <tr>
+                                            <th>Alumno</th>
+                                            <th>Nota</th>
+                                        </tr>
+
+                                        {% if alumnos %}
+                                            <form id="ListaAsistencia">{% csrf_token %}
+                                                {% for alumno in alumnos %}
+                                                    <tr>
+                                                        <td>
+                                                            {{ alumno.alumno.getNombreCompleto }}
+                                                            <input type="hidden" name="id" value="{{ alumno.alumno.id_alumno }}">
+                                                        </td>
+                                                        <td>
+                                                            <div class="col-md-4">
+                                                                {{ form.nota }}
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </form>
+                                        {% else %}
+                                            <option value="">No existen alumnos registrados</option>
+                                        {% endif %}
+                                    </tbody>
+                            </table>
+
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <a href="javascript:history.back()" class="btn btn-default" >
+                                            <i class="fa fa-arrow-left" aria-hidden="true"></i> Volver
+                                        </a>
+                                        <button type="submit" class="btn btn-success" tabindex="3" form="ListaAsistencia" formmethod="post">
+                                            <i class="fa fa-plus" aria-hidden="true"></i> Confirmar
+                                        </button>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock container %}
