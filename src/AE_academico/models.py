@@ -1,4 +1,4 @@
-
+"""
 from django.db import models
 
 from enrollment.models import TipoServicio
@@ -95,6 +95,6 @@ class Notas(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUse
 
     class Meta:
         managed = False
-
+"""
 
 

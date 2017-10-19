@@ -1,3 +1,4 @@
+"""
 import datetime
 
 from django.shortcuts import render
@@ -171,7 +172,7 @@ class MarcarAsistenciaView(CreateView):
 
         contexto = {}
         return render(request, template_name=self.template_name, context=contexto)
-
+"""
 """
 class ResumenAsistenciaView(FormView):
 
@@ -266,7 +267,7 @@ class ResumenAsistenciaView(FormView):
             contexto['form'] = ResumenAsistenciaView
             return render(request, template_name=self.template_name, context=contexto)
 """
-
+"""
 class SubirNotasView(CreateView):
 
     model = Notas
@@ -311,3 +312,4 @@ class SubirNotasView(CreateView):
 
         contexto = {}
         return render(request, template_name=self.template_name, context=contexto)
+"""

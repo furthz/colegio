@@ -1,4 +1,4 @@
-
+"""
 from django import forms
 from AE_academico.models import Aula, Asistencia, Notas
 from AE_academico.models import CursoDocente
@@ -65,3 +65,5 @@ class SubirNotasForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['nota'].widget.attrs.update({'class': 'form-control'})
+
+"""
