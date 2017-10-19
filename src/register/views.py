@@ -1340,3 +1340,57 @@ class ColegioListView(MyLoginRequiredMixin, TemplateView):
 
 def renderToRegistro(request, template_name, context):
     return render(request, template_name=template_name, context=context)
+
+
+
+
+class DocenteCreateView(MyLoginRequiredMixin, CreateView):
+    model = Docente
+    form_class = DocenteForm
+    template_name = "registro_create.html"
+
+    @method_decorator(permission_required('register.docente_create', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+
+        roles = ['sistemas', 'promotor', 'director']
+
+        if validar_roles(roles=roles):
+            return super(DocenteCreateView, self).get(request, args, kwargs)
+
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+    #@method_decorator(permission_required('register.sistemas_create', login_url=settings.REDIRECT_PERMISOS,
+    #                                      raise_exception=False))
+    def form_valid(self, form):
+        logger.debug("Docente a crear con DNI: " + form.cleaned_data["numero_documento"])
+
+        roles = ['sistemas', 'promotor', 'director']
+
+        if validar_roles(roles=roles):
+            personal = SaveGeneric().saveGeneric(padre=Personal, form=form, hijo=Docente)
+            logger.debug("Se creó el usuario de docente en la vista")
+
+            logger.info("Se creó el usuario de sistemas")
+            return HttpResponseRedirect(personal.get_absolute_url())
+
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+
+class DocenteDetailView(MyLoginRequiredMixin, DetailView):
+    model = Docente
+    template_name = "docente_detail.html"
+
+    @method_decorator(permission_required('register.docente_detail', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+
+        roles = ['sistemas', 'promotor', 'director']
+
+        if validar_roles(roles=roles):
+            return super(DocenteDetailView, self).get(request, args, kwargs)
+
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
