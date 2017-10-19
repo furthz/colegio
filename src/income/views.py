@@ -482,7 +482,10 @@ class ControlIngresosPromotorDetallesView(FormView):
         if alumno == "":
             por_cobrar1 = cuentas_cobrar_colegio
         else:
-            por_cobrar1 = cuentas_cobrar_colegio.filter(Q(matricula__alumno__nombre=alumno) | Q(matricula__alumno__apellido_pa=alumno) | Q(matricula__alumno__apellido_ma=alumno))
+            por_cobrar1 = cuentas_cobrar_colegio.filter(Q(matricula__alumno__nombre__icontains=alumno.upper()) |
+                                                        Q(matricula__alumno__segundo_nombre__icontains=alumno.upper()) |
+                                                        Q(matricula__alumno__apellido_pa__icontains=alumno.upper()) |
+                                                        Q(matricula__alumno__apellido_ma__icontains=alumno.upper()))
 
         # Proceso de filtrado según el año
         if anio == "Todos":
@@ -503,7 +506,7 @@ class ControlIngresosPromotorDetallesView(FormView):
             por_cobrar = por_cobrar3
         elif estado == "Pagado":
             por_cobrar = por_cobrar3.filter(estado=False)
-        elif estado == "No_pagado":
+        else:
             por_cobrar = por_cobrar3.filter(estado=True)
 
         contexto = self.cargarformPromotordetalle(request)
