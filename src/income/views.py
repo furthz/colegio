@@ -508,14 +508,10 @@ class ControlIngresosPromotorDetallesView(FormView):
 
         contexto = self.cargarformPromotordetalle(request)
 
-        if len(por_cobrar) != 0:
-            contexto['object_list']=por_cobrar
-            contexto['form']=CuentasCobrarPromotorDetalleForm
-            return render(request, template_name=self.template_name, context=contexto)
-        else:
-            contexto['object_list'] = []
-            contexto['form'] = CuentasCobrarPromotorDetalleForm
-            return render(request, template_name=self.template_name, context=contexto)
+        contexto['object_list']=por_cobrar
+        contexto['form']=CuentasCobrarPromotorDetalleForm
+        return render(request, template_name=self.template_name, context=contexto)
+
 
 
 
