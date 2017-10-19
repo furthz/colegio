@@ -83,11 +83,13 @@ class BoxCashierForm(forms.ModelForm):
 
         widgets = {
 
-            'personal_colegio': forms.Select(attrs={'class': 'form-control'}),
+            'personal_colegio': forms.Select(attrs={'class': 'hidden'}),
+            #'caja': forms.ModelChoiceField(queryset= Caja.objects.filter(colegio_id=1), to_field_name="id_caja"),
+
             'caja': forms.Select(attrs={'class': 'form-control'}),
             'saldo': forms.TextInput(attrs={'class': 'form-control'}),
             'monto_apertura': forms.TextInput(attrs={'class': 'form-control'}),
-            'monto_cierre': forms.TextInput(attrs={'class': 'form-control'}),
+            'monto_cierre': forms.TextInput(attrs={'class': 'form-control', 'onfocus': 'deleteText(this)'}),
             'comentario_apertura': forms.Textarea(attrs={'class': 'form-control', 'rows': '3'}),
             'comentario_cierre': forms.Textarea(attrs={'class': 'form-control', 'rows': '3'}),
             'estado': forms.CheckboxInput(attrs={'id': 'Uncheck'}),

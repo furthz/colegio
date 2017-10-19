@@ -1,44 +1,30 @@
 {% extends "page.html" %}
-{% block title %}{{ block.super }}Remesas{% endblock %}
+{% block title %}{{ block.super }}Cajas{% endblock %}
 
 {% block container %}
 
     <!--Comienza el contenido!!!!!!!!!!!!!!!!!!!-->
-BoxCashier List
+<h1>Cajas</h1>
+    <br>
 
-<p>
+<a class="btn btn-primary" href="{% url 'cash:boxcashier_AperturarCaja' %}" >Aperturar Caja</a>
+    <br>
+    <br>
+<!--<p>
     <a href="{% url 'cash:boxcashier_AperturarCaja' %}">Aperturar Caja</a>
-     <!--<a href="{ url "cash:boxcashier_CerrarCaja" %}">Cerrar Caja</a>                PARA CERRAR CAJA ANTES DEBE DE HABER UNA APERTURA DE CAJA
+     <a href="{ url "cash:boxcashier_CerrarCaja" %}">Cerrar Caja</a>                PARA CERRAR CAJA ANTES DEBE DE HABER UNA APERTURA DE CAJA
             DENTRO DE LA LÓGICA DE CERRAR CAJA AL MOMENTO DE DARLE CERRAR CAJA ES UN UPDATE DE LA TABLA CAJACAJERO DONDE SE CAMBIÁN CIERTOS VALORES, PERO SE DEBE INGRESAR LA LLAVE PRIMARIA
-            QUE SE DEBE MODIFICAR POR ESO SALE EL ERROR -->
+            QUE SE DEBE MODIFICAR POR ESO SALE EL ERROR
 </p>
+-->
 
-
-    <style>
-        table {
-            font-family: arial, sans-serif;
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        td, th {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
-
-        tr:nth-child(even) {
-            background-color: #dddddd;
-        }
-    </style>
-    </head>
     <body>
 
-        <table>
-            <tr>
+        <table class="table table-hover">
+            <tr class="table-header">
                 <th>Item</th>
 
-                <th>Total Remesa</th>
+                <th>Total de Remesas</th>
 
                 <th>Cajero</th>
                 <th>N° de Caja</th>
@@ -46,20 +32,40 @@ BoxCashier List
                 <th>Monto de Cierre</th>
                 <th>Saldo</th>
                 <th>Fecha Creación</th>
-                <th></th>
+                <th>Acciones</th>
             </tr>
             {% for cajacajero in object_list %}
             {% if cajacajero.caja.colegio.id_colegio == idcolegio %}
             <tr>
                 <td>{{ forloop.counter }}</td>
 
-                <td>{{ cajacajero.total_remesa }}</td>
+            {% if cajacajero.total_remesa == None %}
+                <td></td>
+            {% else %}
+                <td>S/. {{ cajacajero.total_remesa }}</td>
+            {% endif %}
 
                 <td>{{ cajacajero.personal_colegio }}</td>
                 <td>{{ cajacajero.caja }}</td>
-                <td>{{ cajacajero.monto_apertura }}</td>
-                <td>{{ cajacajero.monto_cierre }}</td>
-                <td>{{ cajacajero.saldo }}</td>
+            {% if cajacajero.monto_apertura == 0 %}
+                <td>S/.----</td>
+            {% else %}
+                <td>S/. {{ cajacajero.monto_apertura }}</td>
+            {% endif %}
+
+            {% if cajacajero.monto_cierre == 0 %}
+                <td>S/.----</td>
+            {% else %}
+                <td>S/. {{ cajacajero.monto_cierre }}</td>
+            {% endif %}
+
+            {% if cajacajero.saldo == 0 %}
+                <td>S/.----</td>
+            {% else %}
+                <td>S/. {{ cajacajero.saldo }}</td>
+            {% endif %}
+
+
                 <td>{{ cajacajero.fecha_creacion }}</td>
 
 
