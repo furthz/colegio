@@ -30,16 +30,19 @@ class CursoForm(forms.ModelForm):
         fields = [
             'aula',
             'nombre',
+            'descripcion',
         ]
 
         labels = {
-            'aula': 'Nivel y Grado',
+            'aula': 'Aula',
             'nombre': 'Nombre',
+            'descripcion': 'Descripcion',
         }
 
         widgets = {
             'aula': forms.Select(attrs={'class': 'form-control'}),
             'nombre': forms.TextInput(attrs={'class': 'form-control'}),
+            'descripcion': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
 class CursoDocenteForm(forms.ModelForm):

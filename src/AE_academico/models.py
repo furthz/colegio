@@ -15,12 +15,28 @@ class Aula(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUser
     class Meta:
         managed = False
 
+    def __str__(self):
+        """
+        Solo retorna informacion de la clase como string
+        :return: nombre del servicio
+        """
+        return "{0}".format(self.nombre)
+
 
 class Curso(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin,models.Model):
     id_curso = models.AutoField(primary_key=True)
-    aula = models.ForeignKey(Aula, models.DO_NOTHING, db_column="id_aula")
     nombre = models.CharField(max_length=100, blank=True, null=True)
     descripcion = models.CharField(max_length=500, blank=True, null=True)
+    colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column="id_colegio")
+
+    class Meta:
+        managed = False
+
+
+class AulaCurso(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin,models.Model):
+    id_aula_curso = models.AutoField(primary_key=True)
+    aula = models.ForeignKey(Aula, models.DO_NOTHING, db_column="id_aula")
+    curso = models.ForeignKey(Curso, models.DO_NOTHING, db_column="id_curso")
 
     class Meta:
         managed = False
@@ -29,7 +45,7 @@ class Curso(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUse
 class CursoDocente(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin,models.Model):
     id_curso_docente = models.AutoField(primary_key=True)
     docente = models.ForeignKey(Docente, models.DO_NOTHING, db_column="id_docente")
-    curso = models.ForeignKey(Curso, models.DO_NOTHING, db_column="id_curso")
+    curso = models.ForeignKey(AulaCurso, models.DO_NOTHING, db_column="id_aula_curso")
 
     class Meta:
         managed = False
@@ -68,6 +84,7 @@ class Evento(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUs
 class Asistencia(CreacionModificacionFechaMixin, CreacionModificacionUserMixin,models.Model):
     id_asistencia = models.AutoField(primary_key=True)
     alumno = models.ForeignKey(Alumno, models.DO_NOTHING, db_column='id_alumno')
+    curso = models.ForeignKey(Curso, models.DO_NOTHING, db_column='id_curso')
     fecha = models.DateField()
     estado_asistencia = models.BooleanField()
     comentario = models.CharField(max_length=500, blank=True, null=True)

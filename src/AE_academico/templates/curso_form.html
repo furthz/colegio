@@ -1,0 +1,59 @@
+{% extends "page.html" %}
+{% block titulo %}
+    <h1>Cursos
+        {{ block.super }}
+        <small>Módulo Académico</small>
+    </h1>
+{% endblock %}
+{% block container %}
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">Registrar Curso</h3>
+            <div class="box-body">
+                <div class="col-md-9">
+                    <div class="panel-page">
+                        <div class="box-body">
+                            <form class="form-horizontal" action="" method="post">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Aula</label>
+                                    <div class="col-sm-10">
+                                        {{ form.aula }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Nombre</label>
+                                    <div class="col-sm-10">
+                                        {{ form.nombre }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Descripción</label>
+                                    <div class="col-sm-10">
+                                        {{ form.descripcion }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <a href="{% url 'academic:curso_list'  %}" class="btn btn-default" >
+                                            <i class="fa fa-arrow-left" aria-hidden="true"></i> Volver a lista
+                                        </a>
+                                        <button type="submit" class="btn btn-success" tabindex="3">
+                                            <i class="fa fa-plus" aria-hidden="true"></i> Registrar Curso
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock container %}
+
+

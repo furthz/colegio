@@ -1,5 +1,5 @@
 {% extends "page.html" %}
-{% block title %}{{ block.super }}Aulas{% endblock %}
+{% block title %}{{ block.super }}Cursos{% endblock %}
 {% block container %}
 
     <!--Comienza el contenido!!!!!!!!!!!!!!!!!!!-->
@@ -8,12 +8,12 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Registrar Aula</h3>
+                        <h3 class="box-title">Registrar Curso</h3>
                         <div class="box-body">
                             <div class="col-md-9">
                                 <div class="panel-page">
                                     <div class="toolbar-header">
-                                            <a class="btn btn-success" href='{% url "academic:aula_create" %}'><i class="fa fa-plus" aria-hidden="true"></i>  Crear aula</a>
+                                            <a class="btn btn-success" href='{% url "academic:curso_create" %}'><i class="fa fa-plus" aria-hidden="true"></i>  Crear curso</a>
                                         </div>
 
 
@@ -32,31 +32,23 @@
                                                     <th>Acciones</th>
 
                                                 </tr>
-                                                {% for aula in object_list %}
-                                                    <form method="get" name="{{ aula.id_aula }}" id="{{ aula.id_aula }}">
-                                                        <input type="number" hidden id="aula" name="aula" value="{{ aula.id_aula }}">
-                                                    </form>
-
-                                                    {% if aula.tipo_servicio.colegio.id_colegio == idcolegio %}
+                                                {% for curso in object_list %}
+                                                    {% if curso.aula.tipo_servicio.colegio.id_colegio == idcolegio %}
                                                     <tr>
                                                         <td>{{ forloop.counter }}</td>
-                                                        <td>{{ aula.nombre }}</td>
+                                                        <td>{{ curso.nombre }}</td>
 
                                                         <td>
                                                             <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                                                                <a title="Editar" href='{% url "academic:aula_edit" aula.id_aula %}' class="btn btn-default">
+                                                                <a title="Editar" href='{% url "academic:curso_edit" curso.id_curso %}' class="btn btn-default">
                                                                     <i class="fa fa-pencil" aria-hidden="true"></i>
                                                                 </a>
-                                                                <a title="Detalle" href='{% url "academic:aula_detail" aula.id_aula %}' class="btn btn-default">
+                                                                <a title="Detalle" href='{% url "academic:curso_detail" curso.id_curso %}' class="btn btn-default">
                                                                     <i class="fa fa-info-circle" aria-hidden="true"></i>
                                                                 </a>
-                                                                <a title="Eliminar" href="{% url 'academic:aula_delete' aula.id_aula %}" class="btn btn-default">
+                                                                <a title="Eliminar" href="{% url 'academic:curso_delete' curso.id_curso %}" class="btn btn-default">
                                                                     <i class="fa fa-trash" aria-hidden="true"></i>
                                                                 </a>
-                                                                <button type="submit" title="Asignar Cursos" formaction="{% url 'academic:aulacurso_create'%}" formmethod="get" form="{{ aula.id_aula }}" class="btn btn-default">
-                                                                    <i class="fa fa-info-circle" aria-hidden="true"></i>
-                                                                </button>
-
                                                             </div>
                                                         </td>
                                                     </tr>

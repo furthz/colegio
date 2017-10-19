@@ -40,14 +40,13 @@ class Migration(migrations.Migration):
             name='Curso',
             fields=[
                 ('id_curso', models.AutoField(primary_key=True)),
-                ('aula', models.ForeignKey(db_column="id_aula", to='AE_academico.Aula')),
+                ('colegio', models.ForeignKey(db_column="id_colegio", to='register.Colegio')),
                 ('nombre', models.CharField(max_length=100, blank=True, null=True)),
                 ('descripcion', models.CharField(max_length=500, blank=True, null=True)),
                 ('fecha_creacion', models.DateField()),
                 ('fecha_modificacion', models.DateField()),
-                ('usuario_creacion', models.CharField(max_length=10,null=True)),
-                ('usuario_modificacion', models.CharField(max_length=10,null=True)),
-                ('tipo_servicio', models.ForeignKey(db_column='id_tipo_servicio', to='enrollment.TipoServicio')),
+                ('usuario_creacion', models.CharField(max_length=10, null=True)),
+                ('usuario_modificacion', models.CharField(max_length=10, null=True)),
                 ('activo', models.BooleanField()),
             ],
             options={
@@ -58,10 +57,10 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='CursoDocente',
+            name='AulaCurso',
             fields=[
-                ('id_curso_docente', models.AutoField(primary_key=True)),
-                ('docente', models.ForeignKey(db_column="id_docente", to='register.Docente')),
+                ('id_aula_curso', models.AutoField(primary_key=True)),
+                ('aula', models.ForeignKey(db_column="id_aula", to='AE_academico.Aula')),
                 ('curso', models.ForeignKey(db_column="id_curso", to='AE_academico.Curso')),
                 ('fecha_creacion', models.DateField()),
                 ('fecha_modificacion', models.DateField()),
@@ -70,7 +69,26 @@ class Migration(migrations.Migration):
                 ('activo', models.BooleanField()),
             ],
             options={
-                #'db_table': 'matricula',
+                # 'db_table': 'matricula',
+                'managed': settings.IS_MIGRATE,
+                # 'managed': False,
+
+            },
+        ),
+        migrations.CreateModel(
+            name='CursoDocente',
+            fields=[
+                ('id_curso_docente', models.AutoField(primary_key=True)),
+                ('docente', models.ForeignKey(db_column="id_docente", to='register.Docente')),
+                ('curso', models.ForeignKey(db_column="id_aula_curso", to='AE_academico.AulaCurso')),
+                ('fecha_creacion', models.DateField()),
+                ('fecha_modificacion', models.DateField()),
+                ('usuario_creacion', models.CharField(max_length=10, null=True)),
+                ('usuario_modificacion', models.CharField(max_length=10, null=True)),
+                ('activo', models.BooleanField()),
+            ],
+            options={
+                # 'db_table': 'matricula',
                 'managed': settings.IS_MIGRATE,
                 # 'managed': False,
 

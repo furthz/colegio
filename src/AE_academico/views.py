@@ -1,13 +1,14 @@
 import datetime
 
 from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import FormView
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
+from django.views.generic import TemplateView
 
 from AE_academico.forms import AulaForm, MarcarAsistenciaForm, SubirNotasForm, CursoForm
 from AE_academico.forms import CursoDocenteForm
-from AE_academico.models import Aula, Asistencia, Notas
+from AE_academico.models import Aula, Asistencia, Notas, AulaCurso
 from AE_academico.models import CursoDocente
 from AE_academico.models import Curso
 from enrollment.models import Matricula
@@ -138,7 +139,7 @@ class CursoCreationView(CreateView):
     model = Curso
     form_class = CursoForm
     success_url = reverse_lazy('academic:curso_list')
-    template_name = 'aula_form.html'
+    template_name = 'curso_form.html'
 
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
@@ -166,7 +167,6 @@ class CursoDeleteView(DeleteView):
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
-
 #################################################
 #####            CRUD DE CURSO DOCENTE      #####
 #################################################
@@ -184,7 +184,8 @@ class CursoDocenteCreateView(CreateView):
             personal = []
             for personalcol in personalcolegio:
                 personal.append(personalcol.personal)
-            cursos = Curso.objects.filter(aula__tipo_servicio__colegio_id=get_current_colegio(), activo= True)
+            cursos = AulaCurso.objects.filter(aula__tipo_servicio__colegio_id=get_current_colegio(),
+                                              activo=True)
             docentes = Docente.objects.filter(empleado=personal)
             return render(request, template_name=self.template_name, context={
                 'form': self.form_class,
@@ -194,6 +195,33 @@ class CursoDocenteCreateView(CreateView):
 
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+#################################################
+#####            CRUD DE  AULA CURSO    #####
+#################################################
+
+class AulaCursoCreateView(TemplateView):
+    model = AulaCurso
+    success_url = reverse_lazy('academic:aula_list')
+    template_name = 'cursodocente_form.html'
+
+    def get(self, request, *args, **kwargs):
+        roles = ['promotor', 'director', 'administrativo', 'tesorero']
+        if validar_roles(roles=roles):
+            aula_actual = Aula.objects.get(id_aula=request.GET['aula'])
+            cursos = Curso.objects.filter(aula__tipo_servicio__colegio_id=get_current_colegio(), activo=True)
+            return render(request, template_name=self.template_name, context={
+                'aula': aula_actual,
+                'cursos': cursos,
+            })
+
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+    def post(self, request, *args, **kwargs):
+
+        return HttpResponseRedirect(reverse('AE_academico:aula_list'))
+
 
 #################################################
 #####            ASISTENCIA ALUMNOS         #####
@@ -227,23 +255,22 @@ class MarcarAsistenciaView(CreateView):
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
     def post(self, request, *args, **kwargs):
-
         logger.info("Estoy en el POST")
         logger.info("Los datos de llegada son {0}".format(request.POST))
         data_post = request.POST
 
-        ids = data_post['id']
-        logger.info(ids)
-        estados = data_post['estado_asistencia']
-        logger.info(estados)
+        alumnos_id = data_post.getlist('id')
+        estado_asistencias = data_post.getlist('estado_asistencia')
 
+        num = len(alumnos_id)
 
-        #id_colegio = get_current_colegio()
-
+        for n in range(0,num):
+            alumno = Alumno.objects.get(id_alumno = alumnos_id[n])
+            asistencia = Asistencia(alumno=alumno, fecha=datetime.date.today(), estado_asistencia=estado_asistencias[n])
+            asistencia.save()
 
         contexto = {}
         return render(request, template_name=self.template_name, context=contexto)
-
 """
 class ResumenAsistenciaView(FormView):
 
