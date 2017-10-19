@@ -28,19 +28,16 @@ class CursoForm(forms.ModelForm):
         model = Curso
 
         fields = [
-            'aula',
             'nombre',
             'descripcion',
         ]
 
         labels = {
-            'aula': 'Aula',
             'nombre': 'Nombre',
             'descripcion': 'Descripcion',
         }
 
         widgets = {
-            'aula': forms.Select(attrs={'class': 'form-control'}),
             'nombre': forms.TextInput(attrs={'class': 'form-control'}),
             'descripcion': forms.TextInput(attrs={'class': 'form-control'}),
         }
