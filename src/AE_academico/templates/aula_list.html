@@ -33,6 +33,10 @@
 
                                                 </tr>
                                                 {% for aula in object_list %}
+                                                    <form method="get" name="{{ aula.id_aula }}" id="{{ aula.id_aula }}">
+                                                        <input type="number" hidden id="aula" name="aula" value="{{ aula.id_aula }}">
+                                                    </form>
+
                                                     {% if aula.tipo_servicio.colegio.id_colegio == idcolegio %}
                                                     <tr>
                                                         <td>{{ forloop.counter }}</td>
@@ -49,6 +53,10 @@
                                                                 <a title="Eliminar" href="{% url 'academic:aula_delete' aula.id_aula %}" class="btn btn-default">
                                                                     <i class="fa fa-trash" aria-hidden="true"></i>
                                                                 </a>
+                                                                <button type="submit" title="Asignar Cursos" formaction="{% url 'academic:aulacurso_create'%}" formmethod="get" form="{{ aula.id_aula }}" class="btn btn-default">
+                                                                    <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                                                </button>
+
                                                             </div>
                                                         </td>
                                                     </tr>

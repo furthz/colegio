@@ -1,8 +1,8 @@
-"""
+
 from django.conf.urls import url
 
 from AE_academico.views import AulaListView, AulaDetailView, AulaCreationView, AulaUpdateView, AulaDeleteView, \
-    MarcarAsistenciaView, SubirNotasView
+    MarcarAsistenciaView, SubirNotasView, AulaCursoCreateView
 from AE_academico.views import CursoDocenteCreateView
 urlpatterns = [
 
@@ -18,5 +18,6 @@ urlpatterns = [
     url(r'^asistencia/create/$', MarcarAsistenciaView.as_view(), name='asistencia_create'),
 
     url(r'^notas/create/$', SubirNotasView.as_view(), name='notas_create'),
+
+    url(r'^aula/curso/create/$', AulaCursoCreateView.as_view(), name='aulacurso_create'),
 ]
-"""
