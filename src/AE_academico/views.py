@@ -1,4 +1,3 @@
-"""
 import datetime
 
 from django.shortcuts import render
@@ -6,7 +5,7 @@ from django.urls import reverse_lazy
 from django.views.generic import FormView
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 
-from AE_academico.forms import AulaForm, MarcarAsistenciaForm, SubirNotasForm
+from AE_academico.forms import AulaForm, MarcarAsistenciaForm, SubirNotasForm, CursoForm
 from AE_academico.forms import CursoDocenteForm
 from AE_academico.models import Aula, Asistencia, Notas
 from AE_academico.models import CursoDocente
@@ -97,6 +96,78 @@ class AulaDeleteView(DeleteView):
 
 
 #################################################
+#####            CRUD DE CURSO              #####
+#################################################
+
+
+class CursoListView(MyLoginRequiredMixin, ListView):
+    model = Curso
+    template_name = 'curso_list.html'
+
+    def get(self, request, *args, **kwargs):
+        roles = ['promotor', 'director', 'administrativo']
+        if validar_roles(roles=roles):
+            return super(CursoListView, self).get(request, *args, **kwargs)
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+    def get_context_data(self, **kwargs):
+
+        context = super(CursoListView, self).get_context_data(**kwargs)
+
+        request = get_current_request()
+
+        if request.session.get('colegio'):
+            id = request.session.get('colegio')
+            context['idcolegio'] = id
+        return context
+
+class CursoDetailView(UpdateView):
+    model = Curso
+    form_class = CursoForm
+    template_name = 'curso_detail.html'
+
+    def get(self, request, *args, **kwargs):
+        roles = ['promotor', 'director', 'administrativo']
+        if validar_roles(roles=roles):
+            return super(CursoDetailView, self).get(request, *args, **kwargs)
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+class CursoCreationView(CreateView):
+    model = Curso
+    form_class = CursoForm
+    success_url = reverse_lazy('academic:curso_list')
+    template_name = 'aula_form.html'
+
+    def get(self, request, *args, **kwargs):
+        roles = ['promotor', 'director', 'administrativo']
+        if validar_roles(roles=roles):
+            return super(CursoCreationView, self).get(request, *args, **kwargs)
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+class CursoUpdateView(UpdateView):
+    model = Curso
+    form_class = CursoForm
+    success_url = reverse_lazy('academic:curso_list')
+    template_name = 'curso_form.html'
+
+class CursoDeleteView(DeleteView):
+    model = Curso
+    form_class = CursoForm
+    success_url = reverse_lazy('academic:aula_list')
+    template_name = 'curso_confirm_delete.html'
+
+    def get(self, request, *args, **kwargs):
+        roles = ['promotor', 'director', 'administrativo']
+        if validar_roles(roles=roles):
+            return super(CursoDeleteView, self).get(request, *args, **kwargs)
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+
+#################################################
 #####            CRUD DE CURSO DOCENTE      #####
 #################################################
 
@@ -172,7 +243,7 @@ class MarcarAsistenciaView(CreateView):
 
         contexto = {}
         return render(request, template_name=self.template_name, context=contexto)
-"""
+
 """
 class ResumenAsistenciaView(FormView):
 
@@ -267,7 +338,7 @@ class ResumenAsistenciaView(FormView):
             contexto['form'] = ResumenAsistenciaView
             return render(request, template_name=self.template_name, context=contexto)
 """
-"""
+
 class SubirNotasView(CreateView):
 
     model = Notas
@@ -304,12 +375,8 @@ class SubirNotasView(CreateView):
         logger.info("Los datos de llegada son {0}".format(data_post))
 
 
-
-
-
         #id_colegio = get_current_colegio()
 
 
         contexto = {}
         return render(request, template_name=self.template_name, context=contexto)
-"""

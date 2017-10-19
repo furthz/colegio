@@ -1,6 +1,6 @@
-"""
+
 from django import forms
-from AE_academico.models import Aula, Asistencia, Notas
+from AE_academico.models import Aula, Asistencia, Notas, Curso
 from AE_academico.models import CursoDocente
 
 class AulaForm(forms.ModelForm):
@@ -22,6 +22,25 @@ class AulaForm(forms.ModelForm):
             'nombre': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
+
+class CursoForm(forms.ModelForm):
+    class Meta:
+        model = Curso
+
+        fields = [
+            'aula',
+            'nombre',
+        ]
+
+        labels = {
+            'aula': 'Nivel y Grado',
+            'nombre': 'Nombre',
+        }
+
+        widgets = {
+            'aula': forms.Select(attrs={'class': 'form-control'}),
+            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
+        }
 
 class CursoDocenteForm(forms.ModelForm):
     class Meta:
@@ -65,5 +84,3 @@ class SubirNotasForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['nota'].widget.attrs.update({'class': 'form-control'})
-
-"""
