@@ -12,7 +12,7 @@ import income.urls
 import cash.urls
 import payments.urls
 import discounts.urls
-import AE_academico.urls
+#import AE_academico.urls
 from . import views
 
 handler404 = mi_error_404
@@ -29,7 +29,7 @@ urlpatterns = [
     url(r'^income/', include(income.urls, namespace='income')),
     url(r'^payments/', include(payments.urls, namespace='payments')),
     url(r'^discounts/', include(discounts.urls, namespace='discounts')),
-    url(r'^academic/', include(AE_academico.urls, namespace='academic')),
+    #url(r'^academic/', include(AE_academico.urls, namespace='academic')),
 ]
 
 # User-uploaded files like profile pics need to be served in development
