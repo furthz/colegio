@@ -233,30 +233,6 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='Docente',
-            fields=[
-                ('id_docente', models.AutoField(auto_created=True, primary_key=True, serialize=False)),
-                ('empleado', models.OneToOneField(on_delete=django.db.models.deletion.DO_NOTHING,
-                                                  parent_link=True, to='register.Personal')),
-                ('activo', models.BooleanField(default=True)),
-                ('fecha_creacion', models.DateTimeField(null=True)),
-                ('fecha_modificacion', models.DateTimeField(null=True)),
-                ('usuario_creacion', models.CharField(max_length=10, null=True)),
-                ('usuario_modificacion', models.CharField(max_length=10, null=True))
-            ],
-            options={
-                # 'db_table': 'docente',
-                'managed': settings.IS_MIGRATE,
-                'permissions': (
-                    ("docente_create", "crear docente"),
-                    ("docente_update", "update docente"),
-                    ("docente_delete", "eliminar docente"),
-                    ("docente_list", "listar docente"),
-                    ("docente_detail", "detalle docente"),
-                )
-            },
-        ),
-        migrations.CreateModel(
             name='Cajero',
             fields=[
                 ('id_cajero', models.AutoField(auto_created=True, primary_key=True, serialize=False)),

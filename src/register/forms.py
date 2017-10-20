@@ -6,7 +6,7 @@ from django.forms import ModelForm
 
 from profiles.models import Profile
 from register.models import Alumno, Apoderado, Personal, Promotor, Director, Cajero, Tesorero, Proveedor, Colegio, Sistemas, Administrativo, \
-    Direccion, Docente
+    Direccion
 from utils.forms import ValidProfileFormMixin
 from utils.models import TipoDocumento, TipoSexo, Departamento, Provincia, Distrito
 
@@ -167,16 +167,6 @@ class SistemasForm(ValidProfileFormMixin, PersonaForm):
 
     class Meta:
         model = Sistemas
-        fields = ['nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento', 'numero_documento',
-                  'sexo', 'correo', 'fecha_nac']
-
-
-class DocenteForm(ValidProfileFormMixin, PersonaForm):
-
-    title = forms.CharField(label="Registrar Docente", required=False)
-
-    class Meta:
-        model = Docente
         fields = ['nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento', 'numero_documento',
                   'sexo', 'correo', 'fecha_nac']
 
