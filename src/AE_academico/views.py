@@ -344,14 +344,20 @@ class VisualizarAsistenciaView(TemplateView):
         len(alumnos)
         """
 
+        fechas = []
         lista_asistencias_dia = []
         for dia in range(0, num_dias):
             asistencias_curso_dia = asistencias_curso_mes.filter(fecha__day=dia+1)
             logger.info("La lista de asistencias del día {0} mes son {1}".format(dia+1, asistencias_curso_dia))
+            n = 0
             for asistencias_dias in asistencias_curso_dia:
                 lista_asistencias_dia.append(asistencias_dias.estado_asistencia)
+                if n == 0:
+                    fechas.append(asistencias_dias.fecha)
+                n = n + 1
 
         logger.info("La lista de asistencias de mes son {0}".format(lista_asistencias_dia))
+        logger.info("La lista de fechas de mes son {0}".format(fechas))
 
         contexto = self.VisualizarAsistenciaform(request)
 
