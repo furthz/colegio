@@ -6,14 +6,14 @@ from django.views.generic import FormView
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from django.views.generic import TemplateView
 
-from AE_academico.forms import AulaForm, MarcarAsistenciaForm, SubirNotasForm, CursoForm
+from AE_academico.forms import AulaForm, MarcarAsistenciaForm, SubirNotasForm, CursoForm, EventoForm
 from AE_academico.forms import CursoDocenteForm
-from AE_academico.models import Aula, Asistencia, Notas, AulaCurso
+from AE_academico.models import Aula, Asistencia, Notas, AulaCurso, Evento
 from AE_academico.models import CursoDocente
 from AE_academico.models import Curso
 from enrollment.models import Matricula
 from income.models import obtener_mes
-from register.models import Docente, Personal, PersonalColegio, Alumno
+from register.models import Docente, Personal, PersonalColegio, Alumno, Colegio
 from django.conf import settings
 from utils.middleware import validar_roles, get_current_request, get_current_colegio, get_current_user
 from django.http import HttpResponseRedirect
@@ -183,11 +183,16 @@ class CursoDocenteCreateView(CreateView):
         if validar_roles(roles=roles):
             personalcolegio = PersonalColegio.objects.filter(colegio_id=get_current_colegio(), activo=True)
             personal = []
+            docentes = []
             for personalcol in personalcolegio:
                 personal.append(personalcol.personal)
             cursos = AulaCurso.objects.filter(aula__tipo_servicio__colegio_id=get_current_colegio(),
                                               activo=True)
-            docentes = Docente.objects.filter(empleado=personal)
+            for persona in personal:
+                try:
+                    docentes.append(Docente.objects.get(empleado=persona))
+                except:
+                    logger.info("Persona no es un docente ---- AE_academico")
             return render(request, template_name=self.template_name, context={
                 'form': self.form_class,
                 'docentes': docentes,
@@ -408,3 +413,69 @@ class SubirNotasView(CreateView):
 
         contexto = {}
         return render(request, template_name=self.template_name, context=contexto)
+
+
+
+################################################################################
+#       Eventos
+################################################################################
+
+
+class EventoCreateView(CreateView):
+    model = Evento
+    form_class = EventoForm
+    template_name = "evento_form.html"
+    success_url = reverse_lazy("academics:evento_list")
+
+    def form_valid(self, form):
+        form.instance.colegio = Colegio.objects.get(pk=get_current_colegio())
+        return super(EventoCreateView, self).form_valid(form)
+
+    def get(self, request, *args, **kwargs):
+        roles = ['promotor', 'director', 'administrativo']
+        if validar_roles(roles=roles):
+            personalcolegio = PersonalColegio.objects.filter(colegio_id=get_current_colegio(), activo=True)
+            personal = []
+            for personalcol in personalcolegio:
+                personal.append(personalcol.personal)
+            return render(request, template_name=self.template_name, context={
+                'form': self.form_class,
+                'empleados': personal,
+            })
+
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+
+class EventoListView(ListView):
+    model = Evento
+    form_class = EventoForm
+    template_name = "evento_list.html"
+
+    def get(self, request, *args, **kwargs):
+        roles = ['promotor', 'director', 'administrativo']
+        if validar_roles(roles=roles):
+            evento = Evento.objects.filter(colegio_id=get_current_colegio())
+            return render(request, template_name=self.template_name, context={
+                'eventos':evento,
+            })
+
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+class EventoDetailView(ListView):
+    model = Evento
+    form_class = EventoForm
+    template_name = "evento_detail.html"
+
+
+    def get(self, request, *args, **kwargs):
+        roles = ['promotor', 'director', 'administrativo']
+        if validar_roles(roles=roles):
+            evento = Evento.objects.get(id_evento=request.GET['evento'])
+            return render(request, template_name=self.template_name, context={
+                'evento':evento,
+            })
+
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)

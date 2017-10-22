@@ -1,7 +1,7 @@
 from django.conf.urls import url
 from AE_academico.views import AulaListView, AulaDetailView, AulaCreationView, AulaUpdateView, AulaDeleteView, \
     MarcarAsistenciaView, SubirNotasView, CursoListView, CursoDetailView, CursoCreationView, CursoUpdateView, \
-    CursoDeleteView, AulaCursoCreateView, VisualizarAsistenciaView
+    CursoDeleteView, AulaCursoCreateView, VisualizarAsistenciaView, EventoCreateView, EventoDetailView, EventoListView
 from AE_academico.views import CursoDocenteCreateView
 urlpatterns = [
 
@@ -31,4 +31,9 @@ urlpatterns = [
 
     # URL's de la asignación de notas
     url(r'^aula/curso/create/$', AulaCursoCreateView.as_view(), name='aulacurso_create'),
+
+    # URL para creacion de evento
+    url(r'^evento/create/$', EventoCreateView.as_view(), name='evento_create'),
+    url(r'^evento/list/$', EventoListView.as_view(), name='evento_list'),
+    url(r'^evento/detail/$', EventoDetailView.as_view(), name='evento_detail'),
 ]

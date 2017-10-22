@@ -1,6 +1,6 @@
 {% extends "page.html" %}
 {% block titulo %}
-    <h1>Curso Docente
+    <h1>Crear Evento
         {{ block.super }}
         <small>Módulo Académico</small>
     </h1>
@@ -8,7 +8,7 @@
 {% block container %}
 <div class="box box-primary">
     <div class="box-header with-border">
-        <h3 class="box-title">Asociar Curso a un Docente</h3>
+        <h3 class="box-title">Crear un Evento</h3>
             <div class="box-body">
                 <div class="col-md-9">
                     <div class="panel-page">
@@ -16,35 +16,53 @@
                             <form class="form-horizontal" action="" method="post">
                                 {% csrf_token %}
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">Docente</label>
+                                    <label class="col-sm-2 control-label">Nombre del Evento</label>
                                     <div class="col-sm-10">
-                                        <select name="docente" required id="id_docente"  class="form-control">
-                                          {% if docentes %}
-                                            <option value="">---------</option>
-                                            {% for docente in docentes %}
-                                                <option value="{{ docente.id_docente }}">{{ docente }}</option>
-                                            {% endfor %}
-                                          {% else %}
-                                            <option value="">No existen docentes registrados</option>
-                                          {% endif %}
-                                        </select>
-                                        {{ form.docente }}
+                                        {{ form.nombre }}
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">Curso</label>
+                                    <label class="col-sm-2 control-label">Encargado</label>
                                     <div class="col-sm-10">
                                         <select name="curso" required id="id_curso"  class="form-control">
-                                          {% if cursos %}
+                                          {% if empleados %}
                                             <option value="">---------</option>
-                                            {% for curso in cursos %}
-                                                <option value="{{ curso.id_curso }}">{{ curso }}</option>
+                                            {% for personal in empleados %}
+                                                <option value="{{ personal.id_empleado }}">{{ personal }}</option>
                                             {% endfor %}
                                           {% else %}
                                             <option value="">No existen docentes registrados</option>
                                           {% endif %}
                                         </select>
-                                        {{ form.curso }}
+                                        {{ form.encargado }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Descripción</label>
+                                    <div class="col-sm-10">
+
+                                        {{ form.descripcion }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Fecha del Evento</label>
+                                    <div class="col-sm-10">
+
+                                        {{ form.fecha_evento }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Hora de Inicio</label>
+                                    <div class="col-sm-10">
+
+                                        {{ form.hora_inicio }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Hora de Fin</label>
+                                    <div class="col-sm-10">
+
+                                        {{ form.hora_fin }}
                                     </div>
                                 </div>
                                 <div class="form-group">

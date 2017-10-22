@@ -1,6 +1,6 @@
 
 from django import forms
-from AE_academico.models import Aula, Asistencia, Notas, Curso
+from AE_academico.models import Aula, Asistencia, Notas, Curso, Evento
 from AE_academico.models import CursoDocente
 
 class AulaForm(forms.ModelForm):
@@ -84,3 +84,26 @@ class SubirNotasForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['nota'].widget.attrs.update({'class': 'form-control'})
+
+
+class EventoForm(forms.ModelForm):
+    class Meta:
+        model = Evento
+
+        fields = [
+            'nombre',
+            'encargado',
+            'descripcion',
+            'fecha_evento',
+            'hora_inicio',
+            'hora_fin',
+        ]
+
+        labels = {
+            'nombre':'Nombre',
+            'encargado': 'Responsable',
+            'descripcion': 'Descripcion del Evento',
+            'fecha_evento': 'Fecha del Evento',
+            'hora_inicio': 'Hora de Inicio',
+            'hora_fin': 'Hora de Fin',
+        }
