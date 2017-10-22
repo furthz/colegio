@@ -12,7 +12,7 @@ import income.urls
 import cash.urls
 import payments.urls
 import discounts.urls
-import AE_academico.urls
+#import AE_academico.urls
 from . import views
 
 handler404 = mi_error_404
