@@ -293,6 +293,7 @@ class AprobarDescuentoView(ListView):
 
         contexto = self.cargarformPromotordescuentos(request)
         contexto['object_list'] = self.descuentos
+        contexto['id_colegio'] = id_colegio
         return render(request, template_name=self.template_name, context=contexto)
 
 
