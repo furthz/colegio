@@ -83,7 +83,7 @@ class BoxCashierForm(forms.ModelForm):
 
         widgets = {
 
-            'personal_colegio': forms.Select(attrs={'class': 'hidden'}),
+            'personal_colegio': forms.Select(attrs={'class': 'form-control'}),
             #'caja': forms.ModelChoiceField(queryset= Caja.objects.filter(colegio_id=1), to_field_name="id_caja"),
 
             'caja': forms.Select(attrs={'class': 'form-control'}),
