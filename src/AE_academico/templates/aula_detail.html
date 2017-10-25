@@ -5,12 +5,12 @@
 
     <!--Comienza el contenido!!!!!!!!!!!!!!!!!!!-->
     <!-- INICIA CONTENDOR DE FORMULARIOS -->
-    <div class="content-wrapper">
+    <div>
         <!-- HEADER INFO PAGE UBICACION -->
         <section class="content-header">
             <h1>
-                Control de Cajas
-                <small>Modúlo de facturación</small>
+                Detalles de Aulas
+                <small>Modúlo Académico</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
@@ -25,27 +25,38 @@
                 <div class="col-md-12">
                     <div class="box box-primary">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Registrar Aula</h3>
+                            <h3 class="box-title">Detalle del Aula</h3>
                             <div class="box-body">
                                 <div class="col-md-9">
                                     <div class="panel-page">
 
                                         <div class="box-body">
-                                            <form class="form-horizontal" method="post">
-                                                {% csrf_token %}
                                                 <fieldset disabled="disabled">
-                                                <div style="display: none;">
-                                                    {{ form.nombre }}
-
-                                                </div>
                                                 <div class="form-group">
                                                     <label class="col-sm-3 control-label">Nombre</label>
                                                     <div class="col-sm-9">
-                                                        {{ form.nombre }}
+                                                        {{ aula.nombre }}
                                                     </div>
                                                 </div>
-
                                                 </fieldset>
+                                                <br>
+                                                <h4>Matriculados en el aula</h4>
+                                                <br>
+                                                <table class="table table-hover">
+                                                  <tr class="table-header">
+                                                    <th>Número de Orden</th>
+                                                    <th>Apellidos y Nombres</th>
+                                                  </tr>
+                                                        {% for alumno in matriculados_aula %}
+                                                          <tr>
+                                                            <td>{{ forloop.counter }}</td>
+                                                            <td>
+                                                                {{ alumno.alumno.getNombreFormal }}
+                                                            </td>
+                                                          </tr>
+                                                        {% endfor %}
+                                                 </table>
+
                                                 <div class="form-group">
                                                     <div class="col-sm-offset-2 col-sm-10">
                                                         <a href='{% url "academic:aula_list" %}' class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i>
@@ -53,7 +64,6 @@
                                                         </a>
                                                     </div>
                                                 </div>
-                                            </form>
                                         </div>
                                             </div>
                                         </div>

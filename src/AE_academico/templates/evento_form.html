@@ -28,13 +28,13 @@
                                           {% if empleados %}
                                             <option value="">---------</option>
                                             {% for personal in empleados %}
-                                                <option value="{{ personal.id_empleado }}">{{ personal }}</option>
+                                                <option value="{{ personal.id_empleado }}">{{ personal.getNombreCompleto }}</option>
                                             {% endfor %}
                                           {% else %}
                                             <option value="">No existen docentes registrados</option>
                                           {% endif %}
                                         </select>
-                                        {{ form.encargado }}
+
                                     </div>
                                 </div>
                                 <div class="form-group">

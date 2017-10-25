@@ -51,6 +51,7 @@ TEMPLATES = [
                 'django.template.context_processors.static',
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
+                #'django.core.context_processors.request', #añadido por Edwin para probar calendario
             ],
         },
     },
@@ -95,7 +96,7 @@ INSTALLED_APPS = (
     'authtools',
     'crispy_forms',
     'easy_thumbnails',
-    'schedule',
+    #'schedule',  #añadido por Edwin para probar calendario, luego de ejecutar pip install django-scheduler
 
     'utils',
     'accounts',
@@ -108,7 +109,7 @@ INSTALLED_APPS = (
     'discounts',
     'import_export',
     'django_filters',
-    #'AE_academico',
+    'AE_academico',
     #'AE_agenda',
     #'AE_chat',
     #'AE_social',

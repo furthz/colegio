@@ -1,5 +1,5 @@
 import datetime
-
+import calendar
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import FormView
@@ -8,7 +8,7 @@ from django.views.generic import TemplateView
 
 from AE_academico.forms import AulaForm, MarcarAsistenciaForm, SubirNotasForm, CursoForm, EventoForm
 from AE_academico.forms import CursoDocenteForm
-from AE_academico.models import Aula, Asistencia, Notas, AulaCurso, Evento
+from AE_academico.models import Aula, Asistencia, Notas, AulaCurso, Evento, HorarioAula
 from AE_academico.models import CursoDocente
 from AE_academico.models import Curso
 from enrollment.models import Matricula
@@ -57,10 +57,30 @@ class AulaDetailView(UpdateView):
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo', 'tesorero', 'cajero']
         if validar_roles(roles=roles):
+            aula_id = 1
+            id_colegio = get_current_colegio()
+            matriculadosaula = Matricula.objects.filter(colegio_id=id_colegio, activo=True,
+                                                        tipo_servicio=1).order_by('alumno__apellido_pa')
+            aula = Aula.objects.get(id_aula=aula_id)
+            return render(request, template_name=self.template_name, context={
+                'matriculados_aula': matriculadosaula,
+                'aula': aula,
+            })
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+"""
+class AulaDetailView(UpdateView):
+    model = Aula
+    form_class = AulaForm
+    template_name = 'aula_detail.html'
+
+    def get(self, request, *args, **kwargs):
+        roles = ['promotor', 'director', 'administrativo', 'tesorero', 'cajero']
+        if validar_roles(roles=roles):
             return super(AulaDetailView, self).get(request, *args, **kwargs)
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
-
+"""
 
 class AulaCreationView(CreateView):
     model = Aula
@@ -203,19 +223,19 @@ class CursoDocenteCreateView(CreateView):
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
 #################################################
-#####            CRUD DE  AULA CURSO    #####
+#####            CRUD DE  AULA CURSO        #####
 #################################################
 
 class AulaCursoCreateView(TemplateView):
     model = AulaCurso
     success_url = reverse_lazy('academic:aula_list')
-    template_name = 'cursodocente_form.html'
+    template_name = 'aulacurso_form.html'
 
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo', 'tesorero']
         if validar_roles(roles=roles):
             aula_actual = Aula.objects.get(id_aula=request.GET['aula'])
-            cursos = Curso.objects.filter(aula__tipo_servicio__colegio_id=get_current_colegio(), activo=True)
+            cursos = Curso.objects.filter(colegio_id=get_current_colegio(), activo=True)
             return render(request, template_name=self.template_name, context={
                 'aula': aula_actual,
                 'cursos': cursos,
@@ -230,7 +250,7 @@ class AulaCursoCreateView(TemplateView):
 
 
 #################################################
-#####            ASISTENCIA ALUMNOS         #####
+#####          ASISTENCIA ALUMNOS           #####
 #################################################
 
 class MarcarAsistenciaView(CreateView):
@@ -245,9 +265,9 @@ class MarcarAsistenciaView(CreateView):
         if validar_roles(roles=roles):
             # AQUI VA EL ID DE TIPO DE SERVICIO
             id_tipo_servicio = 1
-
+            docente = True
             id_colegio = get_current_colegio()
-            matriculadosaula = Matricula.objects.filter(colegio_id=id_colegio, activo=True, tipo_servicio=id_tipo_servicio)
+            matriculadosaula = Matricula.objects.filter(colegio_id=id_colegio, activo=True, tipo_servicio=id_tipo_servicio).order_by('alumno__apellido_pa')
             logger.info("Datos son {0}".format(matriculadosaula))
 
             alumnos = []
@@ -256,6 +276,7 @@ class MarcarAsistenciaView(CreateView):
             return render(request, template_name=self.template_name, context={
                 'form': self.form_class,
                 'alumnos': alumnos,
+                'docente': docente,
             })
 
         else:
@@ -268,7 +289,7 @@ class MarcarAsistenciaView(CreateView):
 
         alumnos_id = data_post.getlist('id')
         estado_asistencias = data_post.getlist('estado_asistencia')
-
+        logger.info("Los estados son {0}".format(estado_asistencias))
         num = len(alumnos_id)
 
         for n in range(0,num):
@@ -283,7 +304,7 @@ class MarcarAsistenciaView(CreateView):
 class VisualizarAsistenciaView(TemplateView):
 
     model = Asistencia
-    template_name = "visualizar_asistencia.html"
+    template_name = "asistencia_visualizar.html"
     #form_class = CuentasCobrarPromotorDetalleForm
 
     def VisualizarAsistenciaform(self, request):
@@ -339,7 +360,7 @@ class VisualizarAsistenciaView(TemplateView):
         # Proceso de filtrado según el mes
         asistencias_curso_mes = asistencias_curso_anio.filter(fecha__month=num_mes)
         logger.info("La lista de asistencias de mes son {0}".format(asistencias_curso_mes))
-        """
+
         id_tipo_servicio = 1
         id_colegio = get_current_colegio()
         matriculados_aula = Matricula.objects.filter(colegio_id=id_colegio, activo=True, tipo_servicio=id_tipo_servicio)
@@ -347,7 +368,7 @@ class VisualizarAsistenciaView(TemplateView):
         for matriculado in matriculados_aula:
             alumnos.append(matriculado.alumno)
         len(alumnos)
-        """
+
 
         fechas = []
         lista_asistencias_dia = []
@@ -371,11 +392,15 @@ class VisualizarAsistenciaView(TemplateView):
         return render(request, template_name=self.template_name, context=contexto)
 
 
+#################################################
+#####             NOTAS ALUMNOS             #####
+#################################################
+
 
 class SubirNotasView(CreateView):
 
     model = Notas
-    template_name = 'subir_notas.html'
+    template_name = 'notas_subir.html'
     form_class = SubirNotasForm
     success_url = reverse_lazy('academic:aula_list')
 
@@ -416,9 +441,9 @@ class SubirNotasView(CreateView):
 
 
 
-################################################################################
-#       Eventos
-################################################################################
+#################################################
+#####                EVENTOS                #####
+#################################################
 
 
 class EventoCreateView(CreateView):
@@ -479,3 +504,49 @@ class EventoDetailView(ListView):
 
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+
+
+
+#################################################
+#####               HORARIOS                #####
+#################################################
+
+
+class HorarioCursoCreateView(CreateView):
+    model = HorarioAula #Debería ser HorarioCurso, hay que cambiar el nombre
+    form_class = CursoDocenteForm
+    success_url = reverse_lazy('academic:aula_list')
+    template_name = 'cursodocente_form.html'
+
+    def get(self, request, *args, **kwargs):
+        roles = ['promotor', 'director', 'administrativo', 'tesorero']
+        if validar_roles(roles=roles):
+            personalcolegio = PersonalColegio.objects.filter(colegio_id=get_current_colegio(), activo=True)
+            personal = []
+            docentes = []
+            for personalcol in personalcolegio:
+                personal.append(personalcol.personal)
+            cursos = AulaCurso.objects.filter(aula__tipo_servicio__colegio_id=get_current_colegio(),
+                                              activo=True)
+            for persona in personal:
+                try:
+                    docentes.append(Docente.objects.get(empleado=persona))
+                except:
+                    logger.info("Persona no es un docente ---- AE_academico")
+            return render(request, template_name=self.template_name, context={
+                'form': self.form_class,
+                'docentes': docentes,
+                'cursos': cursos,
+            })
+
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+
+
+
+
+
+
+
