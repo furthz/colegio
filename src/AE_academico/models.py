@@ -1,6 +1,6 @@
 from django.db import models
 
-from enrollment.models import TipoServicio
+from enrollment.models import TipoServicio, Matricula
 from register.models import Colegio, Alumno, Apoderado, Personal, Docente
 from profiles.models import Profile
 from utils.models import CreacionModificacionUserMixin, ActivoMixin
@@ -112,5 +112,11 @@ class Notas(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUse
     class Meta:
         managed = False
 
+class AulaMatricula(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin,models.Model):
+    id_aula_matricula = models.AutoField(primary_key=True)
+    aula = models.ForeignKey(Aula, models.DO_NOTHING, db_column="id_aula")
+    matricula = models.ForeignKey(Matricula, models.DO_NOTHING, db_column="id_matricula")
 
+    class Meta:
+        managed = False
 
