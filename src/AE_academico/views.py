@@ -325,7 +325,7 @@ class MarcarAsistenciaView(CreateView):
 class VisualizarAsistenciaView(TemplateView):
 
     model = Asistencia
-    template_name = "asistencia_visualizar.html"
+    template_name = "asistencia_ver.html"
     #form_class = CuentasCobrarPromotorDetalleForm
 
     def VisualizarAsistenciaform(self, request):
@@ -342,7 +342,10 @@ class VisualizarAsistenciaView(TemplateView):
             for i in range(0, num_mes + 1):
                 meses.append(meses_todos[i])
 
-            return {'meses': meses_todos}
+            id_colegio = get_current_colegio()
+            aulas = Aula.objects.filter(tipo_servicio__colegio=id_colegio).order_by('nombre')
+
+            return {'meses': meses_todos, 'aulas': aulas}
 
         else:
             mensaje_error = "No tienes acceso a esta vista"
@@ -370,8 +373,6 @@ class VisualizarAsistenciaView(TemplateView):
 
         #id_curso =
 
-        #id_colegio = get_current_colegio()
-
         asistencias_curso = self.model.objects.filter()
 
         # Proceso de filtrado según el año
@@ -384,7 +385,7 @@ class VisualizarAsistenciaView(TemplateView):
 
         id_tipo_servicio = 1
         id_colegio = get_current_colegio()
-        matriculados_aula = Matricula.objects.filter(colegio_id=id_colegio, activo=True, tipo_servicio=id_tipo_servicio)
+        matriculados_aula = Matricula.objects.filter(colegio_id=id_colegio, activo=True, tipo_servicio=id_tipo_servicio).order_by('alumno__apellido_pa')
         alumnos = []
         for matriculado in matriculados_aula:
             alumnos.append(matriculado.alumno)
@@ -402,13 +403,19 @@ class VisualizarAsistenciaView(TemplateView):
                 if n == 0:
                     fechas.append(asistencias_dias.fecha)
                 n = n + 1
+        num_horizontal = len(fechas)
+        num_vertical = len(alumnos)
 
         logger.info("La lista de asistencias de mes son {0}".format(lista_asistencias_dia))
         logger.info("La lista de fechas de mes son {0}".format(fechas))
 
         contexto = self.VisualizarAsistenciaform(request)
 
-        contexto['object_list'] = asistencias_curso_mes
+        contexto['asistencias'] = asistencias_curso_mes
+        contexto['num_hor'] = num_horizontal
+        contexto['num_ver'] = num_vertical
+        contexto['fechas'] = fechas
+        contexto['alumnos'] = alumnos
         contexto['form'] = VisualizarAsistenciaView
         return render(request, template_name=self.template_name, context=contexto)
 
@@ -431,7 +438,7 @@ class SubirNotasView(CreateView):
             # AQUI VA EL ID DE TIPO DE SERVICIO
             id_tipo_servicio = 4
             id_colegio = get_current_colegio()
-            matriculadosaula = Matricula.objects.filter(colegio_id=id_colegio, activo=True, tipo_servicio=id_tipo_servicio)
+            matriculadosaula = Matricula.objects.filter(colegio_id=id_colegio, activo=True, tipo_servicio=id_tipo_servicio).order_by('alumno__apellido_pa')
             logger.info("Datos son {0}".format(matriculadosaula))
 
 
