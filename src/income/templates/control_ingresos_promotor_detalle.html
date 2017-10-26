@@ -87,6 +87,7 @@
                             <tbody>
                             <tr>
                                 <th>Alumno</th>
+                                <th>Concepto</th>
                                 <th>Fecha de vencimiento</th>
                                 <th>Monto cancelado</th>
                                 <th>Importe a pagar S/.</th>
@@ -98,6 +99,7 @@
                                         {% if not cuenta.orderDate %}
                                             <tr>
                                                 <td>{{ cuenta.matricula.alumno.getNombreCompleto }}</td>
+                                                <td>{{ cuenta.servicio.nombre }}</td>
                                                 <td>{{ cuenta.fecha_ven }}</td>
                                                 <td>S/.{{ cuenta.getMonto }}</td>
                                                 <td>S/.{{ cuenta.deuda }}</td>
