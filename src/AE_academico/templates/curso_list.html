@@ -33,7 +33,7 @@
 
                                                 </tr>
                                                 {% for curso in object_list %}
-                                                    {% if curso.aula.tipo_servicio.colegio.id_colegio == idcolegio %}
+                                                    {% if curso.colegio.id_colegio == idcolegio %}
                                                     <tr>
                                                         <td>{{ forloop.counter }}</td>
                                                         <td>{{ curso.nombre }}</td>

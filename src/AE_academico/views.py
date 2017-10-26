@@ -162,6 +162,10 @@ class CursoCreationView(CreateView):
     success_url = reverse_lazy('academic:curso_list')
     template_name = 'curso_form.html'
 
+    def form_valid(self, form):
+        form.instance.colegio = Colegio.objects.get(pk=get_current_colegio())
+        return super(CursoCreationView, self).form_valid(form)
+
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
         if validar_roles(roles=roles):
@@ -245,8 +249,25 @@ class AulaCursoCreateView(TemplateView):
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
     def post(self, request, *args, **kwargs):
+        print(request.POST)
+        cursos = Curso.objects.filter(colegio_id=get_current_colegio(), activo=True)
+        aula = Aula.objects.get(id_aula=request.POST['aula'])
+        data_form = request.POST
+        try:
+            for curso in cursos:
+                text = "item{0}".format(curso.id_curso)
 
-        return HttpResponseRedirect(reverse('AE_academico:aula_list'))
+                if data_form[text]:
+                    aulacurso = self.model(
+                        aula=aula,
+                        curso=curso,
+                    )
+                    aulacurso.save()
+                    print("se creo un registro")
+        except:
+            print("hay un error")
+
+        return HttpResponseRedirect(reverse('academic:aula_list'))
 
 
 #################################################

@@ -107,3 +107,12 @@ class EventoForm(forms.ModelForm):
             'hora_inicio': 'Hora de Inicio',
             'hora_fin': 'Hora de Fin',
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['nombre'].widget.attrs.update({'class': 'form-control'})
+        self.fields['encargado'].widget.attrs.update({'class': 'form-control'})
+        self.fields['descripcion'].widget.attrs.update({'class': 'form-control'})
+        self.fields['fecha_evento'].widget.attrs.update({'class': 'form-control'})
+        self.fields['hora_inicio'].widget.attrs.update({'class': 'form-control'})
+        self.fields['hora_fin'].widget.attrs.update({'class': 'form-control'})

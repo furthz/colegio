@@ -38,6 +38,9 @@ class AulaCurso(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacio
     aula = models.ForeignKey(Aula, models.DO_NOTHING, db_column="id_aula")
     curso = models.ForeignKey(Curso, models.DO_NOTHING, db_column="id_curso")
 
+    def __str__(self):
+        return "{0} del salon {1}".format(self.curso.nombre, self.aula.nombre)
+
     class Meta:
         managed = False
 

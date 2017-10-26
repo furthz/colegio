@@ -203,6 +203,25 @@ class Migration(migrations.Migration):
 
             },
         ),
+        migrations.CreateModel(
+            name='AulaMatricula',
+            fields=[
+                ('id_aula_matricula', models.AutoField(primary_key=True)),
+                ('aula', models.ForeignKey(db_column="id_aula", to='AE_academico.Aula')),
+                ('matricula', models.ForeignKey(db_column="id_matricula", to='enrollment.Matricula')),
+                ('fecha_creacion', models.DateField()),
+                ('fecha_modificacion', models.DateField()),
+                ('usuario_creacion', models.CharField(max_length=10, null=True)),
+                ('usuario_modificacion', models.CharField(max_length=10, null=True)),
+                ('activo', models.BooleanField()),
+            ],
+            options={
+                # 'db_table': 'matricula',
+                'managed': settings.IS_MIGRATE,
+                # 'managed': False,
+
+            },
+        ),
 
     ]
 
