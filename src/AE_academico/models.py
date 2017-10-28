@@ -100,6 +100,8 @@ class PeriodoAcademico(ActivoMixin, CreacionModificacionFechaMixin, CreacionModi
     id_periodo_academico = models.AutoField(primary_key=True)
     colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column="id_colegio")
     nombre = models.CharField(max_length=50)
+    fecha_inicio = models.DateField()
+    fecha_fin = models.DateField()
 
     class Meta:
         managed = False

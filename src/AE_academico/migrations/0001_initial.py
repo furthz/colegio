@@ -168,6 +168,8 @@ class Migration(migrations.Migration):
                 ('id_periodo_academico', models.AutoField(primary_key=True)),
                 ('colegio', models.ForeignKey(db_column="id_colegio", to='register.Colegio')),
                 ('nombre', models.CharField(max_length=50)),
+                ('fecha_inicio', models.DateField()),
+                ('fecha_fin', models.DateField()),
                 ('fecha_creacion', models.DateField()),
                 ('fecha_modificacion', models.DateField()),
                 ('usuario_creacion', models.CharField(max_length=10, null=True)),

@@ -833,6 +833,10 @@ class PeriodoAcademicoCreationView(CreateView):
     success_url = reverse_lazy('academic:periodo_list')
     template_name = 'periodo_form.html'
 
+    def form_valid(self, form):
+        form.instance.colegio = Colegio.objects.get(pk=get_current_colegio())
+        return super(PeriodoAcademicoCreationView, self).form_valid(form)
+
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
         if validar_roles(roles=roles):
@@ -846,3 +850,114 @@ class PeriodoAcademicoUpdateView(UpdateView):
     form_class = PeriodoAcademicoForm
     success_url = reverse_lazy('academic:periodo_list')
     template_name = 'periodo_form.html'
+
+
+
+#################################################
+#####            NOTAS DE  ALUMNOS          #####
+#################################################
+
+class SubirNotasAlumnosView(TemplateView):
+
+    model = Notas
+    template_name = 'asistencia_marcar.html'
+    success_url = reverse_lazy('academic:asistencia_registrar_dia')
+
+    def MarcarAsistencia1Form(self, request):
+
+        roles = ['promotor', 'director']
+
+        if validar_roles(roles=roles):
+
+            # Cargamos las aulas relacionadas al colegio
+            id_colegio = get_current_colegio()
+            aulas_colegio = Aula.objects.filter(tipo_servicio__colegio=id_colegio).order_by('nombre')
+
+            # Cargamos las aulas relacionadas al colegio
+            id_colegio = get_current_colegio()
+            periodos_colegio = PeriodoAcademico.objects.filter(colegio=id_colegio).order_by('nombre')
+
+            return {'aulas_colegio': aulas_colegio, 'periodos_colegio': periodos_colegio}
+
+        else:
+            mensaje_error = "No tienes acceso a esta vista"
+            return {'mensaje_error': mensaje_error}  # return context
+
+    def get(self, request, *args, **kwargs):
+        super(MarcarAsistenciaDiaView, self).get(request, *args, **kwargs)
+
+        contexto = self.MarcarAsistencia1Form(request)
+        contexto.update(self.MarcarAsistencia2Form(request))
+
+        if 'mensaje_error' in contexto.keys():
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+        else:
+            return render(request, self.template_name, contexto)  # return context
+
+    def post(self, request, *args, **kwargs):
+        logger.info("Estoy en el POST")
+        logger.info("Los datos de llegada son {0}".format(request.POST))
+
+        if 'aula' in request.POST.keys():
+
+            aula = request.POST["aula"]
+
+            # AQUI VA EL ID DE TIPO DE SERVICIO
+            id_tipo_servicio = 1
+            id_colegio = get_current_colegio()
+            matriculadosaula = Matricula.objects.filter(colegio_id=id_colegio, activo=True,
+                                                        tipo_servicio=id_tipo_servicio).order_by('alumno__apellido_pa')
+            logger.info("Datos son {0}".format(matriculadosaula))
+            alumnos = []
+            for matriculado in matriculadosaula:
+                alumnos.append(matriculado.alumno)
+
+            asistencia_hoy = []
+            num = len(alumnos)
+            for n in range (0, num):
+                asistencia_hoy.append(Asistencia.objects.filter(alumno=alumnos[n], fecha=datetime.date.today()))
+            logger.info("Las asistencias de hoy son {0}".format(asistencia_hoy))
+
+            contexto = self.MarcarAsistencia1Form(request)
+            contexto.update(self.MarcarAsistencia2Form(request))
+            contexto['alumnos'] = alumnos
+            contexto['asistencias'] = asistencia_hoy
+
+            return render(request, template_name=self.template_name, context=contexto)
+
+        else:
+            logger.info("Estoy en el POST")
+            logger.info("Los datos de llegada son {0}".format(request.POST))
+            data_post = request.POST
+
+            alumnos_id = data_post.getlist('id')
+            estado_asistencias = data_post.getlist('estado_asistencia')
+
+            estados = []
+            for estado in estado_asistencias:
+                if estado == 'Presente':
+                    estados.append(1)
+                elif estado == 'Tardanza':
+                    estados.append(2)
+                elif estado == 'Ausente':
+                    estados.append(3)
+                else:
+                    estados.append(4)
+
+            logger.info("Los estados son {0}".format(estado_asistencias))
+            num = len(alumnos_id)
+
+            for n in range(0, num):
+                alumno = Alumno.objects.get(id_alumno=alumnos_id[n])
+                asistencia_primera = Asistencia.objects.filter(alumno=alumno, fecha=datetime.date.today())
+                logger.info("{0}".format(asistencia_primera.count()))
+                if asistencia_primera.count() == 0:
+                    asistencia = Asistencia(alumno=alumno, fecha=datetime.date.today(),
+                                            estado_asistencia=estados[n])
+                    asistencia.save()
+                else:
+                    for asistencia in asistencia_primera:
+                        asistencia.estado_asistencia = estados[n]
+                        asistencia.save()
+
+            return redirect('academic:asistencia_ver')
