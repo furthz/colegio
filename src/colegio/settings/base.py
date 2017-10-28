@@ -109,7 +109,7 @@ INSTALLED_APPS = (
     'discounts',
     'import_export',
     'django_filters',
-    #'AE_academico',
+    'AE_academico',
     #'AE_agenda',
     #'AE_chat',
     #'AE_social',

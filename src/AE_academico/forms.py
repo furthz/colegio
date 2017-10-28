@@ -1,7 +1,9 @@
 
 from django import forms
-from AE_academico.models import Aula, Asistencia, Notas, Curso, Evento
+from AE_academico.models import Aula, Asistencia, Notas, Curso, Evento, PeriodoAcademico
 from AE_academico.models import CursoDocente
+from utils.middleware import get_current_colegio
+
 
 class AulaForm(forms.ModelForm):
     class Meta:
@@ -61,14 +63,27 @@ class CursoDocenteForm(forms.ModelForm):
             'curso': forms.Select(attrs={'class': 'form-control'}),
         }
 
-class MarcarAsistenciaForm(forms.Form):
 
-    estado_asistencia = forms.BooleanField()
+class MarcarAsistencia1Form(forms.Form):
+
+    #id_colegio = get_current_colegio()
+    aula = forms.ModelChoiceField(queryset=Aula.objects.filter(tipo_servicio__colegio=1).order_by('nombre'))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['aula'].widget.attrs.update({'class': 'form-control'})
+
+
+class MarcarAsistencia2Form(forms.Form):
+
+    estado_asistencia = forms.IntegerField()
 
     def ChoiceEstado(self):
         MY_CHOICES = (
-            (True, 'Presente'),
-            (False, 'Ausente'),
+            (1, '-------'),
+            (2, 'Presente'),
+            (3, 'Ausente'),
+            (4, 'Tardanza'),
         )
         return MY_CHOICES
 
@@ -76,6 +91,7 @@ class MarcarAsistenciaForm(forms.Form):
         super().__init__(*args, **kwargs)
         self.fields['estado_asistencia'] = forms.ChoiceField(choices=self.ChoiceEstado())
         self.fields['estado_asistencia'].widget.attrs.update({'class': 'form-control'})
+
 
 class SubirNotasForm(forms.Form):
 
@@ -116,3 +132,20 @@ class EventoForm(forms.ModelForm):
         self.fields['fecha_evento'].widget.attrs.update({'class': 'form-control'})
         self.fields['hora_inicio'].widget.attrs.update({'class': 'form-control'})
         self.fields['hora_fin'].widget.attrs.update({'class': 'form-control'})
+
+
+class PeriodoAcademicoForm(forms.ModelForm):
+    class Meta:
+        model = PeriodoAcademico
+
+        fields = [
+            'nombre',
+        ]
+
+        labels = {
+            'nombre': 'Nombre',
+        }
+
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
+        }
