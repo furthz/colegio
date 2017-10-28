@@ -54,7 +54,7 @@
                                         <form id="ListaDescuentos">{% csrf_token %}
                                         <tr>
                                             {% for descuento in object_list %}
-                                                {% if descuento.matricula.colegio == id_colegio %}
+                                                {% if descuento.matricula.colegio.id_colegio == id_colegio %}
                                                     {% if descuento.estado == 1 %}
                                                         <tr>
                                                             <td>{{ descuento.matricula.alumno.getNombreCompleto }}</td>
