@@ -30,6 +30,7 @@ urlpatterns = [
     url(r'^payments/', include(payments.urls, namespace='payments')),
     url(r'^discounts/', include(discounts.urls, namespace='discounts')),
     url(r'^academic/', include(AE_academico.urls, namespace='academic')),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
 
 # User-uploaded files like profile pics need to be served in development
