@@ -148,7 +148,7 @@ class Migration(migrations.Migration):
                 ('alumno', models.ForeignKey(db_column='id_alumno', to='register.Alumno')),
                 ('curso', models.ForeignKey(db_column='id_curso', to='AE_academico.Curso')),
                 ('fecha', models.DateField()),
-                ('estado_asistencia', models.BooleanField()),
+                ('estado_asistencia', models.IntegerField()),
                 ('comentario', models.CharField(max_length=500, blank=True, null=True)),
                 ('fecha_creacion', models.DateField()),
                 ('fecha_modificacion', models.DateField()),
