@@ -89,7 +89,7 @@ class Asistencia(CreacionModificacionFechaMixin, CreacionModificacionUserMixin,m
     alumno = models.ForeignKey(Alumno, models.DO_NOTHING, db_column='id_alumno')
     curso = models.ForeignKey(Curso, models.DO_NOTHING, db_column='id_curso')
     fecha = models.DateField()
-    estado_asistencia = models.BooleanField()
+    estado_asistencia = models.IntegerField()
     comentario = models.CharField(max_length=500, blank=True, null=True)
 
     class Meta:
