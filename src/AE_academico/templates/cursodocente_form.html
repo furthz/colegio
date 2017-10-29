@@ -13,7 +13,7 @@
                 <div class="col-md-9">
                     <div class="panel-page">
                         <div class="box-body">
-                            <form name="form1" class="form-horizontal" action="" method="post">
+                            <form name="form1" id="form1" class="form-horizontal" action="" method="post">
                                 {% csrf_token %}
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">Docente</label>
@@ -34,11 +34,11 @@
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">Curso</label>
                                     <div class="col-sm-10">
-                                        <select name="curso" required id="id_curso"  class="form-control" disabled>
+                                        <select name="curso" required id="id_curso"  class="form-control">
                                           {% if cursos %}
 
                                             {% for curso in cursos %}
-                                                <option value="{{ curso.id_curso }}">{{ curso }}</option>
+                                                <option value="{{ curso.id_aula_curso }}" selected>{{ curso }}</option>
                                             {% endfor %}
                                           {% else %}
                                             <option value="">No existen cursos registrados</option>
