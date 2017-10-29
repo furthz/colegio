@@ -6,10 +6,9 @@ from django.views.generic import FormView
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from django.views.generic import TemplateView
 
-from AE_academico.forms import AulaForm, MarcarAsistencia1Form, MarcarAsistencia2Form, SubirNotasForm, CursoForm, EventoForm, \
-    PeriodoAcademicoForm
+from AE_academico.forms import AulaForm, MarcarAsistenciaForm, SubirNotasForm, CursoForm, EventoForm, PeriodoAcademicoForm
 from AE_academico.forms import CursoDocenteForm
-from AE_academico.models import Aula, Asistencia, Notas, AulaCurso, Evento, HorarioAula, PeriodoAcademico
+from AE_academico.models import Aula, Asistencia, Notas, AulaCurso, Evento, HorarioAula, AulaMatricula, PeriodoAcademico
 from AE_academico.models import CursoDocente
 from AE_academico.models import Curso
 from enrollment.models import Matricula
@@ -58,14 +57,21 @@ class AulaDetailView(UpdateView):
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo', 'tesorero', 'cajero']
         if validar_roles(roles=roles):
-            aula_id = 1
+            aula_id = request.GET["aula"]
             id_colegio = get_current_colegio()
             matriculadosaula = Matricula.objects.filter(colegio_id=id_colegio, activo=True,
                                                         tipo_servicio=1).order_by('alumno__apellido_pa')
             aula = Aula.objects.get(id_aula=aula_id)
+            matriculadosaula = AulaMatricula.objects.filter(aula=aula, activo=True).order_by('matricula__alumno__apellido_pa')
+            lista_matriculados = []
+            cursos = AulaCurso.objects.filter(aula=aula,
+                                              activo=True)
+            for matricula in matriculadosaula:
+                lista_matriculados.append(matricula.matricula)
             return render(request, template_name=self.template_name, context={
-                'matriculados_aula': matriculadosaula,
+                'matriculados_aula': lista_matriculados,
                 'aula': aula,
+                'cursos':cursos,
             })
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
@@ -211,7 +217,7 @@ class CursoDocenteCreateView(CreateView):
             docentes = []
             for personalcol in personalcolegio:
                 personal.append(personalcol.personal)
-            cursos = AulaCurso.objects.filter(aula__tipo_servicio__colegio_id=get_current_colegio(),
+            cursos = AulaCurso.objects.filter(id_aula_curso=request.GET['curso'],
                                               activo=True)
             for persona in personal:
                 try:
@@ -375,7 +381,7 @@ class MarcarAsistenciaView(CreateView):
 
     model = Asistencia
     template_name = 'marcar_asistencia.html'
-    form_class = MarcarAsistencia1Form
+    form_class = MarcarAsistenciaForm
     success_url = reverse_lazy('academic:asistencia_ver')
 
     def get(self, request, *args, **kwargs):
@@ -611,7 +617,7 @@ class EventoListView(ListView):
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
-class EventoDetailView(ListView):
+class EventoDetailView(DetailView):
     model = Evento
     form_class = EventoForm
     template_name = "evento_detail.html"
@@ -668,6 +674,50 @@ class HorarioCursoCreateView(CreateView):
 
 
 
+#################################################
+#####            CRUD DE  MATRICULA AULA    #####
+#################################################
+
+class AulaMatriculaCreateView(TemplateView):
+    model = AulaMatricula
+    success_url = reverse_lazy('academic:aula_list')
+    template_name = 'aulamatricula_form.html'
+
+    def get(self, request, *args, **kwargs):
+        roles = ['promotor', 'director', 'administrativo']
+        if validar_roles(roles=roles):
+            aula_actual = Aula.objects.get(id_aula=request.GET['aula'])
+            matriculas = Matricula.objects.filter(tipo_servicio=aula_actual.tipo_servicio,colegio_id=get_current_colegio(), activo=True)
+            return render(request, template_name=self.template_name, context={
+                'aula': aula_actual,
+                'matriculas': matriculas,
+            })
+
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+    def post(self, request, *args, **kwargs):
+        print(request.POST)
+        aula_actual = Aula.objects.get(id_aula=request.POST['aula'])
+        matriculas = Matricula.objects.filter(tipo_servicio=aula_actual.tipo_servicio, colegio_id=get_current_colegio(),
+                                              activo=True)
+
+        data_form = request.POST
+        try:
+            for matricula in matriculas:
+                text = "item{0}".format(matricula.id_matricula)
+
+                if data_form[text]:
+                    aulamatricula = self.model(
+                        aula=aula_actual,
+                        matricula=matricula,
+                    )
+                    aulamatricula.save()
+                    print("se creo un registro")
+        except:
+            print("hay un error")
+
+        return HttpResponseRedirect(reverse('academic:aula_list'))
 
 #################################################
 #####       ASISTENCIA ALUMNOS POR DÍA      #####
