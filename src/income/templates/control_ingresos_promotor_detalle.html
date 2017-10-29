@@ -99,7 +99,11 @@
                                         {% if not cuenta.orderDate %}
                                             <tr>
                                                 <td>{{ cuenta.matricula.alumno.getNombreCompleto }}</td>
-                                                <td>{{ cuenta.servicio.nombre }}</td>
+                                                {% if not cuenta.servicio.tipo_servicio.extra %}
+                                                    <td>{{ cuenta.servicio.nombre }}</td>
+                                                {% else %}
+                                                    <td>{{ cuenta.servicio.tipo_servicio }}</td>
+                                                {% endif %}
                                                 <td>{{ cuenta.fecha_ven }}</td>
                                                 <td>S/.{{ cuenta.getMonto }}</td>
                                                 <td>S/.{{ cuenta.deuda }}</td>
