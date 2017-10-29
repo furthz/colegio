@@ -241,19 +241,7 @@ class CursoDocenteCreateView(CreateView):
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
-    def post(self, request, *args, **kwargs):
-        print(request.POST)
-        form_data = self.form_class(request.POST)
-        data_form = form_data.cleaned_data
-        curso = data_form['curso']
-        docente = data_form['docente']
-        cursodocente = CursoDocente(
-            curso=curso,
-            docente= docente,
-        )
-        cursodocente.save()
 
-        return HttpResponseRedirect(reverse('academic:aula_list'))
 
 #################################################
 #####            CRUD DE  AULA CURSO        #####

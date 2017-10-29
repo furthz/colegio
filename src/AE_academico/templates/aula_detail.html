@@ -126,14 +126,14 @@
                                                           <tr>
                                                             <td>{{ forloop.counter }}</td>
                                                             <td>
-                                                                {{ curso_docente.docente }}
+                                                                {{ curso_docente.docente.getNombreCompleto }}
                                                             </td>
                                                             <td>
                                                                 {{ curso_docente.curso }}
                                                             </td>
                                                             <td>
-                                                                <a title="Editar" href='{% url "academic:aula_edit" aula.id_aula %}' class="btn btn-default">
-                                                                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                                <a title="Seleccionar como Tutor" href='{% url "academic:aula_edit" aula.id_aula %}' class="btn btn-default">
+                                                                    <i class="fa fa-graduation-cap" aria-hidden="true"></i>
                                                                 </a>
 
                                                             </td>
