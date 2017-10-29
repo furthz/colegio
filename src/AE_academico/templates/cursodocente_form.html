@@ -22,7 +22,7 @@
                                           {% if docentes %}
                                             <option value="">---------</option>
                                             {% for docente in docentes %}
-                                                <option value="{{ docente.id_docente }}">{{ docente }}</option>
+                                                <option value="{{ docente.id_docente }}">{{ docente.getNombreCompleto }}</option>
                                             {% endfor %}
                                           {% else %}
                                             <option value="">No existen docentes registrados</option>
