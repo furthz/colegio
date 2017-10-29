@@ -6,7 +6,7 @@ from django.views.generic import FormView
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from django.views.generic import TemplateView
 
-from AE_academico.forms import AulaForm, MarcarAsistencia1Form, SubirNotasForm, CursoForm, EventoForm, PeriodoAcademicoForm, \
+from AE_academico.forms import AulaForm, MarcarAsistenciaForm, SubirNotasForm, CursoForm, EventoForm, PeriodoAcademicoForm, \
     HorarioAulaForm
 from AE_academico.forms import CursoDocenteForm
 from AE_academico.models import Aula, Asistencia, Notas, AulaCurso, Evento, HorarioAula, AulaMatricula, PeriodoAcademico
@@ -389,7 +389,7 @@ class MarcarAsistenciaView(CreateView):
 
     model = Asistencia
     template_name = 'marcar_asistencia.html'
-    form_class = MarcarAsistencia1Form
+    form_class = MarcarAsistenciaForm
     success_url = reverse_lazy('academic:asistencia_ver')
 
     def get(self, request, *args, **kwargs):
