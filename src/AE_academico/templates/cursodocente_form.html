@@ -13,7 +13,7 @@
                 <div class="col-md-9">
                     <div class="panel-page">
                         <div class="box-body">
-                            <form class="form-horizontal" action="" method="post">
+                            <form name="form1" class="form-horizontal" action="" method="post">
                                 {% csrf_token %}
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">Docente</label>
@@ -52,7 +52,7 @@
                                         <a href="javascript:history.back()" class="btn btn-default" >
                                             <i class="fa fa-arrow-left" aria-hidden="true"></i> Volver a lista
                                         </a>
-                                        <button type="submit" class="btn btn-success" tabindex="3">
+                                        <button type="submit" formmethod="post" form="form1" class="btn btn-success">
                                             <i class="fa fa-plus" aria-hidden="true"></i> Confirmar
                                         </button>
                                     </div>
