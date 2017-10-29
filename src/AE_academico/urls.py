@@ -3,13 +3,13 @@ from AE_academico.views import AulaListView, AulaDetailView, AulaCreationView, A
     MarcarAsistenciaView, SubirNotasView, CursoListView, CursoDetailView, CursoCreationView, CursoUpdateView, \
     CursoDeleteView, AulaCursoCreateView, VisualizarAsistenciaView, EventoCreateView, EventoDetailView, EventoListView, \
     MarcarAsistenciaDiaView, PeriodoAcademicoListView, PeriodoAcademicoDetailView, PeriodoAcademicoCreationView, \
-    PeriodoAcademicoUpdateView
+    PeriodoAcademicoUpdateView, AulaMatriculaCreateView
 from AE_academico.views import CursoDocenteCreateView
 urlpatterns = [
 
     # URL's del CRUD de Aula
     url(r'^aula/$', AulaListView.as_view(), name='aula_list'),
-    url(r'^aula/(?P<pk>\d+)$', AulaDetailView.as_view(), name='aula_detail'),
+    url(r'^aula/detail/$', AulaDetailView.as_view(), name='aula_detail'),
     url(r'^aula/create$', AulaCreationView.as_view(), name='aula_create'),
     url(r'^aula/update/(?P<pk>\d+)$', AulaUpdateView.as_view(), name='aula_edit'),
     url(r'^aula/delete/(?P<pk>\d+)$', AulaDeleteView.as_view(), name='aula_delete'),
@@ -43,6 +43,9 @@ urlpatterns = [
     url(r'^evento/create/$', EventoCreateView.as_view(), name='evento_create'),
     url(r'^evento/list/$', EventoListView.as_view(), name='evento_list'),
     url(r'^evento/detail/$', EventoDetailView.as_view(), name='evento_detail'),
+
+    # URL's de la asignación de notas
+    url(r'^aula/matricula/create/$', AulaMatriculaCreateView.as_view(), name='aulamatricula_create'),
 
     # URL's del CRUD de Periodo Academico
     url(r'^periodo/$', PeriodoAcademicoListView.as_view(), name='periodo_list'),

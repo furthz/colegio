@@ -34,9 +34,9 @@
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">Curso</label>
                                     <div class="col-sm-10">
-                                        <select name="curso" required id="id_curso"  class="form-control">
+                                        <select name="curso" required id="id_curso"  class="form-control" disabled>
                                           {% if cursos %}
-                                            <option value="">---------</option>
+
                                             {% for curso in cursos %}
                                                 <option value="{{ curso.id_curso }}">{{ curso }}</option>
                                             {% endfor %}

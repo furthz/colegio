@@ -1,0 +1,122 @@
+{%  extends "page.html" %}
+
+{% block title %}{{ block.super }} Modulo Académico{% endblock %}
+
+{% block breadcrumb %}
+<h1>
+        Asignar Cursos a un Aula
+        <small>Modulo Académico</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+        <li>Modúlo Académico</li>
+        <li class="active">Asignar Cursos a un Aula</li>
+      </ol>
+{% endblock %}
+
+{% block container %}
+<section class="content">
+      <div class="row">
+          <div class="col-md-12">
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">{{ Aula.nombre }}</h3>
+                </div>
+                <div class="box-body">
+                  <div class="col-md-9">
+                    <div class="panel-page">
+
+                      <div class="panel-body">
+                                <table class="table table-hover">
+                                  <tr class="table-header">
+                                    <th class="text-center">Acciones</th>
+                                    <th>Cursos</th>
+                                    <th>Asignar</th>
+                                  </tr>
+                                    <form name="cursosasignados" id="cursosasignados">{% csrf_token %}
+
+                                        <input hidden name="aula" value="{{ aula.id_aula }}">
+                                    {% for matricula in matriculas %}
+
+                                          <tr>
+                                            <td>{{ matricula.alumno }}</td>
+                                            <td>
+                                              <div class="checkbox">
+                                                <label>
+                                                  <input onchange="nombre()" id="item{{ matricula.id_matricula }}" name="item{{ matricula.id_matricula }}" type="checkbox">
+                                                </label>
+                                              </div>
+                                            </td>
+
+                                          </tr>
+                                    {% empty %}
+                                        <a href="">No hay cursos registrados en el Colegio</a>
+                                    {% endfor %}
+                                    </form>
+
+                                </table>
+
+                                <div class="form-group">
+                                <div class="col-md-12">
+                                  <div class="pull-right">
+                                    <a href="javascript:history.back()" class="btn btn-default">Cancelar</a>
+                                    <button name="enviar" type="submit" form="cursosasignados" formmethod="post" class="btn btn-success" disabled><i class="fa fa-check" aria-hidden="true"></i> Asignar Cursos</button>
+                                  </div>
+                                </div>
+                                </div>
+
+                            </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+
+                  </div>
+                </div>
+              </div>
+          </div>
+      </div>
+</section>
+
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script>
+function seleccion(id) {
+    var x = document.getElementById(id).checked;
+    return x;
+}
+function  seleccionado() {
+    return false;
+}
+</script>
+<script src="jquery-1.3.2.min.js" type="text/javascript"></script>
+<script>
+function nombre(obj) {
+    document.cursosasignados.elements.enviar.disabled = true;
+    var temp = 0;
+    var seleccionados_array = [];
+    $('input[name^="item"]').each( function() {
+        if(this.checked == true){
+
+            temp = 1;
+        }
+        else {
+
+        }
+
+    });
+
+
+
+    if(temp > 0){
+        document.cursosasignados.elements.enviar.disabled = false;
+    }
+    return true;
+}
+
+
+</script>
+{% endblock %}

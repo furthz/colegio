@@ -47,16 +47,15 @@
                                                                 <a title="Editar" href='{% url "academic:aula_edit" aula.id_aula %}' class="btn btn-default">
                                                                     <i class="fa fa-pencil" aria-hidden="true"></i>
                                                                 </a>
-                                                                <a title="Detalle" href='{% url "academic:aula_detail" aula.id_aula %}' class="btn btn-default">
+                                                                <button type="submit" title="Detalle" formaction="{% url 'academic:aula_detail'%}" formmethod="get" form="{{ aula.id_aula }}" class="btn btn-default">
                                                                     <i class="fa fa-info-circle" aria-hidden="true"></i>
-                                                                </a>
+                                                                </button>
                                                                 <a title="Eliminar" href="{% url 'academic:aula_delete' aula.id_aula %}" class="btn btn-default">
                                                                     <i class="fa fa-trash" aria-hidden="true"></i>
                                                                 </a>
                                                                 <button type="submit" title="Asignar Cursos" formaction="{% url 'academic:aulacurso_create'%}" formmethod="get" form="{{ aula.id_aula }}" class="btn btn-default">
                                                                     <i class="fa fa-info-circle" aria-hidden="true"></i>
                                                                 </button>
-
                                                             </div>
                                                         </td>
                                                     </tr>
