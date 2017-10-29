@@ -6,7 +6,8 @@ from django.views.generic import FormView
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from django.views.generic import TemplateView
 
-from AE_academico.forms import AulaForm, MarcarAsistenciaForm, SubirNotasForm, CursoForm, EventoForm, PeriodoAcademicoForm
+from AE_academico.forms import AulaForm, MarcarAsistencia1Form, SubirNotasForm, CursoForm, EventoForm, PeriodoAcademicoForm, \
+    HorarioAulaForm
 from AE_academico.forms import CursoDocenteForm
 from AE_academico.models import Aula, Asistencia, Notas, AulaCurso, Evento, HorarioAula, AulaMatricula, PeriodoAcademico
 from AE_academico.models import CursoDocente
@@ -68,10 +69,17 @@ class AulaDetailView(UpdateView):
                                               activo=True)
             for matricula in matriculadosaula:
                 lista_matriculados.append(matricula.matricula)
+            cursos_docentes = []
+            for curso in cursos:
+                try:
+                    cursos_docentes.append(CursoDocente.objects.get(curso=curso, activo=True))
+                except:
+                    logger.info("No hay docente aun")
             return render(request, template_name=self.template_name, context={
                 'matriculados_aula': lista_matriculados,
                 'aula': aula,
                 'cursos':cursos,
+                'cursos_docentes':cursos_docentes,
             })
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
@@ -381,7 +389,7 @@ class MarcarAsistenciaView(CreateView):
 
     model = Asistencia
     template_name = 'marcar_asistencia.html'
-    form_class = MarcarAsistenciaForm
+    form_class = MarcarAsistencia1Form
     success_url = reverse_lazy('academic:asistencia_ver')
 
     def get(self, request, *args, **kwargs):
@@ -1011,3 +1019,23 @@ class SubirNotasAlumnosView(TemplateView):
                         asistencia.save()
 
             return redirect('academic:asistencia_ver')
+
+
+class HorarioAulaCreateView(CreateView):
+    model = HorarioAula
+    form_class = HorarioAulaForm
+    success_url = reverse_lazy('academic:aula_list')
+    template_name = 'horarioaula_form.html'
+
+    def get(self, request, *args, **kwargs):
+        roles = ['promotor', 'director', 'administrativo', 'tesorero']
+        if validar_roles(roles=roles):
+            curso = CursoDocente.objects.filter(curso=request.GET["curso"], activo=True)
+
+            return render(request, template_name=self.template_name, context={
+                'form': self.form_class,
+                'curso': curso,
+            })
+
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)

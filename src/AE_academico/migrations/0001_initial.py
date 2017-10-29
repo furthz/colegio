@@ -81,6 +81,7 @@ class Migration(migrations.Migration):
                 ('id_curso_docente', models.AutoField(primary_key=True)),
                 ('docente', models.ForeignKey(db_column="id_docente", to='register.Docente')),
                 ('curso', models.ForeignKey(db_column="id_aula_curso", to='AE_academico.AulaCurso')),
+                ('tutor', models.BooleanField(default=False)),
                 ('fecha_creacion', models.DateField()),
                 ('fecha_modificacion', models.DateField()),
                 ('usuario_creacion', models.CharField(max_length=10, null=True)),
