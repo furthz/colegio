@@ -6,7 +6,7 @@ from django.conf import settings
 from datetime import date
 from authtools.models import User
 from discounts.forms import SolicitarDescuentoForm
-from discounts.models import Descuento
+from discounts.models import Descuento, TipoDescuento
 from enrollment.models import Servicio
 from enrollment.models import TipoServicio
 from enrollment.models import Matricula
@@ -1061,9 +1061,13 @@ class SolicitarDescuentoView(MyLoginRequiredMixin,TemplateView):
     form_class = SolicitarDescuentoForm
 
     def post(self, request, *args, **kwargs):
-        form = SolicitarDescuentoForm(initial={'matricula':Matricula.objects.get(pk=request.POST['matricula'])})
+        descuentos = TipoDescuento.objects.filter(colegio__id_colegio=get_current_colegio(), activo=True)
+        logger.info("Solicitar descuentos")
         return render(request, template_name=self.template_name, context={
-            'form': form,
+            'form': self.form_class,
+
+            'descuentos': descuentos,
+            'alumno': Matricula.objects.get(pk=request.POST['matricula']),
         })
 
 class CrearSolicitudView(MyLoginRequiredMixin,TemplateView):
