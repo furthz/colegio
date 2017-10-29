@@ -49,6 +49,7 @@ class CursoDocente(ActivoMixin, CreacionModificacionFechaMixin, CreacionModifica
     id_curso_docente = models.AutoField(primary_key=True)
     docente = models.ForeignKey(Docente, models.DO_NOTHING, db_column="id_docente")
     curso = models.ForeignKey(AulaCurso, models.DO_NOTHING, db_column="id_aula_curso")
+    #tutor = models.BooleanField(default=False)
 
     class Meta:
         managed = False
@@ -56,9 +57,8 @@ class CursoDocente(ActivoMixin, CreacionModificacionFechaMixin, CreacionModifica
 
 class HorarioAula(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin,models.Model):
     id_horario_aula = models.AutoField(primary_key=True)
-    curso = models.ForeignKey(Curso, models.DO_NOTHING, db_column="id_curso")
-    docente = models.ForeignKey(Docente, models.DO_NOTHING, db_column="id_docente")
-    lugar = models.CharField(max_length=50)
+    curso = models.ForeignKey(CursoDocente, models.DO_NOTHING, db_column="id_curso")
+    lugar = models.CharField(max_length=50, blank=True, null=True)
     dia = models.CharField(max_length=10)
     hora_inicio = models.TimeField()
     hora_fin = models.TimeField()

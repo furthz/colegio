@@ -4,13 +4,13 @@
 
 {% block breadcrumb %}
 <h1>
-        Asignar Cursos a un Aula
+        Asignar Alumnos a un Aula
         <small>Modulo Académico</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
         <li>Modúlo Académico</li>
-        <li class="active">Asignar Cursos a un Aula</li>
+        <li class="active">Asignar Alumnos a un Aula</li>
       </ol>
 {% endblock %}
 
@@ -29,9 +29,9 @@
                       <div class="panel-body">
                                 <table class="table table-hover">
                                   <tr class="table-header">
-                                    <th class="text-center">Acciones</th>
+                                    <th class="text-center">Alumnos</th>
                                     <th>Cursos</th>
-                                    <th>Asignar</th>
+
                                   </tr>
                                     <form name="cursosasignados" id="cursosasignados">{% csrf_token %}
 
@@ -39,7 +39,7 @@
                                     {% for matricula in matriculas %}
 
                                           <tr>
-                                            <td>{{ matricula.alumno }}</td>
+                                            <td>{{ matricula.alumno.getNombreFormal }}</td>
                                             <td>
                                               <div class="checkbox">
                                                 <label>
