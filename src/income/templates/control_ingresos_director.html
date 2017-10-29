@@ -181,23 +181,46 @@
 
         };
         var pieChartData = {
-            labels: ["Inicial", "Primaria", "Secundaria"],
+            labels: ["3 Años", "4 Años", "5 Años", "1 Prim", "2 Prim", "3 Prim", "4 Prim", "5 Prim", "6 Prim",
+                                        "1 Sec", "2 Sec", "3 Sec", "4 Sec", "5 Sec"],
             datasets: [{
                 label: 'Recaudado',
                 backgroundColor:[
                   "rgba(100, 99, 255, 0.8)",
                   "rgba(100, 99, 255, 0.8)",
+                  "rgba(100, 99, 255, 0.8)",
+                  "rgba(100, 99, 255, 0.8)",
+                  "rgba(100, 99, 255, 0.8)",
+                  "rgba(100, 99, 255, 0.8)",
+                  "rgba(100, 99, 255, 0.8)",
+                  "rgba(100, 99, 255, 0.8)",
+                  "rgba(100, 99, 255, 0.8)",
+                  "rgba(100, 99, 255, 0.8)",
+                  "rgba(100, 99, 255, 0.8)",
+                  "rgba(100, 99, 255, 0.8)",
+                  "rgba(100, 99, 255, 0.8)",
                   "rgba(100, 99, 255, 0.8)"
                   ],
-                data: {{ cobro_total_nivel }}
+                data: {{ cobro_total_grado }}
             }, {
                 label: 'Total a recaudar',
                 backgroundColor: [
                   "rgba(0, 120, 184, 0.2)",
                   "rgba(0, 120, 184, 0.2)",
+                  "rgba(0, 120, 184, 0.2)",
+                  "rgba(0, 120, 184, 0.2)",
+                  "rgba(0, 120, 184, 0.2)",
+                  "rgba(0, 120, 184, 0.2)",
+                  "rgba(0, 120, 184, 0.2)",
+                  "rgba(0, 120, 184, 0.2)",
+                  "rgba(0, 120, 184, 0.2)",
+                  "rgba(0, 120, 184, 0.2)",
+                  "rgba(0, 120, 184, 0.2)",
+                  "rgba(0, 120, 184, 0.2)",
+                  "rgba(0, 120, 184, 0.2)",
                   "rgba(0, 120, 184, 0.2)"
                 ],
-                data: {{ por_cobrar_nivel }}
+                data: {{ por_cobrar_grado }}
             }]
 
         };
@@ -237,7 +260,7 @@
                     },
                     title: {
                         display: true,
-                        text: 'Gráfico de recaudación por niveles',
+                        text: 'Gráfico de recaudación por grados',
                         fontSize: 22
                     },
                     scales: {
