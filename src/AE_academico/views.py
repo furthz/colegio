@@ -589,7 +589,7 @@ class EventoCreateView(CreateView):
     model = Evento
     form_class = EventoForm
     template_name = "evento_form.html"
-    success_url = reverse_lazy("academics:evento_list")
+    success_url = reverse_lazy("academic:evento_list")
 
     def form_valid(self, form):
         form.instance.colegio = Colegio.objects.get(pk=get_current_colegio())
