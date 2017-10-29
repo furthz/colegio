@@ -223,7 +223,7 @@ class RegistroUsuario(CreateView):
         elif validar_roles(roles):
             logger.debug("No es super usuario")
 
-            lista_roles = [2, 3, 4, 5, 6]
+            lista_roles = [2, 3, 4, 5, 6, 11]
             grupos = []
             for rol in lista_roles:
                 grup = Group.objects.get(id=rol)
@@ -283,7 +283,7 @@ class RegistroUsuario(CreateView):
             elif validar_roles(roles):
                 logger.debug("No es super usuario")
 
-                lista_roles = [2, 3, 4, 5, 6]
+                lista_roles = [2, 3, 4, 5, 6, 11]
                 grupos = []
                 for rol in lista_roles:
                     grup = Group.objects.get(id=rol)
@@ -363,6 +363,24 @@ class RegistroUsarioCreationViewTesorero(CreateView):
 
         if validar_roles(roles=roles):
             return super(RegistroUsarioCreationViewTesorero, self).get(request, args, kwargs)
+
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+
+class RegistroUsarioCreationViewDocente(CreateView):
+    model = Userss
+    template_name = "register_accounts/register_accounts_form.html"
+    form_class = RegistroUsuarioForm
+    success_url = reverse_lazy('registers:docente_create')
+
+    @method_decorator(permission_required('register.docente_create', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        roles = ['promotor', 'director', 'sistemas']
+
+        if validar_roles(roles=roles):
+            return super(RegistroUsarioCreationViewDocente, self).get(request, args, kwargs)
 
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)

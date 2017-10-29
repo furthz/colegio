@@ -63,18 +63,7 @@ class CursoDocenteForm(forms.ModelForm):
             'curso': forms.Select(attrs={'class': 'form-control'}),
         }
 
-
-class MarcarAsistencia1Form(forms.Form):
-
-    #id_colegio = get_current_colegio()
-    aula = forms.ModelChoiceField(queryset=Aula.objects.filter(tipo_servicio__colegio=1).order_by('nombre'))
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['aula'].widget.attrs.update({'class': 'form-control'})
-
-
-class MarcarAsistencia2Form(forms.Form):
+class MarcarAsistenciaForm(forms.Form):
 
     estado_asistencia = forms.IntegerField()
 
