@@ -113,7 +113,8 @@ INSTALLED_APPS = (
     #'AE_social',
     'rest_framework',
     'rest_framework.authtoken',
-    'rest_auth'
+    'rest_auth',
+    'APIs'
 
 )
 

@@ -12,7 +12,10 @@ from django.contrib import messages
 from django.views.generic import CreateView, ListView, DetailView, UpdateView
 
 from .forms import RegistroUsuarioForm
+
+from rest_framework import generics
 from authtools.models import User as Userss
+from .serializers import UserSerializer
 
 from django.contrib.auth.models import Group
 
@@ -387,3 +390,5 @@ class GroupViewSet(viewsets.ModelViewSet):
     """
     queryset = GroupAPI.objects.all()
     serializer_class = GroupSerializer
+
+
