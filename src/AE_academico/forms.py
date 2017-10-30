@@ -91,6 +91,15 @@ class SubirNotasForm(forms.Form):
         self.fields['nota'].widget.attrs.update({'class': 'form-control'})
 
 
+class RegistrarNotas2Form(forms.Form):
+
+    nota = forms.IntegerField()
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['nota'].widget.attrs.update({'class': 'form-control'})
+
+
 class EventoForm(forms.ModelForm):
     class Meta:
         model = Evento
@@ -126,18 +135,7 @@ class EventoForm(forms.ModelForm):
 class PeriodoAcademicoForm(forms.ModelForm):
     class Meta:
         model = PeriodoAcademico
-
-        fields = [
-            'nombre',
-        ]
-
-        labels = {
-            'nombre': 'Nombre',
-        }
-
-        widgets = {
-            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
-        }
+        fields = ['nombre', 'fecha_inicio', 'fecha_fin']
 
 
 class HorarioAulaForm(forms.ModelForm):

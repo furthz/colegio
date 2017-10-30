@@ -3,7 +3,7 @@ from AE_academico.views import AulaListView, AulaDetailView, AulaCreationView, A
     MarcarAsistenciaView, SubirNotasView, CursoListView, CursoDetailView, CursoCreationView, CursoUpdateView, \
     CursoDeleteView, AulaCursoCreateView, VisualizarAsistenciaView, EventoCreateView, EventoDetailView, EventoListView, \
     MarcarAsistenciaDiaView, PeriodoAcademicoListView, PeriodoAcademicoDetailView, PeriodoAcademicoCreationView, \
-    PeriodoAcademicoUpdateView, AulaMatriculaCreateView, HorarioAulaCreateView
+    PeriodoAcademicoUpdateView, AulaMatriculaCreateView, HorarioAulaCreateView, RegistrarNotasAlumnosView, get_cursos
 from AE_academico.views import CursoDocenteCreateView
 urlpatterns = [
 
@@ -34,8 +34,10 @@ urlpatterns = [
 
 
     # URL's de la asignación de notas
-    url(r'^notas/registrar/$', SubirNotasView.as_view(), name='notas_registrar'),
+    url(r'^notas/registrar/$', RegistrarNotasAlumnosView.as_view(), name='notas_registrar'),
     #url(r'^asistencia/ver/$', VisualizarAsistenciaView.as_view(), name='asistencia_ver'),
+    url(r'^api/get_cursos', get_cursos, name='get_cursos'),
+
 
     url(r'^aula/curso/create/$', AulaCursoCreateView.as_view(), name='aulacurso_create'),
 

@@ -106,6 +106,10 @@ class PeriodoAcademico(ActivoMixin, CreacionModificacionFechaMixin, CreacionModi
     class Meta:
         managed = False
 
+    def __str__(self):
+        return "{0}".format(self.nombre)
+
+
 class Notas(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin,models.Model):
     id_nota = models.AutoField(primary_key=True)
     curso = models.ForeignKey(Curso, models.DO_NOTHING, db_column="id_curso")

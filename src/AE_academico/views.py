@@ -1,5 +1,8 @@
 import datetime
+import json
 import calendar
+
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import FormView
@@ -7,7 +10,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView, D
 from django.views.generic import TemplateView
 
 from AE_academico.forms import AulaForm, MarcarAsistenciaForm, SubirNotasForm, CursoForm, EventoForm, PeriodoAcademicoForm, \
-    HorarioAulaForm
+    HorarioAulaForm, RegistrarNotas2Form
 from AE_academico.forms import CursoDocenteForm
 from AE_academico.models import Aula, Asistencia, Notas, AulaCurso, Evento, HorarioAula, AulaMatricula, PeriodoAcademico
 from AE_academico.models import CursoDocente
@@ -383,15 +386,11 @@ class MarcarAsistenciaDiaView(TemplateView):
 
             aula = request.POST["aula"]
 
-            # AQUI VA EL ID DE TIPO DE SERVICIO
-            id_tipo_servicio = 1
-            id_colegio = get_current_colegio()
-            matriculadosaula = Matricula.objects.filter(colegio_id=id_colegio, activo=True,
-                                                        tipo_servicio=id_tipo_servicio).order_by('alumno__apellido_pa')
+            matriculadosaula = AulaMatricula.objects.filter(aula=aula).order_by('matricula__alumno__apellido_pa')
             logger.info("Datos son {0}".format(matriculadosaula))
             alumnos = []
             for matriculado in matriculadosaula:
-                alumnos.append(matriculado.alumno)
+                alumnos.append(matriculado.matricula.alumno)
 
             asistencia_hoy = []
             num = len(alumnos)
@@ -762,8 +761,9 @@ class PeriodoAcademicoUpdateView(UpdateView):
 class RegistrarNotasAlumnosView(TemplateView):
 
     model = Notas
-    template_name = 'asistencia_marcar.html'
+    template_name = 'notas_registrar.html'
     success_url = reverse_lazy('academic:asistencia_registrar_dia')
+    form2 = RegistrarNotas2Form
 
     def RegistrarNotas1Form(self, request):
 
@@ -773,13 +773,22 @@ class RegistrarNotasAlumnosView(TemplateView):
 
             # Cargamos las aulas relacionadas al colegio
             id_colegio = get_current_colegio()
-            aulas_colegio = Aula.objects.filter(tipo_servicio__colegio=id_colegio).order_by('nombre')
+            periodos_colegio = PeriodoAcademico.objects.filter(colegio=id_colegio).order_by('nombre')
+            if periodos_colegio.count() == 0:
+                periodos_colegio = ["No hay periodos registrados"]
 
             # Cargamos las aulas relacionadas al colegio
             id_colegio = get_current_colegio()
-            periodos_colegio = PeriodoAcademico.objects.filter(colegio=id_colegio).order_by('nombre')
+            aulas_colegio = Aula.objects.filter(tipo_servicio__colegio=id_colegio).order_by('nombre')
+            if aulas_colegio.count() == 0:
+                aulas_colegio = ["No hay aulas registradas"]
 
-            return {'aulas_colegio': aulas_colegio, 'periodos_colegio': periodos_colegio}
+            cursos =[]
+            cursos_aula = AulaCurso.objects.filter(curso__colegio=id_colegio)
+            for curso_aula in cursos_aula:
+                cursos.append(curso_aula.curso)
+
+            return {'aulas_colegio': aulas_colegio, 'periodos_colegio': periodos_colegio, 'cursos_aula': cursos}
 
         else:
             mensaje_error = "No tienes acceso a esta vista"
@@ -789,7 +798,8 @@ class RegistrarNotasAlumnosView(TemplateView):
         super(RegistrarNotasAlumnosView, self).get(request, *args, **kwargs)
 
         contexto = self.RegistrarNotas1Form(request)
-        contexto.update(self.MarcarAsistencia2Form(request))
+        contexto2 = {'form2': self.form2}
+        contexto.update(contexto2)
 
         if 'mensaje_error' in contexto.keys():
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
@@ -800,33 +810,23 @@ class RegistrarNotasAlumnosView(TemplateView):
         logger.info("Estoy en el POST")
         logger.info("Los datos de llegada son {0}".format(request.POST))
 
-        if 'aula' in request.POST.keys():
+        #if 'aula' in request.POST.keys():
 
-            aula = request.POST["aula"]
+        aula = request.POST["aula"]
 
-            # AQUI VA EL ID DE TIPO DE SERVICIO
-            id_tipo_servicio = 1
-            id_colegio = get_current_colegio()
-            matriculadosaula = Matricula.objects.filter(colegio_id=id_colegio, activo=True,
-                                                        tipo_servicio=id_tipo_servicio).order_by('alumno__apellido_pa')
-            logger.info("Datos son {0}".format(matriculadosaula))
-            alumnos = []
-            for matriculado in matriculadosaula:
-                alumnos.append(matriculado.alumno)
+        matriculadosaula = AulaMatricula.objects.filter(aula=aula).order_by('matricula__alumno__apellido_pa')
+        logger.info("Datos son {0}".format(matriculadosaula))
+        alumnos = []
+        for matriculado in matriculadosaula:
+            alumnos.append(matriculado.matricula.alumno)
 
-            asistencia_hoy = []
-            num = len(alumnos)
-            for n in range (0, num):
-                asistencia_hoy.append(Asistencia.objects.filter(alumno=alumnos[n], fecha=datetime.date.today()))
-            logger.info("Las asistencias de hoy son {0}".format(asistencia_hoy))
+        contexto = self.RegistrarNotas1Form(request)
+        #contexto.update(self.MarcarAsistencia2Form(request))
+        contexto['alumnos'] = alumnos
+        #contexto['asistencias'] = asistencia_hoy
 
-            contexto = self.MarcarAsistencia1Form(request)
-            contexto.update(self.MarcarAsistencia2Form(request))
-            contexto['alumnos'] = alumnos
-            contexto['asistencias'] = asistencia_hoy
-
-            return render(request, template_name=self.template_name, context=contexto)
-
+        return render(request, template_name=self.template_name, context=contexto)
+        """
         else:
             logger.info("Estoy en el POST")
             logger.info("Los datos de llegada son {0}".format(request.POST))
@@ -863,7 +863,7 @@ class RegistrarNotasAlumnosView(TemplateView):
                         asistencia.save()
 
             return redirect('academic:asistencia_ver')
-
+        """
 
 #################################################
 #####          HORARIOS DE CURSOS           #####
@@ -887,3 +887,23 @@ class HorarioAulaCreateView(CreateView):
 
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+
+
+def get_cursos(request):
+    if request.is_ajax():
+        id_aula = request.GET.get("id_aula", " ")
+        aula_cursos = AulaCurso.objects.filter(aula__id_aula=int(id_aula))
+        results = []
+        for aula_curso in aula_cursos:
+            aula_curso_json = {}
+            aula_curso_json['id'] = aula_curso.curso.id_curso
+            aula_curso_json['value'] = aula_curso.curso.nombre
+            results.append(aula_curso_json)
+        data = json.dumps(results)
+    else:
+        data = 'fail'
+
+    mimetype = 'application/json'
+
+    return HttpResponse(data, mimetype)

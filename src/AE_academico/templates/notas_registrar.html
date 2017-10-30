@@ -38,30 +38,28 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label>Periodo Académico</label>
-                                                  <select name="aula"  class="form-control">
+                                                  <select name="periodo_academico" id="id_periodo_academico"  class="form-control">
                                                     {% for periodo in periodos_colegio %}
-                                                        <option>{{ periodo }}</option>
+                                                        <option value="{{ periodo.id_periodo_academico }}">{{ periodo }}</option>
                                                     {% endfor %}
                                                   </select>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label>Asignatura</label>
-                                                  <select name="aula"  class="form-control">
-                                                    {% for curso in cursos_aula %}
-                                                        <option>{{ curso }}</option>
-                                                    {% endfor %}
-                                                  </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label>Grado y Sección</label>
-                                                  <select name="aula"  class="form-control">
+                                                <label for="id_aula">Grado y Sección</label>
+                                                  <select name="aula" id="id_aula" class="form-control">
                                                     {% for aula in aulas_colegio %}
-                                                        <option>{{ aula }}</option>
+                                                        <option value="{{ aula.id_aula }}">{{ aula }}</option>
                                                     {% endfor %}
+                                                  </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="id_curso">Asignatura</label>
+                                                  <select name="curso" id="id_curso"  class="form-control">
+                                                        <option>Comunicación</option>
                                                   </select>
                                             </div>
                                         </div>
@@ -92,7 +90,7 @@
                                                     <input type="hidden" name="id" value="{{ alumno.alumno.id_alumno }}">
                                                 </td>
                                                 <td class="text-center">
-                                                    {{ form.nota }}
+                                                    {{ form2.nota }}
                                                 </td>
                                               </tr>
                                             {% endfor %}
@@ -123,4 +121,34 @@
 <!-- ./wrapper -->
 
 {% endblock container %}
+
+{% block scripts %}
+
+<script type="text/javascript">
+     $('#id_aula').change(function () {
+            $('#id_curso').empty();
+
+            $.ajax({
+                    type: "GET",
+                    url: "/academic/api/get_cursos",
+                    datatype: "Json",
+                    data: { id_aula: $('#id_aula').val() },
+                    success: function (data) {
+                        $.each(data, function (index, value) {
+                            $('#id_curso').append('<option value="' + value["id"] + '">' +
+                                value["value"] + '</option>');
+                        });
+                    },
+                    error: function (error) {
+                        alert("Error Ajax not working: " + error);
+                    }
+                });
+
+     }
+    );
+    </script>
+
+{% endblock scripts %}
+
 </body>
+
