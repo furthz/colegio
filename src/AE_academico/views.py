@@ -487,7 +487,10 @@ class VisualizarAsistenciaView(TemplateView):
     def post(self, request, *args, **kwargs):
 
         mes = request.POST["mes"]
+        aula = request.POST["aula"]
         num_mes = obtener_mes(mes)
+
+        logger.info("Estoy en el Post, datos de llegada son {0}".format(request.POST))
 
         meses_dias = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
         num_dias = meses_dias[num_mes-1]
@@ -504,14 +507,12 @@ class VisualizarAsistenciaView(TemplateView):
         asistencias_curso_mes = asistencias_curso_anio.filter(fecha__month=num_mes)
         logger.info("La lista de asistencias de mes son {0}".format(asistencias_curso_mes))
 
-        id_tipo_servicio = 1
-        id_colegio = get_current_colegio()
-        matriculados_aula = Matricula.objects.filter(colegio_id=id_colegio, activo=True, tipo_servicio=id_tipo_servicio).order_by('alumno__apellido_pa')
+        matriculados_aula = AulaMatricula.objects.filter(aula=aula).order_by('matricula__alumno__apellido_pa')
         alumnos = []
         for matriculado in matriculados_aula:
-            alumnos.append(matriculado.alumno)
-        len(alumnos)
-
+            alumnos.append(matriculado.matricula.alumno)
+        num_alumnos = len(alumnos)
+        logger.info("El número de alumnos matriculados en esta aula es {0}".format(num_alumnos))
 
         fechas = []
         lista_asistencias_dia = []
@@ -537,6 +538,8 @@ class VisualizarAsistenciaView(TemplateView):
         contexto['num_ver'] = num_vertical
         contexto['fechas'] = fechas
         contexto['alumnos'] = alumnos
+        contexto['mes_selected'] = mes
+        contexto['aula_selected'] = aula
         contexto['form'] = VisualizarAsistenciaView
         return render(request, template_name=self.template_name, context=contexto)
 
