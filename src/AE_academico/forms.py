@@ -1,6 +1,5 @@
-
 from django import forms
-from AE_academico.models import Aula, Asistencia, Notas, Curso, Evento, PeriodoAcademico
+from AE_academico.models import Aula, Asistencia, Notas, Curso, Evento, PeriodoAcademico, HorarioAula
 from AE_academico.models import CursoDocente
 from utils.middleware import get_current_colegio
 
@@ -63,18 +62,7 @@ class CursoDocenteForm(forms.ModelForm):
             'curso': forms.Select(attrs={'class': 'form-control'}),
         }
 
-
-class MarcarAsistencia1Form(forms.Form):
-
-    #id_colegio = get_current_colegio()
-    aula = forms.ModelChoiceField(queryset=Aula.objects.filter(tipo_servicio__colegio=1).order_by('nombre'))
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['aula'].widget.attrs.update({'class': 'form-control'})
-
-
-class MarcarAsistencia2Form(forms.Form):
+class MarcarAsistenciaForm(forms.Form):
 
     estado_asistencia = forms.IntegerField()
 
@@ -94,6 +82,15 @@ class MarcarAsistencia2Form(forms.Form):
 
 
 class SubirNotasForm(forms.Form):
+
+    nota = forms.IntegerField()
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['nota'].widget.attrs.update({'class': 'form-control'})
+
+
+class RegistrarNotas2Form(forms.Form):
 
     nota = forms.IntegerField()
 
@@ -137,15 +134,33 @@ class EventoForm(forms.ModelForm):
 class PeriodoAcademicoForm(forms.ModelForm):
     class Meta:
         model = PeriodoAcademico
+        fields = ['nombre', 'fecha_inicio', 'fecha_fin']
+
+
+class HorarioAulaForm(forms.ModelForm):
+    class Meta:
+        model = HorarioAula
 
         fields = [
-            'nombre',
+            'curso',
+            'lugar',
+            'dia',
+            'hora_inicio',
+            'hora_fin',
         ]
 
         labels = {
-            'nombre': 'Nombre',
+            'curso':'Curso',
+            'lugar': 'Lugar',
+            'dia': 'Día',
+            'hora_inicio': 'Hora de Inicio',
+            'hora_fin': 'Hora de Fin',
         }
 
-        widgets = {
-            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
-        }
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['curso'].widget.attrs.update({'class': 'form-control'})
+        self.fields['lugar'].widget.attrs.update({'class': 'form-control'})
+        self.fields['dia'].widget.attrs.update({'class': 'form-control'})
+        self.fields['hora_inicio'].widget.attrs.update({'class': 'form-control'})
+        self.fields['hora_fin'].widget.attrs.update({'class': 'form-control'})
