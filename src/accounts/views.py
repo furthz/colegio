@@ -12,7 +12,10 @@ from django.contrib import messages
 from django.views.generic import CreateView, ListView, DetailView, UpdateView
 
 from .forms import RegistroUsuarioForm
+
+from rest_framework import generics
 from authtools.models import User as Userss
+from .serializers import UserSerializer
 
 from django.contrib.auth.models import Group
 
@@ -223,7 +226,7 @@ class RegistroUsuario(CreateView):
         elif validar_roles(roles):
             logger.debug("No es super usuario")
 
-            lista_roles = [2, 3, 4, 5, 6, 11]
+            lista_roles = [2, 3, 4, 5, 6]
             grupos = []
             for rol in lista_roles:
                 grup = Group.objects.get(id=rol)
@@ -283,7 +286,7 @@ class RegistroUsuario(CreateView):
             elif validar_roles(roles):
                 logger.debug("No es super usuario")
 
-                lista_roles = [2, 3, 4, 5, 6, 11]
+                lista_roles = [2, 3, 4, 5, 6]
                 grupos = []
                 for rol in lista_roles:
                     grup = Group.objects.get(id=rol)
@@ -368,19 +371,28 @@ class RegistroUsarioCreationViewTesorero(CreateView):
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
 
-class RegistroUsarioCreationViewDocente(CreateView):
-    model = Userss
-    template_name = "register_accounts/register_accounts_form.html"
-    form_class = RegistroUsuarioForm
-    success_url = reverse_lazy('registers:docente_create')
+from django.contrib.auth.models import User as UserAPI, Group as GroupAPI
+from rest_framework import viewsets
+from .serializers import UserSerializer, GroupSerializer
 
     @method_decorator(permission_required('register.docente_create', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'sistemas']
 
-        if validar_roles(roles=roles):
-            return super(RegistroUsarioCreationViewDocente, self).get(request, args, kwargs)
+class UserViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = User.objects.all().order_by('-date_joined')
+    serializer_class = UserSerializer
 
-        else:
-            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+class GroupViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    queryset = GroupAPI.objects.all()
+    serializer_class = GroupSerializer
+
+
