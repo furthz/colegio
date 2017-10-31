@@ -35,22 +35,26 @@
                                   <form action="" name="form1" class="form-horizontal" id="form1">{% csrf_token %}
                                     <div class="toolbar-search">
                                       <div class="box-body">
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Periodo Académico</label>
                                                   <select name="periodo_academico" id="id_periodo_academico"  class="form-control">
                                                     {% for periodo in periodos_colegio %}
-                                                        <option value="{{ periodo.id_periodo_academico }}">{{ periodo }}</option>
+                                                        <option value="{{ periodo.id_periodo_academico }}">{{ periodo.nombre }}</option>
                                                     {% endfor %}
                                                   </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="id_aula">Grado y Sección</label>
                                                   <select name="aula" id="id_aula" class="form-control">
                                                     {% for aula in aulas_colegio %}
-                                                        <option value="{{ aula.id_aula }}">{{ aula }}</option>
+                                                        {% if aula == aula_selected %}
+                                                            <option selected value="{{ aula.id_aula }}">{{ aula }}</option>
+                                                        {% else %}
+                                                            <option value="{{ aula.id_aula }}">{{ aula }}</option>
+                                                        {% endif %}
                                                     {% endfor %}
                                                   </select>
                                             </div>
@@ -67,7 +71,7 @@
                                           <div class="search-actions">
                                             <button type="submit" class="btn btn-primary" form="form1" formmethod="post">
                                             <i class="fa fa-search" aria-hidden="true"></i>
-                                             Buscar
+                                             Ir
                                             </button>
                                           </div>
                                         </div>
@@ -75,25 +79,28 @@
                                     </div>
                                   </form>
                                     </div>
+                          {% if alumnos %}
                                     <table class="table table-hover">
                                       <tr class="table-header">
                                         <th>Número de orden</th>
                                         <th>Apellidos y Nombres</th>
-                                        <th class="text-center">Asistencia</th>
+                                        <th class="text-center">Nota</th>
                                       </tr>
                                         <form id="ListaAsistencia">{% csrf_token %}
                                             {% for alumno in alumnos %}
                                               <tr>
                                                 <td>{{ forloop.counter }}</td>
                                                 <td>
-                                                    {{ alumno.alumno.getNombreCompleto }}
+                                                    {{ alumno.alumno.getNombreFormal }}
                                                     <input type="hidden" name="id" value="{{ alumno.alumno.id_alumno }}">
                                                 </td>
-                                                <td class="text-center">
+                                                <td class="col-md-2">
                                                     {{ form2.nota }}
                                                 </td>
                                               </tr>
                                             {% endfor %}
+                                            <input type="hidden" name="periodo" value="{{ periodo_selected.id_periodo_academico }}">
+                                            <input type="hidden" name="curso" value="{{ curso_selected.id_curso }}">
                                         </form>
                                      </table>
 
@@ -104,7 +111,7 @@
                                             <i class="fa fa-floppy-o" aria-hidden="true"></i> Grabar
                                         </button>
 
-
+                            {% endif %}
 
                             </div>
                           </div>

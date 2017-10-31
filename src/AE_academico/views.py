@@ -232,8 +232,6 @@ class CursoDocenteCreateView(CreateView):
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
 
-
-
 #####################################################
 #####              CRUD DE  AULA CURSO          #####
 #####################################################
@@ -527,6 +525,7 @@ class VisualizarAsistenciaView(TemplateView):
                 n = n + 1
         num_horizontal = len(fechas)
         num_vertical = len(alumnos)
+        aula_selected = Aula.objects.get(id_aula=aula)
 
         logger.info("La lista de asistencias de mes son {0}".format(lista_asistencias_dia))
         logger.info("La lista de fechas de mes son {0}".format(fechas))
@@ -539,55 +538,14 @@ class VisualizarAsistenciaView(TemplateView):
         contexto['fechas'] = fechas
         contexto['alumnos'] = alumnos
         contexto['mes_selected'] = mes
-        contexto['aula_selected'] = aula
-        contexto['form'] = VisualizarAsistenciaView
+        contexto['aula_selected'] = aula_selected
+
         return render(request, template_name=self.template_name, context=contexto)
 
 
 #################################################
 #####             NOTAS ALUMNOS             #####
 #################################################
-
-class SubirNotasView(CreateView):
-
-    model = Notas
-    template_name = 'notas_subir.html'
-    form_class = SubirNotasForm
-    success_url = reverse_lazy('academic:aula_list')
-
-    def get(self, request, *args, **kwargs):
-        roles = ['promotor', 'director', 'administrativo']
-        if validar_roles(roles=roles):
-            # AQUI VA EL ID DE TIPO DE SERVICIO
-            id_tipo_servicio = 1
-            id_colegio = get_current_colegio()
-            matriculadosaula = Matricula.objects.filter(colegio_id=id_colegio, activo=True, tipo_servicio=id_tipo_servicio).order_by('alumno__apellido_pa')
-            logger.info("Datos son {0}".format(matriculadosaula))
-
-            alumnos = []
-            for matriculado in matriculadosaula:
-                alumnos.append(matriculado.alumno)
-            return render(request, template_name=self.template_name, context={
-                'form': self.form_class,
-                'alumnos': alumnos,
-            })
-
-        else:
-            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
-
-    def post(self, request, *args, **kwargs):
-
-        logger.info("Estoy en el POST")
-        data_post = request.POST
-        logger.info("Los datos de llegada son {0}".format(data_post))
-
-
-        #id_colegio = get_current_colegio()
-
-
-        contexto = {}
-        return render(request, template_name=self.template_name, context=contexto)
-
 
 #################################################
 #####                EVENTOS                #####
@@ -801,7 +759,7 @@ class RegistrarNotasAlumnosView(TemplateView):
         super(RegistrarNotasAlumnosView, self).get(request, *args, **kwargs)
 
         contexto = self.RegistrarNotas1Form(request)
-        contexto2 = {'form2': self.form2}
+        contexto2 ={'form2': self.form2}
         contexto.update(contexto2)
 
         if 'mensaje_error' in contexto.keys():
@@ -813,60 +771,156 @@ class RegistrarNotasAlumnosView(TemplateView):
         logger.info("Estoy en el POST")
         logger.info("Los datos de llegada son {0}".format(request.POST))
 
-        #if 'aula' in request.POST.keys():
+        if 'aula' in request.POST.keys():
 
-        aula = request.POST["aula"]
+            aula = request.POST["aula"]
+            periodo = request.POST["periodo_academico"]
+            curso = request.POST["curso"]
 
-        matriculadosaula = AulaMatricula.objects.filter(aula=aula).order_by('matricula__alumno__apellido_pa')
-        logger.info("Datos son {0}".format(matriculadosaula))
-        alumnos = []
-        for matriculado in matriculadosaula:
-            alumnos.append(matriculado.matricula.alumno)
+            aula_selected = Aula.objects.get(id_aula=aula)
+            periodo_selected = PeriodoAcademico.objects.get(id_periodo_academico=periodo)
+            curso_selected = Curso.objects.get(id_curso=curso)
 
-        contexto = self.RegistrarNotas1Form(request)
-        #contexto.update(self.MarcarAsistencia2Form(request))
-        contexto['alumnos'] = alumnos
-        #contexto['asistencias'] = asistencia_hoy
+            matriculadosaula = AulaMatricula.objects.filter(aula=aula).order_by('matricula__alumno__apellido_pa')
+            logger.info("Datos son {0}".format(matriculadosaula))
+            alumnos = []
+            for matriculado in matriculadosaula:
+                alumnos.append(matriculado.matricula.alumno)
 
-        return render(request, template_name=self.template_name, context=contexto)
-        """
+            contexto = self.RegistrarNotas1Form(request)
+            contexto2 = {'form2': self.form2}
+            contexto.update(contexto2)
+            contexto['alumnos'] = alumnos
+            contexto['aula_selected'] = aula_selected
+            contexto['periodo_selected'] = periodo_selected
+            contexto['curso_selected'] = curso_selected
+
+            return render(request, template_name=self.template_name, context=contexto)
+
         else:
             logger.info("Estoy en el POST")
             logger.info("Los datos de llegada son {0}".format(request.POST))
             data_post = request.POST
 
             alumnos_id = data_post.getlist('id')
-            estado_asistencias = data_post.getlist('estado_asistencia')
+            notas = data_post.getlist('nota')
+            curso_id = data_post['curso']
+            periodo_id = data_post['periodo']
+            colegio_id = get_current_colegio()
 
-            estados = []
-            for estado in estado_asistencias:
-                if estado == 'Presente':
-                    estados.append(1)
-                elif estado == 'Tardanza':
-                    estados.append(2)
-                elif estado == 'Ausente':
-                    estados.append(3)
-                else:
-                    estados.append(4)
+            curso = Curso.objects.get(id_curso=curso_id)
+            periodo = PeriodoAcademico.objects.get(id_periodo_academico=periodo_id)
+            colegio = Colegio.objects.get(id_colegio=colegio_id)
 
-            logger.info("Los estados son {0}".format(estado_asistencias))
             num = len(alumnos_id)
 
             for n in range(0, num):
                 alumno = Alumno.objects.get(id_alumno=alumnos_id[n])
-                asistencia_primera = Asistencia.objects.filter(alumno=alumno, fecha=datetime.date.today())
-                logger.info("{0}".format(asistencia_primera.count()))
-                if asistencia_primera.count() == 0:
-                    asistencia = Asistencia(alumno=alumno, fecha=datetime.date.today(),
-                                            estado_asistencia=estados[n])
-                    asistencia.save()
-                else:
-                    for asistencia in asistencia_primera:
-                        asistencia.estado_asistencia = estados[n]
-                        asistencia.save()
+                nota = Notas(alumno=alumno, curso=curso, periodo_academico=periodo, nota=notas[n], colegio=colegio)
+                nota.save()
 
-            return redirect('academic:asistencia_ver')
-        """
+            return redirect('academic:notas_ver')
+
+
+class VisualizarNotasView(TemplateView):
+
+    model = Notas
+    template_name = "notas_ver.html"
+
+    def VisualizarNotasform(self, request):
+
+        roles = ['promotor', 'director']
+
+        if validar_roles(roles=roles):
+
+            # Cargamos los meses
+            meses_todos = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto",
+                           "Setiembre", "Octubre", "Noviembre", "Diciembre"]
+            num_mes = datetime.date.today().month
+            meses = []
+            for i in range(0, num_mes + 1):
+                meses.append(meses_todos[i])
+
+            id_colegio = get_current_colegio()
+            aulas = Aula.objects.filter(tipo_servicio__colegio=id_colegio).order_by('nombre')
+
+            return {'meses': meses_todos, 'aulas': aulas}
+
+        else:
+            mensaje_error = "No tienes acceso a esta vista"
+            return {'mensaje_error': mensaje_error}  # return context
+
+    def get(self, request, *args, **kwargs):
+        super(VisualizarAsistenciaView, self).get(request, *args, **kwargs)
+
+        contexto = self.VisualizarAsistenciaform(request)
+
+        if 'mensaje_error' in contexto.keys():
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+        else:
+            return render(request, self.template_name, contexto)  # return context
+
+    def post(self, request, *args, **kwargs):
+
+        mes = request.POST["mes"]
+        aula = request.POST["aula"]
+        num_mes = obtener_mes(mes)
+
+        logger.info("Estoy en el Post, datos de llegada son {0}".format(request.POST))
+
+        meses_dias = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+        num_dias = meses_dias[num_mes - 1]
+
+        # id_curso =
+
+        asistencias_curso = self.model.objects.filter()
+
+        # Proceso de filtrado según el año
+        anio = datetime.date.today().year
+        asistencias_curso_anio = asistencias_curso.filter(fecha__year=anio)
+
+        # Proceso de filtrado según el mes
+        asistencias_curso_mes = asistencias_curso_anio.filter(fecha__month=num_mes)
+        logger.info("La lista de asistencias de mes son {0}".format(asistencias_curso_mes))
+
+        matriculados_aula = AulaMatricula.objects.filter(aula=aula).order_by('matricula__alumno__apellido_pa')
+        alumnos = []
+        for matriculado in matriculados_aula:
+            alumnos.append(matriculado.matricula.alumno)
+        num_alumnos = len(alumnos)
+        logger.info("El número de alumnos matriculados en esta aula es {0}".format(num_alumnos))
+
+        fechas = []
+        lista_asistencias_dia = []
+        for dia in range(0, num_dias):
+            asistencias_curso_dia = asistencias_curso_mes.filter(fecha__day=dia + 1)
+            logger.info(
+                "La lista de asistencias del día {0} mes son {1}".format(dia + 1, asistencias_curso_dia))
+            n = 0
+            for asistencias_dias in asistencias_curso_dia:
+                lista_asistencias_dia.append(asistencias_dias.estado_asistencia)
+                if n == 0:
+                    fechas.append(asistencias_dias.fecha)
+                n = n + 1
+        num_horizontal = len(fechas)
+        num_vertical = len(alumnos)
+        aula_selected = Aula.objects.get(id_aula=aula)
+
+        logger.info("La lista de asistencias de mes son {0}".format(lista_asistencias_dia))
+        logger.info("La lista de fechas de mes son {0}".format(fechas))
+
+        contexto = self.VisualizarAsistenciaform(request)
+
+        contexto['asistencias'] = asistencias_curso_mes
+        contexto['num_hor'] = num_horizontal
+        contexto['num_ver'] = num_vertical
+        contexto['fechas'] = fechas
+        contexto['alumnos'] = alumnos
+        contexto['mes_selected'] = mes
+        contexto['aula_selected'] = aula_selected
+
+        return render(request, template_name=self.template_name, context=contexto)
+
 
 #################################################
 #####          HORARIOS DE CURSOS           #####

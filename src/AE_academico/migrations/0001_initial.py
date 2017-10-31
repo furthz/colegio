@@ -192,7 +192,7 @@ class Migration(migrations.Migration):
                 ('colegio', models.ForeignKey(db_column="id_colegio", to='register.Colegio')),
                 ('periodo_academico', models.ForeignKey(db_column="id_periodo_academico", to='AE_academico.PeriodoAcademico')),
                 ('alumno', models.ForeignKey(db_column='id_alumno', to='register.Alumno')),
-                ('nota', models.IntegerField()),
+                ('nota', models.CharField()),
                 ('fecha_creacion', models.DateField()),
                 ('fecha_modificacion', models.DateField()),
                 ('usuario_creacion', models.CharField(max_length=10, null=True)),

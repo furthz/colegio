@@ -198,7 +198,7 @@
 
         <li class="{% if namespace == 'academic' %}active treeview orange {% else  %}treeview purple{% endif %} ">
               <a href="#">
-                <img src="{% static 'site/img/svg/tag.svg' %}" width="22px" height="22px"/>
+                <img src="{% static 'site/img/svg/folder-document.svg' %}" width="22px" height="22px"/>
                 <span>Académico</span>
                 <span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
@@ -222,6 +222,9 @@
 
 
                   <li><a href="{% url 'academic:notas_registrar' %}"><i class="fa fa-circle-o"></i> Registrar Notas</a></li>
+
+
+                  <li><a href="{% url 'academic:notas_ver' %}"><i class="fa fa-circle-o"></i> Reporte de Notas</a></li>
 
               </ul>
         </li>

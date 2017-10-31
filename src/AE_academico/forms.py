@@ -93,7 +93,7 @@ class SubirNotasForm(forms.Form):
 
 class RegistrarNotas2Form(forms.Form):
 
-    nota = forms.IntegerField()
+    nota = forms.CharField(max_length=2)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

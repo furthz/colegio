@@ -60,7 +60,7 @@
                                         <label>Sección</label>
                                         <select name="aula" class="form-control">
                                           {% for aula in aulas %}
-                                              {% if aula.id_aula == aula_selected %}
+                                              {% if aula == aula_selected %}
                                                  <option selected value="{{ aula.id_aula }}">{{ aula }}</option>
                                               {% else %}
                                                  <option value="{{ aula.id_aula }}">{{ aula }}</option>
