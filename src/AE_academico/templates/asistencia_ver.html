@@ -46,7 +46,11 @@
                                       <label>Mes</label>
                                         <select name="mes"  class="form-control">
                                             {% for mes in meses %}
-                                                <option>{{ mes }}</option>
+                                                {% if mes == mes_selected %}
+                                                    <option selected>{{ mes }}</option>
+                                                {% else %}
+                                                    <option>{{ mes }}</option>
+                                                {% endif %}
                                             {% endfor %}
                                         </select>
                                       </div>
@@ -54,20 +58,14 @@
                                     <div class="col-md-3">
                                       <div class="form-group">
                                         <label>Sección</label>
-                                        <select class="form-control">
+                                        <select name="aula" class="form-control">
                                           {% for aula in aulas %}
-                                              <option>{{ aula }}</option>
+                                              {% if aula.id_aula == aula_selected %}
+                                                 <option selected value="{{ aula.id_aula }}">{{ aula }}</option>
+                                              {% else %}
+                                                 <option value="{{ aula.id_aula }}">{{ aula }}</option>
+                                              {% endif %}
                                           {% endfor %}
-                                        </select>
-                                      </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                      <div class="form-group">
-                                        <label>Asignatura</label>
-                                        <select class="form-control">
-                                          <option>Ingles</option>
-                                          <option>Matematica</option>
-                                          <option>Computacion</option>
                                         </select>
                                       </div>
                                     </div>
