@@ -1,9 +1,9 @@
 from django.shortcuts import render
 
 # Create your views here.
-
+from AE_academico.models import Asistencia
 from register.models import Profile ,Personal ,PersonalColegio ,Colegio
-from .serializers import ColegioSerializer, ProfileSerializer
+from .serializers import ColegioSerializer, ProfileSerializer, AsistenciaSerializer
 from rest_framework import generics
 from django.views.generic import ListView
 from utils.middleware import get_current_request, get_current_user
@@ -39,7 +39,6 @@ class ColegioList(generics.ListCreateAPIView):
     queryset = Colegio.objects.all()
     serializer_class = ColegioSerializer
 
-
 class ColegioDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Colegio.objects.all()
     serializer_class = ColegioSerializer
@@ -49,8 +48,16 @@ class PerfilList(generics.ListCreateAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
 
-
 class PerfilDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
+
+
+class AsistenciaList(generics.ListCreateAPIView):
+    queryset = Asistencia.objects.all()
+    serializer_class = AsistenciaSerializer
+
+class AsistenciaDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Asistencia.objects.all()
+    serializer_class = AsistenciaSerializer
 
