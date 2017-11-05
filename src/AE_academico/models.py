@@ -106,13 +106,14 @@ class PeriodoAcademico(ActivoMixin, CreacionModificacionFechaMixin, CreacionModi
     class Meta:
         managed = False
 
+
 class Notas(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin,models.Model):
     id_nota = models.AutoField(primary_key=True)
     curso = models.ForeignKey(Curso, models.DO_NOTHING, db_column="id_curso")
     colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column="id_colegio")
     periodo_academico = models.ForeignKey(PeriodoAcademico, models.DO_NOTHING, db_column="id_periodo_academico")
     alumno = models.ForeignKey(Alumno, models.DO_NOTHING, db_column='id_alumno')
-    nota = models.IntegerField()
+    nota = models.CharField(max_length=2)
 
     class Meta:
         managed = False

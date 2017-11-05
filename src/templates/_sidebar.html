@@ -205,6 +205,40 @@
         </li>
         {% endif %}
 
+        <li class="{% if namespace == 'academic' %}active treeview orange {% else  %}treeview purple{% endif %} ">
+              <a href="#">
+                <img src="{% static 'site/img/svg/folder-document.svg' %}" width="22px" height="22px"/>
+                <span>Académico</span>
+                <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+              </a>
+              <ul class="treeview-menu">
+
+                  <li><a href="{% url 'academic:aula_list' %}"><i class="fa fa-circle-o"></i> Aulas</a></li>
+
+
+                  <li><a href="{% url 'academic:curso_list' %}"><i class="fa fa-circle-o"></i> Cursos</a></li>
+
+
+                  <li><a href="{% url 'academic:periodo_list' %}"><i class="fa fa-circle-o"></i> Periodos Académicos</a></li>
+
+
+                  <li><a href="{% url 'academic:asistencia_registrar_dia' %}"><i class="fa fa-circle-o"></i> Registrar Asistencia</a></li>
+
+
+                  <li><a href="{% url 'academic:asistencia_ver' %}"><i class="fa fa-circle-o"></i> Reporte de Asistencias</a></li>
+
+
+                  <li><a href="{% url 'academic:notas_registrar' %}"><i class="fa fa-circle-o"></i> Registrar Notas</a></li>
+
+
+                  <li><a href="{% url 'academic:notas_ver' %}"><i class="fa fa-circle-o"></i> Reporte de Notas</a></li>
+
+              </ul>
+        </li>
+
+
       </ul>
       {% endwith %}
 
