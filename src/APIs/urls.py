@@ -15,7 +15,17 @@ urlpatterns = [
     url(r'^asistencia_api/$', views.AsistenciaList.as_view()),
     url(r'^asistencia_api/(?P<pk>\d+)/$', views.AsistenciaDetail.as_view()),
 
+    url(r'^aula_api/$', views.AulaList.as_view()),
+    url(r'^aula_api/(?P<pk>\d+)/$', views.AulaDetail.as_view()),
 
+    url(r'^aula_matricula_api/$', views.AulaMatriculaList.as_view()),
+    url(r'^aula_matricula_api/(?P<pk>\d+)/$', views.AulaMatriculaDetail.as_view()),
+
+    url(r'^matricula_api/$', views.MatriculaList.as_view()),
+    url(r'^matricula_api/(?P<pk>\d+)/$', views.MatriculaDetail.as_view()),
+
+    url(r'^alumno_api/$', views.AlumnoList.as_view()),
+    url(r'^alumno_api/(?P<pk>\d+)/$', views.AlumnoDetail.as_view()),
 
     url(r'^user_info/$', UserInfoListView.as_view(), name='user_info'),
 

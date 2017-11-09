@@ -1,12 +1,14 @@
 from django.shortcuts import render
 
 # Create your views here.
-from AE_academico.models import Asistencia
-from register.models import Profile ,Personal ,PersonalColegio ,Colegio
-from .serializers import ColegioSerializer, ProfileSerializer, AsistenciaSerializer
+from AE_academico.models import Asistencia, Aula, AulaMatricula
+from enrollment.models import Matricula
+from register.models import Profile ,Personal ,PersonalColegio ,Colegio, Alumno
+from .serializers import ColegioSerializer, ProfileSerializer, AsistenciaSerializer, AulaSerializer, \
+    AulaMatriculaSerializer, MatriculaSerializer, AlumnoSerializer
 from rest_framework import generics
 from django.views.generic import ListView
-from utils.middleware import get_current_request, get_current_user
+from utils.middleware import get_current_request, get_current_user, get_current_colegio
 from authtools.models import User
 
 class UserInfoListView(ListView):
@@ -61,3 +63,38 @@ class AsistenciaDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Asistencia.objects.all()
     serializer_class = AsistenciaSerializer
 
+
+class AulaList(generics.ListCreateAPIView):
+    queryset = Aula.objects.all()
+    serializer_class = AulaSerializer
+
+class AulaDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Aula.objects.all()
+    serializer_class = AulaSerializer
+
+
+class AulaMatriculaList(generics.ListCreateAPIView):
+    queryset = AulaMatricula.objects.all()
+    serializer_class = AulaMatriculaSerializer
+
+class AulaMatriculaDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = AulaMatricula.objects.all()
+    serializer_class = AulaMatriculaSerializer
+
+
+class MatriculaList(generics.ListCreateAPIView):
+    queryset = Matricula.objects.all()
+    serializer_class = MatriculaSerializer
+
+class MatriculaDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Matricula.objects.all()
+    serializer_class = MatriculaSerializer
+
+
+class AlumnoList(generics.ListCreateAPIView):
+    queryset = Alumno.objects.all()
+    serializer_class = AlumnoSerializer
+
+class AlumnoDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Alumno.objects.all()
+    serializer_class = AlumnoSerializer
