@@ -23,6 +23,8 @@ class Migration(migrations.Migration):
                 ('id_aula', models.AutoField(primary_key=True)),
                 ('tipo_servicio', models.ForeignKey(db_column="id_tipo_servicio", to='enrollment.TipoServicio')),
                 ('nombre', models.CharField(max_length=100, blank=True, null=True)),
+                ('colegio', models.ForeignKey(db_column="id_colegio", to='register.Colegio')),
+                ('tipo', models.IntegerField()),
                 ('fecha_creacion', models.DateField()),
                 ('fecha_modificacion', models.DateField()),
                 ('usuario_creacion', models.CharField(max_length=10,null=True)),

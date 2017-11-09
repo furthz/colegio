@@ -92,6 +92,11 @@ class AulaCreationView(CreateView):
     success_url = reverse_lazy('academic:aula_list')
     template_name = 'aula_form.html'
 
+    def form_valid(self, form):
+        form.instance.colegio = Colegio.objects.get(pk=get_current_colegio())
+        form.instance.tipo = 1
+        return super(AulaCreationView, self).form_valid(form)
+
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo', 'tesorero']
         if validar_roles(roles=roles):

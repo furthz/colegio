@@ -5,9 +5,13 @@ from AE_academico.models import Asistencia
 from register.models import Profile ,Personal ,PersonalColegio ,Colegio
 from .serializers import ColegioSerializer, ProfileSerializer, AsistenciaSerializer
 from rest_framework import generics
+from rest_framework.views import APIView
 from django.views.generic import ListView
 from utils.middleware import get_current_request, get_current_user
 from authtools.models import User
+from django.http import Http404
+from rest_framework.response import Response
+
 
 class UserInfoListView(ListView):
     model = Profile
@@ -61,3 +65,20 @@ class AsistenciaDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Asistencia.objects.all()
     serializer_class = AsistenciaSerializer
 
+class SnippetDetail(APIView):
+    """
+    Retrieve, update or delete a snippet instance.
+    """
+    def get_object(self, pk):
+        try:
+            return Colegio.objects.get(pk=pk)
+        except Colegio.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, nombre, format=None):
+        #snippet = self.get_object(pk)
+        snippet = Colegio.objects.get(nombre=nombre)
+        snippet = Colegio.objects.get(nombre="Mundopixel")
+
+        serializer = ColegioSerializer(snippet)
+        return Response(serializer.data)

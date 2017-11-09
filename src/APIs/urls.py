@@ -1,7 +1,8 @@
 from django.conf.urls import url, include
 from rest_framework.urlpatterns import format_suffix_patterns
 from . import views
-from .views import UserInfoListView
+from .views import UserInfoListView, SnippetDetail
+
 urlpatterns = [
 
 
@@ -18,6 +19,11 @@ urlpatterns = [
 
 
     url(r'^user_info/$', UserInfoListView.as_view(), name='user_info'),
+
+
+    url(r'^colegio/(?P<pk>[0-9]+)/(?P<nombre>\w+)/$', SnippetDetail.as_view()),
+
+
 
 ]
 
