@@ -930,8 +930,9 @@ class HorarioAulaCreateView(CreateView):
     model = HorarioAula
     form_class = HorarioAulaForm
     success_url = reverse_lazy('academic:aula_list')
-    template_name = 'horarioaula_form.html'
+    template_name = 'horarios_aula.html'
 
+    """
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo', 'tesorero']
         if validar_roles(roles=roles):
@@ -944,7 +945,7 @@ class HorarioAulaCreateView(CreateView):
 
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
-
+    """
 
 
 def get_cursos(request):
