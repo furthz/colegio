@@ -9,8 +9,10 @@ from utils.models import CreacionModificacionFechaMixin
 
 class Aula(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
     id_aula = models.AutoField(primary_key=True)
-    tipo_servicio = models.ForeignKey(TipoServicio, models.DO_NOTHING, db_column="id_tipo_servicio")
+    tipo_servicio = models.ForeignKey(TipoServicio, models.DO_NOTHING, db_column="id_tipo_servicio", null= True, blank= True)
     nombre = models.CharField(max_length=100, blank=True, null=True)
+    colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column="id_colegio")
+    tipo = models.IntegerField()
 
     class Meta:
         managed = False
@@ -71,7 +73,7 @@ class Evento(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUs
     id_evento = models.AutoField(primary_key=True)
     colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column="id_colegio")
     encargado = models.ForeignKey(Personal, models.DO_NOTHING, db_column="id_personal")
-    #tipo_evento = models.
+    grupo = models.ForeignKey(Aula, models.DO_NOTHING, db_column="id_aula")
     nombre = models.CharField(max_length=100, blank=True, null=True)
     descripcion = models.CharField(max_length=500, blank=True, null=True)
     fecha_evento = models.DateField()
