@@ -23,7 +23,7 @@
             <li class="treeview yellow">
                   <a href="#">
                     <img src="{% static 'site/img/svg/folder-document.svg' %}" width="22px" height="22px"/>
-                    <span>Administracion Interna</span>
+                    <span>Administración Interna</span>
                     <span class="pull-right-container">
                       <i class="fa fa-angle-left pull-right"></i>
                     </span>
@@ -48,7 +48,7 @@
 
 
                 {% if perms.register.personal_list %}
-                    <li><a href="{% url 'registers:personal_list' %}"><i class="fa fa-circle-o"></i>Listado Personas </a> </li>
+                    <li><a href="{% url 'registers:personal_list' %}"><i class="fa fa-circle-o"></i> Listado Personas </a> </li>
                 {% endif %}
 
                 {% if perms.register.personal_create %}
@@ -93,11 +93,11 @@
                 </span>
               </a>
                 <ul class="treeview-menu">
+                    {% if perms.enrollment.Tipo_Servicio_List %}
+                    <li><a href="{% url 'enrollments:tiposervicio_list' %}"><i class="fa fa-circle-o"></i> Administración de Grados</a></li>
+                    {% endif %}
                     {% if perms.enrollment.Matricula_List %}
                     <li><a href="{% url 'enrollments:matricula_list' %}"><i class="fa fa-circle-o"></i> Matrícula</a></li>
-                    {% endif %}
-                    {% if perms.enrollment.Tipo_Servicio_List %}
-                    <li><a href="{% url 'enrollments:tiposervicio_list' %}"><i class="fa fa-circle-o"></i> Administración de Cursos</a></li>
                     {% endif %}
                 </ul>
         </li>
