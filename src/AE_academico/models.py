@@ -11,8 +11,8 @@ class Aula(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUser
     id_aula = models.AutoField(primary_key=True)
     tipo_servicio = models.ForeignKey(TipoServicio, models.DO_NOTHING, db_column="id_tipo_servicio", null= True, blank= True)
     nombre = models.CharField(max_length=100, blank=True, null=True)
-    colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column="id_colegio")
-    tipo = models.IntegerField()
+    #colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column="id_colegio")
+    #tipo = models.IntegerField()
 
     class Meta:
         managed = False

@@ -19,8 +19,8 @@ urlpatterns = [
     url(r'^aula_api/$', views.AulaList.as_view()),
     url(r'^aula_api/(?P<pk>\d+)/$', views.AulaDetail.as_view()),
 
-    url(r'^aula_matricula_api/$', views.AulaMatriculaList.as_view()),
-    url(r'^aula_matricula_api/(?P<pk>\d+)/$', views.AulaMatriculaDetail.as_view()),
+    #url(r'^curso_docente_api/$', views.CursoDocenteList.as_view()),
+
 
     url(r'^matricula_api/$', views.MatriculaList.as_view()),
     url(r'^matricula_api/(?P<pk>\d+)/$', views.MatriculaDetail.as_view()),
@@ -33,7 +33,7 @@ urlpatterns = [
 
     url(r'^colegio/(?P<pk>[0-9]+)/(?P<nombre>\w+)/$', SnippetDetail.as_view()),
 
-
+    url(r'^curso_docente_api/(?P<pk>[0-9]+)/(?P<docente>\w+)/$', views.CursoDocenteList.as_view()),
 
 ]
 

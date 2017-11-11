@@ -1,11 +1,11 @@
 from django.shortcuts import render
 
 # Create your views here.
-from AE_academico.models import Asistencia, Aula, AulaMatricula
+from AE_academico.models import Asistencia, Aula, AulaMatricula, CursoDocente
 from enrollment.models import Matricula
 from register.models import Profile ,Personal ,PersonalColegio ,Colegio, Alumno
 from .serializers import ColegioSerializer, ProfileSerializer, AsistenciaSerializer, AulaSerializer, \
-    AulaMatriculaSerializer, MatriculaSerializer, AlumnoSerializer
+    CursoDocenteSerializer, MatriculaSerializer, AlumnoSerializer
 from rest_framework import generics
 from rest_framework.views import APIView
 from django.views.generic import ListView
@@ -13,7 +13,8 @@ from utils.middleware import get_current_request, get_current_user, get_current_
 from authtools.models import User
 from django.http import Http404
 from rest_framework.response import Response
-
+import logging
+logger = logging.getLogger("project")
 
 class UserInfoListView(ListView):
     model = Profile
@@ -67,7 +68,6 @@ class AsistenciaDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Asistencia.objects.all()
     serializer_class = AsistenciaSerializer
 
-<<<<<<< HEAD
 
 class AulaList(generics.ListCreateAPIView):
     queryset = Aula.objects.all()
@@ -77,14 +77,8 @@ class AulaDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Aula.objects.all()
     serializer_class = AulaSerializer
 
+# AULA DOCENTE
 
-class AulaMatriculaList(generics.ListCreateAPIView):
-    queryset = AulaMatricula.objects.all()
-    serializer_class = AulaMatriculaSerializer
-
-class AulaMatriculaDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = AulaMatricula.objects.all()
-    serializer_class = AulaMatriculaSerializer
 
 
 class MatriculaList(generics.ListCreateAPIView):
@@ -103,7 +97,7 @@ class AlumnoList(generics.ListCreateAPIView):
 class AlumnoDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Alumno.objects.all()
     serializer_class = AlumnoSerializer
-=======
+
 class SnippetDetail(APIView):
     """
     Retrieve, update or delete a snippet instance.
@@ -116,9 +110,38 @@ class SnippetDetail(APIView):
 
     def get(self, request, pk, nombre, format=None):
         #snippet = self.get_object(pk)
-        snippet = Colegio.objects.get(nombre=nombre)
-        snippet = Colegio.objects.get(nombre="Mundopixel")
+        snippet = Colegio.objects.get(id_colegio=nombre)
+        #snippet = Colegio.objects.get(nombre="Mundopixel")
 
         serializer = ColegioSerializer(snippet)
         return Response(serializer.data)
->>>>>>> f875e63bc21e4455156eb50c31c906090d6e0303
+
+class CursoDocenteList(APIView):
+
+    def get_object(self, pk):
+        try:
+            return CursoDocente.objects.get(pk=pk)
+        except CursoDocente.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, docente, format=None):
+        cursos = CursoDocente.objects.filter(docente=docente)
+        cursos_asociados = list(cursos)
+        serializer = CursoDocenteSerializer(cursos_asociados, many=True)
+        return Response(serializer.data)
+
+"""
+class ListaAsistencia(APIView):
+
+    def get_object(self, pk):
+        try:
+            return CursoDocente.objects.get(pk=pk)
+        except CursoDocente.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, docente, format=None):
+        cursos = CursoDocente.objects.filter(docente=docente)
+        cursos_asociados = list(cursos)
+        serializer = CursoDocenteSerializer(cursos_asociados, many=True)
+        return Response(serializer.data)
+"""

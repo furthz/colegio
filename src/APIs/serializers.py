@@ -1,7 +1,8 @@
 from rest_framework import serializers
 
-from AE_academico.models import Asistencia
-from register.models import Profile, Colegio
+from AE_academico.models import Asistencia, Aula, AulaMatricula, CursoDocente
+from enrollment.models import Matricula
+from register.models import Profile, Colegio, Alumno
 
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
@@ -26,3 +27,25 @@ class AsistenciaSerializer(serializers.ModelSerializer):
         model = Asistencia
         fields = ('id_asistencia', 'alumno', 'curso', 'fecha', 'estado_asistencia')
 
+class AulaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Aula
+        fields = ('id_aula', 'tipo_servicio', 'nombre')
+
+
+class CursoDocenteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CursoDocente
+        fields = ('id_curso_docente', 'docente', 'curso')
+
+
+class MatriculaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Matricula
+        fields = ('id_matricula', 'alumno', 'colegio', 'tipo_servicio')
+
+
+class AlumnoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Alumno
+        fields = ('id_alumno', 'persona')
