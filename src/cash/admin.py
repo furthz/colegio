@@ -3,8 +3,8 @@ from .models import Caja, CajaCajero, Remesa
 
 # Register your models here.
 
-admin.site.register(Caja)
-admin.site.register(CajaCajero)
-admin.site.register(Remesa)
+#admin.site.register(Caja)
+#admin.site.register(CajaCajero)
+#admin.site.register(Remesa)
 
 
