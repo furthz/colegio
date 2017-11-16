@@ -29,7 +29,8 @@ urlpatterns = [
     url(r'^income/', include(income.urls, namespace='income')),
     url(r'^payments/', include(payments.urls, namespace='payments')),
     url(r'^discounts/', include(discounts.urls, namespace='discounts')),
-#    url(r'^academic/', include(AE_academico.urls, namespace='academic')),
+ #   url(r'^academic/', include(AE_academico.urls, namespace='academic')),
+    #url(r'^calendar/', include('schedule.urls', namespace='calendar')),
 ]
 
 # User-uploaded files like profile pics need to be served in development

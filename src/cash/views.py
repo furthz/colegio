@@ -193,56 +193,34 @@ class BoxCashierCreationView(CreateView):
     def get_context_data(self, **kwargs):
             context = super(BoxCashierCreationView, self).get_context_data(**kwargs)
 
-
-
             usuario = get_current_user()
             if usuario is not None:
                 iduser = usuario.id
             else:
                 iduser = -1
 
-
             a = Profile.objects.get(user_id=iduser)
             b = Personal.objects.get(persona_id=a)
-            c = PersonalColegio.objects.get(personal_id=b)
-            d = PersonalColegio.objects.filter(personal_id=b).values('pk')
+#            c = PersonalColegio.objects.get(personal_id=b)
+#           d = PersonalColegio.objects.filter(personal_id=b).values('pk')
 #            print(PersonalColegio.objects.values('pk').filter(personal_id=b)[0]['pk'])
 
-            print(Caja.objects.filter(colegio_id=1))
+#            print(Caja.objects.filter(colegio_id=1))
             # creacion
             #context['yolencios'] = d
+#            print(PersonalColegio.objects.values('pk').filter(personal_id=b)[0]['pk'])
             context['yolencios'] = PersonalColegio.objects.values('pk').filter(personal_id=b)[0]['pk']
             return context
-
-
-    #Luego de obtener el id del usuario filtro la persona mediante el id de usuario por ser one to one field
-    # para luego obtener el id de profile
-
-    """
-    function myFunction() {
-    document.getElementById("mySelect").value = "ID-USUARIO";
-    }
-    """
-
-
 
     @method_decorator(permission_required('cash.Box_Cashier_Creation', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['cajero']
 
+
         if validar_roles(roles=roles):
-            #return super(BoxCashierCreationView, self).get(request, *args, **kwargs)
 
-            #cursos = Curso.objects.filter(aula__tipo_servicio__colegio_id=get_current_colegio(), activo=True)
-            #docentes = Docente.objects.filter(empleado=personal)
-            caja = CajaCajero.objects.filter(caja_id=123123123)
-
-            return render(request, template_name=self.template_name, context={
-                'caja': CajaCajero.objects.filter(pk=1),
-                'form': self.form_class,
-                #'cursos': cursos,
-            })
+            return super(BoxCashierCreationView, self).get(request, *args, **kwargs)
 
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)

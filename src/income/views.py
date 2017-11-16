@@ -378,9 +378,9 @@ class ControlIngresosPromotorView(FormView):
             num_mes = 12
 
         anio = int(anio)
+
         por_cobrar_total, cobro_total, deuda_total = calculo_ingresos_promotor(id_colegio, anio, mes)
-        logger.info(por_cobrar_total)
-        por_cobrar_nivel, cobro_total_nivel, deuda_total_nivel = calculo_por_nivel_promotor(id_colegio, anio, mes)
+        por_cobrar_grado, cobro_total_grado, deuda_total_grado = calculo_por_nivel_promotor(id_colegio, anio, mes)
 
         meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Setiembre", "Octubre",
                  "Noviembre", "Diciembre"]
@@ -391,9 +391,9 @@ class ControlIngresosPromotorView(FormView):
         logger.info(mes_labels)
 
         contexto = self.cargarformPromotor(request)
-        contexto['por_cobrar_nivel'] = por_cobrar_nivel
-        contexto['cobro_total_nivel'] = cobro_total_nivel
-        contexto['deuda_total_nivel'] = deuda_total_nivel
+        contexto['por_cobrar_grado'] = por_cobrar_grado
+        contexto['cobro_total_grado'] = cobro_total_grado
+        contexto['deuda_total_grado'] = deuda_total_grado
         contexto['por_cobrar_total'] = por_cobrar_total
         contexto['cobro_total'] = cobro_total
         contexto['deuda_total'] = deuda_total
@@ -476,7 +476,7 @@ class ControlIngresosPromotorDetallesView(FormView):
         colegio = get_current_colegio()
 
         # Proceso de filtrado según el colegio
-        cuentas_cobrar_colegio = self.model.objetos.filter(matricula__colegio__id_colegio=colegio, activo=True)
+        cuentas_cobrar_colegio = self.model.objetos.filter(matricula__colegio__id_colegio=colegio, activo=True).order_by('fecha_ven')
 
         # Proceso de filtrado según el alumno
         if alumno == "":

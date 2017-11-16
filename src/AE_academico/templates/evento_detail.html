@@ -1,0 +1,76 @@
+{% extends "page.html" %}
+
+{% block title %}{{ block.super }}Eventos{% endblock %}
+
+
+{% block breadcrumb %}
+<h1>
+        Detalles del Evento
+        <small>Modúlo Academico</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+        <li>Modúlo Academico</li>
+        <li class="active">Detalles del Evento</li>
+      </ol>
+{% endblock %}
+
+{% block container %}
+    <section class="content">
+      <div class="row">
+          <div class="col-md-12">
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Detalles del Evento</h3>
+                <div class="box-body">
+
+                <form role="form" name="search" action="" class="form-horizontal">
+
+                    <dl class="dl-horizontal">
+                  <dt>Nombre del Evento</dt>
+                  <dd>{{ evento.nombre }}</dd>
+                </dl>
+
+                 <dl class="dl-horizontal">
+                  <dt>Encargado del Evento</dt>
+                  <dd>{{ evento.encargado }}</dd>
+                </dl>
+
+               <dl class="dl-horizontal">
+                  <dt>Descripcion del Evento</dt>
+                  <dd> {{ evento.descripcion }} </dd>
+                </dl>
+
+                <dl class="dl-horizontal">
+                  <dt>Fecha del Evento</dt>
+                  <dd>{{ evento.fecha_evento }}</dd>
+                </dl>
+
+                <dl class="dl-horizontal">
+                  <dt>Hora de Inicio</dt>
+                  <dd>{{ evento.hora_inicio }}</dd>
+                </dl>
+
+                <dl class="dl-horizontal">
+                  <dt>Hora de Fin</dt>
+                  <dd>{{ evento.hora_fin }}</dd>
+                </dl>
+
+
+
+                <div class="form-group">
+                  <div class="col-sm-offset-2 col-sm-10">
+                    <a type="submit" href="javascript:history.back()" class="btn btn-default"><i class="fa fa-reply" aria-hidden="true"></i>Volver</a>
+
+                  </div>
+                </div>
+                </form>
+                </div>
+
+                </div>
+              </div>
+
+              </div>
+          </div>
+      </section>
+{% endblock container %}

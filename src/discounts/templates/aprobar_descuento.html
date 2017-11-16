@@ -54,41 +54,41 @@
                                         <form id="ListaDescuentos">{% csrf_token %}
                                         <tr>
                                             {% for descuento in object_list %}
-                                                {% if descuento.estado == 1 %}
-                                                    <tr>
-                                                        <td>{{ descuento.matricula.alumno.getNombreCompleto }}</td>
-                                                        <td>{{ descuento.fecha_solicitud }}</td>
-                                                        <td>{{ descuento.tipo_descuento.descripcion }}</td>
-                                                        <td>{{ descuento.numero_expediente }}</td>
-                                                        {% if descuento.estado == 1 %}
+                                                    {% if descuento.estado == 1 %}
+                                                        <tr>
+                                                            <td>{{ descuento.matricula.alumno.getNombreCompleto }}</td>
+                                                            <td>{{ descuento.fecha_solicitud }}</td>
+                                                            <td>{{ descuento.tipo_descuento.descripcion }}</td>
+                                                            <td>{{ descuento.numero_expediente }}</td>
+                                                            {% if descuento.estado == 1 %}
+                                                                <td>
+                                                                    <span class="label label-warning">Pendiente</div>
+                                                                </td>
+                                                            {% elif descuento.estado == 2 %}
+                                                                <td>
+                                                                    <span class="label label-success">Aprobado</div>
+                                                                </td>
+                                                            {% else %}
+                                                                <td>
+                                                                    <span class="label label-danger">No aprobado</div>
+                                                                </td>
+                                                            {% endif %}
                                                             <td>
-                                                                <span class="label label-warning">Pendiente</div>
+
+                                                                    <label>
+                                                                        <input type="radio" name="gender{{ descuento.id_descuento }}" value="aprobar">
+                                                                    </label>
+
                                                             </td>
-                                                        {% elif descuento.estado == 2 %}
                                                             <td>
-                                                                <span class="label label-success">Aprobado</div>
+
+                                                                    <label>
+                                                                        <input type="radio" name="gender{{ descuento.id_descuento }}" value="noaprobar">
+                                                                    </label>
+
                                                             </td>
-                                                        {% else %}
-                                                            <td>
-                                                                <span class="label label-danger">No aprobado</div>
-                                                            </td>
-                                                        {% endif %}
-                                                        <td>
-
-                                                                <label>
-                                                                    <input type="radio" name="gender{{ descuento.id_descuento }}" value="aprobar">
-                                                                </label>
-
-                                                        </td>
-                                                        <td>
-
-                                                                <label>
-                                                                    <input type="radio" name="gender{{ descuento.id_descuento }}" value="noaprobar">
-                                                                </label>
-
-                                                        </td>
-                                                    </tr>
-                                                {% endif %}
+                                                        </tr>
+                                                    {% endif %}
                                             {% endfor %}
                                             </form>
                                         </tr>

@@ -1,0 +1,148 @@
+{% extends "page.html" %}
+
+{% block breadcrumb %}
+    <!-- HEADER INFO PAGE UBICACION -->
+    <section class="content-header">
+      <h1>
+       Reporte de Asistencia
+
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+        <li>Modúlo Académico</li>
+        <li class="active">Reporte de Asistencia</li>
+      </ol>
+    </section>
+     <!-- FIN DE INFO PAGE UBICACION -->
+{% endblock %}
+
+
+<body>
+{% block container %}
+  <!-- INICIA CONTENDOR DE FORMULARIOS -->
+  <div class>
+
+    <!-- INICIO DE CONTENIDO -->
+    <section class="content">
+      <div class="row">
+          <div class="col-md-12">
+              <div class="box box-primary">
+                 <form action="" method="POST" class="form-horizontal" id="1">{% csrf_token %}
+                  <div class="box-body">
+                          <div class="col-md-12">
+                            <div class="panel-page">
+                                <div class="toolbar-header">
+                                    <h4>Reporte de asistencia </h4>
+                                    <i class="fa fa-check-square-o" aria-hidden="true"></i> <label>Significa que el alumno asistio</label>
+                                    </br>
+                                    <i class="fa fa-minus-circle" aria-hidden="true"></i><label>Significa que aún no se paso lista</label>
+                                    </br>
+                                    <a href="#"><span class="badge">F</span></a> <label>Significa que el alumno no asistio</label>
+                                 </div>
+                                <div class="toolbar-search">
+                                  <div class="box-body">
+                                    <div class="col-md-2">
+                                      <div class="form-group">
+                                      <label>Mes</label>
+                                        <select name="mes"  class="form-control">
+                                            {% for mes in meses %}
+                                                <option>{{ mes }}</option>
+                                            {% endfor %}
+                                        </select>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                      <div class="form-group">
+                                        <label>Sección</label>
+                                        <select class="form-control">
+                                          {% for aula in aulas %}
+                                              <option>{{ aula }}</option>
+                                          {% endfor %}
+                                        </select>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                      <div class="form-group">
+                                        <label>Asignatura</label>
+                                        <select class="form-control">
+                                          <option>Ingles</option>
+                                          <option>Matematica</option>
+                                          <option>Computacion</option>
+                                        </select>
+                                      </div>
+                                    </div>
+                                   <div class="col-md-3">
+                                      <div class="search-actions">
+                                        <button type="submit" class="btn btn-primary">
+                                        <i class="fa fa-search" aria-hidden="true"></i>
+                                         Buscar
+                                        </button>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-2">
+                                  </div>
+                                  </div>
+                                 </div>
+
+                              {% if asistencias %}
+                                <table class="table table-hover">
+                                  <tr class="table-header">
+                                    <th>Número de orden</th>
+                                    <th>Apellidos y Nombres</th>
+                                    {% for fecha in fechas %}
+                                        <th class="text-center">{{ fecha }}</th>
+                                    {% endfor %}
+                                  </tr>
+                                  {% for alumno in alumnos %}
+                                      <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ alumno.alumno.getNombreFormal }}</td>
+                                        {% for fecha in fechas %}
+                                            {% for asistencia in asistencias %}
+                                                {% if asistencia.alumno == alumno.alumno and asistencia.fecha == fecha %}
+                                                    {% if asistencia.estado_asistencia == 1 %}
+                                                        <td class="text-center">
+                                                           <i class="fa fa-check-circle" aria-hidden="true" style="color:green"></i>
+                                                        </td>
+                                                    {% elif asistencia.estado_asistencia == 2 %}
+                                                        <td class="text-center">
+                                                           <i class="fa fa-minus-circle" aria-hidden="true" style="color:yellow"></i>
+                                                        </td>
+                                                    {% elif asistencia.estado_asistencia == 3 %}
+                                                        <td class="text-center">
+                                                           <i class="fa fa-minus-circle" aria-hidden="true" style="color:red"></i>
+                                                        </td>
+                                                    {% else %}
+                                                        <td class="text-center">
+                                                            -------
+                                                        </td>
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endfor %}
+                                      </tr>
+                                  {% endfor %}
+                                 </table>
+                              {% endif %}
+
+                            <div class="col-md-11"></div><a class="btn btn-success"  href="#"><i class="fa fa-times" aria-hidden="true"></i>Salir</a>
+
+                            </div>
+                          </div>
+                  </div>
+
+                </form>
+              </div>
+          </div>
+      </div>
+    </section>
+    <!-- /.FIN DE CONTENIDO -->
+  </div>
+  <!-- /.FIN DE CONTENEDOR DE FORMULARIO  -->
+
+</div>
+<!-- ./wrapper -->
+{% endblock container %}
+</body>
+
+

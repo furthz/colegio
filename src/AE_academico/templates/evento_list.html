@@ -1,5 +1,10 @@
 {% extends "page.html" %}
-{% block title %}{{ block.super }}Cursos{% endblock %}
+{% block titulo %}
+    <h1>Evento
+        {{ block.super }}
+        <small>Módulo Académico</small>
+    </h1>
+{% endblock %}
 {% block container %}
 
     <!--Comienza el contenido!!!!!!!!!!!!!!!!!!!-->
@@ -8,18 +13,19 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Registrar Curso</h3>
+                        <h3 class="box-title">Lista de Eventos</h3>
                         <div class="box-body">
                             <div class="col-md-9">
                                 <div class="panel-page">
                                     <div class="toolbar-header">
-                                            <a class="btn btn-success" href='{% url "academic:curso_create" %}'><i class="fa fa-plus" aria-hidden="true"></i>  Crear curso</a>
+                                            <a class="btn btn-success" href='{% url "academic:evento_create" %}'>
+                                                <i class="fa fa-plus" aria-hidden="true"></i>  Crear Evento</a>
                                         </div>
 
 
 
                                     <div class="box-header with-border">
-                                        <h3 class="box-title">Lista de Aulas</h3>
+                                        <h3 class="box-title">Lista de Eventos</h3>
                                     </div>
                                     <div class="box-body">
                                         <div class="table-responsive no-padding">
@@ -32,27 +38,29 @@
                                                     <th>Acciones</th>
 
                                                 </tr>
-                                                {% for curso in object_list %}
-                                                    {% if curso.colegio.id_colegio == idcolegio %}
+                                                {% for evento in eventos %}
+                                                    <form method="get" name="{{ evento.id_evento }}" id="{{ evento.id_evento }}">
+                                                        <input type="number" hidden id="evento" name="evento" value="{{ evento.id_evento }}">
+                                                    </form>
                                                     <tr>
                                                         <td>{{ forloop.counter }}</td>
-                                                        <td>{{ curso.nombre }}</td>
+                                                        <td>{{ evento.nombre }}</td>
 
                                                         <td>
                                                             <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                                                                <a title="Editar" href='{% url "academic:curso_edit" curso.id_curso %}' class="btn btn-default">
+                                                                <!--<a title="Editar" href='{% url "academic:curso_edit" curso.id_curso %}' class="btn btn-default">
                                                                     <i class="fa fa-pencil" aria-hidden="true"></i>
-                                                                </a>
-                                                                <a title="Detalle" href='{% url "academic:curso_detail" curso.id_curso %}' class="btn btn-default">
+                                                                </a>-->
+
+                                                                <button type="submit" title="Detalle" formaction="{% url 'academic:evento_detail'%}" formmethod="get" form="{{ evento.id_evento }}" class="btn btn-default">
                                                                     <i class="fa fa-info-circle" aria-hidden="true"></i>
-                                                                </a>
-                                                                <a title="Eliminar" href="{% url 'academic:curso_delete' curso.id_curso %}" class="btn btn-default">
+                                                                </button>
+                                                                <!--<a title="Eliminar" href="{% url 'academic:curso_delete' curso.id_curso %}" class="btn btn-default">
                                                                     <i class="fa fa-trash" aria-hidden="true"></i>
-                                                                </a>
+                                                                </a>-->
                                                             </div>
                                                         </td>
                                                     </tr>
-                                                    {% endif %}
                                                 {% endfor %}
                                                 </tbody>
                                             </table>

@@ -6,50 +6,69 @@
     </h1>
 {% endblock %}
 {% block container %}
+{% load crispy_forms_tags %}
 <div class="box box-primary">
     <div class="box-header with-border">
         <h3 class="box-title">Registrar asistencia de alumnos</h3>
             <div class="box-body">
                 <div class="col-md-9">
                     <div class="panel-page">
+                        <div class="toolbar-header">
+                            <h5>Modulo que permite controlar la asistencia de los alumnos de la clase </h5>
+
+                            <i class="fa fa-check-square-o" aria-hidden="true"></i> <label>Significa que el el alumno asistio</label>
+                            </br>
+                            <i class="fa fa-square-o" aria-hidden="true"></i> <label>Significa que el el alumno no asistio</label>
+                        </div>
                         <div class="box-body">
-                            <table class="table table-hover">
-                                    <tbody>
-                                        <tr>
-                                            <th>Alumno</th>
-                                            <th>Asistencia</th>
-                                        </tr>
+                                    <table class="table table-hover">
+                                      <tr class="table-header">
+                                        <th>Número de orden</th>
+                                        <th>Apellidos y Nombres</th>
+                                        <th class="text-center">Asistencia</th>
+                                      </tr>
+                                        <form id="ListaAsistencia">{% csrf_token %}
+                                            {% for alumno in alumnos %}
+                                              <tr>
+                                                <td>{{ forloop.counter }}</td>
+                                                <td>
+                                                    {{ alumno.alumno.getNombreFormal }}
+                                                    <input type="hidden" name="id" value="{{ alumno.alumno.id_alumno }}">
+                                                </td>
+                                                <td>
+                                                    {{ form.estado_asistencia }}
+                                                </td>
+                                              </tr>
+                                            {% endfor %}
+                                        </form>
+                                     </table>
 
-                                        {% if alumnos %}
-                                            <form id="ListaAsistencia">{% csrf_token %}
-                                                {% for alumno in alumnos %}
-                                                    <tr>
-                                                        <td>
-                                                            {{ alumno.alumno.getNombreCompleto }}
-                                                            <input type="hidden" name="id" value="{{ alumno.alumno.id_alumno }}">
-                                                        </td>
-                                                        <td>
-                                                            {{ form.estado_asistencia }}
-                                                        </td>
-                                                    </tr>
-                                                {% endfor %}
-                                            </form>
-                                        {% else %}
-                                            <option value="">No existen alumnos registrados</option>
-                                        {% endif %}
-                                    </tbody>
-                            </table>
+                            <div class="form-group">
+                              <label class="col-sm-10 control-label">Alumnos Ausentes</label>
+                              <div class="col-sm-2">
+                                <p class="form-control-static">0</p>
+                            </div>
+                             </div>
+                            <div class="form-group">
+                              <label class="col-sm-10 control-label">Alumnos Presentes</label>
+                              <div class="col-sm-2">
+                                <p class="form-control-static">0</p>
+                            </div>
+                             </div>
+                            <div class="form-group">
+                              <label class="col-sm-10 control-label">TOTAL DE ALUMNOS</label>
+                              <div class="col-sm-2">
+                                <p class="form-control-static">0</p>
+                            </div>
+                            </div>
 
-                                <div class="form-group">
-                                    <div class="col-sm-offset-2 col-sm-10">
-                                        <a href="javascript:history.back()" class="btn btn-default" >
-                                            <i class="fa fa-arrow-left" aria-hidden="true"></i> Volver
-                                        </a>
+
+                <div class="col-md-10"></div><a class="btn btn-primary"  href="#"><i class="fa fa-times" aria-hidden="true"></i>Salir</a>
+                <div class="col-md-12"></div>
                                         <button type="submit" class="btn btn-success" tabindex="3" form="ListaAsistencia" formmethod="post">
-                                            <i class="fa fa-plus" aria-hidden="true"></i> Confirmar
+                                            <i class="fa fa-floppy-o" aria-hidden="true"></i> Grabar
                                         </button>
-                                    </div>
-                                </div>
+
                         </div>
                     </div>
                 </div>

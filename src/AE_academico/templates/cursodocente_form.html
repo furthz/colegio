@@ -28,13 +28,23 @@
                                             <option value="">No existen docentes registrados</option>
                                           {% endif %}
                                         </select>
-                                        {{ form.docente }}
+
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">Curso</label>
                                     <div class="col-sm-10">
-                                        {{ form.curso }}
+                                        <select name="curso" required id="id_curso"  class="form-control" disabled>
+                                          {% if cursos %}
+
+                                            {% for curso in cursos %}
+                                                <option value="{{ curso.id_curso }}">{{ curso }}</option>
+                                            {% endfor %}
+                                          {% else %}
+                                            <option value="">No existen cursos registrados</option>
+                                          {% endif %}
+                                        </select>
+
                                     </div>
                                 </div>
                                 <div class="form-group">
