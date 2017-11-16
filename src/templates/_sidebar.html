@@ -186,6 +186,9 @@
                   {% if perms.payments.add_tipopago %}
                       <li><a href="{% url 'payments:tipopago_create' %}"><i class="fa fa-circle-o"></i> Manejo de Pagos</a></li>
                   {% endif %}
+                  {% if perms.payments.add_tipopago %}
+                      <li><a href="{% url 'payments:tipopago_list' %}"><i class="fa fa-circle-o"></i> Lista de pagos</a></li>
+                  {% endif %}
               </ul>
         </li>
         {% endif %}
