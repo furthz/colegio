@@ -49,7 +49,12 @@
                                             <div class="form-group">
                                                 <label  class="col-sm-3 control-label">Caja</label>
                                                 <div class="col-sm-9">
-                                                    {{ form.caja }}
+                                                    <select name="caja" required="" class="form-control" id="id_caja">
+                                                         <option value="" selected="">---------</option>
+                                                            {% for caja in cajas %}
+                                                                <option value="{{ caja.pk }}">{{ caja }}</option>
+                                                            {% endfor %}
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div class="form-group">
