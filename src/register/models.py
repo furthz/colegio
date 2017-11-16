@@ -220,6 +220,7 @@ class Apoderado(CreacionModificacionUserApoderadoMixin, CreacionModificacionFech
         )
 
 
+
 class Alumno(CreacionModificacionUserAlumnoMixin, CreacionModificacionFechaAlumnoMixin, Profile, models.Model):
     """
     Clase para identificar a los Alumnos
