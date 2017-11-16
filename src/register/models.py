@@ -252,7 +252,7 @@ class Alumno(CreacionModificacionUserAlumnoMixin, CreacionModificacionFechaAlumn
             return insert_child(obj=per, child_model=Alumno, **atributos)
 
     def __str__(self):
-        return self.getNombreCompleto
+        return self.getNombreFormal
 
     class Meta:
         managed = True
