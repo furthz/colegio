@@ -1,4 +1,4 @@
-from django.db import models
+""""from django.db import models
 
 from enrollment.models import TipoServicio, Matricula
 from register.models import Colegio, Alumno, Apoderado, Personal, Docente
@@ -125,3 +125,4 @@ class AulaMatricula(ActivoMixin, CreacionModificacionFechaMixin, CreacionModific
     class Meta:
         managed = False
 
+"""
