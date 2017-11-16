@@ -62,7 +62,7 @@ class SolicitarDescuentoView(MyLoginRequiredMixin,TemplateView):
 
             'hola':cole,
             'descuentos':descuentos,
-            'matricula': Matricula.objects.get(pk=request.POST['matricula']),
+            'alumno': Matricula.objects.get(pk=request.POST['matricula']),
         })
 
 class CrearSolicitudView(MyLoginRequiredMixin,TemplateView):
