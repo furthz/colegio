@@ -49,10 +49,18 @@ class SolicitarDescuentoView(MyLoginRequiredMixin,TemplateView):
     template_name = "solicitar_descuento.html"
     form_class = SolicitarDescuentoForm
 
+
+
     def post(self, request, *args, **kwargs):
-        form = SolicitarDescuentoForm(initial={'matricula':Matricula.objects.get(pk=request.POST['matricula'])})
+        descuentos = TipoDescuento.objects.filter(colegio__id_colegio=get_current_colegio(),activo = True)
+        cole = Colegio.objects.get(id_colegio=get_current_colegio())
+        logger.info("Solicitar descuentos")
         return render(request, template_name=self.template_name, context={
-            'form': form,
+            #'form': self.form_class,
+
+            'hola':cole,
+            'descuentos':descuentos,
+            'matricula': Matricula.objects.get(pk=request.POST['matricula']),
         })
 
 class CrearSolicitudView(MyLoginRequiredMixin,TemplateView):
@@ -194,49 +202,17 @@ class AprobarDescuentoView(ListView):
     model = Descuento
     template_name = "aprobar_descuento.html"
 
-    def cargarformPromotordescuentos(self, request):
-
-        # Obtiene el colegio en cuestión
+    @method_decorator(
+        permission_required('discounts.aprobar_descuento', login_url=settings.REDIRECT_PERMISOS,
+                            raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        super(AprobarDescuentoView, self).get(request, *args, **kwargs)
         id_colegio = get_current_colegio()
-        colegio = Colegio.objects.get(pk=id_colegio)
-        # logger.debug("Colegio: " + colegio.nombre)
-
-        # Obtiene el usuario que ha iniciado sesión
-        user = get_current_user()
-        logger.debug("Usuario: " + user.name)
-
-        try:
-            profile = Profile.objects.get(user=user)
-            logger.debug("profile: " + str(profile.id_persona))
-        except Profile.DoesNotExist:
-            sw_error = True
-            mensaje_error = "No existe la Persona asociada al usuario"
-
-        try:
-            # 1. Verificamos que el usuario sea un personal
-            personal = Personal.objects.get(persona=profile)
-            logger.debug("personal: " + str(personal.id_personal))
-
-            # 2. Verificamos que el usuario sea un personal asociado al colegio
-            personal_colegio = PersonalColegio.objects.get(personal=personal, colegio=colegio)
-
-            # 3. Verificamos que sea un promotor
-            promotor = Promotor.objects.filter(empleado=personal_colegio.personal)
-            #logger.debug()
-            if promotor.count() == 0:
-                sw_error = True
-                mensaje_error = "No es un promotor de un alumno asociado al colegio"
-            else:
-                sw_error = False
-
-        except Personal.DoesNotExist:
-            sw_error = True
-            mensaje_error = "No es un personal asociado al colegio"
-
-        if sw_error != True:
-            return {}
-        else:
-            return {'mensaje_error': mensaje_error}  # return context
+        descuentos = self.model.objects.filter(matricula__colegio__id_colegio=id_colegio).filter(estado=1).order_by(
+            "id_descuento")
+        contexto = {}
+        contexto['object_list'] = descuentos
+        return render(request, self.template_name, contexto)  # return context
 
     @method_decorator(
         permission_required('discounts.aprobar_descuento', login_url=settings.REDIRECT_PERMISOS,
@@ -247,9 +223,9 @@ class AprobarDescuentoView(ListView):
         data_post = request.POST
 
         id_colegio = get_current_colegio()
-        self.descuentos = Descuento.objects.filter(matricula__colegio__id_colegio=id_colegio).filter(estado=1).order_by("id_descuento")
+        descuentos = self.model.objects.filter(matricula__colegio__id_colegio=id_colegio).filter(estado=1).order_by("id_descuento")
         n = 0
-        for descuento in self.descuentos:
+        for descuento in descuentos:
             n = n + 1
             try:
                 logger.info("Iniciando el Try por {0} vez".format(n))
@@ -291,8 +267,9 @@ class AprobarDescuentoView(ListView):
             except:
                 logger.info("No se realizan cambios")
 
-        contexto = self.cargarformPromotordescuentos(request)
-        contexto['object_list'] = self.descuentos
+        contexto = {}
+        contexto['object_list'] = descuentos
+        contexto['id_colegio'] = id_colegio
         return render(request, template_name=self.template_name, context=contexto)
 
 
