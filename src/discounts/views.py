@@ -52,6 +52,7 @@ class SolicitarDescuentoView(MyLoginRequiredMixin,TemplateView):
 
 
     def post(self, request, *args, **kwargs):
+
         descuentos = TipoDescuento.objects.filter(colegio__id_colegio=get_current_colegio(),activo = True)
         cole = Colegio.objects.get(id_colegio=get_current_colegio())
         logger.info("Solicitar descuentos")
