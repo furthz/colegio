@@ -307,3 +307,14 @@ class ColegioForm(ModelForm):
                                                      widget=forms.Select(attrs={'class': 'form-control'}))
         self.fields['distrito'] = forms.ChoiceField(choices=self.ChoiceDistrito,
                                                     widget=forms.Select(attrs={'class': 'form-control'}))
+
+
+
+class DocenteForm(ValidProfileFormMixin, PersonaForm):
+
+    title = forms.CharField(label="Registrar Docente", required=False)
+
+    class Meta:
+        model = Docente
+        fields = ['nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento', 'numero_documento',
+                  'sexo', 'correo', 'fecha_nac']
