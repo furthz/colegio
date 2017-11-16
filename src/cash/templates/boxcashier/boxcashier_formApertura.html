@@ -33,16 +33,18 @@
                                 <div class="box-body">
                                     <!-- BAR CHART -->
                                     <div class="box-body">
-                                        <form class="form-horizontal" method="post">
+                                        <form id="myform" class="form-horizontal" method="post">
                                             {% csrf_token %}
                                             <div style="display: none;">
                                                 {{ form.saldo }}
                                                 {{ form.monto_cierre }}
                                                 {{ form.estado }}
                                                 {{ form.comentario_cierre }}
-                                                {{ form.personal_colegio }}
+                                                                                            {{ form.personal_colegio }}
+
                                             </div>
                                             {{ form.total_remesa }}
+
 
                                             <div class="form-group">
                                                 <label  class="col-sm-3 control-label">Caja</label>
@@ -64,13 +66,13 @@
                                                     {{ form.comentario_apertura }}
                                                 </div>
                                             </div>
-                                            <div class="form-group">
+                                        </form>
+                                        <div class="form-group">
                                                 <div class="col-sm-offset-3 col-sm-9">
                                                     <a href="{% url 'cash:boxcashier_list'  %}" class="btn btn-default" >Cancelar</a>
-                                                    <button type="submit" class="btn btn-success">Aperturar Caja</button>
+                                                    <button type="submit" class="btn btn-success" form="myform">Aperturar Caja</button>
                                                 </div>
                                             </div>
-                                        </form>
                                     </div>
                                     <!-- BAR CHART -->
                                 </div>

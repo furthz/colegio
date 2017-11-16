@@ -2,17 +2,17 @@
 
 {% block breadcrumb %}
 <h1>
-        Control de Ingresos Promotor Detalle
-        <small>Módulo de facturación</small>
+        Control de Asistencia
+        <small>Módulo Académico</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-        <li>Módulo de facturación</li>
-        <li class="active">Control de Ingresos Promotor Detalle</li>
+        <li>Módulo Académico</li>
+        <li class="active">Control de Asistencia</li>
       </ol>
 {% endblock %}
 
-{% block title %}{{ block.super }}Ingresos{% endblock %}
+{% block title %}{{ block.super }}Asistencia{% endblock %}
 <body>
 {% block container %}
 {% load crispy_forms_tags %}
@@ -26,7 +26,7 @@
           <div class="col-md-12">
               <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Control de ingresos detallado</h3>
+                    <h3 class="box-title">Control de Asistencia</h3>
                 </div>
                 <div class="box-body">
                   <div class="col-md-12">
@@ -35,38 +35,13 @@
                         <div class="box-body">
                            <form action="" method="POST" class="form-horizontal" id="1">{% csrf_token %}
                                 {% csrf_token %}
-                                    <div class="col-md-3">
-                                      <div class="form-group">
-                                      <label>Alumno</label>
-                                        <input type="text" name="alumno" class="form-control" placeholder="Escriba nombre o apellido">
-                                      </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                      <div class="form-group">
-                                      <label>Año</label>
-                                        <select name="anio"  class="form-control">
-                                            {% for anio in anios %}
-                                                <option>{{ anio }}</option>
-                                            {% endfor %}
-                                        </select>
-                                      </div>
-                                    </div>
+
                                     <div class="col-md-2">
                                       <div class="form-group">
                                       <label>Mes</label>
                                         <select name="mes"  class="form-control">
                                             {% for mes in meses %}
                                                 <option>{{ mes }}</option>
-                                            {% endfor %}
-                                        </select>
-                                      </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                      <div class="form-group">
-                                      <label>Estado</label>
-                                        <select name="estado"  class="form-control">
-                                            {% for estado in estados %}
-                                                <option>{{ estado }}</option>
                                             {% endfor %}
                                         </select>
                                       </div>
@@ -87,7 +62,6 @@
                             <tbody>
                             <tr>
                                 <th>Alumno</th>
-                                <th>Concepto</th>
                                 <th>Fecha de vencimiento</th>
                                 <th>Monto cancelado</th>
                                 <th>Importe a pagar S/.</th>
@@ -99,11 +73,6 @@
                                         {% if not cuenta.orderDate %}
                                             <tr>
                                                 <td>{{ cuenta.matricula.alumno.getNombreCompleto }}</td>
-                                                {% if not cuenta.servicio.tipo_servicio.extra %}
-                                                    <td>{{ cuenta.servicio.nombre }}</td>
-                                                {% else %}
-                                                    <td>{{ cuenta.servicio.tipo_servicio }}</td>
-                                                {% endif %}
                                                 <td>{{ cuenta.fecha_ven }}</td>
                                                 <td>S/.{{ cuenta.getMonto }}</td>
                                                 <td>S/.{{ cuenta.deuda }}</td>

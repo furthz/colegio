@@ -77,6 +77,28 @@ class BaseProfile(CreacionModificacionFechaProfileMixin, CreacionModificacionUse
         #return "{0} {1} {2} {3}".format(self.nombre, self.segundo_nombre, self.apellido_pa, self.apellido_ma)
         return "{0}".format(cadena)
 
+    @cached_property
+    def getNombreFormal(self):
+        """
+        Método que concatena los nombres y apellidos
+
+        :return: Nombre completo de la persona
+        """
+        cadena = ""
+        if self.apellido_pa:
+            cadena = self.apellido_pa.capitalize() + " "
+
+        if self.apellido_ma:
+            cadena += self.apellido_ma.capitalize() + ", "
+
+        if self.nombre:
+            cadena += self.nombre.capitalize() + " "
+
+        if self.segundo_nombre:
+            cadena += self.segundo_nombre.capitalize()
+        # return "{0} {1} {2} {3}".format(self.nombre, self.segundo_nombre, self.apellido_pa, self.apellido_ma)
+        return "{0}".format(cadena)
+
     @property
     def getEdad(self):
         """

@@ -36,14 +36,14 @@
                                     <form name="cursosasignados" id="cursosasignados">{% csrf_token %}
 
                                         <input hidden name="aula" value="{{ aula.id_aula }}">
-                                    {% for curso in cursos %}
+                                    {% for matricula in matriculas %}
 
                                           <tr>
-                                            <td>{{ curso.nombre }}</td>
+                                            <td>{{ matricula.alumno }}</td>
                                             <td>
                                               <div class="checkbox">
                                                 <label>
-                                                  <input onchange="nombre()" id="item{{ curso.id_curso }}" name="item{{ curso.id_curso }}" type="checkbox">
+                                                  <input onchange="nombre()" id="item{{ matricula.id_matricula }}" name="item{{ matricula.id_matricula }}" type="checkbox">
                                                 </label>
                                               </div>
                                             </td>

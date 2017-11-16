@@ -112,25 +112,34 @@ def calculo_ingresos_promotor(id_colegio, anio, mes):
 
 # FUNCIÓN PARA CÁLCULO DE INGRESOS DE CADA NIVEL PARA UN DETERMINADO AÑO Y MES
 def calculo_por_nivel_promotor(id_colegio, anio, mes):
-    anio2 = int(anio)
+
+    # Filtrar las Cuentas por cobrar por colegio
     cuentas_cobrar_colegio = Cuentascobrar.objetos.get_queryset().filter(matricula__colegio__id_colegio=id_colegio)
-    porcobrar_año = cuentas_cobrar_colegio.filter(fecha_ven__year=anio2)  # Filtrar por año
+
+    # Filtrar las Cuentas por cobrar por año
+    porcobrar_año = cuentas_cobrar_colegio.filter(fecha_ven__year=anio)
+
+    # Filtrar las Cuentas por cobrar por mes
     num_mes = obtener_mes(mes)
-    porcobrar_mes = porcobrar_año.filter(fecha_ven__month=num_mes)  # Filtrar por mes
-    deuda_total_nivel = []
-    cobro_total_nivel = []
-    por_cobrar_nivel = []
-    numero_nivel = 3  # Cambiar por el número de niveles que tiene cada colegio
-    for nivel in range(1, numero_nivel + 1):
-        porcobrar_nivel = porcobrar_mes.filter(servicio__tipo_servicio__nivel=nivel)
-        deuda_total_nivel.append(0)  # Declara las Deudas totales iniciales de un nivel y mes como '0'
-        cobro_total_nivel.append(0)  # Declara los Cobros totales iniciales de un nivel y mes como '0'
-        por_cobrar_nivel.append(0)
-        for cuenta in porcobrar_nivel:
-            deuda_total_nivel[nivel - 1] = deuda_total_nivel[nivel - 1] + cuenta.deuda
-            cobro_total_nivel[nivel - 1] = cobro_total_nivel[nivel - 1] + cuenta.precio - cuenta.deuda - cuenta.descuento
-            por_cobrar_nivel[nivel - 1] = por_cobrar_nivel[nivel - 1] + cuenta.precio - cuenta.descuento
-    return por_cobrar_nivel, cobro_total_nivel, deuda_total_nivel
+    porcobrar_mes = porcobrar_año.filter(fecha_ven__month=num_mes)
+
+    deuda_total_grado = []
+    cobro_total_grado = []
+    por_cobrar_grado = []
+
+    numero_grados = 14  # Cambiar por el número de niveles que tiene cada colegio
+
+    for nivel in range(1, numero_grados + 1):
+        porcobrar_grado = porcobrar_mes.filter(servicio__tipo_servicio__grado=nivel)
+        deuda_total_grado.append(0)  # Declara las Deudas totales iniciales de un nivel y mes como '0'
+        cobro_total_grado.append(0)  # Declara los Cobros totales iniciales de un nivel y mes como '0'
+        por_cobrar_grado.append(0)
+        for cuenta in porcobrar_grado:
+            deuda_total_grado[nivel - 1] = deuda_total_grado[nivel - 1] + cuenta.deuda
+            cobro_total_grado[nivel - 1] = cobro_total_grado[nivel - 1] + cuenta.precio - cuenta.deuda - cuenta.descuento
+            por_cobrar_grado[nivel - 1] = por_cobrar_grado[nivel - 1] + cuenta.precio - cuenta.descuento
+
+    return por_cobrar_grado, cobro_total_grado, deuda_total_grado
 
 
 # FUNCIÓN DE CÁLCULO DE INGRESOS FILTRANDO SEGÚN VALORES DE ENTRADA
