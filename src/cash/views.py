@@ -220,7 +220,13 @@ class BoxCashierCreationView(CreateView):
 
         if validar_roles(roles=roles):
 
-            return super(BoxCashierCreationView, self).get(request, *args, **kwargs)
+            cajas = Caja.objects.filter(colegio__id_colegio= get_current_colegio(), activo=True)
+
+            return render(request, template_name=self.template_name, context={
+                'form': self.form_class,
+
+                'cajas': cajas,
+            })
 
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
