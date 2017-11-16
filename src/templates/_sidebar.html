@@ -1,3 +1,7 @@
+
+
+
+
 {% load staticfiles %}
 {% load thumbnail %}
 <aside class="main-sidebar">
@@ -19,6 +23,12 @@
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">MENÚ DE NAVEGACIÓN</li>
 
+            
+            
+            
+            
+            
+            
             {% if perms.register.colegio_create %}
             <li class="treeview yellow">
                   <a href="#">
@@ -83,7 +93,7 @@
               </ul>
             </li>
             {% endif %}
-
+            {% if  perms.enrollment.Matricula_List or perms.enrollment.Tipo_Servicio_List%}
             <li class="{% if namespace == 'enrollments' %}active treeview orange {% else  %}treeview blue{% endif %} ">
               <a href="#">
                 <img src="{% static 'site/img/svg/notepad.svg' %}" width="22px" height="22px"/>
@@ -101,7 +111,9 @@
                     {% endif %}
                 </ul>
         </li>
+        {% endif %}
 
+        {% if  perms.cash.Cashier_List or perms.cash.Consigment_Creation or perms.cash.Box_Cashier_Creation or perms.cash.Box_Cashier_List%}
         <li class="{% if namespace == 'cash' %}active treeview orange {% else  %}treeview green{% endif %} ">
                 <a href="#">
                     <img src="{% static 'site/img/svg/folder-document.svg' %}" width="22px" height="22px"/>
@@ -128,7 +140,8 @@
                     {% endif %}
                 </ul>
         </li>
-
+        {% endif %}
+        {% if perms.cash.Box_Cashier_Creation or perms.enrollment.control_ingresos_padres or perms.enrollment.control_ingresos_promotor_detalle%}
         <li class="{% if namespace == 'income' %}active treeview orange {% else  %}treeview green{% endif %} ">
           <a href="#">
             <img src="{% static 'site/img/svg/money.svg' %}" width="22px" height="22px"/>
@@ -138,7 +151,9 @@
             </span>
           </a>
           <ul class="treeview-menu">
+                {% if perms.cash.Box_Cashier_Creation %}
                 <li><a href="{% url 'income:register' %}"><i class="fa fa-circle-o"></i> Registrar Ingreso</a></li>
+                {% endif %}
                 {% if perms.enrollment.control_ingresos_padres %}
                     <li><a href="{% url 'income:cuentas_cobrar_padres' %}"><i class="fa fa-circle-o"></i> Detalle de Pagos</a></li>
                 {% endif %}
@@ -150,7 +165,9 @@
                 {% endif %}
           </ul>
         </li>
+        {% endif %}
 
+        {% if  perms.payments.Registrar_Pago_Create or perms.payments.control_pagos or perms.payments.add_tipopago%}
         <li class="{% if namespace == 'payments' %}active treeview orange {% else  %}treeview yellow{% endif %} ">
               <a href="#">
                 <img src="{% static 'site/img/svg/folder-document.svg' %}" width="22px" height="22px"/>
@@ -171,7 +188,8 @@
                   {% endif %}
               </ul>
         </li>
-
+        {% endif %}
+        {% if perms.discounts.Solicitar_Descuento or perms.discounts.aprobar_descuento or perms.discounts.detalle_descuento %}
         <li class="{% if namespace == 'discounts' %}active treeview orange {% else  %}treeview purple{% endif %} ">
               <a href="#">
                 <img src="{% static 'site/img/svg/tag.svg' %}" width="22px" height="22px"/>
@@ -195,6 +213,7 @@
                   {% endif %}
               </ul>
         </li>
+        {% endif %}
 
       </ul>
       {% endwith %}
