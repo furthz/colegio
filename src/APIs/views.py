@@ -1,11 +1,11 @@
 from django.shortcuts import render
 
 # Create your views here.
-from AE_academico.models import Asistencia, Aula, AulaMatricula, CursoDocente
+from AE_academico.models import Asistencia, Aula, AulaMatricula, CursoDocente, AulaCurso
 from enrollment.models import Matricula
 from register.models import Profile ,Personal ,PersonalColegio ,Colegio, Alumno
 from .serializers import ColegioSerializer, ProfileSerializer, AsistenciaSerializer, AulaSerializer, \
-    CursoDocenteSerializer, MatriculaSerializer, AlumnoSerializer
+    CursoDocenteSerializer, MatriculaSerializer, AlumnoSerializer, AulaCursoSerializer
 from rest_framework import generics
 from rest_framework.views import APIView
 from django.views.generic import ListView
@@ -125,11 +125,97 @@ class CursoDocenteList(APIView):
             raise Http404
 
     def get(self, request, pk, docente, format=None):
-        cursos = CursoDocente.objects.filter(docente=docente)
-        cursos_asociados = list(cursos)
+        colegio_id = get_current_colegio()
+        aula_cursos = []
+        if pk == "1":
+            cursos_docente = CursoDocente.objects.filter(docente=docente)
+        else:
+            cursos_docente = CursoDocente.objects.filter(curso__curso__colegio=colegio_id)
+        cursos_asociados = list(cursos_docente)
         serializer = CursoDocenteSerializer(cursos_asociados, many=True)
         return Response(serializer.data)
 
+
+class AulaCursoList(APIView):
+
+    def get_object(self, pk):
+        try:
+            return CursoDocente.objects.get(pk=pk)
+        except CursoDocente.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, docente, format=None):
+        colegio_id = get_current_colegio()
+        aula_cursos = []
+        if pk == "1":
+            cursos_docente = CursoDocente.objects.filter(docente=docente)
+            for curso_docente in cursos_docente:
+                aula_curso = curso_docente.curso
+                aula_cursos.append(aula_curso)
+        else:
+            cursos_docente = CursoDocente.objects.filter(curso__curso__colegio=colegio_id)
+            for curso_docente in cursos_docente:
+                aula_curso = curso_docente.curso
+                aula_cursos.append(aula_curso)
+        # cursos_asociados = list(cursos)
+        logger.info("Los cursos asociados al docente son : {0}".format(aula_cursos))
+        serializer = AulaCursoSerializer(aula_cursos, many=True)
+        return Response(serializer.data)
+
+
+class AulaDocenteList(APIView):
+
+    def get_object(self, pk):
+        try:
+            return CursoDocente.objects.get(pk=pk)
+        except CursoDocente.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, docente, format=None):
+        colegio_id = get_current_colegio()
+        aulas_docente = []
+        if pk == "1":
+            cursos_docente = CursoDocente.objects.filter(docente=docente)
+            for curso_docente in cursos_docente:
+                aula = curso_docente.curso.aula
+                if aula not in aulas_docente:
+                    aulas_docente.append(aula)
+        else:
+            cursos_docente = CursoDocente.objects.filter(curso__curso__colegio=colegio_id)
+            for curso_docente in cursos_docente:
+                aula = curso_docente.curso.aula
+                if aula not in aulas_docente:
+                    aulas_docente.append(aula)
+        # cursos_asociados = list(cursos)
+        logger.info("Los cursos asociados al docente son : {0}".format(aulas_docente))
+        serializer = AulaSerializer(aulas_docente, many=True)
+        return Response(serializer.data)
+
+"""
+
+class AulaCursoList(APIView):
+
+    def get_object(self, pk):
+        try:
+            return CursoDocente.objects.get(pk=pk)
+        except CursoDocente.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, docente, format=None):
+        colegio_id = get_current_colegio()
+        if pk == "1":
+            cursos = CursoDocente.objects.filter(docente=docente)
+            for curso in cursos:
+                aula_curso = AulaCurso.objects.filter(curso__curso=curso)
+        else:
+            cursos = CursoDocente.objects.filter(curso__curso__colegio=colegio_id)
+            for curso in cursos:
+                aula_curso = AulaCurso.objects.filter(curso__curso=curso)
+        cursos_asociados = list(cursos)
+        logger.info("Las aulas asociadas son {0}".format(aula_curso))
+        serializer = CursoDocenteSerializer(cursos_asociados, many=True)
+        return Response(serializer.data)
+"""
 """
 class ListaAsistencia(APIView):
 

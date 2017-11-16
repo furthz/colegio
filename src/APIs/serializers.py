@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from AE_academico.models import Asistencia, Aula, AulaMatricula, CursoDocente
+from AE_academico.models import Asistencia, Aula, AulaMatricula, CursoDocente, Curso, AulaCurso
 from enrollment.models import Matricula
 from register.models import Profile, Colegio, Alumno
 
@@ -37,6 +37,17 @@ class CursoDocenteSerializer(serializers.ModelSerializer):
     class Meta:
         model = CursoDocente
         fields = ('id_curso_docente', 'docente', 'curso')
+
+class AulaCursoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AulaCurso
+        fields = ('id_aula_curso', 'getDetalle')
+
+
+class AulaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Aula
+        fields = ('id_aula', 'nombre')
 
 
 class MatriculaSerializer(serializers.ModelSerializer):

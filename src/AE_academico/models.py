@@ -1,5 +1,6 @@
 from django.db import models
 
+from django.utils.functional import cached_property
 from enrollment.models import TipoServicio, Matricula
 from register.models import Colegio, Alumno, Apoderado, Personal, Docente
 from profiles.models import Profile
@@ -41,6 +42,15 @@ class AulaCurso(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacio
     curso = models.ForeignKey(Curso, models.DO_NOTHING, db_column="id_curso")
 
     def __str__(self):
+        return "{0} del salon {1}".format(self.curso.nombre, self.aula.nombre)
+
+    @cached_property
+    def getDetalle(self):
+        """
+        Método que concatena los nombres y apellidos
+
+        :return: Nombre completo de la persona
+        """
         return "{0} del salon {1}".format(self.curso.nombre, self.aula.nombre)
 
     class Meta:

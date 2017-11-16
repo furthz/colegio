@@ -35,6 +35,9 @@ urlpatterns = [
 
     url(r'^curso_docente_api/(?P<pk>[0-9]+)/(?P<docente>\w+)/$', views.CursoDocenteList.as_view()),
 
+    url(r'^aula_curso_api/(?P<pk>[0-9]+)/(?P<docente>\w+)/$', views.AulaCursoList.as_view()),
+
+    url(r'^aula_docente_api/(?P<pk>[0-9]+)/(?P<docente>\w+)/$', views.AulaDocenteList.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
