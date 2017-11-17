@@ -1,9 +1,12 @@
 {% extends "page.html" %}
 
-{% block title %}{{ block.super }}Matricula{% endblock %}
+{% block title %}{{ block.super }}Matrícula{% endblock %}
 
 {% block breadcrumb %}
-    <h1 class="section-title">Matriculas</h1>
+    <h1 class="section-title">
+        Matrícula
+        <small>Módulo Matrícula</small>
+    </h1>
 {% endblock %}
 
 
@@ -23,7 +26,7 @@
                                 <div class="toolbar-header">
 
                                     <a class="btn btn-success" href="{% url 'enrollments:filtrar_alumno' %}"><i class="fa fa-plus" aria-hidden="true"></i>
- Nueva Matricula</a>
+ Nueva Matrícula</a>
                                 </div>
                             </div>
 
