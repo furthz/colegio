@@ -234,6 +234,8 @@ class ProveedorForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        self.fields['razon_social'].label = "Razón Social"
+        self.fields['ruc'].label = "RUC"
         self.helper = FormHelper()
         self.helper.form_id = "idproveedor"
         self.helper.form_method = "post"

@@ -616,7 +616,7 @@ class Proveedor(CreacionModificacionUserProveedorMixin, CreacionModificacionFech
 
     def full_detail(self):
         #lista = Profile.full_detail(self)
-        detalle_completo = ["razon social: {0}".format(self.razon_social)]
+        detalle_completo = ["Razón Social: {0}".format(self.razon_social)]
         return detalle_completo
 
     def get_absolute_url(self):
@@ -624,7 +624,7 @@ class Proveedor(CreacionModificacionUserProveedorMixin, CreacionModificacionFech
         Redirecciona las views que usan como modelo esta clase
         :return: url de detalles de la persona
         """
-        return reverse('registers:proveedor_detail', kwargs={'pk': self.pk})
+        return reverse('registers:proveedor_list')
 
     class Meta:
         managed = True

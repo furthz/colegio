@@ -1,15 +1,15 @@
 {% extends "page.html" %}
 
-{% block title %}{{ block.super }}Matricula{% endblock %}
+{% block title %}{{ block.super }}Matrícula{% endblock %}
 
 {% block breadcrumb %}
-<h1>
-        Matricula
-        <small>Modúlo Matricula</small>
+<h1 class="section-title">
+        Matrícula
+        <small>Módulo Matrícula</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-        <li class="active">Modúlo Matricula</li>
+        <li class="active">Módulo Matrícula</li>
       </ol>
 {% endblock %}
 
@@ -21,7 +21,7 @@
           <div class="col-md-12">
               <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Matricula</h3>
+                    <h3 class="box-title">Matrícula</h3>
                 </div>
 
                   <div class="box-body">
@@ -36,7 +36,7 @@
 
                             <form class="form-horizontal" action="{% url 'enrollments:matricula_create_end' %}" method="POST">{% csrf_token %}
                               <div class="form-group">
-                                <label class="col-sm-2 control-label">Curso</label>
+                                <label class="col-sm-2 control-label">Grado</label>
                                 <div class="col-sm-10">
                                     <select name="tipo_servicio" required="" id="id_tipo_servicio" class="form-control">
                                       <option value="" selected="">---------</option>
