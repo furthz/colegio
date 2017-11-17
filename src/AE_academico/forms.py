@@ -1,4 +1,4 @@
-from django import forms
+"""from django import forms
 from AE_academico.models import Aula, Asistencia, Notas, Curso, Evento, PeriodoAcademico, HorarioAula
 from AE_academico.models import CursoDocente
 from utils.middleware import get_current_colegio
@@ -164,3 +164,4 @@ class HorarioAulaForm(forms.ModelForm):
         self.fields['dia'].widget.attrs.update({'class': 'form-control'})
         self.fields['hora_inicio'].widget.attrs.update({'class': 'form-control'})
         self.fields['hora_fin'].widget.attrs.update({'class': 'form-control'})
+""""

@@ -1,4 +1,4 @@
-from django.conf.urls import url
+"""from django.conf.urls import url
 from AE_academico.views import AulaListView, AulaDetailView, AulaCreationView, AulaUpdateView, AulaDeleteView, \
     MarcarAsistenciaView, SubirNotasView, CursoListView, CursoDetailView, CursoCreationView, CursoUpdateView, \
     CursoDeleteView, AulaCursoCreateView, VisualizarAsistenciaView, EventoCreateView, EventoDetailView, EventoListView, \
@@ -54,3 +54,4 @@ urlpatterns = [
     url(r'^periodo/update/(?P<pk>\d+)$', PeriodoAcademicoUpdateView.as_view(), name='periodo_edit'),
 
 ]
+"""
