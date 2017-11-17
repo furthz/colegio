@@ -45,3 +45,7 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = models.Profile
         fields = ['picture', 'bio','nombre', 'segundo_nombre']
+        labels = {
+            'picture': 'Imagen de Perfil',
+            'bio': 'Información sobre ti',
+        }

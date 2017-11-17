@@ -19,6 +19,13 @@
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">MENÚ DE NAVEGACIÓN</li>
 
+            <li class="treeview yellow">
+              <a href="{% url 'profiles:show_self' %}">
+                <img src="{% static 'site/img/svg/user.svg' %}" width="22px" height="22px"/>
+                <span>MI PERFIL</span>
+              </a>
+            </li>
+
             {% if perms.register.colegio_create %}
             <li class="treeview yellow">
                   <a href="#">
