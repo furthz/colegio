@@ -12,12 +12,7 @@
                             <div class="col-md-9">
                                 <div class="panel-page">
                                     <div class="toolbar-header">
-
-
-                                        </div>
-
-
-
+                                    </div>
                                     <div class="box-header with-border">
                                         <h3 class="box-title">Lista de Usuarios</h3>
                                     </div>
@@ -28,9 +23,10 @@
                                                 <tbody>
                                                 <tr>
                                                     <th>Item</th>
-                                                    <th>Nombre</th>
+                                                    <th>Nombre de Usuario</th>
                                                     <th>Correo</th>
-                                                    <th>Acciones</th>
+                                                    <th>Fecha de Creación</th>
+                                                    <th>Último acceso</th>
 
                                                 </tr>
                                                 {% for registro in object_list %}
@@ -38,13 +34,12 @@
                                                     <td>{{ forloop.counter }}</td>
                                                     <td>{{ registro.name }}</td>
                                                     <td>{{ registro.email }}</td>
-                                                    <td>
-                                                        <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                                                            <a title="Detalle" href='{% url "accounts:register_accounts_detail" registro.id %}' class="btn btn-default">
-                                                                <i class="fa fa-info-circle" aria-hidden="true"></i>
-                                                            </a>
-                                                        </div>
-                                                    </td>
+                                                    <td>{{ registro.date_joined }}</td>
+                                                    {% if registro.last_login == None %}
+                                                    <td>No registra acceso</td>
+                                                    {% else %}
+                                                    <td>{{ registro.last_login }}</td>
+                                                    {% endif %}
                                                 </tr>
                                                 {% endfor %}
                                                 </tbody>
