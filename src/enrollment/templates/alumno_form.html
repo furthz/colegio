@@ -2,88 +2,91 @@
 
 {% block title %}{{ block.super }} Nueva Matrícula {% endblock %}
 {% block breadcrumb %}
-<h1 class="section-title">
-        Relación de Alumnos
-        <small>Módulo Matrícula</small>
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-        <li>Módulo Matrícula</li>
-        <li class="active">Lista de alumnos</li>
-      </ol>
+
 {% endblock %}
 
 {% block container %}
-<section class="content">
-      <div class="row">
-          <div class="col-md-12">
-              <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Lista de Alumnos</h3>
-                </div>
-                <div class="box-body">
-                  <div class="col-md-9">
-                    <div class="panel-page">
+    <div>
+
+        <section class="content-header">
+            <h1>
+                Matrícula
+                <small>Módulo Matrícula</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+                <li>Módulo Matrícula</li>
+                <li class="active">Lista de alumnos</li>
+            </ol>
+        </section>
+
+        <section class="content">
+          <div class="row">
+              <div class="col-md-12">
+                  <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Lista de Alumnos</h3>
+                    </div>
+                    <div class="box-body">
+                      <div class="col-md-9">
+                        <div class="panel-page">
 
 
-                     <div class="toolbar-search">
-                        <form action="{% url 'enrollments:filtrar_alumno' %}" method="post" class="form-inline" id="filtro">{% csrf_token %}
-                             <div class="form-group">
-                              DNI <input type="text" name="dni" class="form-control" value="{{ dni }}">
-                                Apellidos o Nombres  <input type="text" name="nombre" class="form-control" value="{{ nombre }}">
-                              <button form="filtro" formmethod="post" type="submit" class="btn btn-default"><i class="fa fa-search" aria-hidden="true"></i>  Buscar</button>
-                            </div>
+                         <div class="toolbar-search">
+                            <form action="{% url 'enrollments:filtrar_alumno' %}" method="post" class="form-inline" id="filtro">{% csrf_token %}
+                                 <div class="form-group">
+                                  DNI <input type="text" name="dni" class="form-control" value="{{ dni }}">
+                                    Apellidos o Nombres  <input type="text" name="nombre" class="form-control" value="{{ nombre }}">
+                                  <button form="filtro" formmethod="post" type="submit" class="btn btn-default"><i class="fa fa-search" aria-hidden="true"></i>  Buscar</button>
+                                </div>
 
-                        </form>
-                      <!-- FIN DE LA BARRA DE FILTRO -->
+                            </form>
+                          <!-- FIN DE LA BARRA DE FILTRO -->
 
-                      </div>
+                          </div>
 
-                        <div  role="tabpanel" >
-                            <div class="panel-body">
+                            <div  role="tabpanel" >
+                                <div class="table-responsive">
+                                    {% if object_list %}
+                                    <table class="table table-hover">
+                                        <tbody>
+                                              <tr class="table-header">
+                                                <th>Nombres y Apellidos</th>
+                                                <th>Acciones</th>
+                                              </tr>
 
-                                {% if object_list %}
-                                <table class="table">
-                                    <thead>
-                                      <tr>
-                                        <th>Nombres y Apellidos</th>
 
-                                        <th>Acciones</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for alumno in object_list %}
-                                                <form id="{{ alumno.id_alumno }}" action="{% url 'enrollments:matricula_create' %}" method="post" class="form-horizontal">{% csrf_token %}
+                                            {% for alumno in object_list %}
+                                                    <form id="{{ alumno.id_alumno }}" action="{% url 'enrollments:matricula_create' %}" method="post" class="form-horizontal">{% csrf_token %}
 
-                                                        <tr>
-                                                        <td>{{alumno.persona.getNombreCompleto}}</td>
-                                                        <td><div class="pull-center">
-                                                                    <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                                                                        <input hidden type= "text" value="{{ alumno.id_alumno}}" name="alumno">
-                                                                        <input type="submit" value="Matricula" form="{{ alumno.id_alumno }}" class="btn btn-success">
-                                                                    </div>
-                                                        </div></td>
-                                                        </tr>
-                                                </form>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                                    <a href="{% url 'registers:alumno_create' %}" class="btn btn-success" role="button"><i class="fa fa-plus" aria-hidden="true"></i>Registrar Nuevo Alumno</a>
-                            {% else %}
-
-                                    <a href="{% url 'registers:alumno_create' %}" class="btn btn-success" role="button"><i class="fa fa-plus" aria-hidden="true"></i>Registrar Nuevo Alumno</a>
-
-                            {% endif %}
+                                                            <tr>
+                                                            <td>{{alumno.persona.getNombreCompleto}}</td>
+                                                            <td><div class="pull-center">
+                                                                        <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                                                                            <input hidden type= "text" value="{{ alumno.id_alumno}}" name="alumno">
+                                                                            <input type="submit" value="Matricula" form="{{ alumno.id_alumno }}" class="btn btn-success">
+                                                                        </div>
+                                                            </div></td>
+                                                            </tr>
+                                                    </form>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                        <a href="{% url 'registers:alumno_create' %}" class="btn btn-success" role="button"><i class="fa fa-plus" aria-hidden="true"></i>Registrar Nuevo Alumno</a>
+                                    {% else %}
+                                        <a href="{% url 'registers:alumno_create' %}" class="btn btn-success" role="button"><i class="fa fa-plus" aria-hidden="true"></i>Registrar Nuevo Alumno</a>
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
+                      </div>
                     </div>
                   </div>
-                </div>
               </div>
           </div>
-      </div>
-</section>
+    </section>
 
+    </div>
 {% endblock container %}
 {% block scripts %}
     <script>

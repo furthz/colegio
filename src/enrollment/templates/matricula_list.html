@@ -2,83 +2,90 @@
 
 {% block title %}{{ block.super }}Matrícula{% endblock %}
 
-{% block breadcrumb %}
-    <h1 class="section-title">
-        Matrícula
-        <small>Módulo Matrícula</small>
-    </h1>
-{% endblock %}
-
-
-
 {% block container %}
-<section class="content">
-      <div class="row">
-          <div class="col-md-12">
-              <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Lista de Alumnos Matriculados</h3>
-                </div>
+    <div>
+        <!-- HEADER INFO PAGE UBICACION -->
+        <section class="content-header">
+            <h1>
+                Matrícula
+                <small>Módulo de Matrícula</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+                <li>Módulo de Matrícula</li>
+                <li class="active">Control de Pagos</li>
+            </ol>
+        </section>
+        <!-- FIN DE INFO PAGE UBICACION -->
+        <!-- INICIO DE CONTENIDO -->
+        <section class="content">
+              <div class="row">
+                  <div class="col-md-12">
+                      <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Lista de Alumnos Matriculados</h3>
+                        </div>
 
-                  <div class="box-body">
-                          <div class="col-md-12">
-                            <div class="panel-page">
-                                <div class="toolbar-header">
+                          <div class="box-body">
+                                  <div class="col-md-12">
+                                    <div class="panel-page">
+                                        <div class="toolbar-header">
 
-                                    <a class="btn btn-success" href="{% url 'enrollments:filtrar_alumno' %}"><i class="fa fa-plus" aria-hidden="true"></i>
- Nueva Matrícula</a>
-                                </div>
+                                            <a class="btn btn-success" href="{% url 'enrollments:filtrar_alumno' %}"><i class="fa fa-plus" aria-hidden="true"></i>
+         Nueva Matrícula</a>
+                                        </div>
+                                    </div>
+
+                        {% if matriculados %}
+                            <table class="table table-hover">
+                                          <tr class="table-header">
+                                            <th>Apellidos y Nombres</th>
+                                            <th>Detalle</th>
+                                            <th class="text-center">Acciones</th>
+                                          </tr>
+                                {% for matricula in matriculados %}
+                                    <form id="{{ matricula.id_matricula}}" > {% csrf_token %}
+                                    <input hidden  value="{{ matricula.id_matricula}}" name="matricula">
+                                </form>
+                                    <form id="1" class="form-horizontal"></form>
+                                          <tr>
+                                            <td>{{ matricula.alumno.persona.getNombreCompleto }}</td>
+                                            <td>{{ matricula.tipo_servicio }}</td>
+                                                <td>
+                                                  <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                                                    <button type="submit" formaction="{% url 'enrollments:matricula_detail' matricula.id_matricula %}" class="btn btn-default" value="Ver" form="1">
+                                    <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                </button>
+                                                    <button type="submit" formaction="{% url 'enrollments:matricula_update' %}" value="Modificar" formmethod="post" class="btn btn-default" form = "{{ matricula.id_matricula}}">
+                                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                                </button>
+                                                    <button type="submit" onclick="return confirmDel();" formaction="{% url 'enrollments:matricula_delete'%}" value="Borrar" formmethod="get" class="btn btn-default" form="{{ matricula.id_matricula}}">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                </button>
+                                                      <button type="submit" formaction="{% url 'enrollments:solicitar_descuento'%}" value="Solicitar" formmethod="post" class="btn btn-default" form="{{ matricula.id_matricula}}">
+                                    <i class="fa fa-percent" aria-hidden="true"></i>
+                                </button>
+                                                  </div>
+                                                </td>
+                                          </tr>
+                                {% endfor %}
+                            </table>
+                        {% else %}
+                            <div class="alert alert-warning">
+                                No se encuentran <strong>alumnos matriculados</strong>
                             </div>
-
-                {% if matriculados %}
-                    <table class="table table-hover">
-                                  <tr class="table-header">
-                                    <th>Apellidos y Nombres</th>
-                                    <th>Detalle</th>
-                                    <th class="text-center">Acciones</th>
-                                  </tr>
-                        {% for matricula in matriculados %}
-                            <form id="{{ matricula.id_matricula}}" > {% csrf_token %}
-                            <input hidden  value="{{ matricula.id_matricula}}" name="matricula">
-                        </form>
-                            <form id="1" class="form-horizontal"></form>
-                                  <tr>
-                                    <td>{{ matricula.alumno.persona.getNombreCompleto }}</td>
-                                    <td>{{ matricula.tipo_servicio }}</td>
-                                        <td>
-                                          <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                                            <button type="submit" formaction="{% url 'enrollments:matricula_detail' matricula.id_matricula %}" class="btn btn-default" value="Ver" form="1">
-                            <i class="fa fa-info-circle" aria-hidden="true"></i>
-                        </button>
-                                            <button type="submit" formaction="{% url 'enrollments:matricula_update' %}" value="Modificar" formmethod="post" class="btn btn-default" form = "{{ matricula.id_matricula}}">
-                            <i class="fa fa-pencil" aria-hidden="true"></i>
-                        </button>
-                                            <button type="submit" onclick="return confirmDel();" formaction="{% url 'enrollments:matricula_delete'%}" value="Borrar" formmethod="get" class="btn btn-default" form="{{ matricula.id_matricula}}">
-                            <i class="fa fa-trash" aria-hidden="true"></i>
-                        </button>
-                                              <button type="submit" formaction="{% url 'enrollments:solicitar_descuento'%}" value="Solicitar" formmethod="post" class="btn btn-default" form="{{ matricula.id_matricula}}">
-                            <i class="fa fa-percent" aria-hidden="true"></i>
-                        </button>
-                                          </div>
-                                        </td>
-                                  </tr>
-                        {% endfor %}
-                    </table>
-                {% else %}
-                    <div class="alert alert-warning">
-                        No se encuentran <strong>alumnos matriculados</strong>
-                    </div>
-                {% endif %}
+                        {% endif %}
 
 
+                                  </div>
                           </div>
+
+
+                      </div>
                   </div>
-
-
               </div>
-          </div>
-      </div>
-</section>
+        </section>
+    </div>
 {% endblock container %}
 
 {% block scripts %}
