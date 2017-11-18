@@ -15,6 +15,22 @@
                 {{ form.password }}
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
+
+            {% if form.errors %}
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <div class="alert alert-danger">
+                            <h4>Por favor ingrese un email y contraseña correctos</h4>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        <h4>Por favor ingrese un email y contraseña correctos</h4>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
             <div class="row">
                 <div class="col-xs-6">
                     <div class="checkbox incheck">
