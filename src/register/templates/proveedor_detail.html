@@ -1,14 +1,50 @@
 {% extends "page.html" %}
+{% block title %}{{ block.super }}Registrar proveedor{% endblock %}
+
 {% block container %}
-<h1>Detalle Completo</h1>
-<ul>
-{% for detalles in proveedor.full_detail %}
-    <li>{{detalles}}</li>
-{% empty %}
-    <li>No hay proveedores registrados</li>
-{% endfor %}
-</ul>
-<form action={% url 'registers:proveedor_list' %}>
-    <input type="submit" value="Volver">
-</form>
-{% endblock %}
+<!--Comienza el contenido!!!!!!!!!!!!!!!!!!!-->
+<!-- INICIA CONTENDOR DE FORMULARIOS -->
+<div class="content-wrapper">
+    <!-- HEADER INFO PAGE UBICACION -->
+    <section class="content-header">
+        <h1>
+            Detalles de proveedor
+        </h1>
+    </section>
+    <!-- FIN DE INFO PAGE UBICACION -->
+    <!-- INICIO DE CONTENIDO -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div id="search" class="form-horizontal">
+                        <div class="box-body">
+                            <div class="col-md-9">
+                                <h1>Detalle Completo</h1>
+                                <ul>
+                                    {% for detalles in proveedor.full_detail %}
+                                    <li>{{detalles}}</li>
+                                    {% empty %}
+                                    <li>No hay proveedores registrados</li>
+                                    {% endfor %}
+                                </ul>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <a href="{% url 'registers:proveedor_list' %}" class="btn btn-default">
+                                            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                                            Regresar a la lista
+                                        </a>
+                                    </div>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+</div>
+<!-- /.FIN DE CONTENIDO -->
+<!--Fin del contenido!!!!!!!!!!!-->
+{% endblock container %}
