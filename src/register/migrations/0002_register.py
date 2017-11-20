@@ -385,7 +385,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id_proveedor', models.AutoField(primary_key=True, serialize=False)),
                 ('razon_social', models.CharField(max_length=100)),
-                ('ruc', models.CharField(max_length=15)),
+                ('ruc', models.IntegerField(max_length=11)),
                 ('usuario_creacion_proveedor',
                  models.CharField(blank=True, db_column='usuario_creacion', max_length=10, null=True,
                                   verbose_name='Usuario_Creacion')),
