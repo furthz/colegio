@@ -1,6 +1,6 @@
 {% extends "page.html" %}
 
-{% block title %}{{ block.super }}Matricula{% endblock %}
+{% block title %}{{ block.super }}Matrícula{% endblock %}
 
 {% block container %}
 {% load crispy_forms_tags %}
@@ -19,13 +19,13 @@
                         <!-- BAR CHART -->
                         <div class="box box-success">
                           <div class="box-header with-border">
-                            <h3 class="box-title">Asociar pago a servicio</h3>
+                            <h3 class="box-title">Asociar Pago a Servicio</h3>
                           </div>
                           <div class="box-body">
 
                             <form action="" method="POST" class="form-horizontal" id="1">{% csrf_token %}
                               <div class="form-group">
-                                <label class="col-sm-2 control-label"for="id_tipo_servicio">Nivel/Grado:</label>
+                                <label class="col-sm-2 control-label"for="id_tipo_servicio">Nivel y Grado:</label>
                                 <div class="col-sm-10">
                                   <select name="tipo_servicio" required="" id="id_tipo_servicio" class="form-control">
                                             <option value="{{ tiposervicio.id_tipo_servicio }}">{{ tiposervicio }} </option>
@@ -49,14 +49,14 @@
                               </div>
 
                               <div class="form-group">
-                                <label for="id_cuotas" class="col-sm-2 control-label">N° de meses</label>
+                                <label for="id_cuotas" class="col-sm-2 control-label">N° de Meses:</label>
                                 <div class="col-sm-10">
                                   {{ form.cuotas }}
                                 </div>
                               </div>
 
                               <div class="form-group">
-                                <label for="id_fecha_facturar" class="col-sm-2 control-label">Dia generacion de deuda</label>
+                                <label for="id_fecha_facturar" class="col-sm-2 control-label">Día Generacion de Deuda:</label>
                                 <div class="col-sm-10">
                                   {{ form.fecha_facturar }}
                                 </div>
@@ -66,7 +66,7 @@
                                 <div class="col-sm-offset-2 col-sm-10">
                                     <input hidden value="{{ idser }}" name="idser">
                                   <a href="{% url 'enrollments:tiposervicio_list' %}" class="btn btn-default">Cancelar</a>
-                                  <button type="submit" formaction="{% url 'enrollments:servicioregularend_update' %}" form="1" class="btn btn-success">Asignar precio</button>
+                                  <button type="submit" formaction="{% url 'enrollments:servicioregularend_update' %}" form="1" class="btn btn-success">Asignar Precio</button>
                                 </div>
                               </div>
                             </form>

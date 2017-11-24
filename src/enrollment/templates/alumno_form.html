@@ -1,26 +1,23 @@
 {%  extends "page.html" %}
 
 {% block title %}{{ block.super }} Nueva Matrícula {% endblock %}
-{% block breadcrumb %}
 
+{% block titulo %}
+        <h1>
+            Matrícula
+            <small>Módulo de Matrícula</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li>Módulo Matrícula</li>
+            <li class="active">Lista de alumnos</li>
+        </ol>
 {% endblock %}
 
 {% block container %}
     <div>
 
-        <section class="content-header">
-            <h1>
-                Matrícula
-                <small>Módulo Matrícula</small>
-            </h1>
-            <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-                <li>Módulo Matrícula</li>
-                <li class="active">Lista de alumnos</li>
-            </ol>
-        </section>
-
-        <section class="content">
+        <section>
           <div class="row">
               <div class="col-md-12">
                   <div class="box box-primary">

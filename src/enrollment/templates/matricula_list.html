@@ -2,23 +2,24 @@
 
 {% block title %}{{ block.super }}Matrícula{% endblock %}
 
+<!-- HEADER INFO PAGE UBICACION -->
+{% block titulo %}
+        <h1>
+            Matrícula
+            <small>Módulo de Matrícula</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li>Módulo de Matrícula</li>
+            <li class="active">Lista de Matriculados</li>
+        </ol>
+{% endblock %}
+<!-- FIN DE INFO PAGE UBICACION -->
+
 {% block container %}
     <div>
-        <!-- HEADER INFO PAGE UBICACION -->
-        <section class="content-header">
-            <h1>
-                Matrícula
-                <small>Módulo de Matrícula</small>
-            </h1>
-            <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-                <li>Módulo de Matrícula</li>
-                <li class="active">Control de Pagos</li>
-            </ol>
-        </section>
-        <!-- FIN DE INFO PAGE UBICACION -->
         <!-- INICIO DE CONTENIDO -->
-        <section class="content">
+        <section>
               <div class="row">
                   <div class="col-md-12">
                       <div class="box box-primary">
@@ -32,7 +33,7 @@
                                         <div class="toolbar-header">
 
                                             <a class="btn btn-success" href="{% url 'enrollments:filtrar_alumno' %}"><i class="fa fa-plus" aria-hidden="true"></i>
-         Nueva Matrícula</a>
+         Matricular Alumno</a>
                                         </div>
                                     </div>
 
@@ -49,7 +50,7 @@
                                 </form>
                                     <form id="1" class="form-horizontal"></form>
                                           <tr>
-                                            <td>{{ matricula.alumno.persona.getNombreCompleto }}</td>
+                                            <td>{{ matricula.alumno.persona.getNombreFormal }}</td>
                                             <td>{{ matricula.tipo_servicio }}</td>
                                                 <td>
                                                   <div class="btn-group btn-group-sm" role="group" aria-label="...">
