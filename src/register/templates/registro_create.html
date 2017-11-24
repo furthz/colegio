@@ -409,5 +409,15 @@
 
      }
     );
+
+     function dni(){
+         if(document.getElementById('id_tipo_documento').value == "1") {
+             document.getElementById('id_numero_documento').type = 'number';
+         } else {
+             document.getElementById('id_numero_documento').type = 'text';}
+     }
+     window.onload = document.getElementById('id_numero_documento').type = 'number';
     </script>
+
+
 {% endblock scripts %}
