@@ -1,22 +1,22 @@
 {% extends "page.html" %}
 
-{% block title %}{{ block.super }}Matricula{% endblock %}
+{% block title %}{{ block.super }}Descuentos{% endblock %}
 
 
-{% block breadcrumb %}
-<h1>
+{% block titulo %}
+      <h1>
         Lista de Descuentos
-        <small>Modúlo de facturación</small>
+        <small>Módulo de Facturación</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-        <li>Modúlo de facturación</li>
+        <li>Módulo de Facturación</li>
         <li class="active">Lista de Descuentos</li>
       </ol>
 {% endblock %}
 
 {% block container %}
-<section class="content">
+<section>
       <div class="row">
           <div class="col-md-12">
               <div class="box box-primary">
@@ -28,43 +28,42 @@
                     <div class="panel-page">
                             <div class="box-body">
 
-                                <div class="panel-body">
-                                          <h4>Lista de Descuentos</h4>
-                                          <table class="table">
-                                            <thead>
-                                              <tr>
 
-                                                <th>Descripcion</th>
-                                                <th>Servicio</th>
-                                                <th>Porcentaje %</th>
-                                                <th>Acciones</th>
-                                              </tr>
-                                            </thead>
-                                            <tbody>
+                                <div class="toolbar-header">
+                                    <a class="btn btn-success" href="{% url 'discounts:tipo_descuento_create' %}"><i class="fa fa-plus" aria-hidden="true"></i> Registrar Descuento</a>
+                                </div>
+                                  <table class="table">
+                                      <tr class="table-header">
+                                        <th>Descripción</th>
+                                        <th>Servicio</th>
+                                        <th>Porcentaje %</th>
+                                        <th>Acciones</th>
+                                      </tr>
+                                    <tbody>
 
-                                                {% for descuento in descuentos %}
-                                                    <form id="{{ descuento.id_tipo_descuento }}">{% csrf_token %}
-                                                        <input hidden value="{{ descuento.id_tipo_descuento }}" name="id_descuento">
-                                                    </form>
-                                                  <tr>
+                                        {% for descuento in descuentos %}
+                                            <form id="{{ descuento.id_tipo_descuento }}">{% csrf_token %}
+                                                <input hidden value="{{ descuento.id_tipo_descuento }}" name="id_descuento">
+                                            </form>
+                                          <tr>
 
-                                                    <td>{{ descuento.descripcion }}</td>
-                                                    <td>{{ descuento.servicio.nombre }}  {{ descuento.servicio.tipo_servicio }}</td>
-                                                    <td>{{ descuento.porcentaje_entero }} %</td>
-                                                    <td>
-                                                      <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                                                        <button type="submit" form="{{ descuento.id_tipo_descuento }}" formmethod="post" formaction="{% url 'discounts:tipo_descuento_update' %}" title="Editar" class="btn btn-default">
-                                                            <i class="fa fa-pencil" aria-hidden="true"></i>
-                                                        </button>
+                                            <td>{{ descuento.descripcion }}</td>
+                                            <td>{{ descuento.servicio.nombre }}  {{ descuento.servicio.tipo_servicio }}</td>
+                                            <td>{{ descuento.porcentaje_entero }} %</td>
+                                            <td>
+                                              <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                                                <button type="submit" form="{{ descuento.id_tipo_descuento }}" formmethod="post" formaction="{% url 'discounts:tipo_descuento_update' %}" title="Editar" class="btn btn-default">
+                                                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                </button>
 
-                                                      </div>
-                                                    </td>
-                                                  </tr>
-                                                {% empty %}
-                                                {% endfor %}
-                                            </tbody>
-                                          </table>
-                                        </div>
+                                              </div>
+                                            </td>
+                                          </tr>
+                                        {% empty %}
+                                        {% endfor %}
+                                    </tbody>
+                                  </table>
+
 
                             </div>
                     </div>

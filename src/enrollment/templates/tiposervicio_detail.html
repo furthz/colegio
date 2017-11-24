@@ -1,48 +1,50 @@
 {% extends "page.html" %}
 
-{% block title %}{{ block.super }}Matricula{% endblock %}
+{% block title %}{{ block.super }}Matrícula{% endblock %}
 
-{% block breadcrumb %}
-<h1>
-        Detalles del Servicio
-        <small>Modúlo Matricula</small>
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-        <li>Modúlo Matricula</li>
-        <li>Lista de servicios</li>
-        <li class="active">Detalle del Tipo de Servicio</li>
-      </ol>
+{% block titulo %}
+        <h1>
+            Detalle de Servicio
+            <small>Módulo de Matrícula</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li>Módulo Matrícula</li>
+              <li>Lista de Servicios</li>
+            <li class="active">Detalle de Servicio</li>
+        </ol>
 {% endblock %}
 
 {% block container %}
-<section class="content">
+
+
+    <section>
       <div class="row">
           <div class="col-md-12">
               <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Detalles del Tipo deServicio</h3>
+                    <h3 class="box-title">Detalles del Servicio</h3>
                 <div class="box-body">
 
                 <form role="form" name="search" action="" class="form-horizontal">
 
                     <dl class="dl-horizontal">
-                  <dt>Tipo de Servicio</dt>
+                  <dt>Nivel y Grado:</dt>
                   <dd>{{ tiposervicio }}</dd>
                 </dl>
 
                  <dl class="dl-horizontal">
-                  <dt>Codigo Modular</dt>
+                  <dt>Código Modular:</dt>
                   <dd>{{ tiposervicio.codigo_modular }}</dd>
                 </dl>
 
                <dl class="dl-horizontal">
-                  <dt>Fecha Creación</dt>
+                  <dt>Fecha Creación:</dt>
                   <dd> {{ tiposervicio.fecha_creacion }} </dd>
                 </dl>
 
                 <dl class="dl-horizontal">
-                  <dt>Fecha Modificación</dt>
+                  <dt>Fecha Modificación:</dt>
                   <dd>{{ tiposervicio.fecha_modificacion }}</dd>
                 </dl>
 
@@ -60,12 +62,8 @@
                 </div>
               </div>
 
-              </div>
           </div>
-      </section>
-
-
-
-
+      </div>
+    </section>
 
 {% endblock container %}

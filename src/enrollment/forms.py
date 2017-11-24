@@ -78,7 +78,7 @@ class ServicioRegularForm(ModelForm):
             'nombre': _('Concepto de Pago'),
             'precio': _('Precio'),
             'cuotas': _('Nro. de Meses'),
-            'fecha_facturar': _("Día de inicio de generacion de la deuda"),
+            'fecha_facturar': _("Día de inicio de generación de la deuda"),
         }
     def ListaConceptoPago(self):
         MY_CHOICES = (

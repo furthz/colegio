@@ -1,14 +1,17 @@
 {% extends "page.html" %}
+
+{% block title %}{{ block.super }}Pagos{% endblock %}
+
 {% load staticfiles %}
 
 {% block breadcrumb %}
-<h1>
+      <h1>
         Control de Pagos
-        <small>Modúlo de facturación</small>
+        <small>Módulo de Facturación</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-        <li>Modúlo de facturación</li>
+        <li>Módulo de Facturación</li>
         <li class="active">Control de Pagos</li>
       </ol>
 {% endblock %}
@@ -21,12 +24,12 @@
     {{ mensaje_error }}
 {% else %}
     <!-- INICIO DE CONTENIDO -->
-    <section class="content">
+    <section>
       <div class="row">
           <div class="col-md-12">
               <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Control de pagos</h3>
+                    <h3 class="box-title">Control de Pagos</h3>
                 </div>
                 <div class="box-body">
                   <div class="col-md-9">
@@ -57,7 +60,7 @@
                                     </div>
                                     <div class="col-md-4">
                                       <div class="form-group">
-                                      <label>Tipo de pago</label>
+                                      <label>Tipo de Pago</label>
                                         <select name="tipo_pago"  class="form-control">
                                             {% for tipo_pago in tipos_pagos %}
                                                 {% if tipo_pago == "Todos" %}
@@ -86,11 +89,11 @@
                         <div class="box box-success">
                           <div class="box-header with-border">
                               {% if not mes_llega %}
-                                  <h3 class="box-title">Reporte de gastos</h3>
+                                  <h3 class="box-title">Reporte de Gastos</h3>
                               {% elif mes_llega == "Todos" %}
-                                  <h3 class="box-title">Reporte de gastos del año {{ anio_llega }}</h3>
+                                  <h3 class="box-title">Reporte de Gastos del año {{ anio_llega }}</h3>
                               {% else %}
-                                  <h3 class="box-title">Reporte de gastos del mes de {{ mes_llega }} del {{ anio_llega }}</h3>
+                                  <h3 class="box-title">Reporte de Gastos del mes de {{ mes_llega }} del {{ anio_llega }}</h3>
                               {% endif %}
                           </div>
                           <div class="box-body">
@@ -104,11 +107,11 @@
                         <div class="box box-success">
                           <div class="box-header with-border">
                               {% if not mes_llega %}
-                                  <h3 class="box-title">Detalle de los gastos</h3>
+                                  <h3 class="box-title">Detalle de Gastos</h3>
                               {% elif mes_llega == "Todos" %}
-                                  <h3 class="box-title">Detalle de los gastos del año {{ anio_llega }}</h3>
+                                  <h3 class="box-title">Detalle de Gastos del año {{ anio_llega }}</h3>
                               {% else %}
-                                  <h3 class="box-title">Detalle de los gastos del mes de {{ mes_llega }} del {{ anio_llega }}</h3>
+                                  <h3 class="box-title">Detalle de Gastos del mes de {{ mes_llega }} del {{ anio_llega }}</h3>
                               {% endif %}
                           </div>
                           <div class="box-body">
