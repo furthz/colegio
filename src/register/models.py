@@ -610,7 +610,7 @@ class Proveedor(CreacionModificacionUserProveedorMixin, CreacionModificacionFech
     """
     id_proveedor = models.AutoField(primary_key=True)
     razon_social = models.CharField(max_length=100)
-    ruc = models.IntegerField(max_length=11)
+    ruc = models.IntegerField(max_length=11, unique=True)
 
     def __str__(self):
         return self.razon_social
