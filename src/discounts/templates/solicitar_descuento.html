@@ -2,22 +2,21 @@
 
 {% block title %}{{ block.super }}Descuentos{% endblock %}
 
-{% block breadcrumb %}
-<h1>
-        Solicitar Descuentos
-        <small>Modúlo Matricula</small>
+{% block titulo %}
+      <h1>
+        Solicitar Descuento
+        <small>Módúlo de Facturación</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-        <li>Modúlo Matricula</li>
-
-        <li class="active">Solicitar Descuentos</li>
+        <li>Módúlo de Facturación</li>
+        <li class="active">Solicitar Descuento</li>
       </ol>
 {% endblock %}
 
 {% block container %}
 {% load crispy_forms_tags %}
-<section class="content">
+<section>
       <div class="row">
           <div class="col-md-12">
               <div class="box box-primary">
