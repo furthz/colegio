@@ -57,95 +57,45 @@
                                       <div class="panel-body">
                                           <div class="panel-group" id="accordion2">
                                             {% for tipopago in object_list %}
-                                            {% if tipopago.tipo == 0 and tipopago.eliminado == 0  %}
-                                                {% if tipopago.padre == None %}
+                                                {% if tipopago.tipo == 0 and tipopago.eliminado == 0  %}
+                                                    {% if tipopago.padre == None %}
 
 
-                                                    <div class="panel-body">
-                                                        <!-- <p>Es un bien, no esta eliminado y No tiene ID_PARENT, Como no tienen padre muestran descripción</p>
-                                                        Panel 1                                -->
-                                                        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                                                            <div class="panel-body">
-                                                                <h4>Lista de Bienes</h4>
-                                                                <table class="table">
-                                                                    <tr class="table-header">
-                                                                        <th>Ítem</th>
-                                                                        <th>Descripción</th>
-                                                                        <th>Acciones</th>
-                                                                    </tr>
-                                                                    <tbody>
-                                                                    <tr>
-                                                                        <th scope="row">{{ forloop.counter }}</th>
-                                                                        <td>{{ tipopago.descripcion }}</td>
-                                                                        <td>
-                                                                            <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                                                        <div class="panel-body">
+                                                            <!-- <p>Es un bien, no esta eliminado y No tiene ID_PARENT, Como no tienen padre muestran descripción</p>
+                                                            Panel 1                                -->
+                                                            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                                                <div class="panel-body">
+                                                                    <h4>Lista de Bienes</h4>
+                                                                    <table class="table">
+                                                                        <tr class="table-header">
+                                                                            <th>Ítem</th>
+                                                                            <th>Descripción</th>
+                                                                            <th>Acciones</th>
+                                                                        </tr>
+                                                                        <tbody>
+                                                                        <tr>
+                                                                            <th scope="row">{{ forloop.counter }}</th>
+                                                                            <td>{{ tipopago.descripcion }}</td>
+                                                                            <td>
+                                                                                <div class="btn-group btn-group-sm" role="group" aria-label="...">
 
-                                                                                <a title="Detalle" href='{% url "payments:tipopago_detail" tipopago.id_tipo_pago %}' class="btn btn-default">
-                                                                                    <i class="fa fa-info-circle" aria-hidden="true"></i>
-                                                                                </a>
-                                                                                <a title="Eliminar" href="{% url 'payments:tipopago_delete' tipopago.id_tipo_pago %}" class="btn btn-default">
-                                                                                    <i class="fa fa-trash" aria-hidden="true"></i>
-                                                                                </a>
-                                                                            </div>
-                                                                        </td>
-                                                                    </tr>
-                                                                    </tbody>
-                                                                </table>
+                                                                                    <a title="Detalle" href='{% url "payments:tipopago_detail" tipopago.id_tipo_pago %}' class="btn btn-default">
+                                                                                        <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                                                                    </a>
+                                                                                    <a title="Eliminar" href="{% url 'payments:tipopago_delete' tipopago.id_tipo_pago %}" class="btn btn-default">
+                                                                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                                                                    </a>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                {% else %}
-
-
-                                                        <div class="panel panel-default">
-                                                        <div class="panel-heading">
-                                                            <h4 class="panel-title">
-                                                                <a data-toggle="collapse" data-parent="#accordion2" href="#2a{{ tipopago.id_tipo_pago }}" aria-expanded="false" class="collapsed">
-
-                                                                    <!--ACÁ SE DEBERÁ MOSTRAR EL NOMBRE DEL PADRE-->
-                                                                    {{ tipopago.padre }}
-
-                                                                </a>
-                                                            </h4>
-                                                        </div>
-                                                        <div id="2a{{ tipopago.id_tipo_pago }}" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                                                            <div class="panel-body">
-
-                                                                <!--Acá los que estén ligados al padre-->
-
-                                                                <h4>Lista de Bienes</h4>
-                                                                <table class="table">
-                                                                    <tr class="table-header">
-                                                                        <th>Ítem</th>
-                                                                        <th>Descripción</th>
-                                                                        <th>Acciones</th>
-                                                                    </tr>
-                                                                    <tbody>
-                                                                    <tr>
-                                                                        <th scope="row">{{ forloop.counter0 }}</th>
-                                                                        <td>{{ tipopago.descripcion }}</td>
-                                                                        <td>
-                                                                            <div class="btn-group btn-group-sm" role="group" aria-label="...">
-
-                                                                                <a title="Detalle" href='{% url "payments:tipopago_detail" tipopago.id_tipo_pago %}' class="btn btn-default">
-                                                                                    <i class="fa fa-info-circle" aria-hidden="true"></i>
-                                                                                </a>
-                                                                                <a title="Eliminar" href="{% url 'payments:tipopago_delete' tipopago.id_tipo_pago %}" class="btn btn-default">
-                                                                                    <i class="fa fa-trash" aria-hidden="true"></i>
-                                                                                </a>
-                                                                            </div>
-                                                                        </td>
-                                                                    </tr>
-                                                                    </tbody>
-                                                                </table>
-
-
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                    {% endif %}
                                                 {% endif %}
-                                            {% endif %}
                                             {% endfor %}
                                           </div>
                                       </div>
