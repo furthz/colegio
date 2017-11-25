@@ -1,26 +1,27 @@
 {% extends "page.html" %}
-{% block title %}{{ block.super }}Tipo de Pago{% endblock %}
+
+{% block title %}{{ block.super }}Pagos{% endblock %}
+
+{% block titulo %}
+    <!-- HEADER INFO PAGE UBICACION -->
+        <h1>
+            Registro de Tipo de Pago
+            <small>Módulo de Facturación</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li>Módulo de Facturación</li>
+            <li class="active">Registrar Tipo de Pagos</li>
+        </ol>
+    <!-- FIN DE INFO PAGE UBICACION -->
+{% endblock %}
 
 {% block container %}
-
-    <!--Comienza el contenido!!!!!!!!!!!!!!!!!!!-->
     <!-- INICIA CONTENDOR DE FORMULARIOS -->
     <div>
-        <!-- HEADER INFO PAGE UBICACION -->
-        <section class="content-header">
-            <h1>
-                Control de pagos
-                <small>Módulo de pagos</small>
-            </h1>
-            <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-                <li>Módulo de Pagos</li>
-                <li class="active">Control de Pagos</li>
-            </ol>
-        </section>
-        <!-- FIN DE INFO PAGE UBICACION -->
+
         <!-- INICIO DE CONTENIDO -->
-        <section class="content">
+        <section>
             <div class="row">
                 <div class="col-md-12">
                     <div class="box box-primary">

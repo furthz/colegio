@@ -1,27 +1,28 @@
 {% extends "page.html" %}
-{% block title %}{{ block.super }}Tipo de Pago{% endblock %}
-{% block container %}
 
-    <!--Comienza el contenido!!!!!!!!!!!!!!!!!!!-->
+{% block title %}{{ block.super }}Pagos{% endblock %}
 
-
-  <!-- INICIA CONTENDOR DE FORMULARIOS -->
-  <div class="content-wrapper">
-    <!-- HEADER INFO PAGE UBICACION -->
-    <section class="content-header">
+<!-- HEADER INFO PAGE UBICACION -->
+{% block titulo %}
       <h1>
         Tipos de Pagos
-        <small>Modúlo de Pagos</small>
+        <small>Módulo de Facturación</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-        <li>Modúlo de Pagos</li>
+        <li>Módulo de Facturación</li>
         <li class="active">Lista de Tipos de Pagos</li>
       </ol>
-    </section>
-     <!-- FIN DE INFO PAGE UBICACION -->
+{% endblock %}
+<!-- FIN DE INFO PAGE UBICACION -->
+
+{% block container %}
+
+  <!-- INICIA CONTENDOR DE FORMULARIOS -->
+  <div>
+
     <!-- INICIO DE CONTENIDO -->
-    <section class="content">
+    <section>
       <div class="row">
           <div class="col-md-12">
               <div class="box box-primary">
@@ -32,8 +33,11 @@
                   <div class="col-md-9">
                     <div class="panel-page">
 
-
                       <div class="panel-body">
+
+                        <div class="toolbar-header">
+                            <a class="btn btn-success" href="{% url 'payments:tipopago_create' %}"><i class="fa fa-plus" aria-hidden="true"></i>Registrar Tipo de Pago</a>
+                        </div>
                         <!-- INICIA LA LISTA DE REGISTROS -->
                         <div class="page-header">
 
@@ -64,16 +68,14 @@
                                                             <div class="panel-body">
                                                                 <h4>Lista de Bienes</h4>
                                                                 <table class="table">
-                                                                    <thead>
-                                                                    <tr>
-                                                                        <th>Item</th>
-                                                                        <th>Descripcion</th>
+                                                                    <tr class="table-header">
+                                                                        <th>Ítem</th>
+                                                                        <th>Descripción</th>
                                                                         <th>Acciones</th>
                                                                     </tr>
-                                                                    </thead>
                                                                     <tbody>
                                                                     <tr>
-                                                                        <th scope="row">{{ forloop.counter0 }}</th>
+                                                                        <th scope="row">{{ forloop.counter }}</th>
                                                                         <td>{{ tipopago.descripcion }}</td>
                                                                         <td>
                                                                             <div class="btn-group btn-group-sm" role="group" aria-label="...">
@@ -113,13 +115,11 @@
 
                                                                 <h4>Lista de Bienes</h4>
                                                                 <table class="table">
-                                                                    <thead>
-                                                                    <tr>
-                                                                        <th>Item</th>
-                                                                        <th>Descripcion</th>
+                                                                    <tr class="table-header">
+                                                                        <th>Ítem</th>
+                                                                        <th>Descripción</th>
                                                                         <th>Acciones</th>
                                                                     </tr>
-                                                                    </thead>
                                                                     <tbody>
                                                                     <tr>
                                                                         <th scope="row">{{ forloop.counter0 }}</th>
