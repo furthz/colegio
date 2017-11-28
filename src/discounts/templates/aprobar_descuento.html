@@ -1,19 +1,17 @@
 {% extends "page.html" %}
 
-{% block title %}{{ block.super }}Descuento{% endblock %}
+{% block title %}{{ block.super }}Descuentos{% endblock %}
 
-{% block breadcrumb %}
-<h1>
-        Lista de Descuentos Solicitados
-        <small>Modúlo Descuentos</small>
+{% block titulo %}
+      <h1>
+        Descuentos Solicitados
+        <small>Módulo de Facturación</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-        <li class="active">Modúlo Descuentos</li>
+        <li class="active">Módulo de Facturación</li>
       </ol>
 {% endblock %}
-
-
 
 {% block container %}
 
@@ -31,12 +29,12 @@
             }
         </script>
 
-        <section class="content">
+        <section>
               <div class="row">
                   <div class="col-md-12">
                       <div class="box box-primary">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Detalles del Descuento</h3>
+                            <h3 class="box-title">Solicitudes de Descuento</h3>
                         </div>
 
                                 <table class="table table-hover">

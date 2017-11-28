@@ -19,6 +19,14 @@
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">MENÚ DE NAVEGACIÓN</li>
 
+
+                <li >
+                    <a href="{% url 'profiles:show_self' %}">
+                <img src="{% static 'site/img/svg/user.svg' %}" width="22px" height="22px"/>
+                <span>MI PERFIL</span>
+              </a>
+                </li>
+
             {% if perms.register.colegio_create %}
             <li class="treeview yellow">
                   <a href="#">
@@ -31,6 +39,7 @@
                   <ul class="treeview-menu">
                     <li><a href="{% url 'registers:colegio_list' %}"><i class="fa fa-circle-o"></i> Registrar Colegio</a></li>
                   </ul>
+
 
             </li>
             {% endif %}
@@ -83,7 +92,9 @@
               </ul>
             </li>
             {% endif %}
-            {% if  perms.enrollment.Matricula_List or perms.enrollment.Tipo_Servicio_List%}
+
+            {% if  perms.enrollment.Matricula_List or perms.enrollment.Tipo_Servicio_List %}
+
             <li class="{% if namespace == 'enrollments' %}active treeview orange {% else  %}treeview blue{% endif %} ">
               <a href="#">
                 <img src="{% static 'site/img/svg/notepad.svg' %}" width="22px" height="22px"/>
@@ -100,8 +111,10 @@
                     <li><a href="{% url 'enrollments:matricula_list' %}"><i class="fa fa-circle-o"></i> Matrícula</a></li>
                     {% endif %}
                 </ul>
-        </li>
-        {% endif %}
+            </li>
+            {% endif %}
+
+
 
         {% if  perms.cash.Cashier_List or perms.cash.Consigment_Creation or perms.cash.Box_Cashier_Creation or perms.cash.Box_Cashier_List%}
         <li class="{% if namespace == 'cash' %}active treeview orange {% else  %}treeview green{% endif %} ">
@@ -131,6 +144,7 @@
                 </ul>
         </li>
         {% endif %}
+
         {% if perms.cash.Box_Cashier_Creation or perms.enrollment.control_ingresos_padres or perms.enrollment.control_ingresos_promotor_detalle%}
         <li class="{% if namespace == 'income' %}active treeview orange {% else  %}treeview green{% endif %} ">
           <a href="#">
@@ -157,6 +171,7 @@
         </li>
         {% endif %}
 
+
         {% if  perms.payments.Registrar_Pago_Create or perms.payments.control_pagos or perms.payments.add_tipopago%}
         <li class="{% if namespace == 'payments' %}active treeview orange {% else  %}treeview yellow{% endif %} ">
               <a href="#">
@@ -174,11 +189,12 @@
                       <li><a href="{% url 'payments:pago_promotor' %}"><i class="fa fa-circle-o"></i> Control de Pagos</a></li>
                   {% endif %}
                   {% if perms.payments.add_tipopago %}
-                      <li><a href="{% url 'payments:tipopago_create' %}"><i class="fa fa-circle-o"></i> Manejo de Pagos</a></li>
+                      <li><a href="{% url 'payments:tipopago_list' %}"><i class="fa fa-circle-o"></i> Manejo de Pagos</a></li>
                   {% endif %}
               </ul>
         </li>
         {% endif %}
+
         {% if perms.discounts.Solicitar_Descuento or perms.discounts.aprobar_descuento or perms.discounts.detalle_descuento %}
         <li class="{% if namespace == 'discounts' %}active treeview orange {% else  %}treeview purple{% endif %} ">
               <a href="#">
@@ -204,6 +220,33 @@
               </ul>
         </li>
         {% endif %}
+
+        <li class="{% if namespace == 'academic' %}active treeview orange {% else  %}treeview purple{% endif %} ">
+              <a href="#">
+                <img src="{% static 'site/img/svg/folder-document.svg' %}" width="22px" height="22px"/>
+                <span>Académico</span>
+                <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+              </a>
+              <ul class="treeview-menu">
+
+                  <li><a href="{% url 'academic:aula_list' %}"><i class="fa fa-circle-o"></i> Lista de Aulas</a></li>
+
+
+                  <li><a href="{% url 'academic:curso_list' %}"><i class="fa fa-circle-o"></i> Lista de Cursos</a></li>
+
+
+                  <li><a href="{% url 'academic:asistencia_registrar_dia' %}"><i class="fa fa-circle-o"></i> Registrar Asistencia</a></li>
+
+
+                  <li><a href="{% url 'academic:notas_registrar' %}"><i class="fa fa-circle-o"></i> Registrar Notas</a></li>
+
+
+                  <li><a href="{% url 'academic:evento_create' %}"><i class="fa fa-circle-o"></i> Registrar Evento</a></li>
+
+              </ul>
+        </li>
 
       </ul>
       {% endwith %}

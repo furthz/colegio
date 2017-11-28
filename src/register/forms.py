@@ -63,7 +63,7 @@ class PersonaForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['tipo_documento'] = forms.ChoiceField(choices=self.ChoiceTipoDocumento,
-                                                          widget=forms.Select(attrs={'tabindex': '5', 'class': 'form-control'}))
+                                                          widget=forms.Select(attrs={'tabindex': '5', 'class': 'form-control', 'onchange': 'dni()'}))
         self.fields['sexo'] = forms.ChoiceField(choices=self.ChoiceTipoSexo,
                                                 widget=forms.Select(attrs={'tabindex': '7', 'class': 'form-control'}))
         self.fields['departamento'] = forms.ChoiceField(choices = self.ChoiceDepartamento, initial='-1',
@@ -309,3 +309,14 @@ class ColegioForm(ModelForm):
                                                      widget=forms.Select(attrs={'class': 'form-control'}))
         self.fields['distrito'] = forms.ChoiceField(choices=self.ChoiceDistrito,
                                                     widget=forms.Select(attrs={'class': 'form-control'}))
+
+
+
+class DocenteForm(ValidProfileFormMixin, PersonaForm):
+
+    title = forms.CharField(label="Registrar Docente", required=False)
+
+    class Meta:
+        model = Docente
+        fields = ['nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento', 'numero_documento',
+                  'sexo', 'correo', 'fecha_nac']

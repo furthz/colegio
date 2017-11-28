@@ -942,12 +942,10 @@ class HorarioAulaCreateView(CreateView):
         roles = ['promotor', 'director', 'administrativo', 'tesorero']
         if validar_roles(roles=roles):
             curso = CursoDocente.objects.filter(curso=request.GET["curso"], activo=True)
-
             return render(request, template_name=self.template_name, context={
                 'form': self.form_class,
                 'curso': curso,
             })
-
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
     """

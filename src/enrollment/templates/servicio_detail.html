@@ -1,23 +1,23 @@
 {% extends "page.html" %}
 
-{% block title %}{{ block.super }}Matricula{% endblock %}
+{% block title %}{{ block.super }}Matrícula{% endblock %}
 
-{% block breadcrumb %}
-<h1>
+{% block titulo %}
+      <h1>
         Detalles del Servicio
-        <small>Modúlo Matricula</small>
+        <small>Módulo Matrícula</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-        <li>Modúlo Matricula</li>
-        <li>Lista de servicios</li>
+        <li>Módulo Matrícula</li>
+        <li>Lista de Servicios</li>
         <li class="active">Detalle del Servicio</li>
       </ol>
 {% endblock %}
 
 
 {% block container %}
-<section class="content">
+<section>
       <div class="row">
           <div class="col-md-12">
               <div class="box box-primary">
@@ -29,27 +29,27 @@
 
 
                  <dl class="dl-horizontal">
-                  <dt>Tipo Servicio</dt>
+                  <dt>Nivel y Grado:</dt>
                   <dd>{{ servicio.tipo_servicio }}</dd>
                 </dl>
 
                <dl class="dl-horizontal">
-                  <dt>Descripción</dt>
+                  <dt>Descripción:</dt>
                   <dd> {{ servicio.nombre }} </dd>
                 </dl>
 
                 <dl class="dl-horizontal">
-                  <dt>Precio</dt>
+                  <dt>Precio:</dt>
                   <dd>{{ servicio.precio }}</dd>
                 </dl>
 
                  <dl class="dl-horizontal">
-                  <dt>Fecha a Facturar</dt>
+                  <dt>Fecha a Facturar:</dt>
                   <dd>{{ servicio.fecha_facturar }}</dd>
                 </dl>
 
                  <dl class="dl-horizontal">
-                  <dt>Cuotas</dt>
+                  <dt>Cuotas:</dt>
                   <dd>{{ servicio.cuotas }}</dd>
                 </dl>
 

@@ -1,15 +1,18 @@
 {% extends "page.html" %}
+
+{% block title %}{{ block.super }}Ingresos{% endblock %}
+
 {% load staticfiles %}
 
-{% block breadcrumb %}
-<h1>
-        Control de Ingresos Promotor
-        <small>Módulo de facturación</small>
+{% block titulo %}
+      <h1>
+        Reporte de Recaudación
+        <small>Módulo de Facturación</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-        <li>Módulo de facturación</li>
-        <li class="active">Control de Ingresos Promotor</li>
+        <li>Módulo de Facturación</li>
+        <li class="active">Reporte de Recaudación</li>
       </ol>
 {% endblock %}
 
@@ -20,12 +23,12 @@
     {{ mensaje_error }}
 {% else %}
     <!-- INICIO DE CONTENIDO -->
-    <section class="content">
+    <section>
       <div class="row">
           <div class="col-md-12">
               <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Control de ingresos</h3>
+                    <h3 class="box-title">Control de Ingresos</h3>
                 </div>
                 <div class="box-body">
                   <div class="col-md-9">
@@ -71,11 +74,11 @@
                         <div class="box box-success">
                           <div class="box-header with-border">
                               {% if not mes_llega %}
-                                  <h3 class="box-title">Reporte de recaudación</h3>
+                                  <h3 class="box-title">Reporte de Recaudación</h3>
                               {% elif mes_llega == "Todos" %}
-                                  <h3 class="box-title">Reporte de recaudación del año {{ anio_llega }}</h3>
+                                  <h3 class="box-title">Reporte de Recaudación del año {{ anio_llega }}</h3>
                               {% else %}
-                                  <h3 class="box-title">Reporte de recaudación del mes de {{ mes_llega }} del {{ anio_llega }}</h3>
+                                  <h3 class="box-title">Reporte de Recaudación del mes de {{ mes_llega }} del {{ anio_llega }}</h3>
                               {% endif %}
                           </div>
                           <div class="box-body">
@@ -90,11 +93,11 @@
                         <div class="box box-success">
                           <div class="box-header with-border">
                               {% if not mes_llega %}
-                                  <h3 class="box-title">Monto recaudado por población</h3>
+                                  <h3 class="box-title">Monto Recaudado por Población</h3>
                               {% elif mes_llega == "Todos" %}
-                                  <h3 class="box-title">Monto recaudado por población de este mes</h3>
+                                  <h3 class="box-title">Monto Recaudado por Población de este mes</h3>
                               {% else %}
-                                  <h3 class="box-title">Monto recaudado por población del mes de {{ mes_llega }} del {{ anio_llega }}</h3>
+                                  <h3 class="box-title">Monto Recaudado por Población del mes de {{ mes_llega }} del {{ anio_llega }}</h3>
                               {% endif %}
                           </div>
                           <div class="box-body">

@@ -1,22 +1,23 @@
 {% extends "page.html" %}
 
-{% block title %}{{ block.super }}Matricula{% endblock %}
-{% block breadcrumb %}
-<h1>
-        Actualización de Servicios
-        <small>Modúlo Matricula</small>
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-        <li>Modúlo Matricula</li>
-          <li>Lista de servicios</li>
-        <li class="active">Actualización de servicios</li>
-      </ol>
-{% endblock %}
+{% block title %}{{ block.super }}Matrícula{% endblock %}
 
 {% block container %}
-{% load crispy_forms_tags %}
-<section class="content">
+    <div>
+        <section class="content-header">
+            <h1>
+                Actualización de Servicios
+                <small>Módulo de Matrícula</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+                <li>Módulo Matrícula</li>
+                  <li>Lista de Servicios</li>
+                <li class="active">Actualización de Servicios</li>
+            </ol>
+        </section>
+        {% load crispy_forms_tags %}
+        <section class="content">
       <div class="row">
           <div class="col-md-12">
               <div class="box box-primary">

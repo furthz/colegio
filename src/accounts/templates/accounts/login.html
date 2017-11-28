@@ -15,6 +15,22 @@
                 {{ form.password }}
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
+
+            {% if form.errors %}
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <div class="alert alert-danger">
+                            <h4>Por favor ingrese un email y contraseña correctos</h4>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        <h4>Por favor ingrese un email y contraseña correctos</h4>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
             <div class="row">
                 <div class="col-xs-6">
                     <div class="checkbox incheck">
@@ -28,16 +44,18 @@
                      <a class="forgot-password" href="#" title="Olvide contraseña">¿Olvide mi contraseña?</a>
                 </div>
             </div>
+            <br>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary btn-block btn-flat">Ingresar</button>
             </div>
         </form>
-
+<!--
         <div class="form-message">
             <p>
                 No tienes una cuenta? <a href="{% url 'accounts:signup' %}">Regístrate</a>.
             </p>
         </div>
+-->
 
 {% endblock container %}
 

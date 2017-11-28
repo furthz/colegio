@@ -57,7 +57,7 @@ class PagoForm(ModelForm):
             'tipo_pago':_('Tipo de Pago'),
             'descripcion':_('Descripción'),
             'monto':_('Monto(S/.)'),
-            'numero_comprobante':_('Nro Comprobante'),
+            'numero_comprobante':_('N° Comprobante'),
         }
 
     def __init__(self, *args, **kwargs):

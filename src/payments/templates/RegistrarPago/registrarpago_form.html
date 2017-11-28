@@ -1,61 +1,57 @@
 {% extends "page.html" %}
 
-{% block title %}{{ block.super }}Matricula{% endblock %}
+{% block title %}{{ block.super }}Pagos{% endblock %}
 
-
-{% block breadcrumb %}
-<h1>
+{% block titulo %}
+      <h1>
         Registrar Pago
-        <small>Modúlo de facturación</small>
+        <small>Módulo de Facturación</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-        <li>Modúlo de facturación</li>
+        <li>Módulo de Facturación</li>
         <li class="active">Registrar Pago</li>
       </ol>
 {% endblock %}
 
 {% block container %}
-<section class="content">
-      <div class="row">
-          <div class="col-md-12">
-              <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Registrar pago</h3>
-                </div>
-                <div class="box-body">
-                  <div class="col-md-9">
-                    <div class="panel-page">
-                            <div class="box-body">
-                                <a class="btn btn-success" href="{% url 'registers:proveedor_create' %}" >Crear Nuevo Proveedor</a>
-
-                                <form action="" method="POST" class="form-horizontal" id="1">{% csrf_token %}
-                                    {% csrf_token %}
-                                    {{ form.as_p}}
-                                </form>
-                                <div class="form-group">
-                                    <div class="col-sm-offset-2 col-sm-10">
-                                        <a class="btn btn-default" href="{% url 'payments:registrarpago_create' %}">Cancelar</a>
-                                        <button type="submit" onclick="saldoinsuficiente()" class="btn btn-success" formaction="{% url 'payments:registrarpago_create' %}" form="1">Registrar Pago</button>
+    <section>
+          <div class="row">
+              <div class="col-md-12">
+                  <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Registrar Pago</h3>
+                    </div>
+                    <div class="box-body">
+                      <div class="col-md-9">
+                        <div class="panel-page">
+                                <div class="box-body">
+                                    <div class="toolbar-header">
+                                        <a class="btn btn-success" href="{% url 'registers:proveedor_create' %}" >Crear Nuevo Proveedor</a>
                                     </div>
+                                    <form action="" method="POST" class="form-horizontal" id="1">{% csrf_token %}
+                                        {% csrf_token %}
+                                        {{ form.as_p}}
+                                    </form>
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <a class="btn btn-default" href="{% url 'payments:registrarpago_create' %}">Cancelar</a>
+                                            <button type="submit" onclick="saldoinsuficiente()" class="btn btn-success" formaction="{% url 'payments:registrarpago_create' %}" form="1">Registrar Pago</button>
+                                        </div>
+                                    </div>
+
                                 </div>
 
-                            </div>
+                                <label colspan="5" class="table-bold-print">Saldo en Caja Chica</label>
+                                S/.<input disabled value=" {{ saldo }}" name="saldo" id= "saldo" class="form-control">
 
-                            <label colspan="5" class="table-bold-print">Saldo en Caja Chica</label>
-                            S/.<input disabled value=" {{ saldo }}" name="saldo" id= "saldo" class="form-control">
-
-
-
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
               </div>
           </div>
-      </div>
-</section>
-
-
+    </section>
 
 {% endblock container %}
 

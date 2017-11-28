@@ -220,6 +220,7 @@ class Apoderado(CreacionModificacionUserApoderadoMixin, CreacionModificacionFech
         )
 
 
+
 class Alumno(CreacionModificacionUserAlumnoMixin, CreacionModificacionFechaAlumnoMixin, Profile, models.Model):
     """
     Clase para identificar a los Alumnos
@@ -609,7 +610,7 @@ class Proveedor(CreacionModificacionUserProveedorMixin, CreacionModificacionFech
     """
     id_proveedor = models.AutoField(primary_key=True)
     razon_social = models.CharField(max_length=100)
-    ruc = models.CharField(max_length=15)
+    ruc = models.IntegerField(max_length=11, unique=True)
 
     def __str__(self):
         return self.razon_social
@@ -652,3 +653,52 @@ class ProveedorColegio(ActivoMixin, CreacionModificacionUserProveedorMixin, Crea
 
     def __str__(self):
         return self.proveedor.razon_social
+
+
+class Docente(CreacionModificacionUserSistemasMixin, CreacionModificacionFechaSistemasMixin, Personal, models.Model):
+    """
+    Clase para el Docente
+    """
+    id_docente = models.AutoField(primary_key=True)
+    empleado = models.OneToOneField(Personal, models.DO_NOTHING, parent_link=True)
+    activo_docente = models.BooleanField(default=True, db_column="activo")
+
+    def __str__(self):
+        return "Id Docente: {0}".format(self.id_docente)
+
+    def get_absolute_url(self):
+        """
+        Redirecciona las views que usan como modelo esta clase
+        :return: url de detalles de la persona
+        """
+        return reverse('registers:personal_detail', kwargs={'pk': self.pk})
+
+    @staticmethod
+    def saveFromPersonal(per: Personal, **atributos):
+        """
+        # Método que permite guardar un Promotor a partir de un personal existente
+        # :param personal: Personal existente
+        # :param atributos: Nuevos atributos propios de Apoderado
+        # :return: Objeto Promotor creado
+        """
+        try:
+            docente = Docente.objects.get(empleado=per)
+            return docente
+        except Docente.DoesNotExist:
+            return insert_child(obj=per, child_model=Docente, **atributos)
+
+    class Meta:
+        managed = True
+        # db_table = 'docente'
+        permissions = (
+            ("docente_create", "crear docente"),
+            ("docente_update", "update docente"),
+            ("docente_delete", "eliminar docente"),
+            ("docente_list", "listar docente"),
+            ("docente_detail", "detalle docente"),
+        )
+
+
+
+
+
