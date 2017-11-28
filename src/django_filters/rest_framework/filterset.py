@@ -6,7 +6,7 @@ from django import forms
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from ss import filterset
+from django_filters import filterset
 from .filters import BooleanFilter, IsoDateTimeFilter
 from .. import compat, utils
 
