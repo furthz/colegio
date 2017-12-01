@@ -11,7 +11,19 @@ urlpatterns = [
     url(r'^colegio_api/(?P<pk>\d+)/$', views.ColegioDetail.as_view()),
     url(r'^perfil_api/$', views.PerfilList.as_view()),
     url(r'^perfil_api/(?P<pk>\d+)/$', views.PerfilDetail.as_view()),
-
+####################
+    url(r'^apoderado_api/$', views.ApoderadoList.as_view()),
+    url(r'^apoderado_api/(?P<pk>\d+)/$', views.ApoderadoDetail.as_view()),
+###################
+    url(r'^alumno_api/$', views.AlumnoList.as_view()),
+    url(r'^alumno_api/(?P<pk>\d+)/$', views.AlumnoDetail.as_view()),
+###################
+    url(r'^apoderadoalumno_api/$', views.ApoderadoAlumnoList.as_view()),
+    url(r'^apoderadoalumno_api/(?P<pk>\d+)/$', views.ApoderadoAlumnoDetail.as_view()),
+###################
+    url(r'^matricula_api/$', views.MatriculaList.as_view()),
+    url(r'^matricula_api/(?P<pk>\d+)/$', views.MatriculaDetail.as_view()),
+###################
 
     # URL para el Web Service del Módulo Académico
     url(r'^asistencia_api/$', views.AsistenciaList.as_view()),
@@ -21,10 +33,6 @@ urlpatterns = [
     url(r'^aula_api/(?P<pk>\d+)/$', views.AulaDetail.as_view()),
 
     #url(r'^curso_docente_api/$', views.CursoDocenteList.as_view()),
-
-
-    url(r'^matricula_api/$', views.MatriculaList.as_view()),
-    url(r'^matricula_api/(?P<pk>\d+)/$', views.MatriculaDetail.as_view()),
 
     url(r'^alumno_api/$', views.AlumnoList.as_view()),
     url(r'^alumno_api/(?P<pk>\d+)/$', views.AlumnoDetail.as_view()),
