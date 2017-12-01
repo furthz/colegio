@@ -4,14 +4,17 @@ from django.shortcuts import render
 # Create your views here.
 from AE_academico.models import Asistencia, Aula, AulaMatricula, CursoDocente, AulaCurso
 from enrollment.models import Matricula
-from register.models import Profile ,Personal ,PersonalColegio ,Colegio, Alumno
-from .serializers import ColegioSerializer, ProfileSerializer, AsistenciaSerializer, AulaSerializer, \
-    CursoDocenteSerializer, MatriculaSerializer, AlumnoSerializer, AulaCursoSerializer
+from register.models import Profile, Personal, PersonalColegio, Colegio, Apoderado, Alumno, ApoderadoAlumno
+from .serializers import *
 from rest_framework import generics
 from rest_framework.views import APIView
 from django.views.generic import ListView
 from utils.middleware import get_current_request, get_current_user, get_current_colegio
 from authtools.models import User
+
+from rest_framework.filters import SearchFilter
+from django_filters.rest_framework import DjangoFilterBackend
+
 from django.http import Http404
 from rest_framework.response import Response
 import logging
@@ -30,12 +33,13 @@ class UserInfoListView(ListView):
             iduser = -1
         profile_id = Profile.objects.get(user_id=iduser)
         personal_id = Personal.objects.get(persona_id=profile_id)
-        #personalcolegio_id = PersonalColegio.objects.values('pk').filter(personal_id=personal_id)[0]['pk']
+        # personalcolegio_id = PersonalColegio.objects.values('pk').filter(personal_id=personal_id)[0]['pk']
         context['id_usuario'] = iduser
         context['nombre_usuario'] = User.objects.values('name').filter(id=iduser)[0]['name']
         context['usuario_email'] = User.objects.values('email').filter(id=iduser)[0]['email']
         context['nombre_profile'] = Profile.objects.values('nombre').filter(user_id=iduser)[0]['nombre']
-        context['nombre2_profile'] = Profile.objects.values('segundo_nombre').filter(user_id=iduser)[0]['segundo_nombre']
+        context['nombre2_profile'] = Profile.objects.values('segundo_nombre').filter(user_id=iduser)[0][
+            'segundo_nombre']
         context['apellido_pa_profile'] = Profile.objects.values('apellido_pa').filter(user_id=iduser)[0]['apellido_pa']
         context['apellido_ma_profile'] = Profile.objects.values('apellido_ma').filter(user_id=iduser)[0]['apellido_ma']
         id_colegio = PersonalColegio.objects.values('colegio_id').filter(personal_id=personal_id)[0]['colegio_id']
@@ -43,9 +47,11 @@ class UserInfoListView(ListView):
         context['nombre_colegio'] = Colegio.objects.values('nombre').filter(id_colegio=id_colegio)[0]['nombre']
         return context
 
+
 class ColegioList(generics.ListCreateAPIView):
     queryset = Colegio.objects.all()
     serializer_class = ColegioSerializer
+
 
 class ColegioDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Colegio.objects.all()
@@ -56,9 +62,59 @@ class PerfilList(generics.ListCreateAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
 
+
 class PerfilDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
+
+
+class ApoderadoList(generics.ListCreateAPIView):
+    queryset = Apoderado.objects.all()
+    serializer_class = ApoderadoSerializer
+    filter_backends = (SearchFilter, DjangoFilterBackend)
+    search_fields = ['=numero_documento', ]
+
+
+class ApoderadoDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Apoderado.objects.all()
+    serializer_class = ApoderadoSerializer
+
+
+class AlumnoList(generics.ListCreateAPIView):
+    queryset = Alumno.objects.all()
+    serializer_class = AlumnoSerializer
+    filter_backends = (SearchFilter, DjangoFilterBackend)
+    search_fields = ['=id_alumno', ]
+
+
+class AlumnoDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Alumno.objects.all()
+    serializer_class = AlumnoSerializer
+
+
+class ApoderadoAlumnoList(generics.ListCreateAPIView):
+    queryset = ApoderadoAlumno.objects.all()
+    serializer_class = ApoderadoAlumnoSerializer
+    filter_backends = (SearchFilter, DjangoFilterBackend)
+    search_fields = ['=apoderado_id__id_apoderado', ]
+
+
+class ApoderadoAlumnoDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = ApoderadoAlumno.objects.all()
+    serializer_class = ApoderadoAlumnoSerializer
+
+
+class MatriculaList(generics.ListCreateAPIView):
+    queryset = Matricula.objects.all()
+    serializer_class = MatriculaSerializer
+    filter_backends = (SearchFilter, DjangoFilterBackend)
+    search_fields = ['=alumno_id__id_alumno', ]
+
+
+class MatriculaDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Matricula.objects.all()
+    serializer_class = MatriculaSerializer
+
 
 
 class AsistenciaList(generics.ListCreateAPIView):
