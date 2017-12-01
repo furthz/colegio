@@ -200,7 +200,7 @@ class BoxCashierCreationView(CreateView):
                 iduser = -1
 
             a = Profile.objects.get(user_id=iduser)
-            b = Personal.objects.get(persona_id=a)
+            b = Personal.objects.get(persona=a)
 #            c = PersonalColegio.objects.get(personal_id=b)
 #           d = PersonalColegio.objects.filter(personal_id=b).values('pk')
 #            print(PersonalColegio.objects.values('pk').filter(personal_id=b)[0]['pk'])
@@ -209,7 +209,8 @@ class BoxCashierCreationView(CreateView):
             # creacion
             #context['yolencios'] = d
 #            print(PersonalColegio.objects.values('pk').filter(personal_id=b)[0]['pk'])
-            context['yolencios'] = PersonalColegio.objects.values('pk').filter(personal_id=b)[0]['pk']
+            personal_colegio = PersonalColegio.objects.get(personal=b)
+            context['yolencios'] = personal_colegio.id_personal_colegio
             return context
 
     @method_decorator(permission_required('cash.Box_Cashier_Creation', login_url=settings.REDIRECT_PERMISOS,
@@ -219,8 +220,18 @@ class BoxCashierCreationView(CreateView):
 
 
         if validar_roles(roles=roles):
+            usuario = get_current_user()
+            perfil = Profile.objects.get(user=usuario)
+            personal = Personal.objects.filter(persona=perfil)
+            personal_colegio = PersonalColegio.objects.get(personal=personal)
+            cajas = Caja.objects.filter(colegio__id_colegio= get_current_colegio(), activo=True)
 
-            return super(BoxCashierCreationView, self).get(request, *args, **kwargs)
+            return render(request, template_name=self.template_name, context={
+                'form': self.form_class,
+                'cajas': cajas,
+                'yolencios': personal_colegio.id_personal_colegio
+            })
+
 
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)

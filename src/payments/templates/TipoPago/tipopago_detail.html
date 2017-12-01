@@ -1,26 +1,26 @@
 {% extends "page.html" %}
+
 {% block title %}{{ block.super }}Pagos{% endblock %}
+<!-- HEADER INFO PAGE UBICACION -->
+{% block titulo %}
+    <h1>
+        Control de Tipos de Pago
+        <small>Módulo de Facturación</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+        <li>Módulo de Facturación</li>
+        <li class="active">Control de Tipos de Pago</li>
+    </ol>
+{% endblock %}
+<!-- FIN DE INFO PAGE UBICACION -->
 
 {% block container %}
 
-    <!--Comienza el contenido!!!!!!!!!!!!!!!!!!!-->
     <!-- INICIA CONTENDOR DE FORMULARIOS -->
-    <div class="content-wrapper">
-        <!-- HEADER INFO PAGE UBICACION -->
-        <section class="content-header">
-            <h1>
-                Control de tipos de pagos
-                <small>Modúlo de pagos</small>
-            </h1>
-            <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-                <li>Modúlo de pago</li>
-                <li class="active">Control de tipos de pago</li>
-            </ol>
-        </section>
-        <!-- FIN DE INFO PAGE UBICACION -->
+    <div>
         <!-- INICIO DE CONTENIDO -->
-        <section class="content">
+        <section>
             <div class="row">
                 <div class="col-md-12">
                     <div class="box box-primary">
@@ -34,34 +34,34 @@
                                             <form class="form-horizontal" method="post">
                                                 {% csrf_token %}
                                                 <fieldset disabled="disabled">
-                                                <div style="display: none;">
-                                                {{ tipopago.eliminado }}
-                                                {{ tipopago.usuario_modificacion }}
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-sm-3 control-label">Pertenece a: </label>
-                                                    <div class="col-sm-9">
-                                                             {{ tipopago.padre }}
+                                                    <div style="display: none;">
+                                                        {{ tipopago.eliminado }}
+                                                        {{ tipopago.usuario_modificacion }}
                                                     </div>
-                                                </div>
                                                     <div class="form-group">
-                                                    <label class="col-sm-3 control-label">Tipo:</label>
-                                                    <div class="col-sm-9">
-
-                                                        {% if tipopago.tipo == 0 %}
-                                                            <td>Bienes</td>
-                                                        {% else %}
-                                                            <td>Servicios</td>
-                                                        {% endif %}
-
+                                                        <label class="col-sm-3 control-label">Pertenece a:</label>
+                                                        <div class="col-sm-9">
+                                                            {{ tipopago.padre }}
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-sm-3 control-label">Descripción:</label>
-                                                    <div class="col-sm-9">
-                                                        {{ tipopago.descripcion }}
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label">Tipo:</label>
+                                                        <div class="col-sm-9">
+
+                                                            {% if tipopago.tipo == 0 %}
+                                                                Bienes
+                                                            {% else %}
+                                                                Servicios
+                                                            {% endif %}
+
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label">Descripción:</label>
+                                                        <div class="col-sm-9">
+                                                            {{ tipopago.descripcion }}
+                                                        </div>
+                                                    </div>
                                                 </fieldset>
                                                 <div class="form-group">
                                                     <div class="col-sm-offset-2 col-sm-10">

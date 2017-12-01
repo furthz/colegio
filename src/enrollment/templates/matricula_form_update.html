@@ -1,87 +1,84 @@
 {% extends "page.html" %}
 
-{% block title %}{{ block.super }}Matricula{% endblock %}
+{% block title %}{{ block.super }}Matrícula{% endblock %}
 
-{% block breadcrumb %}
-<h1>
-        Matricula
-        <small>Modúlo Matricula</small>
+{% block titulo %}
+      <h1>
+        Matrícula
+        <small>Módulo Matrícula</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-        <li class="active">Modúlo Matricula</li>
+        <li class="active">Módulo Matrícula</li>
       </ol>
 {% endblock %}
 
-
-
 {% block container %}
-<section class="content">
-      <div class="row">
-          <div class="col-md-12">
-              <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Matricula</h3>
-                </div>
+    <section>
+          <div class="row">
+              <div class="col-md-12">
+                  <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Matrícula</h3>
+                    </div>
 
-                  <div class="box-body">
-                  <div class="col-md-9">
-                    <div class="box-body">
-                        <!-- BAR CHART -->
-                        <div class="box box-success">
-                          <div class="box-header with-border">
-                            <h3 class="box-title">Matricular un alumno</h3>
-                          </div>
-                          <div class="box-body">
-
-                            <form class="form-horizontal" action="{% url 'enrollments:matricula_update_end' %}" method="POST">{% csrf_token %}
-                              <div class="form-group">
-                                <label class="col-sm-2 control-label">Curso</label>
-                                <div class="col-sm-10">
-                                    <select name="tipo_servicio" required="" id="id_tipo_servicio" class="form-control">
-                                      <option value="" selected="">---------</option>
-                                     {% for servicio in tiposerviciolist %}
-                                      <option value="{{ servicio.id_tipo_servicio }}">{{ servicio }}</option>
-                                     {% empty %}
-
-                                     {% endfor %}
-                                    </select>
-                                    <a>Solo se muestran los servicios con pagos asociados</a>
-                                </div>
+                      <div class="box-body">
+                      <div class="col-md-9">
+                        <div class="box-body">
+                            <!-- BAR CHART -->
+                            <div class="box box-success">
+                              <div class="box-header with-border">
+                                <h3 class="box-title">Actualizar Matrícula</h3>
                               </div>
+                              <div class="box-body">
 
-                              <div class="form-group">
-                                <label class="col-sm-2 control-label">Alumno</label>
-                                <div class="col-sm-10">
-                                   <input type="text" value="{{ alumno.getNombreCompleto }}" name="gato" id="gato_alumno" class="form-control" disabled>
-                                </div>
+                                <form class="form-horizontal" action="{% url 'enrollments:matricula_update_end' %}" method="POST">{% csrf_token %}
+                                  <div class="form-group">
+                                    <label class="col-sm-2 control-label">Curso</label>
+                                    <div class="col-sm-10">
+                                        <select name="tipo_servicio" required="" id="id_tipo_servicio" class="form-control">
+                                          <option value="" selected="">---------</option>
+                                         {% for servicio in tiposerviciolist %}
+                                          <option value="{{ servicio.id_tipo_servicio }}">{{ servicio }}</option>
+                                         {% empty %}
+
+                                         {% endfor %}
+                                        </select>
+                                        <a>Solo se muestran los servicios con pagos asociados</a>
+                                    </div>
+                                  </div>
+
+                                  <div class="form-group">
+                                    <label class="col-sm-2 control-label">Alumno</label>
+                                    <div class="col-sm-10">
+                                       <input type="text" value="{{ alumno.getNombreCompleto }}" name="gato" id="gato_alumno" class="form-control" disabled>
+                                    </div>
+                                  </div>
+
+
+
+                                    <input hidden type="text" value="{{ alumno.id_alumno }}" name="alumno" id="id_alumno">
+                                    <input hidden type="text" value="{{ matricula.id_matricula }}" name="matricula" id="id_matricula">
+
+                                  <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                      <a href="javascript:history.back()" class="btn btn-default">Cancelar</a>
+                                      <button type="submit" formmethod="post" class="btn btn-success">Matricular</button>
+                                    </div>
+                                  </div>
+                                </form>
+
                               </div>
+                            </div>
+                            <!-- BAR CHART -->
 
 
-
-                                <input hidden type="text" value="{{ alumno.id_alumno }}" name="alumno" id="id_alumno">
-                                <input hidden type="text" value="{{ matricula.id_matricula }}" name="matricula" id="id_matricula">
-
-                              <div class="form-group">
-                                <div class="col-sm-offset-2 col-sm-10">
-                                  <a href="javascript:history.back()" class="btn btn-default">Cancelar</a>
-                                  <button type="submit" formmethod="post" class="btn btn-success">Matricular</button>
-                                </div>
-                              </div>
-                            </form>
-
-                          </div>
                         </div>
-                        <!-- BAR CHART -->
 
-
-                    </div>
-
-                    </div>
-                    </div>
+                        </div>
+                        </div>
+                  </div>
               </div>
           </div>
-      </div>
-</section>
-
+    </section>
 {% endblock container %}

@@ -1,69 +1,70 @@
 {% extends "page.html" %}
 
-{% block title %}{{ block.super }}Matricula{% endblock %}
+{% block title %}{{ block.super }}Matrícula{% endblock %}
 
-{% block breadcrumb %}
-<h1>
-        Actualización de Servicios
-        <small>Modúlo Matricula</small>
-      </h1>
-      <ol class="breadcrumb">
+{% block titulo %}
+    <h1>
+        Registro de Servicios
+        <small>Módulo de Matrícula</small>
+    </h1>
+    <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-        <li>Modúlo Matricula</li>
-          <li>Lista de servicios</li>
-        <li class="active">Actualización de servicios</li>
-      </ol>
+        <li>Módulo Matrícula</li>
+          <li>Lista de Servicios</li>
+        <li class="active">Registrar Servicios</li>
+    </ol>
 {% endblock %}
 
 {% block container %}
-{% load crispy_forms_tags %}
-<section class="content">
-      <div class="row">
-          <div class="col-md-12">
-              <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Nuevo de Servicio Regular</h3>
-                </div>
 
-                <div class="box-body">
-                    <form action="" method="POST" class="form-horizontal" id="1">{% csrf_token %}
-                        <p><label for="id_nivel">Nivel:</label>
-                        {{ form1.nivel }}
-                        <p><label for="id_grado">Grado:</label> <select name="grado" class="form-control" id="id_grado">
-                           <option value="1">3 Años</option><option value="2">4 Años</option><option value="3">5 Años</option>
-
-                        </select></p>
-
-                        <p><label for="id_codigo_modular">Codigo Modular:</label> <input type="text" name="codigo_modular" class="form-control" id="id_codigo_modular" maxlength="10"></p>
-                    </form>
-                    <div class="form-group">
-                        <div class="col-sm-offset-2 col-sm-10">
-                            <a class="btn btn-default" href="{% url 'enrollments:tiposervicio_list' %}">Cancelar</a>
-                            <button type="submit" class="btn btn-success" formaction="{% url 'enrollments:tiposervicio_create_regular' %}" form="1">Crear servicio</button>
-                        </div>
+        {% load crispy_forms_tags %}
+        <section>
+          <div class="row">
+              <div class="col-md-12">
+                  <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Registrar Servicio Regular</h3>
                     </div>
 
-                </div>
-                <div class="box-header with-border">
-                    <h3 class="box-title">Nuevo de Servicio Extracurricular</h3>
-                </div>
-                <div class="box-body">
-                    <form action="" method="POST" class="form-horizontal" id="2">{% csrf_token %}
-                        {% csrf_token %}
-                        {{ form2.as_p }}
-                    </form>
-                    <div class="form-group">
-                        <div class="col-sm-offset-2 col-sm-10">
-                            <a class="btn btn-default" href="{% url 'enrollments:tiposervicio_list' %}">Cancelar</a>
-                            <button type="submit" formaction="{% url 'enrollments:tiposervicio_create_extra' %}" class="btn btn-success" form="2">Crear servicio</button>
-                        </div>
-                    </div>
+                    <div class="box-body">
+                        <form action="" method="POST" class="form-horizontal" id="1">{% csrf_token %}
+                            <p><label for="id_nivel">Nivel:</label>
+                            {{ form1.nivel }}
+                            <p><label for="id_grado">Grado:</label> <select name="grado" class="form-control" id="id_grado">
+                               <option value="1">3 Años</option><option value="2">4 Años</option><option value="3">5 Años</option>
 
-                </div>
+                            </select></p>
+
+                            <p><label for="id_codigo_modular">Código Modular:</label> <input type="text" name="codigo_modular" class="form-control" id="id_codigo_modular" maxlength="10"></p>
+                        </form>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <a class="btn btn-default" href="{% url 'enrollments:tiposervicio_list' %}">Cancelar</a>
+                                <button type="submit" class="btn btn-success" formaction="{% url 'enrollments:tiposervicio_create_regular' %}" form="1">Registrar Servicio</button>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Registrar Servicio Extracurricular</h3>
+                    </div>
+                    <div class="box-body">
+                        <form action="" method="POST" class="form-horizontal" id="2">{% csrf_token %}
+                            {% csrf_token %}
+                            {{ form2.as_p }}
+                        </form>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <a class="btn btn-default" href="{% url 'enrollments:tiposervicio_list' %}">Cancelar</a>
+                                <button type="submit" formaction="{% url 'enrollments:tiposervicio_create_extra' %}" class="btn btn-success" form="2">Registrar Servicio</button>
+                            </div>
+                        </div>
+
+                    </div>
+                  </div>
               </div>
           </div>
-      </div>
-</section>
+    </section>
 
 
 

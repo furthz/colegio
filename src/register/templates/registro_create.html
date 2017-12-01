@@ -155,6 +155,7 @@
                                             {% endif %}
                                         </div>
 
+
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -222,7 +223,7 @@
 
                             <!-- DATOS DE CONTACTO -->
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">Datos contacto y dirección</h3>
+                                    <h3 class="box-title">Datos Contacto y Dirección</h3>
                                 </div>
                                 <div class="box-body">
 
@@ -408,5 +409,15 @@
 
      }
     );
+
+     function dni(){
+         if(document.getElementById('id_tipo_documento').value == "1") {
+             document.getElementById('id_numero_documento').type = 'number';
+         } else {
+             document.getElementById('id_numero_documento').type = 'text';}
+     }
+     window.onload = document.getElementById('id_numero_documento').type = 'number';
     </script>
+
+
 {% endblock scripts %}

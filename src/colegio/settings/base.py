@@ -109,12 +109,33 @@ INSTALLED_APPS = (
     'discounts',
     'import_export',
     'django_filters',
-    'AE_academico',
+    #'AE_academico',
     #'AE_agenda',
     #'AE_chat',
     #'AE_social',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'rest_auth',
+    'APIs'
 
 )
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+        #'rest_framework.permissions.IsAdminUser',
+        #'rest_framework.permissions.IsAuthenticated',
+
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+
+    ],
+    'PAGE_SIZE': 10
+}
+
 IMPORT_EXPORT_USE_TRANSACTIONS = True
 
 MIDDLEWARE_CLASSES = (
@@ -199,6 +220,23 @@ MESSAGE_TAGS = {
 
 # Authentication Settings
 AUTH_USER_MODEL = 'authtools.User'
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {
+            'min_length': 8,
+        }
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
 #LOGIN_REDIRECT_URL = reverse_lazy("profiles:show_self")
 LOGIN_REDIRECT_URL = reverse_lazy("accounts:tocolegio_self")
 LOGIN_URL = reverse_lazy("accounts:login")

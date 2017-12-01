@@ -220,6 +220,7 @@ class Apoderado(CreacionModificacionUserApoderadoMixin, CreacionModificacionFech
         )
 
 
+
 class Alumno(CreacionModificacionUserAlumnoMixin, CreacionModificacionFechaAlumnoMixin, Profile, models.Model):
     """
     Clase para identificar a los Alumnos
@@ -251,7 +252,7 @@ class Alumno(CreacionModificacionUserAlumnoMixin, CreacionModificacionFechaAlumn
             return insert_child(obj=per, child_model=Alumno, **atributos)
 
     def __str__(self):
-        return self.getNombreCompleto
+        return self.getNombreFormal
 
     class Meta:
         managed = True
@@ -609,14 +610,14 @@ class Proveedor(CreacionModificacionUserProveedorMixin, CreacionModificacionFech
     """
     id_proveedor = models.AutoField(primary_key=True)
     razon_social = models.CharField(max_length=100)
-    ruc = models.CharField(max_length=15)
+    ruc = models.IntegerField(max_length=11, unique=True)
 
     def __str__(self):
         return self.razon_social
 
     def full_detail(self):
         #lista = Profile.full_detail(self)
-        detalle_completo = ["razon social: {0}".format(self.razon_social)]
+        detalle_completo = ["Razón Social: {0}".format(self.razon_social)]
         return detalle_completo
 
     def get_absolute_url(self):

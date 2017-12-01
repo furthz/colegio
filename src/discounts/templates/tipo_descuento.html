@@ -1,64 +1,61 @@
 {% extends "page.html" %}
 
-{% block title %}{{ block.super }}Matricula{% endblock %}
+{% block title %}{{ block.super }}Descuentos{% endblock %}
 
-
-{% block breadcrumb %}
-<h1>
+{% block titulo %}
+      <h1>
         Registrar Tipo de Descuento
-        <small>Modúlo de facturación</small>
+        <small>Módulo de Facturación</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-        <li>Modúlo de facturación</li>
-        <li class="active">Registrar pago de ingreso</li>
+        <li>Módulo de Facturación</li>
+        <li class="active">Registrar Tipo de Descuento</li>
       </ol>
 {% endblock %}
 
 {% block container %}
-<section class="content">
-      <div class="row">
-          <div class="col-md-12">
-              <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Registrar Tipo de Descuento</h3>
-                </div>
-                <div class="box-body">
-                  <div class="col-md-9">
-                    <div class="panel-page">
-                            <div class="box-body">
+    <section>
+          <div class="row">
+              <div class="col-md-12">
+                  <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Registrar Tipo de Descuento</h3>
+                    </div>
+                    <div class="box-body">
+                      <div class="col-md-9">
+                        <div class="panel-page">
+                                <div class="box-body">
 
-                                <form action="" method="POST" class="form-horizontal" id="1">{% csrf_token %}
-                                    <p><label for="id_servicio">Servicio:</label> <select name="servicio" class="form-control" required id="id_servicio">
-                                      <option value="" selected>---------</option>
-                                        {% for servicio in servicios %}
-                                        <option value="{{ servicio.id_servicio }}">{{ servicio.tipo_servicio }} -- {{ servicio }}    </option>
-                                        {% endfor %}
+                                    <form action="" method="POST" class="form-horizontal" id="1">{% csrf_token %}
+                                        <p><label for="id_servicio">Servicio:</label> <select name="servicio" class="form-control" required id="id_servicio">
+                                          <option value="" selected>---------</option>
+                                            {% for servicio in servicios %}
+                                            <option value="{{ servicio.id_servicio }}">{{ servicio.tipo_servicio }} -- {{ servicio }}    </option>
+                                            {% endfor %}
 
 
 
-                                    </select></p>
-                                    <p><label for="id_descripcion">Descripción:</label> <input type="text" name="descripcion" required class="form-control" id="id_descripcion" maxlength="50" /></p>
-                                    <p><label for="id_porcentaje">Porcentaje:</label> <input type="number" name="porcentaje" class="form-control" required step="1e-10" id="id_porcentaje" /></p>
+                                        </select></p>
+                                        <p><label for="id_descripcion">Descripción:</label> <input type="text" name="descripcion" required class="form-control" id="id_descripcion" maxlength="50" /></p>
+                                        <p><label for="id_porcentaje">Porcentaje:</label> <input type="number" name="porcentaje" class="form-control" required step="1e-10" id="id_porcentaje" /></p>
 
-                                </form>
-                                <div class="form-group">
-                                    <div class="col-sm-offset-2 col-sm-10">
-                                        <a class="btn btn-default" href="javascript:history.back()">Cancelar</a>
-                                        <button type="submit" class="btn btn-success"  form="1">Registrar Tipo Descuento</button>
+                                    </form>
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <a class="btn btn-default" href="javascript:history.back()">Cancelar</a>
+                                            <button type="submit" class="btn btn-success"  form="1">Registrar Tipo Descuento</button>
+                                        </div>
                                     </div>
-                                </div>
 
-                            </div>
+                                </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
               </div>
           </div>
-      </div>
-</section>
-
-
+    </section>
 
 {% endblock container %}
 

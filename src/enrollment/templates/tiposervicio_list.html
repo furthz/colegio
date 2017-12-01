@@ -1,21 +1,17 @@
 {% extends "page.html" %}
 
-{% block title %}{{ block.super }}Matricula{% endblock %}
+{% block title %}{{ block.super }}Matrícula{% endblock %}
 
-{% block breadcrumb %}
-<h1>
+{% block titulo %}
+      <h1>
         Lista de servicios
-        <small>Modúlo Matricula</small>
+        <small>Módulo de Matrícula</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-        <li>Modúlo Matricula</li>
+        <li>Módulo Matrícula</li>
         <li class="active">Lista de servicios</li>
       </ol>
-{% endblock %}
-
-{% block splash %}
-
 {% endblock %}
 
 {% block container %}
@@ -30,228 +26,218 @@ function confirmDel()
     return false ;
 }
 </script>
+    <div>
+        <section>
+          <div class="row">
+              <div class="col-md-12">
+                  <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Lista de servicios</h3>
+                    </div>
+                    <div class="box-body">
+                      <div class="col-md-9">
+                        <div class="panel-page">
 
+                          <!--- INICIO DE LA BARRA DE BUSQUEDA -->
 
-
-
-
-
-<section class="content">
-      <div class="row">
-          <div class="col-md-12">
-              <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Lista de servicios</h3>
-                </div>
-                <div class="box-body">
-                  <div class="col-md-9">
-                    <div class="panel-page">
-
-                      <!--- INICIO DE LA BARRA DE BUSQUEDA -->
-
-                      <div class="toolbar-search">
-                        <form class="form-inline" id="filtro">{% csrf_token %}
-                        <div class="form-group">
-                          <a class="btn btn-success" href="{% url 'enrollments:tiposervicio_create' %}" role="button"><i class="fa fa-plus" aria-hidden="true"></i> Crear tipo servicio</a>
-                        </div>
-                        <div class="form-group">
-                          <label for="idnivel">Seleccionar nivel</label>
-                          <select id="id_nivel" name="nivel" class="form-control" >
-                            <option value="4" >Todos</option>
-                            <option value="1">Inicial</option>
-                            <option value="2">Primaria</option>
-                            <option value="3">Secundaria</option>
-                          </select>
-                          <button form="filtro" formmethod="post" type="submit" class="btn btn-default"><i class="fa fa-filter" aria-hidden="true"></i> Filtrar</button>
-                        </div>
-
-                      </form>
-                      <!-- FIN DE LA BARRA DE FILTRO -->
-
-                      </div>
-                      <div class="panel-body">
-                        <!-- INICIA LA LISTA DE REGISTROS -->
-                        <div class="page-header">
-                          <div class="pull-right">
-                              {% if serviciosregularesvacio == True %}
-                                <a class="btn btn-success" ><i class="fa fa-plus" aria-hidden="true"></i> Crear pagos</a>
-                              {% else %}
-                                <a class="btn btn-success" href="{% url 'enrollments:servicioregular_create' %}" role="button"><i class="fa fa-plus" aria-hidden="true"></i> Crear pagos</a>
-                              {% endif %}
-
-                          </div>
-                          <h3>Servicios Regulares</h3>
-                        </div>
-                          <!-- REGULARES -->
-                          <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                              {% for tiposervicio in serviciosregulares %}
-                                  <form id="{{ tiposervicio.id_tipo_servicio }}">{% csrf_token %}
-                                      <input hidden value="{{ tiposervicio.id_tipo_servicio }}" name="tiposervicio">
-                                  </form>
-                                  <div class="panel panel-default">
-                                      <div class="panel-heading" role="tab" id="heading-{{ tiposervicio.id_tipo_servicio }}">
-                                        <h4 class="panel-title">
-                                          <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-{{ tiposervicio.id_tipo_servicio }}" aria-expanded="false" aria-controls="collapse-{{ tiposervicio.id_tipo_servicio }}">
-                                           {{tiposervicio}}
-                                          </a>
-                                        </h4>
-                                        <div class="pull-right">
-                                            <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                                                <button type="submit" title="Editar" formaction="{% url 'enrollments:tiposervicioregular_update' %}" formmethod="post" class="btn btn-default" form="{{ tiposervicio.id_tipo_servicio }}">
-                                                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                                                </button>
-                                                <a title="Detalle" href="{% url 'enrollments:tiposervicio_detail' tiposervicio.id_tipo_servicio %}" class="btn btn-default">
-                                                    <i class="fa fa-info-circle" aria-hidden="true"></i>
-                                                </a>
-                                                <button type="submit" onclick="return confirmDel();" title="Eliminar" formaction="{% url 'enrollments:tiposervicio_delete' %}" formmethod="get" form="{{ tiposervicio.id_tipo_servicio }}" class="btn btn-default" >
-                                                    <i class="fa fa-trash" aria-hidden="true"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                      </div>
-                                      <div id="collapse-{{ tiposervicio.id_tipo_servicio }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-{{ tiposervicio.id_tipo_servicio }}" aria-expanded="false">
-                                        <div class="panel-body">
-                                          <h4>Servicios Asociados</h4>
-                                          <table class="table">
-                                            <thead>
-                                              <tr>
-                                                <th>Codigo</th>
-                                                <th>Descripcion</th>
-                                                <th>Monto</th>
-                                                <th>Acciones</th>
-                                              </tr>
-                                            </thead>
-                                            <tbody>
-
-                                                {% for servicio in tiposervicio.getServiciosAsociados %}
-                                                    <form id="{{ servicio }}">{% csrf_token %}
-                                                        <input hidden value="{{ servicio.id_servicio }}" name="idser">
-                                                    </form>
-                                                  <tr>
-                                                    <th scope="row">1</th>
-                                                    <td>{{ servicio.nombre }}</td>
-                                                    <td>s/. {{ servicio.precio }}</td>
-                                                    <td>
-                                                      <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                                                        <button type="submit" form="{{ servicio }}" formmethod="post" formaction="{% url 'enrollments:servicioregular_update' %}" title="Editar" class="btn btn-default">
-                                                            <i class="fa fa-pencil" aria-hidden="true"></i>
-                                                        </button>
-                                                        <a title="Detalle" href="{% url 'enrollments:servicio_detail' servicio.id_servicio %}" class="btn btn-default">
-                                                          <i class="fa fa-info-circle" aria-hidden="true"></i>
-                                                        </a>
-                                                        <button form="{{ servicio }}" onclick="return confirmDel();" formmethod="get" formaction="{% url 'enrollments:servicio_delete' %}" title="Eliminar" class="btn btn-default">
-                                                          <i class="fa fa-trash" aria-hidden="true"></i>
-                                                        </button>
-                                                      </div>
-                                                    </td>
-                                                  </tr>
-                                                {% empty %}
-                                                {% endfor %}
-                                            </tbody>
-                                          </table>
-                                        </div>
-                                      </div>
-                                  </div>
-                              {% endfor %}
-                          </div>
-                        <!-- FIN DE REGULARES -->
-                        <div class="page-header">
-                          <div class="pull-right">
-                              {% if serviciosextravacio == True %}
-                                <a class="btn btn-success" ><i class="fa fa-plus" aria-hidden="true"></i> Crear pagos</a>
-                              {% else %}
-                                <a class="btn btn-success" href="{% url 'enrollments:servicioextra_create' %}" role="button"><i class="fa fa-plus" aria-hidden="true"></i> Crear pagos</a>
-                              {% endif %}
-                          </div>
-                          <h3>Servicios Extracurriculares</h3>
-                        </div>
-
-                        <!-- EXTRACURRICULARES -->
-                         <div class="panel-group" id="extracurricular" role="tablist" aria-multiselectable="true">
-                            {% for tiposervicio in serviciosextra %}
-                                <form id="{{ tiposervicio.id_tipo_servicio }}">{% csrf_token %}
-                                    <input hidden value="{{ tiposervicio.id_tipo_servicio }}" name="tiposervicio">
-                                </form>
-                                <div class="panel panel-default">
-                              <div class="panel-heading" role="tab" id="heading-{{ tiposervicio.id_tipo_servicio }}">
-                                <h4 class="panel-title">
-                                  <a role="button" data-toggle="collapse" data-parent="#extracurricular" href="#collapse-{{ tiposervicio.id_tipo_servicio }}" aria-expanded="false" aria-controls="collapse-{{ tiposervicio.id_tipo_servicio }}">
-                                   {{ tiposervicio }}
-                                  </a>
-                                </h4>
-                                <div class="pull-right">
-                                    <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                                      <button type="submit" title="Editar" formaction="{% url 'enrollments:tiposervicioextra_update' %}" formmethod="post" class="btn btn-default" form="{{ tiposervicio.id_tipo_servicio }}">
-                                            <i class="fa fa-pencil" aria-hidden="true"></i>
-                                      </button>
-                                      <a title="Detalle" href="{% url 'enrollments:tiposervicio_detail' tiposervicio.id_tipo_servicio %}" class="btn btn-default">
-                                            <i class="fa fa-info-circle" aria-hidden="true"></i>
-                                      </a>
-                                      <button type="submit" onclick="return confirmDel();" title="Eliminar" formaction="{% url 'enrollments:tiposervicio_delete' %}" formmethod="get" class="btn btn-default" form="{{ tiposervicio.id_tipo_servicio }}">
-                                                    <i class="fa fa-trash" aria-hidden="true"></i>
-                                      </button>
-                                    </div>
-                                </div>
-                              </div>
-                              <div id="collapse-{{ tiposervicio.id_tipo_servicio }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-{{ tiposervicio.id_tipo_servicio }}" aria-expanded="false">
-                                <div class="panel-body">
-                                  <h4>Servicios Asociados</h4>
-                                  <table class="table">
-                                    <thead>
-                                      <tr>
-                                        <th>Codigo</th>
-                                        <th>Descripcion</th>
-                                        <th>Monto</th>
-                                        <th>Acciones</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for servicio in tiposervicio.getServiciosAsociados %}
-                                        <form id="{{ servicio }}">{% csrf_token %}
-                                            <input hidden value="{{ servicio.id_servicio }}" name="idser">
-                                        </form>
-                                      <tr>
-                                        <th scope="row">1</th>
-                                        <td>{{ servicio.nombre }}</td>
-                                        <td>S/. {{ servicio.precio }}</td>
-                                        <td>
-                                          <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                                            <button type="submit" form="{{ servicio }}" formmethod="post" formaction="{% url 'enrollments:servicioextra_update' %}" title="Editar" class="btn btn-default">
-                                              <i class="fa fa-pencil" aria-hidden="true"></i>
-                                            </button>
-                                            <a title="Detalle" href="{% url 'enrollments:servicio_detail' servicio.id_servicio %}" class="btn btn-default">
-                                              <i class="fa fa-info-circle" aria-hidden="true"></i>
-                                            </a>
-                                            <button type="submit" onclick="return confirmDel();" form="{{ servicio }}" formmethod="get" formaction="{% url 'enrollments:servicio_delete' %}" title="Eliminar" class="btn btn-default">
-                                              <i class="fa fa-trash" aria-hidden="true"></i>
-                                            </button>
-                                          </div>
-                                        </td>
-                                      </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                  </table>
-                                </div>
-                              </div>
+                          <div class="toolbar-search">
+                            <form class="form-inline" id="filtro">{% csrf_token %}
+                            <div class="form-group">
+                              <a class="btn btn-success" href="{% url 'enrollments:tiposervicio_create' %}" role="button"><i class="fa fa-plus" aria-hidden="true"></i> Registrar Grado</a>
                             </div>
-                            {% endfor %}
+                            <div class="form-group">
+                              <label for="idnivel">Seleccionar nivel</label>
+                              <select id="id_nivel" name="nivel" class="form-control" >
+                                <option value="4" >Todos</option>
+                                <option value="1">Inicial</option>
+                                <option value="2">Primaria</option>
+                                <option value="3">Secundaria</option>
+                              </select>
+                              <button form="filtro" formmethod="post" type="submit" class="btn btn-default"><i class="fa fa-filter" aria-hidden="true"></i> Filtrar</button>
+                            </div>
+
+                          </form>
+                          <!-- FIN DE LA BARRA DE FILTRO -->
+
                           </div>
+                          <div class="panel-body">
+                            <!-- INICIA LA LISTA DE REGISTROS -->
+                            <div class="page-header">
+                              <div class="pull-right">
+                                  {% if serviciosregularesvacio == True %}
+                                    <a class="btn btn-success" ><i class="fa fa-plus" aria-hidden="true"></i> Crear pagos</a>
+                                  {% else %}
+                                    <a class="btn btn-success" href="{% url 'enrollments:servicioregular_create' %}" role="button"><i class="fa fa-plus" aria-hidden="true"></i> Crear Pagos</a>
+                                  {% endif %}
+
+                              </div>
+                              <h3>Servicios Regulares</h3>
+                            </div>
+                              <!-- REGULARES -->
+                              <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                  {% for tiposervicio in serviciosregulares %}
+                                      <form id="{{ tiposervicio.id_tipo_servicio }}">{% csrf_token %}
+                                          <input hidden value="{{ tiposervicio.id_tipo_servicio }}" name="tiposervicio">
+                                      </form>
+                                      <div class="panel panel-default">
+                                          <div class="panel-heading" role="tab" id="heading-{{ tiposervicio.id_tipo_servicio }}">
+                                            <h4 class="panel-title">
+                                              <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-{{ tiposervicio.id_tipo_servicio }}" aria-expanded="false" aria-controls="collapse-{{ tiposervicio.id_tipo_servicio }}">
+                                               {{tiposervicio}}
+                                              </a>
+                                            </h4>
+                                            <div class="pull-right">
+                                                <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                                                    <button type="submit" title="Editar" formaction="{% url 'enrollments:tiposervicioregular_update' %}" formmethod="post" class="btn btn-default" form="{{ tiposervicio.id_tipo_servicio }}">
+                                                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                    </button>
+                                                    <a title="Detalle" href="{% url 'enrollments:tiposervicio_detail' tiposervicio.id_tipo_servicio %}" class="btn btn-default">
+                                                        <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                                    </a>
+                                                    <button type="submit" onclick="return confirmDel();" title="Eliminar" formaction="{% url 'enrollments:tiposervicio_delete' %}" formmethod="get" form="{{ tiposervicio.id_tipo_servicio }}" class="btn btn-default" >
+                                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                          </div>
+                                          <div id="collapse-{{ tiposervicio.id_tipo_servicio }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-{{ tiposervicio.id_tipo_servicio }}" aria-expanded="false">
+                                            <div class="panel-body">
+                                              <h4>Servicios Asociados</h4>
+                                              <table class="table">
+                                                  <tr class="table-header">
+                                                    <th>Código</th>
+                                                    <th>Descripción</th>
+                                                    <th>Monto</th>
+                                                    <th>Acciones</th>
+                                                  </tr>
+                                                <tbody>
+
+                                                    {% for servicio in tiposervicio.getServiciosAsociados %}
+                                                        <form id="{{ servicio }}">{% csrf_token %}
+                                                            <input hidden value="{{ servicio.id_servicio }}" name="idser">
+                                                        </form>
+                                                      <tr>
+                                                        <th scope="row">1</th>
+                                                        <td>{{ servicio.nombre }}</td>
+                                                        <td>s/. {{ servicio.precio }}</td>
+                                                        <td>
+                                                          <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                                                            <button type="submit" form="{{ servicio }}" formmethod="post" formaction="{% url 'enrollments:servicioregular_update' %}" title="Editar" class="btn btn-default">
+                                                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                            </button>
+                                                            <a title="Detalle" href="{% url 'enrollments:servicio_detail' servicio.id_servicio %}" class="btn btn-default">
+                                                              <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                                            </a>
+                                                            <button form="{{ servicio }}" onclick="return confirmDel();" formmethod="get" formaction="{% url 'enrollments:servicio_delete' %}" title="Eliminar" class="btn btn-default">
+                                                              <i class="fa fa-trash" aria-hidden="true"></i>
+                                                            </button>
+                                                          </div>
+                                                        </td>
+                                                      </tr>
+                                                    {% empty %}
+                                                    {% endfor %}
+                                                </tbody>
+                                              </table>
+                                            </div>
+                                          </div>
+                                      </div>
+                                  {% endfor %}
+                              </div>
+                            <!-- FIN DE REGULARES -->
+                            <div class="page-header">
+                              <div class="pull-right">
+                                  {% if serviciosextravacio == True %}
+                                    <a class="btn btn-success" ><i class="fa fa-plus" aria-hidden="true"></i> Crear Pagos</a>
+                                  {% else %}
+                                    <a class="btn btn-success" href="{% url 'enrollments:servicioextra_create' %}" role="button"><i class="fa fa-plus" aria-hidden="true"></i> Crear pagos</a>
+                                  {% endif %}
+                              </div>
+                              <h3>Servicios Extracurriculares</h3>
+                            </div>
+
+                            <!-- EXTRACURRICULARES -->
+                             <div class="panel-group" id="extracurricular" role="tablist" aria-multiselectable="true">
+                                {% for tiposervicio in serviciosextra %}
+                                    <form id="{{ tiposervicio.id_tipo_servicio }}">{% csrf_token %}
+                                        <input hidden value="{{ tiposervicio.id_tipo_servicio }}" name="tiposervicio">
+                                    </form>
+                                    <div class="panel panel-default">
+                                  <div class="panel-heading" role="tab" id="heading-{{ tiposervicio.id_tipo_servicio }}">
+                                    <h4 class="panel-title">
+                                      <a role="button" data-toggle="collapse" data-parent="#extracurricular" href="#collapse-{{ tiposervicio.id_tipo_servicio }}" aria-expanded="false" aria-controls="collapse-{{ tiposervicio.id_tipo_servicio }}">
+                                       {{ tiposervicio }}
+                                      </a>
+                                    </h4>
+                                    <div class="pull-right">
+                                        <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                                          <button type="submit" title="Editar" formaction="{% url 'enrollments:tiposervicioextra_update' %}" formmethod="post" class="btn btn-default" form="{{ tiposervicio.id_tipo_servicio }}">
+                                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                                          </button>
+                                          <a title="Detalle" href="{% url 'enrollments:tiposervicio_detail' tiposervicio.id_tipo_servicio %}" class="btn btn-default">
+                                                <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                          </a>
+                                          <button type="submit" onclick="return confirmDel();" title="Eliminar" formaction="{% url 'enrollments:tiposervicio_delete' %}" formmethod="get" class="btn btn-default" form="{{ tiposervicio.id_tipo_servicio }}">
+                                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                          </button>
+                                        </div>
+                                    </div>
+                                  </div>
+                                  <div id="collapse-{{ tiposervicio.id_tipo_servicio }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-{{ tiposervicio.id_tipo_servicio }}" aria-expanded="false">
+                                    <div class="panel-body">
+                                      <h4>Servicios Asociados</h4>
+                                      <table class="table">
+                                          <tr class="table-header">
+                                            <th>Código</th>
+                                            <th>Descripción</th>
+                                            <th>Monto</th>
+                                            <th>Acciones</th>
+                                          </tr>
+                                        <tbody>
+                                        {% for servicio in tiposervicio.getServiciosAsociados %}
+                                            <form id="{{ servicio }}">{% csrf_token %}
+                                                <input hidden value="{{ servicio.id_servicio }}" name="idser">
+                                            </form>
+                                          <tr>
+                                            <th scope="row">1</th>
+                                            <td>{{ servicio.nombre }}</td>
+                                            <td>S/. {{ servicio.precio }}</td>
+                                            <td>
+                                              <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                                                <button type="submit" form="{{ servicio }}" formmethod="post" formaction="{% url 'enrollments:servicioextra_update' %}" title="Editar" class="btn btn-default">
+                                                  <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                </button>
+                                                <a title="Detalle" href="{% url 'enrollments:servicio_detail' servicio.id_servicio %}" class="btn btn-default">
+                                                  <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                                </a>
+                                                <button type="submit" onclick="return confirmDel();" form="{{ servicio }}" formmethod="get" formaction="{% url 'enrollments:servicio_delete' %}" title="Eliminar" class="btn btn-default">
+                                                  <i class="fa fa-trash" aria-hidden="true"></i>
+                                                </button>
+                                              </div>
+                                            </td>
+                                          </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  </div>
+                                </div>
+                                {% endfor %}
+                              </div>
 
 
-                        <!-- FIN DE EXTRACURRICULARES -->
+                            <!-- FIN DE EXTRACURRICULARES -->
 
-                        <!-- FIN DE LA LISTA DE REGISTRO -->
+                            <!-- FIN DE LA LISTA DE REGISTRO -->
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+
                       </div>
                     </div>
                   </div>
-                  <div class="col-md-3">
-
-                  </div>
-                </div>
               </div>
           </div>
-      </div>
-    </section>
-
-
+        </section>
+    </div>
 {% endblock container %}
