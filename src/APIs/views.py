@@ -5,8 +5,7 @@ from django.shortcuts import render
 from AE_academico.models import Asistencia, Aula, AulaMatricula, CursoDocente, AulaCurso
 from enrollment.models import Matricula
 from register.models import Profile ,Personal ,PersonalColegio ,Colegio, Alumno
-from .serializers import ColegioSerializer, ProfileSerializer, AsistenciaSerializer, AulaSerializer, \
-    CursoDocenteSerializer, MatriculaSerializer, AlumnoSerializer, AulaCursoSerializer
+from .serializers import *
 from rest_framework import generics
 from rest_framework.views import APIView
 from django.views.generic import ListView
