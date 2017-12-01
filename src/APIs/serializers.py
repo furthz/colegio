@@ -62,3 +62,4 @@ class AlumnoSerializer(serializers.ModelSerializer):
         model = Alumno
         fields = ('id_alumno', 'persona')
 
+

@@ -165,3 +165,4 @@ class HorarioAulaForm(forms.ModelForm):
         self.fields['dia'].widget.attrs.update({'class': 'form-control'})
         self.fields['hora_inicio'].widget.attrs.update({'class': 'form-control'})
         self.fields['hora_fin'].widget.attrs.update({'class': 'form-control'})
+

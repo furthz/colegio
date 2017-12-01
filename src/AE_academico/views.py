@@ -1,3 +1,4 @@
+
 import datetime
 import json
 import calendar
@@ -937,7 +938,7 @@ class HorarioAulaCreateView(CreateView):
     success_url = reverse_lazy('academic:aula_list')
     template_name = 'horarios_aula.html'
 
-    """
+"""    
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo', 'tesorero']
         if validar_roles(roles=roles):
@@ -948,7 +949,7 @@ class HorarioAulaCreateView(CreateView):
             })
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
-    """
+"""    
 
 
 def get_cursos(request):
@@ -968,3 +969,5 @@ def get_cursos(request):
     mimetype = 'application/json'
 
     return HttpResponse(data, mimetype)
+
+

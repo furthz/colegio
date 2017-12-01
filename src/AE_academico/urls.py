@@ -1,3 +1,4 @@
+
 from django.conf.urls import url
 from AE_academico.views import AulaListView, AulaDetailView, AulaCreationView, AulaUpdateView, AulaDeleteView, \
     MarcarAsistenciaView, CursoListView, CursoDetailView, CursoCreationView, CursoUpdateView, \
@@ -62,3 +63,4 @@ urlpatterns = [
     url(r'^aula/detail/horario/curso/create/$', HorarioAulaCreateView.as_view(), name='horarioaula_create'),
 
 ]
+
