@@ -87,8 +87,8 @@ logging.config.dictConfig(LOGGING)
 
 TEST_RUNNER = 'colegio.settings.testing.UseDBTestRunner'
 
-IS_TESTING = True
+IS_TESTING = False
 
 IS_MIGRATE = True
 
-#STATIC_ROOT = '/home/ubuntu/colegio/src/'
+STATIC_ROOT = '/home/ubuntu/colegio/src/'
