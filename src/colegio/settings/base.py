@@ -109,7 +109,7 @@ INSTALLED_APPS = (
     'discounts',
     'import_export',
     'django_filters',
-    #'AE_academico',
+    'AE_academico',
     #'AE_agenda',
     #'AE_chat',
     #'AE_social',
@@ -122,9 +122,9 @@ INSTALLED_APPS = (
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+        #'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
         #'rest_framework.permissions.IsAdminUser',
-        #'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.IsAuthenticated',
 
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [

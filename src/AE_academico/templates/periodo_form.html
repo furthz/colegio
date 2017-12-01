@@ -22,6 +22,36 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label class="col-sm-3 control-label">Fecha de inicio</label>
+                                    <div class="col-sm-9">
+                                        <div class="input-group date">
+                                            {{ form.fecha_inicio }}
+                                            <span class="input-group-addon">
+                                                <!--
+                                                <button class="btn btn-default">
+                                                    <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                </button>-->
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Fecha de fin</label>
+                                    <div class="col-sm-9">
+                                        <div class="input-group date">
+                                            {{ form.fecha_fin }}
+                                            <span class="input-group-addon">
+                                                <!--
+                                                <button class="btn btn-default">
+                                                    <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                </button>-->
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <div class="col-sm-offset-2 col-sm-10">
                                         <a href="{% url 'academic:periodo_list'  %}" class="btn btn-default" >
                                             <i class="fa fa-arrow-left" aria-hidden="true"></i> Volver a lista
@@ -44,4 +74,48 @@
 
 {% endblock container %}
 
+{% block scripts %}
+    {{ form.media }}
+    <script>
+    $(function () {
+      //Date range picker
+        $('#id_fecha_inicio').datepicker(
+            {
+                format: 'yyyy-mm-dd'
+            }
+        );
+    });
 
+     function myFunction() {
+         var x = document.getElementById("id_user");
+         var optionVal = [];
+         for (i = 0; i < x.length; i++) {
+             optionVal.push(x.options[i].value);
+          }
+          document.getElementById('id_user').value = Math.max.apply(null, optionVal);
+      }
+    window.onload = myFunction;
+
+    </script>
+    <script>
+    $(function () {
+      //Date range picker
+        $('#id_fecha_fin').datepicker(
+            {
+                format: 'yyyy-mm-dd'
+            }
+        );
+    });
+
+     function myFunction() {
+         var x = document.getElementById("id_user");
+         var optionVal = [];
+         for (i = 0; i < x.length; i++) {
+             optionVal.push(x.options[i].value);
+          }
+          document.getElementById('id_user').value = Math.max.apply(null, optionVal);
+      }
+    window.onload = myFunction;
+
+    </script>
+{% endblock scripts %}

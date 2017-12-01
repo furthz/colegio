@@ -1,0 +1,114 @@
+{% extends "page.html" %}
+
+{% block breadcrumb %}
+  <!-- INICIA CONTENDOR DE FORMULARIOS -->
+
+    <!-- HEADER INFO PAGE UBICACION -->
+    <section class="content-header">
+      <h1>
+       Asistencia a Clases
+
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+        <li>Modúlo Académico</li>
+        <li class="active">Asistencia a Clases</li>
+      </ol>
+    </section>
+     <!-- FIN DE INFO PAGE UBICACION -->
+{% endblock %}
+
+<body>
+{% block container %}
+{% load crispy_forms_tags %}
+
+    <!-- INICIO DE CONTENIDO -->
+
+      <div class="row">
+          <div class="col-md-12">
+              <div class="box box-primary">
+                  <div class="box-body">
+                          <div class="col-md-9">
+                            <div class="panel-page">
+                                <div class="toolbar-header">
+                                    <h5>Módulo que permite controlar la asistencia de los alumnos de la clase </h5>
+                                    <i class="fa fa-check-square-o" aria-hidden="true"></i> <label>Significa que el el alumno asistio</label>
+                                    </br>
+                                    <i class="fa fa-square-o" aria-hidden="true"></i> <label>Significa que el el alumno no asistio</label>
+                                </div>
+                                  <form action="" name="form1" class="form-horizontal" id="form1">{% csrf_token %}
+                                    <div class="toolbar-search">
+                                      <div class="box-body">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Grado y Sección</label>
+                                                  <select name="aula"  class="form-control">
+                                                    {% for aula in aulas_colegio %}
+                                                        <option value="{{ aula.id_aula }}">{{ aula }}</option>
+                                                    {% endfor %}
+                                                  </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                          <div class="search-actions">
+                                            <button type="submit" class="btn btn-primary" form="form1" formmethod="post">
+                                            <i class="fa fa-search" aria-hidden="true"></i>
+                                             Buscar
+                                            </button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </form>
+                                    </div>
+                                    <table class="table table-hover">
+                                      <tr class="table-header">
+                                        <th>Número de orden</th>
+                                        <th>Apellidos y Nombres</th>
+                                        <th class="text-center">Asistencia</th>
+                                      </tr>
+                                        <form id="ListaAsistencia">{% csrf_token %}
+                                            {% for alumno in alumnos %}
+                                              <tr>
+                                                <td>{{ forloop.counter }}</td>
+                                                <td>
+                                                    {{ alumno.getNombreCompleto }}
+                                                    <input type="hidden" name="id" value="{{ alumno.alumno.id_alumno }}">
+                                                </td>
+                                                <td class="text-center">
+                                                  <select name="estado_asistencia"  class="form-control">
+                                                    {% for estado in estado_asistencia %}
+                                                        <option>{{ estado }}</option>
+                                                    {% endfor %}
+                                                  </select>
+                                                </td>
+                                              </tr>
+                                            {% endfor %}
+                                        </form>
+                                     </table>
+
+
+                <div class="col-md-10"></div><a class="btn btn-primary"  href="#"><i class="fa fa-times" aria-hidden="true"></i>Salir</a>
+                <div class="col-md-12"></div>
+                                        <button type="submit" class="btn btn-success" tabindex="3" form="ListaAsistencia" formmethod="post">
+                                            <i class="fa fa-floppy-o" aria-hidden="true"></i> Grabar
+                                        </button>
+
+
+
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+
+                          </div>
+                        </div>
+
+              </div>
+          </div>
+
+    <!-- /.FIN DE CONTENIDO -->
+  <!-- /.FIN DE CONTENEDOR DE FORMULARIO  -->
+<!-- ./wrapper -->
+
+{% endblock container %}
+</body>

@@ -1,4 +1,5 @@
-"""from django import forms
+
+from django import forms
 from AE_academico.models import Aula, Asistencia, Notas, Curso, Evento, PeriodoAcademico, HorarioAula
 from AE_academico.models import CursoDocente
 from utils.middleware import get_current_colegio
@@ -92,7 +93,7 @@ class SubirNotasForm(forms.Form):
 
 class RegistrarNotas2Form(forms.Form):
 
-    nota = forms.IntegerField()
+    nota = forms.CharField(max_length=2)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -164,4 +165,3 @@ class HorarioAulaForm(forms.ModelForm):
         self.fields['dia'].widget.attrs.update({'class': 'form-control'})
         self.fields['hora_inicio'].widget.attrs.update({'class': 'form-control'})
         self.fields['hora_fin'].widget.attrs.update({'class': 'form-control'})
-""""

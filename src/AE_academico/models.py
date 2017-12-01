@@ -1,5 +1,6 @@
 from django.db import models
 
+from django.utils.functional import cached_property
 from enrollment.models import TipoServicio, Matricula
 from register.models import Colegio, Alumno, Apoderado, Personal, Docente
 from profiles.models import Profile
@@ -9,8 +10,10 @@ from utils.models import CreacionModificacionFechaMixin
 
 class Aula(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
     id_aula = models.AutoField(primary_key=True)
-    tipo_servicio = models.ForeignKey(TipoServicio, models.DO_NOTHING, db_column="id_tipo_servicio")
+    tipo_servicio = models.ForeignKey(TipoServicio, models.DO_NOTHING, db_column="id_tipo_servicio", null= True, blank= True)
     nombre = models.CharField(max_length=100, blank=True, null=True)
+    #colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column="id_colegio")
+    #tipo = models.IntegerField()
 
     class Meta:
         managed = False
@@ -41,6 +44,15 @@ class AulaCurso(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacio
     def __str__(self):
         return "{0} del salon {1}".format(self.curso.nombre, self.aula.nombre)
 
+    @cached_property
+    def getDetalle(self):
+        """
+        Método que concatena los nombres y apellidos
+
+        :return: Nombre completo de la persona
+        """
+        return "{0} del salon {1}".format(self.curso.nombre, self.aula.nombre)
+
     class Meta:
         managed = False
 
@@ -49,6 +61,7 @@ class CursoDocente(ActivoMixin, CreacionModificacionFechaMixin, CreacionModifica
     id_curso_docente = models.AutoField(primary_key=True)
     docente = models.ForeignKey(Docente, models.DO_NOTHING, db_column="id_docente")
     curso = models.ForeignKey(AulaCurso, models.DO_NOTHING, db_column="id_aula_curso")
+    #tutor = models.BooleanField(default=False)
 
     class Meta:
         managed = False
@@ -56,9 +69,8 @@ class CursoDocente(ActivoMixin, CreacionModificacionFechaMixin, CreacionModifica
 
 class HorarioAula(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin,models.Model):
     id_horario_aula = models.AutoField(primary_key=True)
-    curso = models.ForeignKey(Curso, models.DO_NOTHING, db_column="id_curso")
-    docente = models.ForeignKey(Docente, models.DO_NOTHING, db_column="id_docente")
-    lugar = models.CharField(max_length=50)
+    curso = models.ForeignKey(CursoDocente, models.DO_NOTHING, db_column="id_curso")
+    lugar = models.CharField(max_length=50, blank=True, null=True)
     dia = models.CharField(max_length=10)
     hora_inicio = models.TimeField()
     hora_fin = models.TimeField()
@@ -71,7 +83,7 @@ class Evento(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUs
     id_evento = models.AutoField(primary_key=True)
     colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column="id_colegio")
     encargado = models.ForeignKey(Personal, models.DO_NOTHING, db_column="id_personal")
-    #tipo_evento = models.
+    grupo = models.ForeignKey(Aula, models.DO_NOTHING, db_column="id_aula")
     nombre = models.CharField(max_length=100, blank=True, null=True)
     descripcion = models.CharField(max_length=500, blank=True, null=True)
     fecha_evento = models.DateField()
@@ -106,13 +118,14 @@ class PeriodoAcademico(ActivoMixin, CreacionModificacionFechaMixin, CreacionModi
     class Meta:
         managed = False
 
+
 class Notas(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin,models.Model):
     id_nota = models.AutoField(primary_key=True)
     curso = models.ForeignKey(Curso, models.DO_NOTHING, db_column="id_curso")
     colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column="id_colegio")
     periodo_academico = models.ForeignKey(PeriodoAcademico, models.DO_NOTHING, db_column="id_periodo_academico")
     alumno = models.ForeignKey(Alumno, models.DO_NOTHING, db_column='id_alumno')
-    nota = models.IntegerField()
+    nota = models.CharField(max_length=2)
 
     class Meta:
         managed = False
