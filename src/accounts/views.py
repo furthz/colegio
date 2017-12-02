@@ -226,7 +226,7 @@ class RegistroUsuario(CreateView):
         elif validar_roles(roles):
             logger.debug("No es super usuario")
 
-            lista_roles = [2, 3, 4, 5, 6, 11]
+            lista_roles = [2, 3, 4, 5, 6]
             grupos = []
             for rol in lista_roles:
                 grup = Group.objects.get(id=rol)
@@ -286,7 +286,7 @@ class RegistroUsuario(CreateView):
             elif validar_roles(roles):
                 logger.debug("No es super usuario")
 
-                lista_roles = [2, 3, 4, 5, 6, 11]
+                lista_roles = [2, 3, 4, 5, 6]
                 grupos = []
                 for rol in lista_roles:
                     grup = Group.objects.get(id=rol)
