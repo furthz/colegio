@@ -84,7 +84,7 @@ class Evento(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUs
     colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column="id_colegio")
     encargado = models.ForeignKey(Personal, models.DO_NOTHING, db_column="id_personal")
     grupo = models.ForeignKey(Aula, models.DO_NOTHING, db_column="id_aula")
-    nombre = models.CharField(max_length=100, blank=True, null=True)
+    nombre = models.CharField(max_length=100, blank=True, null=False)
     descripcion = models.CharField(max_length=500, blank=True, null=True)
     fecha_evento = models.DateField()
     hora_inicio = models.TimeField()
@@ -138,3 +138,14 @@ class AulaMatricula(ActivoMixin, CreacionModificacionFechaMixin, CreacionModific
     class Meta:
         managed = False
 
+
+class RecordatorioAula(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin,models.Model):
+    id_recordatorio_aula = models.AutoField(primary_key=True)
+    aula = models.ForeignKey(Aula, models.DO_NOTHING, db_column="id_aula")
+    nombre = models.CharField(max_length=50)
+    descripcion = models.CharField(max_length=200)
+    estado = models.IntegerField() # Se manejan 4 estados: Creado, Enviado, Recepcionado, Leído
+    fecha_programacion = models.DateField(blank=False, null=False)
+
+    class Meta:
+        managed = False

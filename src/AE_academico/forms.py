@@ -1,6 +1,6 @@
 
 from django import forms
-from AE_academico.models import Aula, Asistencia, Notas, Curso, Evento, PeriodoAcademico, HorarioAula
+from AE_academico.models import Aula, Asistencia, Notas, Curso, Evento, PeriodoAcademico, HorarioAula, RecordatorioAula
 from AE_academico.models import CursoDocente
 from utils.middleware import get_current_colegio
 
@@ -165,3 +165,26 @@ class HorarioAulaForm(forms.ModelForm):
         self.fields['dia'].widget.attrs.update({'class': 'form-control'})
         self.fields['hora_inicio'].widget.attrs.update({'class': 'form-control'})
         self.fields['hora_fin'].widget.attrs.update({'class': 'form-control'})
+
+
+class RecordatorioAulaForm(forms.ModelForm):
+    class Meta:
+        model = RecordatorioAula
+
+        fields = [
+            'nombre',
+            'descripcion',
+            'fecha_programacion'
+        ]
+
+        labels = {
+            'nombre': 'Nombre',
+            'descripcion': 'Descripcion',
+            'fecha_programacion': 'Fecha'
+        }
+
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
+            'descripcion': forms.TextInput(attrs={'class': 'form-control'}),
+            'fecha_programacion': forms.TextInput(attrs={'class': 'form-control'}),
+        }
