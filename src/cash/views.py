@@ -8,7 +8,7 @@ from django.views.generic.edit import (
     DeleteView
 )
 from .models import Caja, CajaCajero, Remesa
-from .forms import CashierForm, BoxCashierForm, ConsignmentForm
+from .forms import CashierForm, BoxCashierForm, ConsignmentForm, CajaChicaConsignmentForm
 from .filters import ConsignmentFilter
 from django.contrib.auth.decorators import permission_required
 from django.utils.decorators import method_decorator
@@ -276,6 +276,7 @@ class ConsignmentListView(ListView):
         roles = ['promotor', 'director', 'administrativo', 'tesorero', 'cajero']
 
         if validar_roles(roles=roles):
+            Remesa.objects.filter(movimiento__caja__colegio_id=get_current_colegio())
             return super(ConsignmentListView, self).get(request, *args, **kwargs)
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
@@ -307,7 +308,11 @@ class ConsignmentCreationView(CreateView):
         roles = ['cajero']
 
         if validar_roles(roles=roles):
-            return super(ConsignmentCreationView, self).get(request, *args, **kwargs)
+            personal = PersonalColegio.objects.filter(colegio=get_current_colegio(), activo=True)
+            return render(request, template_name=self.template_name, context={
+                'form': self.form_class,
+                'personal': personal,
+            })
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 """
@@ -356,3 +361,27 @@ def search(request):
     comentario_list = Remesa.objects.all()
     comentario_filter = ConsignmentFilter(request.GET, queryset=comentario_list)
     return render(request, 'consignment/consignment_list.html', {'filter': comentario_filter})
+
+
+
+class RecargarCajaChicaView(CreateView):
+    model = Remesa
+    form_class = CajaChicaConsignmentForm
+    success_url = reverse_lazy('cash:consignment_list')
+    template_name = 'consignment/consignment_form_cajachica.html'
+
+    @method_decorator(permission_required('cash.Consigment_Creation', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        roles = ['cajero']
+
+        if validar_roles(roles=roles):
+            persona = Profile.objects.get(user=get_current_user())
+            personal = Personal.objects.get(persona=persona)
+            personal = PersonalColegio.objects.filter(personal=personal,colegio=get_current_colegio(), activo=True)
+            return render(request, template_name=self.template_name, context={
+                'form': self.form_class,
+                'personal': personal,
+            })
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)

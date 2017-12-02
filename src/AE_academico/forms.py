@@ -188,3 +188,5 @@ class RecordatorioAulaForm(forms.ModelForm):
             'descripcion': forms.TextInput(attrs={'class': 'form-control'}),
             'fecha_programacion': forms.TextInput(attrs={'class': 'form-control'}),
         }
+
+

@@ -5,6 +5,8 @@ from AE_academico.views import AulaListView, AulaDetailView, AulaCreationView, A
     MarcarAsistenciaDiaView, PeriodoAcademicoListView, PeriodoAcademicoDetailView, PeriodoAcademicoCreationView, \
     PeriodoAcademicoUpdateView, AulaMatriculaCreateView, HorarioAulaCreateView, RegistrarNotasAlumnosView, get_cursos, \
     VisualizarNotasView, RecordatorioAulaCreateView
+
+
 from AE_academico.views import CursoDocenteCreateView
 
 

@@ -35,7 +35,6 @@ urlpatterns = [
     url(r'^APIs/', include(APIs.urls, namespace='apis')),
     #url(r'^calendar/', include('schedule.urls', namespace='calendar')),
 
-
 ]
 
 # User-uploaded files like profile pics need to be served in development

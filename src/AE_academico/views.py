@@ -11,6 +11,7 @@ from django.views.generic import TemplateView
 
 from AE_academico.forms import AulaForm, MarcarAsistenciaForm, SubirNotasForm, CursoForm, EventoForm, PeriodoAcademicoForm, \
     HorarioAulaForm, RegistrarNotas2Form, RecordatorioAulaForm
+
 from AE_academico.forms import CursoDocenteForm
 from AE_academico.models import Aula, Asistencia, Notas, AulaCurso, Evento, HorarioAula, AulaMatricula, PeriodoAcademico, \
     RecordatorioAula
@@ -824,7 +825,6 @@ class RegistrarNotasAlumnosView(TemplateView):
                 alumno = Alumno.objects.get(id_alumno=alumnos_id[n])
                 nota = Notas(alumno=alumno, curso=curso, periodo_academico=periodo, nota=notas[n], colegio=colegio)
                 nota.save()
-
             return redirect('academic:notas_ver')
 
 
@@ -1010,5 +1010,3 @@ class RecordatorioAulaCreateView(CreateView):
         recordatorio.save()
 
         return HttpResponseRedirect(reverse('academic:aula_list'))
-
-
