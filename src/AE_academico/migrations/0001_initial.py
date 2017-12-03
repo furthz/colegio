@@ -149,7 +149,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id_asistencia', models.AutoField(primary_key=True)),
                 ('alumno', models.ForeignKey(db_column='id_alumno', to='register.Alumno')),
-                ('curso', models.ForeignKey(db_column='id_curso', to='AE_academico.Curso')),
+                #('curso', models.ForeignKey(db_column='id_curso', to='AE_academico.Curso')),
                 ('fecha', models.DateField()),
                 ('estado_asistencia', models.IntegerField()),
                 ('comentario', models.CharField(max_length=500, blank=True, null=True)),

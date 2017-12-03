@@ -99,7 +99,7 @@ class Evento(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUs
 class Asistencia(CreacionModificacionFechaMixin, CreacionModificacionUserMixin,models.Model):
     id_asistencia = models.AutoField(primary_key=True)
     alumno = models.ForeignKey(Alumno, models.DO_NOTHING, db_column='id_alumno')
-    curso = models.ForeignKey(Curso, models.DO_NOTHING, db_column='id_curso')
+    #curso = models.ForeignKey(Curso, models.DO_NOTHING, db_column='id_curso')
     fecha = models.DateField()
     estado_asistencia = models.IntegerField()
     comentario = models.CharField(max_length=500, blank=True, null=True)

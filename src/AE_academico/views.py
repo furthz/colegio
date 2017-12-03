@@ -629,18 +629,25 @@ class AulaMatriculaCreateView(TemplateView):
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
         if validar_roles(roles=roles):
+            no_matriculados_aulas = []
             aula_actual = Aula.objects.get(id_aula=request.GET['aula'])
             matriculas = Matricula.objects.filter(tipo_servicio=aula_actual.tipo_servicio,colegio_id=get_current_colegio(), activo=True)
+            for matricula in matriculas:
+                alumno_aula = AulaMatricula.objects.filter(matricula=matricula)
+                if alumno_aula:
+                    logger.info("El alumno {0} ya tiene aula".format(matricula.alumno))
+                else:
+                    no_matriculados_aulas.append(matricula)
             return render(request, template_name=self.template_name, context={
                 'aula': aula_actual,
-                'matriculas': matriculas,
+                'matriculas': no_matriculados_aulas,
             })
 
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
     def post(self, request, *args, **kwargs):
-        print(request.POST)
+        logger.info(request.POST)
         aula_actual = Aula.objects.get(id_aula=request.POST['aula'])
         matriculas = Matricula.objects.filter(tipo_servicio=aula_actual.tipo_servicio, colegio_id=get_current_colegio(),
                                               activo=True)
@@ -656,9 +663,9 @@ class AulaMatriculaCreateView(TemplateView):
                         matricula=matricula,
                     )
                     aulamatricula.save()
-                    print("se creo un registro")
+                    logger.info("se creo un registro")
         except:
-            print("hay un error")
+            logger.info("hay un error")
 
         return HttpResponseRedirect(reverse('academic:aula_list'))
 
