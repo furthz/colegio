@@ -98,22 +98,22 @@
                                                                 {{ curso.curso.nombre }}
                                                             </td>
                                                             <td>
-                                                                <a title="Editar" href='{% url "academic:aula_edit" aula.id_aula %}' class="btn btn-default">
+                                                                <!--<a title="Editar" href='{% url "academic:aula_edit" aula.id_aula %}' class="btn btn-default">
                                                                     <i class="fa fa-pencil" aria-hidden="true"></i>
-                                                                </a>
+                                                                </a>>-->
                                                                 <button type="submit" title="Detalle" formaction="{% url 'academic:aula_detail'%}" formmethod="get" form="{{ aula.id_aula }}" class="btn btn-default">
                                                                     <i class="fa fa-info-circle" aria-hidden="true"></i>
                                                                 </button>
-                                                                <a title="Eliminar" href="{% url 'academic:aula_delete' aula.id_aula %}" class="btn btn-default">
+                                                                <a title="Eliminar" href="{% url 'academic:aulacurso_delete' curso.id_aula_curso %}" class="btn btn-default">
                                                                     <i class="fa fa-trash" aria-hidden="true"></i>
                                                                 </a>
                                                                 <button type="submit" title="Asignar Docente" formaction="{% url 'academic:cursodocente_create'%}" formmethod="get" form="curso{{ forloop.counter }}" class="btn btn-default">
                                                                     <i class="fa fa-user" aria-hidden="true"></i>
                                                                 </button>
                                                                 </button>
-                                                                <button type="submit" title="Establecer Horario" formaction="{% url 'academic:horarioaula_create'%}" formmethod="get" form="curso{{ forloop.counter }}" class="btn btn-default">
+                                                                <!--<button type="submit" title="Establecer Horario" formaction="{% url 'academic:horarioaula_create'%}" formmethod="get" form="curso{{ forloop.counter }}" class="btn btn-default">
                                                                     <i class="fa fa-clock-o" aria-hidden="true"></i>
-                                                                </button>
+                                                                </button>-->
                                                             </td>
                                                           </tr>
                                                         {% endfor %}

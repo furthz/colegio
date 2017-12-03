@@ -4,8 +4,7 @@ from AE_academico.views import AulaListView, AulaDetailView, AulaCreationView, A
     CursoDeleteView, AulaCursoCreateView, VisualizarAsistenciaView, EventoCreateView, EventoDetailView, EventoListView, \
     MarcarAsistenciaDiaView, PeriodoAcademicoListView, PeriodoAcademicoDetailView, PeriodoAcademicoCreationView, \
     PeriodoAcademicoUpdateView, AulaMatriculaCreateView, HorarioAulaCreateView, RegistrarNotasAlumnosView, get_cursos, \
-    VisualizarNotasView, RecordatorioAulaCreateView
-
+    VisualizarNotasView, RecordatorioAulaCreateView, AulaCursoDeleteView
 
 from AE_academico.views import CursoDocenteCreateView
 
@@ -46,6 +45,7 @@ urlpatterns = [
 
 
     url(r'^aula/curso/create/$', AulaCursoCreateView.as_view(), name='aulacurso_create'),
+    url(r'^aula/curso/delete/(?P<pk>\d+)/$', AulaCursoDeleteView.as_view(), name='aulacurso_delete'),
 
     # URL para creacion de evento
     url(r'^evento/create/$', EventoCreateView.as_view(), name='evento_create'),

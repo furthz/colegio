@@ -10,7 +10,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView, D
 from django.views.generic import TemplateView
 
 from AE_academico.forms import AulaForm, MarcarAsistenciaForm, SubirNotasForm, CursoForm, EventoForm, PeriodoAcademicoForm, \
-    HorarioAulaForm, RegistrarNotas2Form, RecordatorioAulaForm
+    HorarioAulaForm, RegistrarNotas2Form, RecordatorioAulaForm, AulaCursoForm
 
 from AE_academico.forms import CursoDocenteForm
 from AE_academico.models import Aula, Asistencia, Notas, AulaCurso, Evento, HorarioAula, AulaMatricula, PeriodoAcademico, \
@@ -281,6 +281,19 @@ class AulaCursoCreateView(TemplateView):
                 print("hay un error")
 
         return HttpResponseRedirect(reverse('academic:aula_list'))
+
+class AulaCursoDeleteView(DeleteView):
+    model = AulaCurso
+    form_class = AulaCursoForm
+    success_url = reverse_lazy('academic:aula_list')
+    template_name = 'aulacurso_confirm_delete.html'
+
+    def get(self, request, *args, **kwargs):
+        roles = ['promotor', 'director', 'administrativo']
+        if validar_roles(roles=roles):
+            return super(AulaCursoDeleteView, self).get(request, *args, **kwargs)
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
 
 #####################################################
