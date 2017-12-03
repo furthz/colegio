@@ -1,26 +1,29 @@
 {% extends "page.html" %}
-{% block title %}{{ block.super }}Aulas{% endblock %}
+
+{% block title %}{{ block.super }}Académico{% endblock %}
+
+<!-- HEADER INFO PAGE UBICACION -->
+{% block titulo %}
+        <h1>
+            Eliminar Aula
+            <small>Módulo Académico</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li>Módulo Académico</li>
+            <li class="active">Eliminar Aula</li>
+        </ol>
+{% endblock %}
+<!-- FIN DE INFO PAGE UBICACION -->
 
 {% block container %}
 
     <!--Comienza el contenido!!!!!!!!!!!!!!!!!!!-->
     <!-- INICIA CONTENDOR DE FORMULARIOS -->
-    <div class="content-wrapper">
-        <!-- HEADER INFO PAGE UBICACION -->
-        <section class="content-header">
-            <h1>
-                Control de Aulas
-                <small>Modúlo Académico</small>
-            </h1>
-            <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-                <li>Modúlo Académico</li>
-                <li class="active">Control de Aulas</li>
-            </ol>
-        </section>
-        <!-- FIN DE INFO PAGE UBICACION -->
+    <div>
+
         <!-- INICIO DE CONTENIDO -->
-        <section class="content">
+        <section>
             <div class="row">
                 <div class="col-md-12">
                     <div class="box box-primary">
