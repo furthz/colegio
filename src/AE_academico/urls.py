@@ -5,7 +5,9 @@ from AE_academico.views import AulaListView, AulaDetailView, AulaCreationView, A
     CursoDeleteView, AulaCursoCreateView, VisualizarAsistenciaView, EventoCreateView, EventoDetailView, EventoListView, \
     MarcarAsistenciaDiaView, PeriodoAcademicoListView, PeriodoAcademicoDetailView, PeriodoAcademicoCreationView, \
     PeriodoAcademicoUpdateView, AulaMatriculaCreateView, HorarioAulaCreateView, RegistrarNotasAlumnosView, get_cursos, \
-    VisualizarNotasView
+    VisualizarNotasView, RecordatorioAulaCreateView
+
+
 from AE_academico.views import CursoDocenteCreateView
 
 
@@ -61,6 +63,8 @@ urlpatterns = [
     url(r'^periodo/update/(?P<pk>\d+)$', PeriodoAcademicoUpdateView.as_view(), name='periodo_edit'),
 
     url(r'^aula/detail/horario/curso/create/$', HorarioAulaCreateView.as_view(), name='horarioaula_create'),
+
+    url(r'^aula/recordatorio/create/$', RecordatorioAulaCreateView.as_view(), name='recordatorioaula_create'),
 
 ]
 

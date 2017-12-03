@@ -11,6 +11,10 @@ from rest_framework.views import APIView
 from django.views.generic import ListView
 from utils.middleware import get_current_request, get_current_user, get_current_colegio
 from authtools.models import User
+from django.http import Http404
+from rest_framework.response import Response
+import logging
+logger = logging.getLogger("project")
 
 from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
@@ -52,7 +56,6 @@ class ColegioList(generics.ListCreateAPIView):
     queryset = Colegio.objects.all()
     serializer_class = ColegioSerializer
 
-
 class ColegioDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Colegio.objects.all()
     serializer_class = ColegioSerializer
@@ -61,7 +64,6 @@ class ColegioDetail(generics.RetrieveUpdateDestroyAPIView):
 class PerfilList(generics.ListCreateAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
-
 
 class PerfilDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Profile.objects.all()
@@ -116,7 +118,6 @@ class MatriculaDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = MatriculaSerializer
 
 
-
 class AsistenciaList(generics.ListCreateAPIView):
     queryset = Asistencia.objects.all()
     serializer_class = AsistenciaSerializer
@@ -156,7 +157,9 @@ class AlumnoDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = AlumnoSerializer
 
 class SnippetDetail(APIView):
-
+    """
+    Retrieve, update or delete a snippet instance.
+    """
     def get_object(self, pk):
         try:
             return Colegio.objects.get(pk=pk)
@@ -286,3 +289,5 @@ class ListaAsistencia(APIView):
         serializer = CursoDocenteSerializer(cursos_asociados, many=True)
         return Response(serializer.data)
 """
+
+

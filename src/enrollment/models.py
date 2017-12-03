@@ -198,7 +198,7 @@ class Matricula(ActivoMixin, CreacionModificacionUserMixin, CreacionModificacion
 
         :return:
         """
-        return "El alumno: {0} esta registrado en {1}".format(self.alumno.persona.getNombreCompleto, self.tipo_servicio)
+        return "El alumno {0} registrado en el {1}".format(self.alumno.persona.getNombreCompleto, self.tipo_servicio)
 
     def get_absolute_url(self):
         """

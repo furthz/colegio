@@ -1,26 +1,29 @@
 {% extends "page.html" %}
-{% block title %}{{ block.super }}Aulas{% endblock %}
+
+{% block title %}{{ block.super }}Académico{% endblock %}
+
+<!-- HEADER INFO PAGE UBICACION -->
+{% block titulo %}
+        <h1>
+            Detalle de Aula
+            <small>Módulo Académico</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li>Módulo Académico</li>
+            <li class="active">Detalle de Aulas</li>
+        </ol>
+{% endblock %}
+<!-- FIN DE INFO PAGE UBICACION -->
 
 {% block container %}
 
     <!--Comienza el contenido!!!!!!!!!!!!!!!!!!!-->
     <!-- INICIA CONTENDOR DE FORMULARIOS -->
     <div>
-        <!-- HEADER INFO PAGE UBICACION -->
-        <section class="content-header">
-            <h1>
-                Detalles de Aulas
-                <small>Modúlo Académico</small>
-            </h1>
-            <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-                <li>Modúlo Académico</li>
-                <li class="active">Control de Aulas</li>
-            </ol>
-        </section>
-        <!-- FIN DE INFO PAGE UBICACION -->
+
         <!-- INICIO DE CONTENIDO -->
-        <section class="content">
+        <section>
             <div class="row">
                 <div class="col-md-12">
                     <div class="box box-primary">
@@ -86,7 +89,7 @@
                                                           <tr>
                                                             <td>{{ forloop.counter }}</td>
                                                             <td>
-                                                                {{ curso }}
+                                                                {{ curso.curso.nombre }}
                                                             </td>
                                                             <td>
                                                                 <a title="Editar" href='{% url "academic:aula_edit" aula.id_aula %}' class="btn btn-default">
@@ -101,9 +104,42 @@
                                                                 <button type="submit" title="Asignar Docente" formaction="{% url 'academic:cursodocente_create'%}" formmethod="get" form="curso{{ forloop.counter }}" class="btn btn-default">
                                                                     <i class="fa fa-user" aria-hidden="true"></i>
                                                                 </button>
+                                                                </button>
                                                                 <button type="submit" title="Establecer Horario" formaction="{% url 'academic:horarioaula_create'%}" formmethod="get" form="curso{{ forloop.counter }}" class="btn btn-default">
                                                                     <i class="fa fa-clock-o" aria-hidden="true"></i>
                                                                 </button>
+                                                            </td>
+                                                          </tr>
+                                                        {% endfor %}
+                                                </table>
+                                                <br>
+                                                <h4>Docentes del Aula</h4>
+                                                <br>
+
+                                                <table class="table table-hover">
+                                                  <tr class="table-header">
+                                                    <th>Número</th>
+                                                    <th>Docente</th>
+                                                    <th>Curso</th>
+                                                    <th>Acciones</th>
+                                                  </tr>
+                                                        {% for curso_docente in cursos_docentes %}
+                                                             <form method="get" name="curso_docente{{ forloop.counter }}" id="curso_docente{{ forloop.counter }}">
+                                                                <input type="number" hidden id="curso_docente" name="curso_docente" value="{{ curso.id_curso_docente }}">
+                                                            </form>
+                                                          <tr>
+                                                            <td>{{ forloop.counter }}</td>
+                                                            <td>
+                                                                {{ curso_docente.docente.getNombreCompleto }}
+                                                            </td>
+                                                            <td>
+                                                                {{ curso_docente.curso }}
+                                                            </td>
+                                                            <td>
+                                                                <a title="Seleccionar como Tutor" href='{% url "academic:aula_edit" aula.id_aula %}' class="btn btn-default">
+                                                                    <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+                                                                </a>
+
                                                             </td>
                                                           </tr>
                                                         {% endfor %}

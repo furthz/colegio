@@ -11,9 +11,11 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView, D
 from django.views.generic import TemplateView
 
 from AE_academico.forms import AulaForm, MarcarAsistenciaForm, SubirNotasForm, CursoForm, EventoForm, PeriodoAcademicoForm, \
-    HorarioAulaForm, RegistrarNotas2Form
+    HorarioAulaForm, RegistrarNotas2Form, RecordatorioAulaForm
+
 from AE_academico.forms import CursoDocenteForm
-from AE_academico.models import Aula, Asistencia, Notas, AulaCurso, Evento, HorarioAula, AulaMatricula, PeriodoAcademico
+from AE_academico.models import Aula, Asistencia, Notas, AulaCurso, Evento, HorarioAula, AulaMatricula, PeriodoAcademico, \
+    RecordatorioAula
 from AE_academico.models import CursoDocente
 from AE_academico.models import Curso
 from enrollment.models import Matricula
@@ -628,18 +630,25 @@ class AulaMatriculaCreateView(TemplateView):
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
         if validar_roles(roles=roles):
+            no_matriculados_aulas = []
             aula_actual = Aula.objects.get(id_aula=request.GET['aula'])
             matriculas = Matricula.objects.filter(tipo_servicio=aula_actual.tipo_servicio,colegio_id=get_current_colegio(), activo=True)
+            for matricula in matriculas:
+                alumno_aula = AulaMatricula.objects.filter(matricula=matricula)
+                if alumno_aula:
+                    logger.info("El alumno {0} ya tiene aula".format(matricula.alumno))
+                else:
+                    no_matriculados_aulas.append(matricula)
             return render(request, template_name=self.template_name, context={
                 'aula': aula_actual,
-                'matriculas': matriculas,
+                'matriculas': no_matriculados_aulas,
             })
 
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
     def post(self, request, *args, **kwargs):
-        print(request.POST)
+        logger.info(request.POST)
         aula_actual = Aula.objects.get(id_aula=request.POST['aula'])
         matriculas = Matricula.objects.filter(tipo_servicio=aula_actual.tipo_servicio, colegio_id=get_current_colegio(),
                                               activo=True)
@@ -655,9 +664,9 @@ class AulaMatriculaCreateView(TemplateView):
                         matricula=matricula,
                     )
                     aulamatricula.save()
-                    print("se creo un registro")
+                    logger.info("se creo un registro")
         except:
-            print("hay un error")
+            logger.info("hay un error")
 
         return HttpResponseRedirect(reverse('academic:aula_list'))
 
@@ -824,7 +833,6 @@ class RegistrarNotasAlumnosView(TemplateView):
                 alumno = Alumno.objects.get(id_alumno=alumnos_id[n])
                 nota = Notas(alumno=alumno, curso=curso, periodo_academico=periodo, nota=notas[n], colegio=colegio)
                 nota.save()
-
             return redirect('academic:notas_ver')
 
 
@@ -971,3 +979,40 @@ def get_cursos(request):
     return HttpResponse(data, mimetype)
 
 
+#########################################
+###### RECORDATORIOS TAREAS Y PCS #######
+#########################################
+
+
+class RecordatorioAulaCreateView(CreateView):
+    model = RecordatorioAula
+    success_url = reverse_lazy('academic:aula_list')
+    template_name = 'recordatorio_aula_form.html'
+    form_class = RecordatorioAulaForm
+
+    def get(self, request, *args, **kwargs):
+        roles = ['promotor', 'director', 'administrativo', 'tesorero']
+        if validar_roles(roles=roles):
+            aula_actual = Aula.objects.get(id_aula=request.GET['aula'])
+            return render(request, template_name=self.template_name, context={
+                'aula': aula_actual,
+                'form': self.form_class,
+            })
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+    def post(self, request, *args, **kwargs):
+
+
+
+        data_form = request.POST
+        aula = Aula.objects.get(id_aula=request.POST['aula'])
+        nombre = data_form['nombre']
+        fecha = data_form['fecha_programacion']
+        estado = 1 # ESTO SIGNIFICA QUE EL EVENTO FUE CREADO
+        descripcion = data_form['descripcion']
+
+        recordatorio = RecordatorioAula(aula=aula, fecha_programacion=fecha, nombre=nombre, estado=estado, descripcion=descripcion)
+        recordatorio.save()
+
+        return HttpResponseRedirect(reverse('academic:aula_list'))

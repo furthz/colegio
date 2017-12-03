@@ -226,7 +226,7 @@ class RegistroUsuario(CreateView):
         elif validar_roles(roles):
             logger.debug("No es super usuario")
 
-            lista_roles = [2, 3, 4, 5, 6, 11]
+            lista_roles = [2, 3, 4, 5, 6]
             grupos = []
             for rol in lista_roles:
                 grup = Group.objects.get(id=rol)
@@ -286,7 +286,7 @@ class RegistroUsuario(CreateView):
             elif validar_roles(roles):
                 logger.debug("No es super usuario")
 
-                lista_roles = [2, 3, 4, 5, 6, 11]
+                lista_roles = [2, 3, 4, 5, 6]
                 grupos = []
                 for rol in lista_roles:
                     grup = Group.objects.get(id=rol)
@@ -409,3 +409,120 @@ class GroupViewSet(viewsets.ModelViewSet):
     serializer_class = GroupSerializer
 
 
+class RegistroUsuarioApoderado(CreateView):
+    model = Userss
+    template_name = "register_accounts/register_accounts_form.html"
+    form_class = RegistroUsuarioForm
+    success_url = reverse_lazy('registers:apoderado_create')
+
+    def get(self, request, *args, **kwargs):
+        logger.debug("Inicio GET RegistroUsuario")
+
+        roles = ['sistemas', 'director', 'promotor']
+        logger.info("Roles: " + str(roles))
+
+        if request.user.is_superuser:
+            logger.info("Es super usuario")
+
+            grupos = []
+            grup = Group.objects.get(id=10)
+            grupos.append(grup)
+            logger.debug("Grupo con permiso: " + str(grup.name))
+
+            logger.info("Se asignó el usuario al grupo: " + str(grup.name))
+            return render(request, template_name=self.template_name, context={
+                'form': self.form_class,
+                'grupos': grupos,
+            })
+        elif validar_roles(roles):
+            logger.debug("No es super usuario")
+
+            lista_roles = [7]
+            grupos = []
+            for rol in lista_roles:
+                grup = Group.objects.get(id=rol)
+                logger.debug("Grupo: " + str(grup.name))
+
+                grupos.append(grup)
+
+            logger.info("Se asignó el usuario a los grupos: " + str(lista_roles))
+            return render(request, template_name=self.template_name, context={
+                'form': self.form_class,
+                'grupos': grupos,
+            })
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+    def post(self, request, *args, **kwargs):
+        logger.debug("Inicio POST RegistroUsuario")
+
+        roles = ['sistemas', 'director', 'promotor']
+
+        usuario = Userss()
+
+        form = self.form_class(request.POST)
+
+        if form.is_valid():
+            data_form = form.cleaned_data
+            usuario.name = data_form['name']
+            usuario.email = data_form['email']
+            usuario.set_password(data_form['password1'])
+
+            usuario.save()
+
+            grupos = data_form['groups']
+
+            #from django.contrib.auth.models import Group
+
+            for g in grupos:
+                g.user_set.add(usuario)
+
+            request.session['usuario_creado'] = usuario.id
+            # request['grupos'] = grupos
+
+            return HttpResponseRedirect(self.success_url)
+
+        else:
+
+            if request.user.is_superuser:
+                logger.info("Es super usuario")
+
+                grupos = []
+                grup = Group.objects.get(id=10)
+                grupos.append(grup)
+                logger.debug("Grupo con permiso: " + str(grup.name))
+
+                logger.info("Se asignó el usuario al grupo: " + str(grup.name))
+
+            elif validar_roles(roles):
+                logger.debug("No es super usuario")
+
+                lista_roles = [7]
+                grupos = []
+                for rol in lista_roles:
+                    grup = Group.objects.get(id=rol)
+                    logger.debug("Grupo: " + str(grup.name))
+
+                    grupos.append(grup)
+
+                logger.info("Se asignó el usuario a los grupos: " + str(lista_roles))
+
+            return render(request=request, template_name=self.template_name, context={'form': form, 'grupos': grupos})
+
+
+class RegistroUsarioCreationViewApoderado(CreateView):
+    model = Userss
+    template_name = "register_accounts/register_accounts_form.html"
+    form_class = RegistroUsuarioForm
+    success_url = reverse_lazy('registers:apoderado_create')
+
+    @method_decorator(permission_required('register.docente_create', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        roles = ['promotor', 'director', 'sistemas']
+
+        if validar_roles(roles=roles):
+            return super(RegistroUsarioCreationViewApoderado, self).get(request, args, kwargs)
+
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)

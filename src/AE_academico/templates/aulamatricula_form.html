@@ -1,21 +1,21 @@
 {%  extends "page.html" %}
 
-{% block title %}{{ block.super }} Modulo Académico{% endblock %}
+{% block title %}{{ block.super }} Módulo Académico{% endblock %}
 
-{% block breadcrumb %}
-<h1>
-        Asignar Alumnos a un Aula
-        <small>Modulo Académico</small>
+{% block titulo %}
+      <h1>
+        Asignar Alumnos
+        <small>Módulo Académico</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-        <li>Modúlo Académico</li>
-        <li class="active">Asignar Alumnos a un Aula</li>
+        <li>Módulo Académico</li>
+        <li class="active">Asignar Alumnos</li>
       </ol>
 {% endblock %}
 
 {% block container %}
-<section class="content">
+<section>
       <div class="row">
           <div class="col-md-12">
               <div class="box box-primary">
@@ -50,7 +50,7 @@
 
                                           </tr>
                                     {% empty %}
-                                        <a href="">No hay cursos registrados en el Colegio</a>
+                                        <a href="">No hay alumnos para ser registrados</a>
                                     {% endfor %}
                                     </form>
 
@@ -60,7 +60,7 @@
                                 <div class="col-md-12">
                                   <div class="pull-right">
                                     <a href="javascript:history.back()" class="btn btn-default">Cancelar</a>
-                                    <button name="enviar" type="submit" form="cursosasignados" formmethod="post" class="btn btn-success" disabled><i class="fa fa-check" aria-hidden="true"></i> Asignar Cursos</button>
+                                    <button name="enviar" type="submit" form="cursosasignados" formmethod="post" class="btn btn-success" disabled><i class="fa fa-check" aria-hidden="true"></i> Asignar Alumnos</button>
                                   </div>
                                 </div>
                                 </div>

@@ -1,5 +1,19 @@
 {% extends "page.html" %}
-{% block title %}{{ block.super }}Aulas{% endblock %}
+
+{% block title %}{{ block.super }}Académico{% endblock %}
+
+{% block titulo %}
+        <h1>
+            Lista de Aulas
+            <small>Módulo Académico</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li>Módulo Académico</li>
+            <li class="active">Lista de Aulas</li>
+        </ol>
+{% endblock %}
+
 {% block container %}
 
     <!--Comienza el contenido!!!!!!!!!!!!!!!!!!!-->
@@ -26,7 +40,7 @@
 
                                             <table class="table table-hover">
                                                 <tbody>
-                                                <tr>
+                                                <tr class="table-header">
                                                     <th>Ítem</th>
                                                     <th>Nombre</th>
                                                     <th>Acciones</th>
@@ -55,6 +69,9 @@
                                                                 </a>
                                                                 <button type="submit" title="Asignar Cursos" formaction="{% url 'academic:aulacurso_create'%}" formmethod="get" form="{{ aula.id_aula }}" class="btn btn-default">
                                                                     <i class="fa fa-book" aria-hidden="true"></i>
+                                                                </button>
+                                                                <button type="submit" title="Crear recordatorio" formaction="{% url 'academic:recordatorioaula_create'%}" formmethod="get" form="{{ aula.id_aula }}" class="btn btn-default">
+                                                                    <i class="fa fa-calendar" aria-hidden="true"></i>
                                                                 </button>
                                                             </div>
                                                         </td>

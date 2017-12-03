@@ -150,7 +150,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id_asistencia', models.AutoField(primary_key=True)),
                 ('alumno', models.ForeignKey(db_column='id_alumno', to='register.Alumno')),
-                ('curso', models.ForeignKey(db_column='id_curso', to='AE_academico.Curso')),
+                #('curso', models.ForeignKey(db_column='id_curso', to='AE_academico.Curso')),
                 ('fecha', models.DateField()),
                 ('estado_asistencia', models.IntegerField()),
                 ('comentario', models.CharField(max_length=500, blank=True, null=True)),
@@ -228,7 +228,27 @@ class Migration(migrations.Migration):
 
             },
         ),
-
+        migrations.CreateModel(
+            name='RecordatorioAula',
+            fields=[
+                ('id_recordatorio_aula', models.AutoField(primary_key=True)),
+                ('aula', models.ForeignKey(db_column="id_aula", to='AE_academico.Aula')),
+                ('nombre', models.CharField(max_length=50, blank=False, null=False)),
+                ('descripcion', models.CharField(max_length=200, blank=True, null=True)),
+                ('fecha_programacion', models.DateField(blank=False, null=False)),
+                ('estado', models.IntegerField()),
+                ('fecha_creacion', models.DateField()),
+                ('fecha_modificacion', models.DateField()),
+                ('usuario_creacion', models.CharField(max_length=10, null=True)),
+                ('usuario_modificacion', models.CharField(max_length=10, null=True)),
+                ('activo', models.BooleanField()),
+            ],
+            options={
+                # 'db_table': 'matricula',
+                'managed': settings.IS_MIGRATE,
+                # 'managed': False,
+            },
+        ),
     ]
 
 
