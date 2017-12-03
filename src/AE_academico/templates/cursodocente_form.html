@@ -13,7 +13,7 @@
                 <div class="col-md-9">
                     <div class="panel-page">
                         <div class="box-body">
-                            <form class="form-horizontal" action="" method="post">
+                            <form name="form1" id="form1" class="form-horizontal" action="" method="post">
                                 {% csrf_token %}
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">Docente</label>
@@ -22,7 +22,7 @@
                                           {% if docentes %}
                                             <option value="">---------</option>
                                             {% for docente in docentes %}
-                                                <option value="{{ docente.id_docente }}">{{ docente }}</option>
+                                                <option value="{{ docente.id_docente }}">{{ docente.getNombreCompleto }}</option>
                                             {% endfor %}
                                           {% else %}
                                             <option value="">No existen docentes registrados</option>
@@ -34,11 +34,11 @@
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">Curso</label>
                                     <div class="col-sm-10">
-                                        <select name="curso" required id="id_curso"  class="form-control" disabled>
+                                        <select name="curso" required id="id_curso"  class="form-control">
                                           {% if cursos %}
 
                                             {% for curso in cursos %}
-                                                <option value="{{ curso.id_curso }}">{{ curso }}</option>
+                                                <option value="{{ curso.id_aula_curso }}" selected>{{ curso }}</option>
                                             {% endfor %}
                                           {% else %}
                                             <option value="">No existen cursos registrados</option>
@@ -52,7 +52,7 @@
                                         <a href="javascript:history.back()" class="btn btn-default" >
                                             <i class="fa fa-arrow-left" aria-hidden="true"></i> Volver a lista
                                         </a>
-                                        <button type="submit" class="btn btn-success" tabindex="3">
+                                        <button type="submit" formmethod="post" form="form1" class="btn btn-success">
                                             <i class="fa fa-plus" aria-hidden="true"></i> Confirmar
                                         </button>
                                     </div>

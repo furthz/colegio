@@ -625,7 +625,7 @@ class Proveedor(CreacionModificacionUserProveedorMixin, CreacionModificacionFech
         Redirecciona las views que usan como modelo esta clase
         :return: url de detalles de la persona
         """
-        return reverse('registers:proveedor_detail', kwargs={'pk': self.pk})
+        return reverse('registers:proveedor_list')
 
     class Meta:
         managed = True

@@ -2,20 +2,20 @@
 
 {% block title %}{{ block.super }} Modulo Académico{% endblock %}
 
-{% block breadcrumb %}
-<h1>
-        Asignar Cursos a un Aula
+{% block titulo %}
+      <h1>
+        Asignación de Cursos
         <small>Modulo Académico</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
         <li>Modúlo Académico</li>
-        <li class="active">Asignar Cursos a un Aula</li>
+        <li class="active">Asignación de Cursos</li>
       </ol>
 {% endblock %}
 
 {% block container %}
-<section class="content">
+<section>
       <div class="row">
           <div class="col-md-12">
               <div class="box box-primary">
@@ -29,9 +29,8 @@
                       <div class="panel-body">
                                 <table class="table table-hover">
                                   <tr class="table-header">
-                                    <th class="text-center">Acciones</th>
-                                    <th>Cursos</th>
-                                    <th>Asignar</th>
+                                    <th class="text-center">Cursos</th>
+                                    <th class="text-center">Asignar</th>
                                   </tr>
                                     <form name="cursosasignados" id="cursosasignados">{% csrf_token %}
 

@@ -43,7 +43,7 @@ logger = logging.getLogger("project")
 #################################################
 #       Solicitar Descuentos
 #################################################
-
+"""
 class SolicitarDescuentoView(MyLoginRequiredMixin,TemplateView):
     model = Descuento
     template_name = "solicitar_descuento.html"
@@ -61,9 +61,12 @@ class SolicitarDescuentoView(MyLoginRequiredMixin,TemplateView):
 
 
             'hola':cole,
+            #'hola':cole,
             'descuentos':descuentos,
-            'alumno': Matricula.objects.get(pk=request.POST['matricula']),
+            #'alumno': Matricula.objects.get(pk=request.POST['matricula']),
         })
+
+"""
 
 class CrearSolicitudView(MyLoginRequiredMixin,TemplateView):
     model = Descuento

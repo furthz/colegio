@@ -109,12 +109,33 @@ INSTALLED_APPS = (
     'discounts',
     'import_export',
     'django_filters',
-    #'AE_academico',
+    'AE_academico',
     #'AE_agenda',
     #'AE_chat',
     #'AE_social',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'rest_auth',
+    'APIs'
 
 )
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        #'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+        #'rest_framework.permissions.IsAdminUser',
+        'rest_framework.permissions.IsAuthenticated',
+
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+
+    ],
+    'PAGE_SIZE': 10
+}
+
 IMPORT_EXPORT_USE_TRANSACTIONS = True
 
 MIDDLEWARE_CLASSES = (

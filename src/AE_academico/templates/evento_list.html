@@ -48,16 +48,12 @@
 
                                                         <td>
                                                             <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                                                                <!--<a title="Editar" href='{% url "academic:curso_edit" curso.id_curso %}' class="btn btn-default">
-                                                                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                                                                </a>-->
+
 
                                                                 <button type="submit" title="Detalle" formaction="{% url 'academic:evento_detail'%}" formmethod="get" form="{{ evento.id_evento }}" class="btn btn-default">
                                                                     <i class="fa fa-info-circle" aria-hidden="true"></i>
                                                                 </button>
-                                                                <!--<a title="Eliminar" href="{% url 'academic:curso_delete' curso.id_curso %}" class="btn btn-default">
-                                                                    <i class="fa fa-trash" aria-hidden="true"></i>
-                                                                </a>-->
+
                                                             </div>
                                                         </td>
                                                     </tr>

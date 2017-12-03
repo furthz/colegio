@@ -2,6 +2,7 @@
 
 {% block title %}{{ block.super }}Matrícula{% endblock %}
 
+
 <!-- HEADER INFO PAGE UBICACION -->
 {% block titulo %}
         <h1>
@@ -17,6 +18,7 @@
 <!-- FIN DE INFO PAGE UBICACION -->
 
 {% block container %}
+
     <div>
         <section>
           <div class="row">
@@ -55,7 +57,7 @@
                                   <div class="form-group">
                                     <label class="col-sm-2 control-label">Alumno</label>
                                     <div class="col-sm-10">
-                                       <input type="text" value="{{ alumno.getNombreCompleto }}" name="gato" id="gato_alumno" class="form-control" disabled>
+                                       <input type="text" value="{{ alumno.getNombreFormal }}" name="gato" id="gato_alumno" class="form-control" disabled>
                                     </div>
                                   </div>
 

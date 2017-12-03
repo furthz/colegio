@@ -1,10 +1,15 @@
-"""from django.conf.urls import url
+from django.conf.urls import url
 from AE_academico.views import AulaListView, AulaDetailView, AulaCreationView, AulaUpdateView, AulaDeleteView, \
-    MarcarAsistenciaView, SubirNotasView, CursoListView, CursoDetailView, CursoCreationView, CursoUpdateView, \
+    MarcarAsistenciaView, CursoListView, CursoDetailView, CursoCreationView, CursoUpdateView, \
     CursoDeleteView, AulaCursoCreateView, VisualizarAsistenciaView, EventoCreateView, EventoDetailView, EventoListView, \
     MarcarAsistenciaDiaView, PeriodoAcademicoListView, PeriodoAcademicoDetailView, PeriodoAcademicoCreationView, \
-    PeriodoAcademicoUpdateView, AulaMatriculaCreateView
+    PeriodoAcademicoUpdateView, AulaMatriculaCreateView, HorarioAulaCreateView, RegistrarNotasAlumnosView, get_cursos, \
+    VisualizarNotasView, RecordatorioAulaCreateView
+
+
 from AE_academico.views import CursoDocenteCreateView
+
+
 urlpatterns = [
 
     # URL's del CRUD de Aula
@@ -28,14 +33,17 @@ urlpatterns = [
     url(r'^curso/docente/create/$', CursoDocenteCreateView.as_view(), name='cursodocente_create'),
 
     # URL's de registro de asistencia
-    url(r'^asistencia/registrar/$', MarcarAsistenciaView.as_view(), name='asistencia_registrar'),
+    #url(r'^asistencia/registrar/$', MarcarAsistenciaView.as_view(), name='asistencia_registrar'),
     url(r'^asistencia/registrar/dia/$', MarcarAsistenciaDiaView.as_view(), name='asistencia_registrar_dia'),
     url(r'^asistencia/ver/$', VisualizarAsistenciaView.as_view(), name='asistencia_ver'),
 
 
     # URL's de la asignación de notas
-    url(r'^notas/registrar/$', SubirNotasView.as_view(), name='notas_registrar'),
-    #url(r'^asistencia/ver/$', VisualizarAsistenciaView.as_view(), name='asistencia_ver'),
+    url(r'^notas/registrar/$', RegistrarNotasAlumnosView.as_view(), name='notas_registrar'),
+    url(r'^notas/ver/$', VisualizarNotasView.as_view(), name='notas_ver'),
+
+    url(r'^api/get_cursos', get_cursos, name='get_cursos'),
+
 
     url(r'^aula/curso/create/$', AulaCursoCreateView.as_view(), name='aulacurso_create'),
 
@@ -53,5 +61,8 @@ urlpatterns = [
     url(r'^periodo/create$', PeriodoAcademicoCreationView.as_view(), name='periodo_create'),
     url(r'^periodo/update/(?P<pk>\d+)$', PeriodoAcademicoUpdateView.as_view(), name='periodo_edit'),
 
+    url(r'^aula/detail/horario/curso/create/$', HorarioAulaCreateView.as_view(), name='horarioaula_create'),
+
+    url(r'^aula/recordatorio/create/$', RecordatorioAulaCreateView.as_view(), name='recordatorioaula_create'),
+
 ]
-"""

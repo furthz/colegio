@@ -1,0 +1,161 @@
+{% extends "page.html" %}
+
+{% block breadcrumb %}
+  <!-- INICIA CONTENDOR DE FORMULARIOS -->
+
+    <!-- HEADER INFO PAGE UBICACION -->
+    <section class="content-header">
+      <h1>
+       Notas
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+        <li>Modúlo Académico</li>
+        <li class="active">Registro de Notas</li>
+      </ol>
+    </section>
+     <!-- FIN DE INFO PAGE UBICACION -->
+{% endblock %}
+
+<body>
+{% block container %}
+{% load crispy_forms_tags %}
+
+    <!-- INICIO DE CONTENIDO -->
+
+      <div class="row">
+          <div class="col-md-12">
+              <div class="box box-primary">
+                  <div class="box-body">
+                          <div class="col-md-9">
+                            <div class="panel-page">
+                                <div class="toolbar-header">
+                                    <h5>Módulo que permite controlar registrar las notas los alumnos</h5>
+                                </div>
+                                  <form action="" name="form1" class="form-horizontal" id="form1">{% csrf_token %}
+                                    <div class="toolbar-search">
+                                      <div class="box-body">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Periodo Académico</label>
+                                                  <select name="periodo_academico" id="id_periodo_academico"  class="form-control">
+                                                    {% for periodo in periodos_colegio %}
+                                                        <option value="{{ periodo.id_periodo_academico }}">{{ periodo.nombre }}</option>
+                                                    {% endfor %}
+                                                  </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="id_aula">Grado y Sección</label>
+                                                  <select name="aula" id="id_aula" class="form-control">
+                                                    {% for aula in aulas_colegio %}
+                                                        {% if aula == aula_selected %}
+                                                            <option selected value="{{ aula.id_aula }}">{{ aula }}</option>
+                                                        {% else %}
+                                                            <option value="{{ aula.id_aula }}">{{ aula }}</option>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                  </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="id_curso">Asignatura</label>
+                                                  <select name="curso" id="id_curso"  class="form-control">
+                                                        <option>Comunicación</option>
+                                                  </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                          <div class="search-actions">
+                                            <button type="submit" class="btn btn-primary" form="form1" formmethod="post">
+                                            <i class="fa fa-search" aria-hidden="true"></i>
+                                             Ir
+                                            </button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </form>
+                                    </div>
+                          {% if alumnos %}
+                                    <table class="table table-hover">
+                                      <tr class="table-header">
+                                        <th>Número de orden</th>
+                                        <th>Apellidos y Nombres</th>
+                                        <th class="text-center">Nota</th>
+                                      </tr>
+                                        <form id="ListaAsistencia">{% csrf_token %}
+                                            {% for alumno in alumnos %}
+                                              <tr>
+                                                <td>{{ forloop.counter }}</td>
+                                                <td>
+                                                    {{ alumno.alumno.getNombreFormal }}
+                                                    <input type="hidden" name="id" value="{{ alumno.alumno.id_alumno }}">
+                                                </td>
+                                                <td class="col-md-2">
+                                                    {{ form2.nota }}
+                                                </td>
+                                              </tr>
+                                            {% endfor %}
+                                            <input type="hidden" name="periodo" value="{{ periodo_selected.id_periodo_academico }}">
+                                            <input type="hidden" name="curso" value="{{ curso_selected.id_curso }}">
+                                        </form>
+                                     </table>
+
+
+                <div class="col-md-10"></div><a class="btn btn-primary"  href="#"><i class="fa fa-times" aria-hidden="true"></i>Salir</a>
+                <div class="col-md-12"></div>
+                                        <button type="submit" class="btn btn-success" tabindex="3" form="ListaAsistencia" formmethod="post">
+                                            <i class="fa fa-floppy-o" aria-hidden="true"></i> Grabar
+                                        </button>
+
+                            {% endif %}
+
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+
+                          </div>
+                        </div>
+
+              </div>
+          </div>
+
+    <!-- /.FIN DE CONTENIDO -->
+  <!-- /.FIN DE CONTENEDOR DE FORMULARIO  -->
+<!-- ./wrapper -->
+
+{% endblock container %}
+
+{% block scripts %}
+
+<script type="text/javascript">
+     $('#id_aula').change(function () {
+            $('#id_curso').empty();
+
+            $.ajax({
+                    type: "GET",
+                    url: "/academic/api/get_cursos",
+                    datatype: "Json",
+                    data: { id_aula: $('#id_aula').val() },
+                    success: function (data) {
+                        $.each(data, function (index, value) {
+                            $('#id_curso').append('<option value="' + value["id"] + '">' +
+                                value["value"] + '</option>');
+                        });
+                    },
+                    error: function (error) {
+                        alert("Error Ajax not working: " + error);
+                    }
+                });
+
+     }
+    );
+    </script>
+
+{% endblock scripts %}
+
+</body>
+

@@ -132,3 +132,37 @@ class ConsignmentForm(forms.ModelForm):
                        "onchange": "document.getElementById('monto').innerHTML = montodine = this.value", 'tabindex': '2'}),
             'comentario': forms.Textarea(attrs={'class': 'form-control', 'rows': '3', 'tabindex': '3'}),
         }
+
+class CajaChicaConsignmentForm(forms.ModelForm):
+    class Meta:
+        model = Remesa
+
+        fields = [
+            'personal_colegio',
+            'movimiento',
+            'fechacreacion',
+            'monto',
+            'comentario',
+        ]
+
+        labels = {
+            'personal_colegio': 'Persona Encargada',
+
+            'movimiento': 'Cajero',
+            'fechacreacion': 'Fecha Creación',
+            'monto': 'Monto',
+            'comentario': 'Comentario',
+        }
+
+        widgets = {
+
+            'personal_colegio': forms.Select(attrs={'class': 'form-control', 'id': 'personaTxt', 'name': 'personaTxt',
+                                                    'onchange': 'personaSelect()', 'tabindex': '1'}),
+            'movimiento': forms.Select(attrs={'class': 'form-control'}),
+            'fechacreacion': forms.HiddenInput(attrs={'class': 'form-control'}),
+            'monto': forms.TextInput(
+                attrs={'class': 'form-control', 'name': 'inputMonto', 'onKeyPress': 'return NumCheck(event, this)',
+                       'placeholder': 'Escribe el monto a entregar',
+                       "onchange": "document.getElementById('monto').innerHTML = montodine = this.value", 'tabindex': '2'}),
+            'comentario': forms.Textarea(attrs={'class': 'form-control', 'rows': '3', 'tabindex': '3'}),
+        }

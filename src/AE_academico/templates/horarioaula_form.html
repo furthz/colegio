@@ -1,68 +1,59 @@
 {% extends "page.html" %}
-{% block titulo %}
-    <h1>Crear Evento
-        {{ block.super }}
-        <small>Módulo Académico</small>
-    </h1>
-{% endblock %}
+{% block title %}{{ block.super }}Aulas{% endblock %}
+
 {% block container %}
 <div class="box box-primary">
     <div class="box-header with-border">
-        <h3 class="box-title">Crear un Evento</h3>
+        <h3 class="box-title">Asociar Curso a un Docente</h3>
             <div class="box-body">
                 <div class="col-md-9">
                     <div class="panel-page">
                         <div class="box-body">
-                            <form class="form-horizontal" action="" method="post" name="evento" id="evento">
+                            <form class="form-horizontal" action="" method="post">
                                 {% csrf_token %}
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">Nombre del Evento</label>
+                                    <label class="col-sm-2 control-label">Curso: </label>
                                     <div class="col-sm-10">
-                                        {{ form.nombre }}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">Encargado</label>
-                                    <div class="col-sm-10">
-                                        <select name="encargado" class="form-control" id="id_encargado" required="">
-                                          {% if empleados %}
-                                            <option value="">---------</option>
-                                            {% for personal in empleados %}
-                                                <option value="{{ personal.pk }}">{{ personal.getNombreCompleto }}</option>
-                                            {% endfor %}
+
+
+                                          {% if curso %}
+                                            <select name="curso" class="form-control" id="id_curso" required="" class="form-control" disabled>
+                                            <option value="{{ curso.id_curso_docente }}">{{ curso }}</option>
+
                                           {% else %}
-                                            <option value="">No existen personal registrado</option>
+                                              <select name="curso" class="form-control" id="id_curso" required="" class="form-control">
+                                            <option value="">No existen cursos registrados</option>
                                           {% endif %}
                                         </select>
 
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">Descripción</label>
+                                    <label class="col-sm-2 control-label">Lugar: </label>
                                     <div class="col-sm-10">
+                                        {{ form.lugar }}
 
-                                        {{ form.descripcion }}
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">Fecha del Evento</label>
+                                    <label class="col-sm-2 control-label">Día: </label>
                                     <div class="col-sm-10">
+                                        {{ form.dia }}
 
-                                        {{ form.fecha_evento }}
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">Hora de Inicio</label>
+                                    <label class="col-sm-2 control-label">Hora de Inicio: </label>
                                     <div class="col-sm-10">
-
                                         {{ form.hora_inicio }}
+
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">Hora de Fin</label>
+                                    <label class="col-sm-2 control-label">Hora de Fin: </label>
                                     <div class="col-sm-10">
-
                                         {{ form.hora_fin }}
+
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -70,7 +61,7 @@
                                         <a href="javascript:history.back()" class="btn btn-default" >
                                             <i class="fa fa-arrow-left" aria-hidden="true"></i> Volver a lista
                                         </a>
-                                        <button type="submit" class="btn btn-success"  form="evento" formmethod="post" formaction="{% url "academic:evento_create" %}" >
+                                        <button type="submit" class="btn btn-success" tabindex="3">
                                             <i class="fa fa-plus" aria-hidden="true"></i> Confirmar
                                         </button>
                                     </div>
@@ -87,5 +78,4 @@
     </div>
 
 {% endblock container %}
-
 

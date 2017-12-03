@@ -23,6 +23,8 @@ class Migration(migrations.Migration):
                 ('id_aula', models.AutoField(primary_key=True)),
                 ('tipo_servicio', models.ForeignKey(db_column="id_tipo_servicio", to='enrollment.TipoServicio')),
                 ('nombre', models.CharField(max_length=100, blank=True, null=True)),
+                #('colegio', models.ForeignKey(db_column="id_colegio", to='register.Colegio')),
+                #('tipo', models.IntegerField()),
                 ('fecha_creacion', models.DateField()),
                 ('fecha_modificacion', models.DateField()),
                 ('usuario_creacion', models.CharField(max_length=10,null=True)),
@@ -81,6 +83,7 @@ class Migration(migrations.Migration):
                 ('id_curso_docente', models.AutoField(primary_key=True)),
                 ('docente', models.ForeignKey(db_column="id_docente", to='register.Docente')),
                 ('curso', models.ForeignKey(db_column="id_aula_curso", to='AE_academico.AulaCurso')),
+                ('tutor', models.BooleanField(default=False)),
                 ('fecha_creacion', models.DateField()),
                 ('fecha_modificacion', models.DateField()),
                 ('usuario_creacion', models.CharField(max_length=10, null=True)),
@@ -191,7 +194,7 @@ class Migration(migrations.Migration):
                 ('colegio', models.ForeignKey(db_column="id_colegio", to='register.Colegio')),
                 ('periodo_academico', models.ForeignKey(db_column="id_periodo_academico", to='AE_academico.PeriodoAcademico')),
                 ('alumno', models.ForeignKey(db_column='id_alumno', to='register.Alumno')),
-                ('nota', models.IntegerField()),
+                ('nota', models.CharField(max_length=2)),
                 ('fecha_creacion', models.DateField()),
                 ('fecha_modificacion', models.DateField()),
                 ('usuario_creacion', models.CharField(max_length=10, null=True)),
@@ -224,6 +227,26 @@ class Migration(migrations.Migration):
 
             },
         ),
-
+        migrations.CreateModel(
+            name='RecordatorioAula',
+            fields=[
+                ('id_recordatorio_aula', models.AutoField(primary_key=True)),
+                ('aula', models.ForeignKey(db_column="id_aula", to='AE_academico.Aula')),
+                ('nombre', models.CharField(max_length=50, blank=False, null=False)),
+                ('descripcion', models.CharField(max_length=200, blank=True, null=True)),
+                ('fecha_programacion', models.DateField(blank=False, null=False)),
+                ('estado', models.IntegerField()),
+                ('fecha_creacion', models.DateField()),
+                ('fecha_modificacion', models.DateField()),
+                ('usuario_creacion', models.CharField(max_length=10, null=True)),
+                ('usuario_modificacion', models.CharField(max_length=10, null=True)),
+                ('activo', models.BooleanField()),
+            ],
+            options={
+                # 'db_table': 'matricula',
+                'managed': settings.IS_MIGRATE,
+                # 'managed': False,
+            },
+        ),
     ]
 

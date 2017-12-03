@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils import timezone
 from django.db.models import Sum
+
+#from payments.models import CajaChica
 from register.models import Colegio, PersonalColegio
 from utils.models import CreacionModificacionFechaMixin, CreacionModificacionUserMixin
 from utils.middleware import get_current_colegio, get_current_userID
@@ -107,6 +109,7 @@ class CajaCajero(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, 
                                          db_column="id_personal_colegio")  # Persona encargada de la Caja
     caja = models.ForeignKey(Caja, models.DO_NOTHING, db_column='id_caja')  # Caja en la que se apertura la sesión
     saldo = models.FloatField(default=0)  # Sobrante o Faltante al Final de la caja
+    #ventas = models.FloatField(default=0)
     monto_apertura = models.FloatField(default=0.0)  # Caja Inicial
     monto_cierre = models.FloatField(default=0.0)  # Caja Final
     comentario_apertura = models.CharField(max_length=250, blank=True, null=True)
@@ -181,6 +184,7 @@ class Remesa(models.Model):
 
     id_remesa = models.AutoField(primary_key=True)
     personal_colegio = models.ForeignKey(PersonalColegio, models.DO_NOTHING, db_column="id_personal_colegio")
+    #caja_chica = models.ForeignKey(CajaChica, models.DO_NOTHING, db_column="id_caja_chica", null=True, blank=True)
     movimiento = models.ForeignKey(CajaCajero, models.DO_NOTHING, db_column='id_movimiento', default=cajeroExist)
     fechacreacion = models.DateTimeField(default=timezone.now)
     monto = models.FloatField()

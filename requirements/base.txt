@@ -12,4 +12,6 @@ python-decouple==3.0
 django-redis
 reportlab
 django-autocomplete-light
-
+djangorestframework>=3.7.1
+markdown>=2.6.9
+django-rest-auth>=0.9.2

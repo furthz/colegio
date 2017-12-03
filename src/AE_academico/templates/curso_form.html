@@ -1,10 +1,20 @@
 {% extends "page.html" %}
+
+{% block title %}{{ block.super }}Académico{% endblock %}
+
 {% block titulo %}
-    <h1>Cursos
-        {{ block.super }}
-        <small>Módulo Académico</small>
-    </h1>
+        <h1>
+            Creación de Curso
+            <small>Módulo Académico</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li>Módulo Académico</li>
+            <li class="active">Creación de Cursos</li>
+        </ol>
 {% endblock %}
+
+
 {% block container %}
 <div class="box box-primary">
     <div class="box-header with-border">
@@ -15,12 +25,7 @@
                         <div class="box-body">
                             <form class="form-horizontal" action="" method="post">
                                 {% csrf_token %}
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">Aula</label>
-                                    <div class="col-sm-10">
-                                        {{ form.aula }}
-                                    </div>
-                                </div>
+
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">Nombre</label>
                                     <div class="col-sm-10">

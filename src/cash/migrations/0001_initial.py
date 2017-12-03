@@ -14,6 +14,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('register', '0002_register'),
+        ('payments', '0001_initial'),
     ]
 
     operations = [
@@ -50,6 +51,7 @@ class Migration(migrations.Migration):
                 ('personal_colegio', models.ForeignKey(db_column='id_personal_colegio', to='register.PersonalColegio')),
                 ('caja', models.ForeignKey(db_column='id_caja', to='cash.Caja')),
                 ('saldo', models.FloatField()),
+                #('ventas', models.FloatField()),
                 ('monto_apertura', models.FloatField()),
                 ('monto_cierre', models.FloatField()),
                 ('comentario_apertura', models.CharField(blank=True, max_length=500, null=True)),
@@ -77,6 +79,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id_remesa', models.AutoField(primary_key=True, serialize=False)),
                 ('personal_colegio', models.ForeignKey(db_column='id_personal_colegio', to='register.PersonalColegio')),
+                #('caja_chica', models.ForeignKey(db_column="id_caja_chica",to='payments.CajaChica', null=True, blank=True)),
                 ('movimiento', models.ForeignKey(db_column='id_movimiento', to='cash.CajaCajero')),
                 ('fechacreacion', models.DateTimeField()),
                 ('monto', models.FloatField()),

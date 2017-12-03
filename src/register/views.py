@@ -158,6 +158,17 @@ class CreatePersonaView(MyLoginRequiredMixin, CreateView):
                     sist = SaveGeneric().saveGeneric(padre=Personal, form=f1, hijo=Cajero)
                     sist.user = usuario_creado
                     sist.save()
+                elif gr.name == "Docentes":
+                    self.model = Docente
+                    self.form_class = DocenteForm
+                    #self.request.session['colegio'] = str(colegio)
+
+                    f1 = self.form_class(request.POST)
+                    f1.is_valid()
+
+                    sist = SaveGeneric().saveGeneric(padre=Personal, form=f1, hijo=Docente)
+                    sist.user = usuario_creado
+                    sist.save()
             try:
                 colegio = request.POST['colegio']
                 self.request.session['colegio'] = str(colegio)
@@ -1128,6 +1139,11 @@ class PersonaListView(MyLoginRequiredMixin, TemplateView):
                 except Sistemas.DoesNotExist:
                     pass
 
+                try:
+                    if em.personal.docente:
+                        rol = "Docente "
+                except Docente.DoesNotExist:
+                    pass
 
                 em.rol = rol
                 resultado.append(em)
@@ -1224,6 +1240,12 @@ class PersonaListView(MyLoginRequiredMixin, TemplateView):
                     if empleado.personal.sistemas:
                         rol = "Sistemas "
                 except Sistemas.DoesNotExist:
+                    pass
+
+                try:
+                    if empleado.personal.docente:
+                        rol = "Docente "
+                except Docente.DoesNotExist:
                     pass
 
                 empleado.personal.persona.rol = rol
