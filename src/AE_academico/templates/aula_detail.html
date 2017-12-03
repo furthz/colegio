@@ -34,14 +34,17 @@
                                     <div class="panel-page">
 
                                         <div class="box-body">
+                                                <h3 class="box-title">Detalle del Aula</h3>
+                                                <h4> </h4>
                                                 <fieldset disabled="disabled">
                                                 <div class="form-group">
-                                                    <label class="col-sm-3 control-label">Nombre</label>
+                                                    <label class="col-sm-3 control-label">Nombre:</label>
                                                     <div class="col-sm-9">
                                                         {{ aula.nombre }}
                                                     </div>
                                                 </div>
                                                 </fieldset>
+                                                <h3> </h3>
                                                 <div class="toolbar-header">
                                                     <form method="get" name="{{ aula.id_aula }}" id="{{ aula.id_aula }}">
                                                                 <input type="number" hidden id="aula" name="aula" value="{{ aula.id_aula}}">
@@ -49,6 +52,7 @@
                                                     <button class="btn btn-success" form="{{ aula.id_aula }}" formaction='{% url "academic:aulamatricula_create" %}'><i class="fa fa-plus" aria-hidden="true"></i>  Asignar Alumnos</button>
                                                 </div>
 
+                                        {% if matriculados_aula %}
                                                 <br>
                                                 <h4>Matriculados en el aula</h4>
                                                 <br>
@@ -72,7 +76,9 @@
                                                           </tr>
                                                         {% endfor %}
                                                  </table>
+                                        {% endif %}
 
+                                        {% if cursos %}
                                                 <br>
                                                 <h4>Cursos del Aula</h4>
                                                 <br>
@@ -112,10 +118,12 @@
                                                           </tr>
                                                         {% endfor %}
                                                 </table>
-                                                <br>
-                                                <h4>Docentes del Aula</h4>
-                                                <br>
+                                        {% endif %}
 
+                                        {% if cursos_docentes %}
+                                                <br>
+                                                    <h4>Docentes del Aula</h4>
+                                                <br>
                                                 <table class="table table-hover">
                                                   <tr class="table-header">
                                                     <th>Número</th>
@@ -144,38 +152,13 @@
                                                           </tr>
                                                         {% endfor %}
                                                 </table>
+                                        {% endif %}
+
                                                 <br>
-                                                <h4>Docentes del Aula</h4>
+                                                <h4> </h4>
                                                 <br>
 
-                                                <table class="table table-hover">
-                                                  <tr class="table-header">
-                                                    <th>Número</th>
-                                                    <th>Docente</th>
-                                                    <th>Curso</th>
-                                                    <th>Acciones</th>
-                                                  </tr>
-                                                        {% for curso_docente in cursos_docentes %}
-                                                             <form method="get" name="curso_docente{{ forloop.counter }}" id="curso_docente{{ forloop.counter }}">
-                                                                <input type="number" hidden id="curso_docente" name="curso_docente" value="{{ curso.id_curso_docente }}">
-                                                            </form>
-                                                          <tr>
-                                                            <td>{{ forloop.counter }}</td>
-                                                            <td>
-                                                                {{ curso_docente.docente.getNombreCompleto }}
-                                                            </td>
-                                                            <td>
-                                                                {{ curso_docente.curso }}
-                                                            </td>
-                                                            <td>
-                                                                <a title="Seleccionar como Tutor" href='{% url "academic:aula_edit" aula.id_aula %}' class="btn btn-default">
-                                                                    <i class="fa fa-graduation-cap" aria-hidden="true"></i>
-                                                                </a>
 
-                                                            </td>
-                                                          </tr>
-                                                        {% endfor %}
-                                                </table>
                                                 <div class="form-group">
                                                     <div class="col-sm-offset-2 col-sm-10">
                                                         <a href='{% url "academic:aula_list" %}' class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i>

@@ -78,7 +78,7 @@ class AulaDetailView(UpdateView):
                 try:
                     cursos_docentes.append(CursoDocente.objects.get(curso=curso, activo=True))
                 except:
-                    logger.info("No hay docente aun")
+                    logger.info("No hay docente aun en el curso {0}".format(curso.curso))
             return render(request, template_name=self.template_name, context={
                 'matriculados_aula': lista_matriculados,
                 'aula': aula,
@@ -266,8 +266,8 @@ class AulaCursoCreateView(TemplateView):
         cursos = Curso.objects.filter(colegio_id=get_current_colegio(), activo=True)
         aula = Aula.objects.get(id_aula=request.POST['aula'])
         data_form = request.POST
-        try:
-            for curso in cursos:
+        for curso in cursos:
+            try:
                 text = "item{0}".format(curso.id_curso)
 
                 if data_form[text]:
@@ -277,8 +277,8 @@ class AulaCursoCreateView(TemplateView):
                     )
                     aulacurso.save()
                     print("se creo un registro")
-        except:
-            print("hay un error")
+            except:
+                print("hay un error")
 
         return HttpResponseRedirect(reverse('academic:aula_list'))
 
@@ -666,8 +666,8 @@ class AulaMatriculaCreateView(TemplateView):
                                               activo=True)
 
         data_form = request.POST
-        try:
-            for matricula in matriculas:
+        for matricula in matriculas:
+            try:
                 text = "item{0}".format(matricula.id_matricula)
 
                 if data_form[text]:
@@ -677,8 +677,8 @@ class AulaMatriculaCreateView(TemplateView):
                     )
                     aulamatricula.save()
                     logger.info("se creo un registro")
-        except:
-            logger.info("hay un error")
+            except:
+                logger.info("hay un error")
 
         return HttpResponseRedirect(reverse('academic:aula_list'))
 
