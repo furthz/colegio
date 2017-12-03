@@ -23,7 +23,7 @@ class Aula(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUser
         Solo retorna informacion de la clase como string
         :return: nombre del servicio
         """
-        return "{0}".format(self.nombre)
+        return "{0} - {1}".format(self.tipo_servicio,self.nombre)
 
 
 class Curso(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin,models.Model):

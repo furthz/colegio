@@ -1,5 +1,5 @@
 {% extends "page.html" %}
-{% block title %}{{ block.super }}Cursos{% endblock %}
+{% block title %}{{ block.super }}Aulas{% endblock %}
 
 {% block container %}
 
@@ -9,13 +9,13 @@
         <!-- HEADER INFO PAGE UBICACION -->
         <section class="content-header">
             <h1>
-                Control de Cursos
+                Control de Aulas
                 <small>Modúlo Académico</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
                 <li>Modúlo Académico</li>
-                <li class="active">Control de Cursos</li>
+                <li class="active">Control de Aulas</li>
             </ol>
         </section>
         <!-- FIN DE INFO PAGE UBICACION -->
@@ -34,12 +34,7 @@
                                             <form id="myform" class="form-horizontal" method="post">
                                                 {% csrf_token %}
                                                 <fieldset disabled="disabled">
-                                                <div class="form-group">
-                                                    <label class="col-sm-3 control-label">Nombre</label>
-                                                    <div class="col-sm-9">
-                                                        {{ form.nombre }}
-                                                    </div>
-                                                </div>
+
 
 
                                                 </fieldset>
@@ -91,3 +86,4 @@
     <!--Fin del contenido!!!!!!!!!!!-->
 
 {% endblock container %}
+
