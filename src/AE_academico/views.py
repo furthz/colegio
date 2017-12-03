@@ -647,7 +647,7 @@ class AulaMatriculaCreateView(TemplateView):
             aula_actual = Aula.objects.get(id_aula=request.GET['aula'])
             matriculas = Matricula.objects.filter(tipo_servicio=aula_actual.tipo_servicio,colegio_id=get_current_colegio(), activo=True)
             for matricula in matriculas:
-                alumno_aula = AulaMatricula.objects.filter(matricula=matricula)
+                alumno_aula = AulaMatricula.objects.filter(matricula=matricula, activo=True)
                 if alumno_aula:
                     logger.info("El alumno {0} ya tiene aula".format(matricula.alumno))
                 else:
