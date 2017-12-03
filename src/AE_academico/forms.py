@@ -1,6 +1,7 @@
 
 from django import forms
-from AE_academico.models import Aula, Asistencia, Notas, Curso, Evento, PeriodoAcademico, HorarioAula, RecordatorioAula
+from AE_academico.models import Aula, Asistencia, Notas, Curso, Evento, PeriodoAcademico, HorarioAula, RecordatorioAula, \
+    AulaCurso
 from AE_academico.models import CursoDocente
 from utils.middleware import get_current_colegio
 
@@ -43,6 +44,26 @@ class CursoForm(forms.ModelForm):
             'nombre': forms.TextInput(attrs={'class': 'form-control'}),
             'descripcion': forms.TextInput(attrs={'class': 'form-control'}),
         }
+
+class AulaCursoForm(forms.ModelForm):
+    class Meta:
+        model = AulaCurso
+
+        fields = [
+            'aula',
+            'curso',
+        ]
+
+        labels = {
+            'aula': 'Aula',
+            'curso': 'Curso',
+        }
+
+        widgets = {
+            'aula': forms.Select(attrs={'class': 'form-control'}),
+            'curso': forms.Select(attrs={'class': 'form-control'}),
+        }
+
 
 class CursoDocenteForm(forms.ModelForm):
     class Meta:
