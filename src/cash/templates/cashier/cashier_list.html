@@ -1,9 +1,23 @@
 {% extends "page.html" %}
-{% block title %}{{ block.super }}Cajeros{% endblock %}
+
+{% block title %}{{ block.super }}Facturación{% endblock %}
+
+{% block titulo %}
+      <h1>
+        Lista de Cajas
+        <small>Módúlo de Facturación</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+        <li>Módúlo de Facturación</li>
+        <li class="active">Lista de Cajas</li>
+      </ol>
+{% endblock %}
+
 {% block container %}
 
     <!--Comienza el contenido!!!!!!!!!!!!!!!!!!!-->
-    <section class="content">
+    <section>
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-primary">
