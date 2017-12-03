@@ -59,11 +59,15 @@ class SolicitarDescuentoView(MyLoginRequiredMixin,TemplateView):
         return render(request, template_name=self.template_name, context={
             #'form': self.form_class,
 
+
+            'hola':cole,
             #'hola':cole,
             'descuentos':descuentos,
             #'alumno': Matricula.objects.get(pk=request.POST['matricula']),
         })
+
 """
+
 class CrearSolicitudView(MyLoginRequiredMixin,TemplateView):
     model = Descuento
     form_class = SolicitarDescuentoForm

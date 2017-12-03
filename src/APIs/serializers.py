@@ -6,6 +6,7 @@ from enrollment.models import Matricula
 from register.models import Profile, Colegio, Apoderado, Alumno, ApoderadoAlumno
 
 
+
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Profile
@@ -59,7 +60,7 @@ class MatriculaSerializer(serializers.ModelSerializer):
         model = Matricula
         fields = ('id_matricula', 'alumno_id', 'colegio_id', 'persona_id', 'picture', 'nombre_alumno', 'segundo_nombre_alumno', 'apellido_pa_alumno', 'apellido_ma_alumno', 'tipo_documento_alumno', 'numero_documento_alumno')
 
-        
+
 ###############################################
 #####     SERIALIZER MODULO ACADEMICO     #####
 ###############################################
@@ -90,6 +91,11 @@ class AulaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Aula
         fields = ('id_aula', 'nombre')
+
+class MatriculaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Matricula
+        fields = ('id_matricula', 'alumno', 'colegio', 'tipo_servicio')
 
 
 class AlumnoSerializer(serializers.ModelSerializer):

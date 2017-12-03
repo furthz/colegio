@@ -58,7 +58,7 @@
                                                     <form id="{{ alumno.id_alumno }}" action="{% url 'enrollments:matricula_create' %}" method="post" class="form-horizontal">{% csrf_token %}
 
                                                             <tr>
-                                                            <td>{{alumno.persona.getNombreCompleto}}</td>
+                                                            <td>{{ alumno.persona.getNombreFormal }}</td>
                                                             <td><div class="pull-center">
                                                                         <div class="btn-group btn-group-sm" role="group" aria-label="...">
                                                                             <input hidden type= "text" value="{{ alumno.id_alumno}}" name="alumno">
