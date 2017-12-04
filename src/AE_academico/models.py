@@ -6,7 +6,7 @@ from register.models import Colegio, Alumno, Apoderado, Personal, Docente
 from profiles.models import Profile
 from utils.models import CreacionModificacionUserMixin, ActivoMixin
 from utils.models import CreacionModificacionFechaMixin
-
+from APIs.models import Comunicado
 
 class Aula(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
     id_aula = models.AutoField(primary_key=True)
@@ -53,6 +53,10 @@ class AulaCurso(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacio
         """
         return "{0} del salon {1}".format(self.curso.nombre, self.aula.nombre)
 
+
+    def getDocentesAsociados(self):
+        return CursoDocente.objects.filter(curso= self, activo=True)
+
     class Meta:
         managed = False
 
@@ -89,7 +93,7 @@ class Evento(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUs
     fecha_evento = models.DateField()
     hora_inicio = models.TimeField()
     hora_fin = models.TimeField()
-
+    comunicado = models.ForeignKey(Comunicado, models.DO_NOTHING, db_column="id_comunicado", null=True, blank=True)
     # para seleccionar los participantes se hará mediante un filtrado
 
     class Meta:
@@ -103,6 +107,7 @@ class Asistencia(CreacionModificacionFechaMixin, CreacionModificacionUserMixin,m
     fecha = models.DateField()
     estado_asistencia = models.IntegerField()
     comentario = models.CharField(max_length=500, blank=True, null=True)
+    comunicado = models.ForeignKey(Comunicado, models.DO_NOTHING, db_column="id_comunicado", null=True, blank=True)
 
     class Meta:
         managed = False
@@ -125,6 +130,7 @@ class Notas(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUse
     colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column="id_colegio")
     periodo_academico = models.ForeignKey(PeriodoAcademico, models.DO_NOTHING, db_column="id_periodo_academico")
     alumno = models.ForeignKey(Alumno, models.DO_NOTHING, db_column='id_alumno')
+    comunicado = models.ForeignKey(Comunicado, models.DO_NOTHING, db_column="id_comunicado", null=True, blank=True)
     nota = models.CharField(max_length=2)
 
     class Meta:

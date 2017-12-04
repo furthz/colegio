@@ -73,6 +73,9 @@
                                                                 <button type="submit" title="Crear recordatorio" formaction="{% url 'academic:recordatorioaula_create'%}" formmethod="get" form="{{ aula.id_aula }}" class="btn btn-default">
                                                                     <i class="fa fa-calendar" aria-hidden="true"></i>
                                                                 </button>
+                                                                <button type="submit" title="Asignar Alumnos" class="btn btn-default" form="{{ aula.id_aula }}" formmethod="get" formaction='{% url "academic:aulamatricula_create" %}'>
+                                                                    <i class="fa fa-user" aria-hidden="true"></i>
+                                                                </button>
                                                             </div>
                                                         </td>
                                                     </tr>

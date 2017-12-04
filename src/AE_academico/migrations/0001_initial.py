@@ -15,6 +15,7 @@ class Migration(migrations.Migration):
     dependencies = [
                      ('register','0002_register'),
                      ('enrollment', '0001_initial'),
+                     ('APIs', '0001_initial'),
     ]
 
     operations = [
@@ -132,6 +133,7 @@ class Migration(migrations.Migration):
                 ('fecha_evento', models.DateField()),
                 ('hora_inicio', models.TimeField()),
                 ('hora_fin', models.TimeField()),
+                ('comunicado', models.ForeignKey(db_column="id_comunicado", to='APIs.Comunicado', null=True, blank=True)),
                 ('fecha_creacion', models.DateField()),
                 ('fecha_modificacion', models.DateField()),
                 ('usuario_creacion', models.CharField(max_length=10, null=True)),
@@ -154,6 +156,7 @@ class Migration(migrations.Migration):
                 ('fecha', models.DateField()),
                 ('estado_asistencia', models.IntegerField()),
                 ('comentario', models.CharField(max_length=500, blank=True, null=True)),
+                ('comunicado', models.ForeignKey(db_column="id_comunicado", to='APIs.Comunicado', null=True, blank=True)),
                 ('fecha_creacion', models.DateField()),
                 ('fecha_modificacion', models.DateField()),
                 ('usuario_creacion', models.CharField(max_length=10, null=True)),
@@ -196,6 +199,7 @@ class Migration(migrations.Migration):
                 ('periodo_academico', models.ForeignKey(db_column="id_periodo_academico", to='AE_academico.PeriodoAcademico')),
                 ('alumno', models.ForeignKey(db_column='id_alumno', to='register.Alumno')),
                 ('nota', models.CharField(max_length=2)),
+                ('comunicado', models.ForeignKey(db_column="id_comunicado", to='APIs.Comunicado', null=True, blank=True)),
                 ('fecha_creacion', models.DateField()),
                 ('fecha_modificacion', models.DateField()),
                 ('usuario_creacion', models.CharField(max_length=10, null=True)),
