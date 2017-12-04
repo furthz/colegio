@@ -64,6 +64,11 @@ urlpatterns = [
     url(r'^aula_curso_api/(?P<pk>[0-9]+)/(?P<docente>\w+)/$', views.AulaCursoList.as_view()),
 
     url(r'^aula_docente_api/(?P<pk>[0-9]+)/(?P<docente>\w+)/$', views.AulaDocenteList.as_view()),
+
+
+    # webservice prueba
+    url(r'^relacionusuarioperfil/(?P<pk>[0-9]+)/(?P<docente>\w+)/$', views.RelacionUsuarioPerfilView.as_view()),
+    url(r'^relacionperfilalumno/(?P<pk>[0-9]+)/(?P<docente>\w+)/$', views.RelacionPerfilAlumnoView.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
