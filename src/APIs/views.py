@@ -5,6 +5,7 @@ from django.shortcuts import render
 from AE_academico.models import Asistencia, Aula, AulaMatricula, CursoDocente, AulaCurso
 from enrollment.models import Matricula
 from register.models import Profile, Personal, PersonalColegio, Colegio, Apoderado, Alumno, ApoderadoAlumno
+from APIs.models import RelacionUsuarioPerfil
 from .serializers import *
 from rest_framework import generics
 from rest_framework.views import APIView
@@ -249,6 +250,45 @@ class DocenteAulaList(APIView):
         serializer = AulaSerializer(aulas_docente, many=True)
         return Response(serializer.data)
 
+<<<<<<< HEAD
+=======
+#################################################################################
+#           views de prueba
+#################################################################################
+
+class RelacionUsuarioPerfilView(APIView):
+
+    def get_object(self, pk):
+        try:
+            return CursoDocente.objects.get(pk=pk)
+        except CursoDocente.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, docente, format=None):
+
+        prueba = RelacionUsuarioPerfil(id_persona=1,id_personal=1,numero_documento=74926380,nombre="Marco",apellido_pa="Silva")
+
+        serializer = RelacionUsuarioPerfilSerializer(prueba, many=False)
+        return Response(serializer.data)
+
+class RelacionPerfilAlumnoView(APIView):
+
+    def get_object(self, pk):
+        try:
+            return CursoDocente.objects.get(pk=pk)
+        except CursoDocente.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, docente, format=None):
+
+        prueba = RelacionPerfilAlumno(id_persona=1,id_matricula=1,id_alumno=1,id_colegio=1,nombre="Marco",apellido_pa="Perez")
+
+        serializer = RelacionPerfilAlumnoSerializer(prueba, many=False)
+        return Response(serializer.data)
+
+
+"""
+>>>>>>> af04c901496b74f5772570bdede0c8a062d6ecab
 
 #########################################################
 ######   WEB SERVICE VISUALIZAR ASISTENCIA MES   ########

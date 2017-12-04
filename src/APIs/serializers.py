@@ -72,12 +72,6 @@ class AsistenciaSerializer(serializers.ModelSerializer):
         fields = ('id_asistencia', 'alumno', 'fecha', 'estado_asistencia')
 
 
-class AulaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Aula
-        fields = ('id_aula', 'tipo_servicio', 'nombre')
-
-
 class CursoDocenteSerializer(serializers.ModelSerializer):
     class Meta:
         model = CursoDocente

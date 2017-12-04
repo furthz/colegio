@@ -282,16 +282,24 @@ class AulaCursoCreateView(TemplateView):
 
         return HttpResponseRedirect(reverse('academic:aula_list'))
 
-class AulaCursoDeleteView(DeleteView):
+class AulaCursoDeleteView(TemplateView):
     model = AulaCurso
     form_class = AulaCursoForm
     success_url = reverse_lazy('academic:aula_list')
     template_name = 'aulacurso_confirm_delete.html'
 
+
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
+
         if validar_roles(roles=roles):
-            return super(AulaCursoDeleteView, self).get(request, *args, **kwargs)
+            aula_curso = self.model.objects.get(pk=int(request.GET['curso']))
+            for docente in aula_curso.getDocentesAsociados():
+                docente.activo = False
+                docente.save()
+            aula_curso.activo = False
+            aula_curso.save()
+            return HttpResponseRedirect(reverse('academic:aula_list'))
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
@@ -646,7 +654,7 @@ class AulaMatriculaCreateView(TemplateView):
             aula_actual = Aula.objects.get(id_aula=request.GET['aula'])
             matriculas = Matricula.objects.filter(tipo_servicio=aula_actual.tipo_servicio,colegio_id=get_current_colegio(), activo=True)
             for matricula in matriculas:
-                alumno_aula = AulaMatricula.objects.filter(matricula=matricula, activo=True)
+                alumno_aula = AulaMatricula.objects.filter(matricula=matricula, activo = True)
                 if alumno_aula:
                     logger.info("El alumno {0} ya tiene aula".format(matricula.alumno))
                 else:
@@ -682,6 +690,24 @@ class AulaMatriculaCreateView(TemplateView):
 
         return HttpResponseRedirect(reverse('academic:aula_list'))
 
+
+class AulaMatriculaDeleteView(TemplateView):
+    model = AulaMatricula
+    template_name = "aulamatricula_form.html"
+
+
+    def get(self, request, *args, **kwargs):
+        roles = ['promotor', 'director', 'administrativo']
+
+        if validar_roles(roles=roles):
+            print(request.GET['alumno'])
+            matricula = Matricula.objects.get(id_matricula=int(request.GET['alumno']))
+            alumno = AulaMatricula.objects.get(matricula=matricula)
+            alumno.activo = False
+            alumno.save()
+            return HttpResponseRedirect(reverse('academic:aula_list'))
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
 #################################################
 #####       CRUD DE PERIODO ACADEMICO       #####
