@@ -69,5 +69,23 @@ class Migration(migrations.Migration):
 
             },
         ),
+        migrations.CreateModel(
+            name='Comunicado',
+            fields=[
+                ('id_comunicado', models.AutoField(primary_key=True)),
+                ('descripcion', models.CharField()),
+                ('fecha_creacion', models.DateField()),
+                ('fecha_modificacion', models.DateField()),
+                ('usuario_creacion', models.CharField(max_length=10, null=True)),
+                ('usuario_modificacion', models.CharField(max_length=10, null=True)),
+                ('activo', models.BooleanField()),
+            ],
+            options={
+                # 'db_table': 'matricula',
+                'managed': settings.IS_MIGRATE,
+                # 'managed': False,
+
+            },
+        ),
     ]
 

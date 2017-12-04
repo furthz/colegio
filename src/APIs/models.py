@@ -25,14 +25,24 @@ class Alerta(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUs
     id_alerta = models.AutoField(primary_key=True)
     persona_receptor = models.ForeignKey(Profile, models.DO_NOTHING, db_column="id_persona", null= True, blank= True)
     tipo_alerta = models.ForeignKey(TipoAlerta, models.DO_NOTHING, db_column="id_tipo_alerta")
+    comunicado = models.ForeignKey(Comunicado, models.DO_NOTHING, db_column="id_comunicado")
     estado_alerta = models.IntegerField()
     estado_visto = models.BooleanField(default= False)
-    descripcion = models.CharField(max_length=300)
     fecha_visto = models.DateTimeField(null= True, blank= True)
     fecha_programada = models.DateTimeField(null= True, blank= True)
     fecha_recibido = models.DateTimeField(null= True, blank= True)
     #colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column="id_colegio")
     #tipo = models.IntegerField()
+
+    class Meta:
+        managed = False
+
+
+class Comunicado(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
+    id_comunicado = models.AutoField(primary_key=True)
+    descripcion = models.CharField()
+    # colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column="id_colegio")
+    # tipo = models.IntegerField()
 
     class Meta:
         managed = False
