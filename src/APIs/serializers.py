@@ -65,10 +65,12 @@ class MatriculaSerializer(serializers.ModelSerializer):
 #####     SERIALIZER MODULO ACADEMICO     #####
 ###############################################
 
+
 class AsistenciaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Asistencia
-        fields = ('id_asistencia', 'alumno', 'curso', 'fecha', 'estado_asistencia')
+        fields = ('id_asistencia', 'alumno', 'fecha', 'estado_asistencia')
+
 
 class AulaSerializer(serializers.ModelSerializer):
     class Meta:
@@ -81,6 +83,7 @@ class CursoDocenteSerializer(serializers.ModelSerializer):
         model = CursoDocente
         fields = ('id_curso_docente', 'docente', 'curso')
 
+
 class AulaCursoSerializer(serializers.ModelSerializer):
     class Meta:
         model = AulaCurso
@@ -90,7 +93,8 @@ class AulaCursoSerializer(serializers.ModelSerializer):
 class AulaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Aula
-        fields = ('id_aula', 'nombre')
+        fields = ('id_aula', 'nombre', 'get_tipo_servicio')
+
 
 class MatriculaSerializer(serializers.ModelSerializer):
     class Meta:
@@ -98,8 +102,7 @@ class MatriculaSerializer(serializers.ModelSerializer):
         fields = ('id_matricula', 'alumno', 'colegio', 'tipo_servicio')
 
 
-class AlumnoSerializer(serializers.ModelSerializer):
+class AlumnoSerializer2(serializers.ModelSerializer):
     class Meta:
         model = Alumno
-        fields = ('id_alumno', 'persona')
-
+        fields = ('id_alumno', 'getNombreFormal')

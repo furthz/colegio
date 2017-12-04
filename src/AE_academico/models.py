@@ -25,6 +25,12 @@ class Aula(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUser
         """
         return "{0} - {1}".format(self.tipo_servicio,self.nombre)
 
+    def get_tipo_servicio(self):
+        """
+        Solo retorna informacion de la clase como string
+        :return: nombre del servicio
+        """
+        return "{0}".format(self.tipo_servicio)
 
 class Curso(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin,models.Model):
     id_curso = models.AutoField(primary_key=True)
