@@ -42,7 +42,7 @@ class AulaCurso(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacio
     curso = models.ForeignKey(Curso, models.DO_NOTHING, db_column="id_curso")
 
     def __str__(self):
-        return "{0} del salon {1}".format(self.curso.nombre, self.aula.nombre)
+        return "{0} del salón {1}".format(self.curso.nombre, self.aula.nombre)
 
     @cached_property
     def getDetalle(self):

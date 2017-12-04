@@ -51,7 +51,7 @@
                                                         <input type="number" hidden id="aula" name="aula" value="{{ aula.id_aula }}">
                                                     </form>
 
-                                                    {% if aula.tipo_servicio.colegio.id_colegio == idcolegio %}
+                                                    {% if aula.tipo_servicio.colegio.id_colegio == idcolegio and aula.activo == True %}
                                                     <tr>
                                                         <td>{{ forloop.counter }}</td>
                                                         <td>{{ aula }}</td>
