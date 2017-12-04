@@ -100,3 +100,19 @@ class AlumnoSerializer2(serializers.ModelSerializer):
     class Meta:
         model = Alumno
         fields = ('id_alumno', 'getNombreFormal')
+
+      
+    
+    
+class RelacionUsuarioPerfilSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Alumno
+        fields = ('id_persona', 'id_personal', 'numero_documento', 'apellido_pa', 'nombre')
+
+
+class RelacionPerfilAlumnoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Alumno
+        fields = ('id_colegio', 'id_matricula',  'id_alumno', 'id_persona', 'apellido_pa', 'nombre')
+
+        
