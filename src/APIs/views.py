@@ -250,8 +250,8 @@ class DocenteAulaList(APIView):
         serializer = AulaSerializer(aulas_docente, many=True)
         return Response(serializer.data)
 
-<<<<<<< HEAD
-=======
+
+
 #################################################################################
 #           views de prueba
 #################################################################################
@@ -287,8 +287,6 @@ class RelacionPerfilAlumnoView(APIView):
         return Response(serializer.data)
 
 
-"""
->>>>>>> af04c901496b74f5772570bdede0c8a062d6ecab
 
 #########################################################
 ######   WEB SERVICE VISUALIZAR ASISTENCIA MES   ########
