@@ -53,6 +53,10 @@ class AulaCurso(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacio
         """
         return "{0} del salon {1}".format(self.curso.nombre, self.aula.nombre)
 
+
+    def getDocentesAsociados(self):
+        return CursoDocente.objects.filter(curso= self, activo=True)
+
     class Meta:
         managed = False
 
