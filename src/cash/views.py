@@ -308,10 +308,17 @@ class ConsignmentCreationView(CreateView):
         roles = ['cajero']
 
         if validar_roles(roles=roles):
+            try:
+                usuario = get_current_user()
+                mov = CajaCajero.objects.get(estado=True, usuario_modificacion= str(usuario.id))
+                alerta = False
+            except:
+                alerta = True
             personal = PersonalColegio.objects.filter(colegio=get_current_colegio(), activo=True)
             return render(request, template_name=self.template_name, context={
                 'form': self.form_class,
                 'personal': personal,
+                'alerta': alerta,
             })
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
