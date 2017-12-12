@@ -15,6 +15,7 @@
     </div>
     <div id="search" class="form-horizontal">
         <div class="box-body">
+            {% if alerta == False %}
             <div class="col-md-9">
                 <div class="panel-page">
                     <form id="myform" method="post">
@@ -61,8 +62,13 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            {% else %}
+                 <a>No hay ninguna caja abierta---->>>></a>
 
+                 <a>Para continuar primero aperturar una Caja</a>
+            {% endif %}
+            <div class="col-md-3">
+            
             </div>
         </div>
     </div>
