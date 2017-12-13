@@ -75,7 +75,7 @@ urlpatterns = [
     # Web Service para visualizar las ASISTENCIAS POR MES de un aula determinada
     url(r'^aula_asistencia_api/(?P<pk>[0-9]+)/(?P<aula>\w+)/(?P<mes>\w+)/$', views.AulaAsistenciaList.as_view()),
 
-    url(r'^aula_docente_api/(?P<pk>[0-9]+)/(?P<docente>\w+)/$', views.AulaDocenteList.as_view()),
+   # url(r'^aula_docente_api/(?P<pk>[0-9]+)/(?P<docente>\w+)/$', views.AulaDocenteList.as_view()),
 
 
     # webservice prueba
