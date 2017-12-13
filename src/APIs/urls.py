@@ -61,7 +61,19 @@ urlpatterns = [
 
     url(r'^curso_docente_api/(?P<pk>[0-9]+)/(?P<docente>\w+)/$', views.CursoDocenteList.as_view()),
 
-    url(r'^aula_curso_api/(?P<pk>[0-9]+)/(?P<docente>\w+)/$', views.AulaCursoList.as_view()),
+
+
+    # Web Service para obtener las ALUMNOS asociados a un aula determinado
+    url(r'^aula_alumnos_api/(?P<pk>[0-9]+)/(?P<aula>\w+)/$', views.AulaAlumnosList.as_view()),
+
+    # Web Service para obtener las CURSOS a las que enseña un docente determinado
+    url(r'^docente_curso_api/(?P<pk>[0-9]+)/(?P<docente>\w+)/$', views.DocenteCursoList.as_view()),
+
+    # Web Service para obtener las AULAS a las que enseña un docente determinado
+    url(r'^docente_aula_api/(?P<pk>[0-9]+)/(?P<docente>\w+)/$', views.DocenteAulaList.as_view()),
+
+    # Web Service para visualizar las ASISTENCIAS POR MES de un aula determinada
+    url(r'^aula_asistencia_api/(?P<pk>[0-9]+)/(?P<aula>\w+)/(?P<mes>\w+)/$', views.AulaAsistenciaList.as_view()),
 
     url(r'^aula_docente_api/(?P<pk>[0-9]+)/(?P<docente>\w+)/$', views.AulaDocenteList.as_view()),
 
@@ -69,6 +81,7 @@ urlpatterns = [
     # webservice prueba
     url(r'^relacionusuarioperfil/(?P<pk>[0-9]+)/(?P<docente>\w+)/$', views.RelacionUsuarioPerfilView.as_view()),
     url(r'^relacionperfilalumno/(?P<pk>[0-9]+)/(?P<docente>\w+)/$', views.RelacionPerfilAlumnoView.as_view()),
+
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

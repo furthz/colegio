@@ -65,21 +65,18 @@ class MatriculaSerializer(serializers.ModelSerializer):
 #####     SERIALIZER MODULO ACADEMICO     #####
 ###############################################
 
+
 class AsistenciaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Asistencia
-        fields = ('id_asistencia', 'alumno', 'curso', 'fecha', 'estado_asistencia')
-
-class AulaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Aula
-        fields = ('id_aula', 'tipo_servicio', 'nombre')
+        fields = ('id_asistencia', 'alumno', 'fecha', 'estado_asistencia')
 
 
 class CursoDocenteSerializer(serializers.ModelSerializer):
     class Meta:
         model = CursoDocente
         fields = ('id_curso_docente', 'docente', 'curso')
+
 
 class AulaCursoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -90,7 +87,8 @@ class AulaCursoSerializer(serializers.ModelSerializer):
 class AulaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Aula
-        fields = ('id_aula', 'nombre')
+        fields = ('id_aula', 'nombre', 'get_tipo_servicio')
+
 
 class MatriculaSerializer(serializers.ModelSerializer):
     class Meta:
@@ -98,14 +96,12 @@ class MatriculaSerializer(serializers.ModelSerializer):
         fields = ('id_matricula', 'alumno', 'colegio', 'tipo_servicio')
 
 
-class AlumnoSerializer(serializers.ModelSerializer):
+class AlumnoSerializer2(serializers.ModelSerializer):
     class Meta:
         model = Alumno
-        fields = ('id_alumno', 'persona')
+        fields = ('id_alumno', 'getNombreFormal')
 
-<<<<<<< HEAD
 
-=======
 ######################################################################
 #           Serializer para webservice prueba
 ######################################################################
@@ -121,4 +117,3 @@ class RelacionPerfilAlumnoSerializer(serializers.ModelSerializer):
     class Meta:
         model = RelacionPerfilAlumno
         fields = ('id_colegio', 'id_matricula', 'id_alumno', 'id_persona', 'apellido_pa', 'nombre')
->>>>>>> af04c901496b74f5772570bdede0c8a062d6ecab

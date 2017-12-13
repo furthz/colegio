@@ -195,7 +195,11 @@ class CursoDocenteList(APIView):
         return Response(serializer.data)
 
 
-class AulaCursoList(APIView):
+#########################################################
+######   WEB SERVICE CURSOS ASOCIADAS A DOCENTE   #######
+#########################################################
+
+class DocenteCursoList(APIView):
 
     def get_object(self, pk):
         try:
@@ -203,26 +207,26 @@ class AulaCursoList(APIView):
         except CursoDocente.DoesNotExist:
             raise Http404
 
-    def get(self, request, pk, docente, format=None):
-        colegio_id = get_current_colegio()
+    def get(self, request, pk, docente):
+
+        # Obteniendo los cursos asociadas a un docente
         aula_cursos = []
-        if pk == "1":
-            cursos_docente = CursoDocente.objects.filter(docente=docente)
-            for curso_docente in cursos_docente:
-                aula_curso = curso_docente.curso
-                aula_cursos.append(aula_curso)
-        else:
-            cursos_docente = CursoDocente.objects.filter(curso__curso__colegio=colegio_id)
-            for curso_docente in cursos_docente:
-                aula_curso = curso_docente.curso
-                aula_cursos.append(aula_curso)
-        # cursos_asociados = list(cursos)
-        logger.info("Los cursos asociados al docente son : {0}".format(aula_cursos))
+        cursos_docente = CursoDocente.objects.filter(docente=docente)
+        for curso_docente in cursos_docente:
+            aula_curso = curso_docente.curso
+            aula_cursos.append(aula_curso)
+
+        # Serializando: Se entregan los siguientes datos: 'id_aula_curso', 'getDetalle (ejemplo:Ciencia y Ambiente del salón 5°A)'
+        logger.info("Los cursos asociados al docente son: {0}".format(aula_cursos))
         serializer = AulaCursoSerializer(aula_cursos, many=True)
         return Response(serializer.data)
 
 
-class AulaDocenteList(APIView):
+#########################################################
+######   WEB SERVICE AULAS ASOCIADAS A DOCENTE   ########
+#########################################################
+
+class DocenteAulaList(APIView):
 
     def get_object(self, pk):
         try:
@@ -230,26 +234,24 @@ class AulaDocenteList(APIView):
         except CursoDocente.DoesNotExist:
             raise Http404
 
-    def get(self, request, pk, docente, format=None):
+    def get(self, request, pk, docente):
         colegio_id = get_current_colegio()
+
+        # Obteniendo las aulas asociadas a un docente
         aulas_docente = []
-        if pk == "1":
-            cursos_docente = CursoDocente.objects.filter(docente=docente)
-            for curso_docente in cursos_docente:
-                aula = curso_docente.curso.aula
-                if aula not in aulas_docente:
-                    aulas_docente.append(aula)
-        else:
-            cursos_docente = CursoDocente.objects.filter(curso__curso__colegio=colegio_id)
-            for curso_docente in cursos_docente:
-                aula = curso_docente.curso.aula
-                if aula not in aulas_docente:
-                    aulas_docente.append(aula)
-        # cursos_asociados = list(cursos)
-        logger.info("Los cursos asociados al docente son : {0}".format(aulas_docente))
+        cursos_docente = CursoDocente.objects.filter(docente=docente)
+        for curso_docente in cursos_docente:
+            aula = curso_docente.curso.aula
+            if aula not in aulas_docente:
+                aulas_docente.append(aula)
+
+        # Serializando: Se entregan los siguientes datos: 'id_aula', 'nombre', 'get_tipo_servicio'
+        logger.info("Las aulas asociadas al docente son : {0}".format(aulas_docente))
         serializer = AulaSerializer(aulas_docente, many=True)
         return Response(serializer.data)
 
+<<<<<<< HEAD
+=======
 #################################################################################
 #           views de prueba
 #################################################################################
@@ -286,44 +288,70 @@ class RelacionPerfilAlumnoView(APIView):
 
 
 """
+>>>>>>> af04c901496b74f5772570bdede0c8a062d6ecab
 
-class AulaCursoList(APIView):
+#########################################################
+######   WEB SERVICE VISUALIZAR ASISTENCIA MES   ########
+#########################################################
 
-    def get_object(self, pk):
-        try:
-            return CursoDocente.objects.get(pk=pk)
-        except CursoDocente.DoesNotExist:
-            raise Http404
-
-    def get(self, request, pk, docente, format=None):
-        colegio_id = get_current_colegio()
-        if pk == "1":
-            cursos = CursoDocente.objects.filter(docente=docente)
-            for curso in cursos:
-                aula_curso = AulaCurso.objects.filter(curso__curso=curso)
-        else:
-            cursos = CursoDocente.objects.filter(curso__curso__colegio=colegio_id)
-            for curso in cursos:
-                aula_curso = AulaCurso.objects.filter(curso__curso=curso)
-        cursos_asociados = list(cursos)
-        logger.info("Las aulas asociadas son {0}".format(aula_curso))
-        serializer = CursoDocenteSerializer(cursos_asociados, many=True)
-        return Response(serializer.data)
-"""
-"""
-class ListaAsistencia(APIView):
+class AulaAsistenciaList(APIView):
 
     def get_object(self, pk):
         try:
-            return CursoDocente.objects.get(pk=pk)
-        except CursoDocente.DoesNotExist:
+            return Asistencia.objects.get(pk=pk)
+        except Asistencia.DoesNotExist:
             raise Http404
 
-    def get(self, request, pk, docente, format=None):
-        cursos = CursoDocente.objects.filter(docente=docente)
-        cursos_asociados = list(cursos)
-        serializer = CursoDocenteSerializer(cursos_asociados, many=True)
-        return Response(serializer.data)
-"""
+    def get(self, request, pk, aula, mes):
 
+        aula = int(aula)
+        mes = int(mes) # El mes es un número del 1 al 12, correspondiendo de Enero a Diciembre respectivamente
+
+        # Obteniendo la lista de alumnos matriculados en dicha aula
+        alumnos_aula = []
+        matriculados_aula = AulaMatricula.objects.filter(aula=aula)
+        for matriculado_aula in matriculados_aula:
+            alumnos_aula.append(matriculado_aula.matricula.alumno)
+
+        # Obteniendo la lista de asistencias del mes por alumno
+        asistencias_aula_mes = []
+        for alumno in alumnos_aula:
+            asistencias_alumno = Asistencia.objects.filter(alumno=alumno, fecha__month=mes)
+            for asistencia_alumno in asistencias_alumno:
+                asistencias_aula_mes.append(asistencia_alumno)
+
+        # Serializando: Se entregan los siguientes datos: 'id_asistencia', 'alumno', 'fecha', 'estado_asistencia'
+        logger.info("Los asistencias del mes del aula {0} son {1}".format(aula, asistencias_aula_mes))
+        serializer = AsistenciaSerializer(asistencias_aula_mes, many=True)
+
+        return Response(serializer.data)
+
+
+#########################################################
+#######   WEB SERVICE ALUMNOS ASOCIADOS A AULA   ########
+#########################################################
+
+class AulaAlumnosList(APIView):
+
+    def get_object(self, pk):
+        try:
+            return Alumno.objects.get(pk=pk)
+        except Alumno.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, aula):
+
+        aula = int(aula)
+
+        # Obteniendo la lista de alumnos matriculados en dicha aula
+        alumnos_aula = []
+        matriculados_aula = AulaMatricula.objects.filter(aula=aula)
+        for matriculado_aula in matriculados_aula:
+            alumnos_aula.append(matriculado_aula.matricula.alumno)
+
+        # Serializando: Se entregan los siguientes datos: 'id_asistencia', 'alumno', 'fecha', 'estado_asistencia'
+        logger.info("Los alumnos del aula {0} son {1}".format(aula,alumnos_aula))
+        serializer = AlumnoSerializer2(alumnos_aula, many=True)
+
+        return Response(serializer.data)
 
