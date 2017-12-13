@@ -191,9 +191,11 @@
                   {% if perms.payments.add_tipopago %}
                       <li><a href="{% url 'payments:tipopago_list' %}"><i class="fa fa-circle-o"></i> Manejo de Pagos</a></li>
                   {% endif %}
+                  <!--
                   {% if perms.payments.add_tipopago %}
                       <li><a href="{% url 'payments:tipopago_list' %}"><i class="fa fa-circle-o"></i> Lista de pagos</a></li>
                   {% endif %}
+                    -->
               </ul>
         </li>
         {% endif %}
@@ -223,7 +225,7 @@
               </ul>
         </li>
         {% endif %}
-
+        <!--
         <li class="{% if namespace == 'academic' %}active treeview orange {% else  %}treeview purple{% endif %} ">
               <a href="#">
                 <img src="{% static 'site/img/svg/folder-document.svg' %}" width="22px" height="22px"/>
@@ -250,7 +252,7 @@
 
               </ul>
         </li>
-
+        -->
       </ul>
       {% endwith %}
 
