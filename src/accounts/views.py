@@ -299,6 +299,7 @@ class RegistroUsuario(CreateView):
             return render(request=request, template_name=self.template_name, context={'form': form, 'grupos': grupos})
 
 
+
 class RegistroUsarioCreationViewSistema(CreateView):
     model = Userss
     template_name = "register_accounts/register_accounts_form.html"
