@@ -3,9 +3,18 @@ from django.conf.urls import url, include
 from rest_framework.urlpatterns import format_suffix_patterns
 from . import views
 from .views import UserInfoListView, SnippetDetail
+from .serializers import CustomJWTSerializer
+from rest_framework_jwt.views import ObtainJSONWebToken
+from rest_framework_jwt.views import obtain_jwt_token
+from rest_framework_jwt.views import verify_jwt_token
 
 urlpatterns = [
 
+
+    url(r'^verify_token/', verify_jwt_token),
+    url(r'^login2/', obtain_jwt_token),
+    #url(r'^login/$', ObtainJSONWebToken.as_view(serializer_class=CustomJWTSerializer)),
+    #url(r'^login/$', CustomObtainJSONWebToken.as_view()),
 
     url(r'^colegio_api/$', views.ColegioList.as_view()),
     url(r'^colegio_api/(?P<pk>\d+)/$', views.ColegioDetail.as_view()),

@@ -116,7 +116,8 @@ INSTALLED_APPS = (
     'rest_framework',
     'rest_framework.authtoken',
     'rest_auth',
-    'APIs'
+    'APIs',
+    'rest_framework_jwt'
 
 )
 
@@ -127,13 +128,26 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
 
     ],
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
 
-    ],
+#    'DEFAULT_AUTHENTICATION_CLASSES': [
+#        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+#        'rest_framework.authentication.BasicAuthentication',
+#        'rest_framework.authentication.SessionAuthentication',
+#        'rest_framework.authentication.TokenAuthentication',
+#    ],
+
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+       'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+   ),
+
+
+
     'PAGE_SIZE': 10
+}
+
+JWT_AUTH = {
+    'JWT_SECRET_KEY': SECRET_KEY,
+    'JWT_AUTH_HEADER_PREFIX': 'Bearer',
 }
 
 IMPORT_EXPORT_USE_TRANSACTIONS = True
