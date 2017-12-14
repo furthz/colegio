@@ -411,7 +411,7 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 class RegistroUsuarioApoderado(CreateView):
     model = Userss
-    template_name = "register_accounts/register_accounts_form.html"
+    template_name = "register_accounts/register_accounts_apoderado_form.html"
     form_class = RegistroUsuarioForm
     success_url = reverse_lazy('registers:apoderado_create')
 
