@@ -136,7 +136,8 @@ class ApoderadoForm(ValidProfileFormMixin, PersonaForm):
             ('Padre', 'Padre'),
             ('Madre', 'Madre'),
             ('Tio', 'Tio'),
-            ('Hermano', 'Hermano')
+            ('Hermano', 'Hermano'),
+            ('Pariente', 'Pariente')
         )
         return MY_CHOICES
 
