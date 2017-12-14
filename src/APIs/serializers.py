@@ -101,7 +101,6 @@ class AlumnoSerializer2(serializers.ModelSerializer):
         model = Alumno
         fields = ('id_alumno', 'getNombreFormal')
 
-<<<<<<< HEAD
 
 ######################################################################
 #           Serializer para webservice prueba
@@ -112,25 +111,9 @@ class RelacionUsuarioPerfilSerializer(serializers.ModelSerializer):
         model = RelacionUsuarioPerfil
         fields = ('id_persona', 'numero_documento', 'id_personal', 'apellido_pa', 'nombre')
 
-=======
-      
-    
-    
-class RelacionUsuarioPerfilSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Alumno
-        fields = ('id_persona', 'id_personal', 'numero_documento', 'apellido_pa', 'nombre')
->>>>>>> eb280b147046bd6f1eebcb51b6df9a0cd8e06847
-
 
 class RelacionPerfilAlumnoSerializer(serializers.ModelSerializer):
     class Meta:
-<<<<<<< HEAD
         model = RelacionPerfilAlumno
         fields = ('id_colegio', 'id_matricula', 'id_alumno', 'id_persona', 'apellido_pa', 'nombre')
-=======
-        model = Alumno
-        fields = ('id_colegio', 'id_matricula',  'id_alumno', 'id_persona', 'apellido_pa', 'nombre')
 
-        
->>>>>>> eb280b147046bd6f1eebcb51b6df9a0cd8e06847
