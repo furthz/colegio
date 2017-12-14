@@ -116,7 +116,7 @@ class AlumnoForm(ValidProfileFormMixin, PersonaForm):
     class Meta:
         model = Alumno
         fields = ['nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento', 'numero_documento',
-                  'sexo', 'fecha_nac']
+                  'sexo', 'correo', 'fecha_nac']
 
 
 
