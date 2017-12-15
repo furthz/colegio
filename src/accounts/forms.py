@@ -179,7 +179,7 @@ class RegistroUsuarioForm(UserCreationForm):
         labels = {
             'groups': 'Grupo',
             'email': 'Correo',
-            'name': 'Nombre de Usuario',
+            'name': 'N° de documento',
             'password1': 'Crea una contraseña',
             'password2': 'Confirma tu contraseña',
 
