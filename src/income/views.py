@@ -551,6 +551,7 @@ def generar_pdf(request):
     
     nombre = alumno
     monto = [(str(p.monto)) for p in detalle_cobranza]
+    total = sum([(p.monto) for p in detalle_cobranza])
     descripcion = [(str(p.cuentascobrar.servicio.nombre)+" " +str(p.cuentascobrar.servicio.tipo_servicio)) for p in detalle_cobranza]
     fecha = datetime.today()
     
@@ -577,7 +578,7 @@ def generar_pdf(request):
     p.line(40,470-15*len(descripcion)-3,580,470-15*len(descripcion)-3)
     p.line(40,470-15*len(descripcion)-18,580,470-15*len(descripcion)-18)
     p.drawString(450,470-15*len(descripcion)-15,'TOTAL')
-    p.drawString(490,470-15*len(descripcion)-15,'{0}'.format(500))
+    p.drawString(490,470-15*len(descripcion)-15,'{0}'.format(total))
     p.line(40,470-15*len(descripcion)-34,580,470-15*len(descripcion)-34)
     p.drawString(40,470-15*len(descripcion)-31,'Fecha:')
     p.drawString(90,470-15*len(descripcion)-31,'{0}'.format(fecha))
