@@ -220,6 +220,7 @@ MESSAGE_TAGS = {
 
 # Authentication Settings
 AUTH_USER_MODEL = 'authtools.User'
+AUTHENTICATION_BACKENDS = ['accounts.models.EmailBackend', ]
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
