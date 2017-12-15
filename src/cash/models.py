@@ -109,7 +109,7 @@ class CajaCajero(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, 
                                          db_column="id_personal_colegio")  # Persona encargada de la Caja
     caja = models.ForeignKey(Caja, models.DO_NOTHING, db_column='id_caja')  # Caja en la que se apertura la sesión
     saldo = models.FloatField(default=0)  # Sobrante o Faltante al Final de la caja
-    #ventas = models.FloatField(default=0)
+    ventas = models.FloatField(default=0)
     monto_apertura = models.FloatField(default=0.0)  # Caja Inicial
     monto_cierre = models.FloatField(default=0.0)  # Caja Final
     comentario_apertura = models.CharField(max_length=250, blank=True, null=True)
