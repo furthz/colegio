@@ -549,7 +549,7 @@ def generar_pdf(request):
     alumno = Alumno.objects.get(id_alumno=id_alumno)
     cajero = Profile.objects.get(user=get_current_user())
     
-    nombre = alumno.getNombreFormal()
+    nombre = alumno
     monto = [(str(p.monto)) for p in detalle_cobranza]
     descripcion = [(str(p.cuentascobrar.servicio.nombre)+" " +str(p.cuentascobrar.servicio.tipo_servicio)) for p in detalle_cobranza]
     fecha = datetime.today()
