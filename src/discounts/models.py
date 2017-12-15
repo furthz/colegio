@@ -22,7 +22,7 @@ class TipoDescuento(ActivoMixin, CreacionModificacionFechaMixin, CreacionModific
     colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column='id_colegio',default=get_current_colegio)
     servicio = models.ForeignKey(Servicio, models.DO_NOTHING, db_column='id_servicio')
     descripcion = models.CharField(max_length = 50)
-    porcentaje = models.DecimalField(max_digits=10, decimal_places=10)
+    porcentaje = models.FloatField()
     #objects = ActivoManager()
     def __str__(self):
 

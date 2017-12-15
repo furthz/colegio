@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
                 ('colegio', models.ForeignKey(db_column='id_colegio',to='register.Colegio')),
                 ('servicio', models.ForeignKey(db_column='id_servicio', to='enrollment.Servicio')),
                 ('descripcion', models.CharField(max_length=50)),
-                ('porcentaje', models.DecimalField(max_digits=10,decimal_places=10)),
+                ('porcentaje', models.FloatField()),
                 ('fecha_creacion', models.DateField()),
                 ('fecha_modificacion', models.DateField()),
                 ('usuario_creacion', models.CharField(max_length=10,null=True)),

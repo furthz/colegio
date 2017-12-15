@@ -258,7 +258,7 @@ class AprobarDescuentoView(ListView):
 
                     for cuenta in cuenta_descuento:
                         if cuenta.estado == True:
-                            cuenta.descuento = cuenta.precio*porcentaje_descuento
+                            cuenta.descuento = porcentaje_descuento
                             if cuenta.deuda - cuenta.descuento > 0:
                                 cuenta.deuda = cuenta.deuda - cuenta.descuento
                             else:
