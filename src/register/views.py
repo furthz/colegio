@@ -1336,8 +1336,8 @@ class ColegioCreateView(MyLoginRequiredMixin, TemplateView):
             logger.info("El formulario es valido")
             caja_chica = CajaChica(
                 colegio= colegio,
-                presupuesto= 0,
-                saldo= 0,
+                presupuesto= 1000,
+                saldo= 1000,
                 periodo=1,
             )
             caja_chica.save()
