@@ -29,7 +29,7 @@ class LoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.fields["username"].widget.input_type = "email"  # ugly hack
+        #self.fields["username"].widget.input_type = "email"  # ugly hack
         self.fields["username"].widget.attrs.update({'class': 'form-control'})
         self.fields["password"].widget.attrs.update({'class': 'form-control'})
 
