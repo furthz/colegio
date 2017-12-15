@@ -51,7 +51,7 @@ class Migration(migrations.Migration):
                 ('personal_colegio', models.ForeignKey(db_column='id_personal_colegio', to='register.PersonalColegio')),
                 ('caja', models.ForeignKey(db_column='id_caja', to='cash.Caja')),
                 ('saldo', models.FloatField()),
-                #('ventas', models.FloatField()),
+                ('ventas', models.FloatField()),
                 ('monto_apertura', models.FloatField()),
                 ('monto_cierre', models.FloatField()),
                 ('comentario_apertura', models.CharField(blank=True, max_length=500, null=True)),
