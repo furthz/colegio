@@ -523,22 +523,23 @@ class ControlIngresosPromotorDetallesView(FormView):
 #       Generacion de PDF
 ########################################################
 
-from io import BytesIO
 
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
 from django.http import HttpResponse
-from reportlab.platypus import SimpleDocTemplate, Paragraph, TableStyle
-from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.lib import colors
-from reportlab.lib.pagesizes import letter, A6
-from reportlab.platypus import Table
+
+
 
 
 def generar_pdf(request):
-    #print("Genero el PDF")
     response = HttpResponse(content_type='application/pdf')
-    pdf_name = "clientes.pdf"  # llamado clientes
-    # la linea 26 es por si deseas descargar el pdf a tu computadora
-    # response['Content-Disposition'] = 'attachment; filename=%s' % pdf_name
+    response['Content-Disposition'] = 'attachment; filename="somefilename.pdf"'
+    p = canvas.Canvas(response, pagesize=letter)
+    p.setLineWidth(.3)
+    p.setFont('Helvetica', 12)
+    
+    
+    
     id_cobranza_actual = request.POST["cobranza"]
     id_alumno = request.POST["alumno"]
     cobranza_actual = Cobranza.objects.get(id_cobranza=id_cobranza_actual)
@@ -547,41 +548,44 @@ def generar_pdf(request):
     detalle_cobranza = DetalleCobranza.objects.filter(cobranza=cobranza_actual)
     alumno = Alumno.objects.get(id_alumno=id_alumno)
     cajero = Profile.objects.get(user=get_current_user())
-
-
-    buff = BytesIO()
-    doc = SimpleDocTemplate(buff,
-                            pagesize=A6,
-                            rightMargin=0,
-                            leftMargin=0,
-                            topMargin=0,
-                            bottomMargin=0,
-                            )
-    clientes = []
-    styles = getSampleStyleSheet()
-    header5 = Paragraph("{0}  RUC: {1}".format(colegio, colegio.ruc), styles['Heading3'])
-    header = Paragraph("Detalle del Pago", styles['Heading4'])
-    fecha = Paragraph("Fecha y hora:    {0}".format(datetime.today()), styles['Heading4'])
-    header1 = Paragraph("Cajero:    {0}".format(cajero), styles['Heading4'])
-    header3 = Paragraph("Nombre del alumno:   {0}".format(alumno), styles['Heading4'])
-    clientes.append(header5)
-    clientes.append(header)
-    clientes.append(fecha)
-    clientes.append(header1)
-
-    clientes.append(header3)
-
-    headings = ('Concepto', 'Grado', 'Monto Pagado')
-    allclientes = [(p.cuentascobrar.servicio.nombre, p.cuentascobrar.servicio.tipo_servicio,  p.monto) for p in detalle_cobranza]
-    #print(allclientes)
-
-    t = Table([headings] + allclientes)
-    clientes.append(t)
-
-    doc.build(clientes)
-    response.write(buff.getvalue())
-    buff.close()
+    
+    nombre = alumno.getNombreFormal()
+    monto = [(str(p.monto)) for p in detalle_cobranza]
+    descripcion = [(str(p.cuentascobrar.servicio.nombre)+" " +str(p.cuentascobrar.servicio.tipo_servicio)) for p in detalle_cobranza]
+    fecha = datetime.today()
+    
+    p.line(40,600,580,600)
+    p.setFont('Helvetica', 18)
+    p.drawString(40,570,'RECIBO')
+    p.setFont('Helvetica', 10)
+    p.drawString(40,550,'Pagado por:')
+    p.drawString(40,530,'{0}'.format(nombre))
+    p.drawString(320,550,'Pagado a:')
+    p.drawString(320,530,'{0}'.format(cajero))
+    p.setFont('Helvetica', 13)
+    p.line(40,495,580,495)
+    p.line(40,518,580,518)
+    p.line(485,495,485,518)
+    p.drawString(40,500,'DESCRIPCIÓN:')
+    p.drawString(490,500,'CANTIDAD S/.')
+    
+    p.setFont('Helvetica', 10)
+    for k in range(len(descripcion)):
+        p.drawString(40,470-15*k,'{0}'.format(descripcion[k]))
+        p.drawString(490,470-15*k,'{0}'.format(monto[k]))
+    
+    p.line(40,470-15*len(descripcion)-3,580,470-15*len(descripcion)-3)
+    p.line(40,470-15*len(descripcion)-18,580,470-15*len(descripcion)-18)
+    p.drawString(450,470-15*len(descripcion)-15,'TOTAL')
+    p.drawString(490,470-15*len(descripcion)-15,'{0}'.format(500))
+    p.line(40,470-15*len(descripcion)-34,580,470-15*len(descripcion)-34)
+    p.drawString(40,470-15*len(descripcion)-31,'Fecha:')
+    p.drawString(90,470-15*len(descripcion)-31,'{0}'.format(fecha))
+    p.showPage()
+    p.save()
+    
     return response
+
 
 
 
