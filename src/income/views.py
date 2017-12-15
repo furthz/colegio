@@ -159,7 +159,9 @@ class RegistrarPagoListView(MyLoginRequiredMixin, TemplateView):
         )
 
         cobranza_actual.save()
-
+        movi= CajaCajero.objects.get(estado=True,usuario_creacion=str(usuario.id))
+        movi.ventas = movi.ventas + total
+        movi.save()
         for k in range(len(lista_cuentas)):
             cuenta = lista_cuentas[k]
             print(k)
