@@ -548,7 +548,7 @@ def generar_pdf(request):
     detalle_cobranza = DetalleCobranza.objects.filter(cobranza=cobranza_actual)
     alumno = Alumno.objects.get(id_alumno=id_alumno)
     cajero = Profile.objects.get(user=get_current_user())
-    
+    cajero = cajero.getNombreCompleto()
     nombre = alumno
     monto = [(str(p.monto)) for p in detalle_cobranza]
     total = sum([(p.monto) for p in detalle_cobranza])
