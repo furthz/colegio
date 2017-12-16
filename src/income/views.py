@@ -426,6 +426,7 @@ class ControlIngresosPromotorDetallesView(FormView):
             # Cargamos los años
             anio = datetime.today().year
             anios = []
+            anios.append(anio + 1)
             for i in range(0, 3):
                 anios.append(anio - i)
 

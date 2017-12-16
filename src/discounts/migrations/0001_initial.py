@@ -42,7 +42,7 @@ class Migration(migrations.Migration):
                 ('personal_colegio',models.ForeignKey(db_column='id_persona_colegio',to='register.PersonalColegio')),
                 ('tipo_descuento', models.ForeignKey(db_column='id_tipo_descuento',to='discounts.TipoDescuento')),
                 ('matricula', models.ForeignKey(db_column='id_matricula', to='enrollment.Matricula')),
-                ('numero_expediente', models.IntegerField()),
+                ('numero_expediente', models.CharField(max_length=200, null=True)),
                 ('estado', models.IntegerField()),
                 ('comentario', models.CharField(max_length=200, null=True)),
                 ('fecha_solicitud', models.DateField()),

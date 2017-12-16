@@ -55,7 +55,7 @@ class Descuento(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacio
     personal_colegio = models.ForeignKey(PersonalColegio, models.DO_NOTHING, db_column='id_persona_colegio', null= True, blank=True,default=get_current_colegio)
     matricula = models.ForeignKey(Matricula, models.DO_NOTHING, db_column='id_matricula', default=get_current_colegio)
     tipo_descuento = models.ForeignKey(TipoDescuento, models.DO_NOTHING, db_column='id_tipo_descuento', default=get_current_colegio)
-    numero_expediente = models.IntegerField()
+    numero_expediente = models.CharField(max_length=200, null=True, blank=True)
     comentario = models.CharField(max_length=200, null=True, blank=True)
     estado = models.IntegerField()
     fecha_solicitud = models.DateField()
