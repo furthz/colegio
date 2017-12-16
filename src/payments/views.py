@@ -9,7 +9,7 @@ from django.views.generic.edit import CreateView,UpdateView
 from payments.models import TipoPago
 from payments.models import CajaChica
 
-from register.models import PersonalColegio, Tesorero, Colegio, Personal, Promotor
+from register.models import PersonalColegio, Tesorero, Colegio, Personal, Promotor, Proveedor
 from payments.forms import TipoPagoForm
 from profiles.models import Profile
 from payments.forms import PagoForm
