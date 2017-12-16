@@ -147,9 +147,13 @@ class RegistrarPagoCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(RegistrarPagoCreateView, self).get_context_data(**kwargs)
+        proovedores = Proveedor.objects.filter(colegio__id_colegio = self.request.session.get('colegio'), activo = True)
+        tipo_pago = TipoPago.objects.filter(colegio__id_colegio = self.request.session.get('colegio'), eliminado=False)
         cajachica_actual = CajaChica.objects.get(colegio__id_colegio = self.request.session.get('colegio'))
         saldo = cajachica_actual.saldo
         context['saldo'] = saldo
+        context['tipo_pago'] = tipo_pago
+        context['proveedores'] = proovedores
         return context
 
     def post(self, request, *args, **kwargs):
