@@ -54,7 +54,7 @@ class TipoPagoDetailView(DetailView):
     template_name = 'TipoPago/tipopago_detail.html'
     model = TipoPago
 
-    @method_decorator(permission_required('payments.Tipo_Pago_Detail', login_url=settings.REDIRECT_PERMISOS,
+    @method_decorator(permission_required('payments.Tipo_Pago_Creation', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'tesorero', 'administrativo']
