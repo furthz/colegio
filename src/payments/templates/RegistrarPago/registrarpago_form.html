@@ -31,7 +31,25 @@
                                     </div>
                                     <form action="" method="POST" class="form-horizontal" id="1">{% csrf_token %}
                                         {% csrf_token %}
-                                        {{ form.as_p}}
+                                        <p><label for="id_proveedor">Proveedor:</label> <select name="proveedor" class="form-control" required id="id_proveedor">
+                                          <option value="" selected>---------</option>
+                                            {% for proveedor in proveedores %}
+                                                <option value="{{ proveedor.pk }}">{{ proveedor }}</option>
+                                            {% endfor %}
+
+                                        </select></p>
+                                        <p><label for="id_tipo_pago">Tipo de Pago:</label> <select name="tipo_pago" class="form-control" required id="id_tipo_pago">
+                                          <option value="" selected>---------</option>
+
+                                            {% for tipo in tipo_pago %}
+                                                <option value="{{ tipo.pk }}">{{ tipo }}</option>
+                                            {% endfor %}
+
+                                        </select></p>
+                                        <p><label for="id_descripcion">Descripción:</label> <input type="text" name="descripcion" maxlength="200" class="form-control" required id="id_descripcion" /></p>
+                                        <p><label for="id_monto">Monto(S/.):</label> <input type="number" name="monto" step="any" class="form-control" required id="id_monto" /></p>
+                                        <p><label for="id_numero_comprobante">N° Comprobante:</label> <input type="text" name="numero_comprobante" maxlength="30" class="form-control" required id="id_numero_comprobante" /></p>
+                                        
                                     </form>
                                     <div class="form-group">
                                         <div class="col-sm-offset-2 col-sm-10">
