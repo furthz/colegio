@@ -9,7 +9,7 @@ from django.views.generic.edit import CreateView,UpdateView
 from payments.models import TipoPago
 from payments.models import CajaChica
 
-from register.models import PersonalColegio, Tesorero, Colegio, Personal, Promotor, Proveedor
+from register.models import PersonalColegio, Tesorero, Colegio, Personal, Promotor, ProveedorColegio
 from payments.forms import TipoPagoForm
 from profiles.models import Profile
 from payments.forms import PagoForm
@@ -147,7 +147,7 @@ class RegistrarPagoCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(RegistrarPagoCreateView, self).get_context_data(**kwargs)
-        proovedores = Proveedor.objects.filter(colegio__id_colegio = self.request.session.get('colegio'), activo = True)
+        proovedores = ProveedorColegio.objects.filter(colegio__id_colegio = self.request.session.get('colegio'), activo = True)
         tipo_pago = TipoPago.objects.filter(colegio__id_colegio = self.request.session.get('colegio'), eliminado=False)
         cajachica_actual = CajaChica.objects.get(colegio__id_colegio = self.request.session.get('colegio'))
         saldo = cajachica_actual.saldo
