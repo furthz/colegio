@@ -2,7 +2,7 @@
 from django.conf.urls import url, include
 from rest_framework.urlpatterns import format_suffix_patterns
 from . import views
-from .views import UserInfoListView, SnippetDetail
+from .views import UserInfoListView, ApoderadoInfoListView, SnippetDetail
 
 urlpatterns = [
 
@@ -20,6 +20,9 @@ urlpatterns = [
 ###################
     url(r'^apoderadoalumno_api/$', views.ApoderadoAlumnoList.as_view()),
     url(r'^apoderadoalumno_api/(?P<pk>\d+)/$', views.ApoderadoAlumnoDetail.as_view()),
+
+    #http://127.0.0.1:8000/APIs/apoderadoalumno_api/?search=3
+
 ###################
     url(r'^matricula_api/$', views.MatriculaList.as_view()),
     url(r'^matricula_api/(?P<pk>\d+)/$', views.MatriculaDetail.as_view()),
@@ -53,8 +56,11 @@ urlpatterns = [
 
     url(r'^alumno_api/$', views.AlumnoList.as_view()),
     url(r'^alumno_api/(?P<pk>\d+)/$', views.AlumnoDetail.as_view()),
+
 
     url(r'^user_info/$', UserInfoListView.as_view(), name='user_info'),
+    #url(r'^profesor_info/$', UserInfoListView.as_view(), name='profesor_info'),
+    url(r'^apoderado_info/$', ApoderadoInfoListView.as_view(), name='apoderado_info'),
 
 
     url(r'^colegio/(?P<pk>[0-9]+)/(?P<nombre>\w+)/$', SnippetDetail.as_view()),
