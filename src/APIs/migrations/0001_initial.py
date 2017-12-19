@@ -48,7 +48,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id_alerta', models.AutoField(primary_key=True)),
                 ('persona_receptor', models.ForeignKey(db_column="id_persona", to='profiles.Profile')),
-                ('curso', models.ForeignKey(db_column="id_curso", to='AE_academico.Curso')),
+                #('curso', models.ForeignKey(db_column="id_curso", to='AE_academico.Curso')),
                 ('tipo_alerta', models.ForeignKey(db_column="id_tipo_alerta", to='APIs.TipoAlerta')),
                 ('estado_alerta', models.IntegerField()),
                 ('estado_visto', models.BooleanField(default=False)),
@@ -73,7 +73,7 @@ class Migration(migrations.Migration):
             name='Comunicado',
             fields=[
                 ('id_comunicado', models.AutoField(primary_key=True)),
-                ('descripcion', models.CharField()),
+                ('descripcion', models.CharField(max_length=20, null=True)),
                 ('fecha_creacion', models.DateField()),
                 ('fecha_modificacion', models.DateField()),
                 ('usuario_creacion', models.CharField(max_length=10, null=True)),
