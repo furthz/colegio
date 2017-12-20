@@ -246,3 +246,8 @@ THUMBNAIL_EXTENSION = 'png'     # Or any extn for your thumbnails
 
 REDIRECT_PERMISOS = '/about/'
 
+
+REST_AUTH_SERIALIZERS = {
+    #'LOGIN_SERIALIZER': 'accounts.models.EmailBackend',
+    #'TOKEN_SERIALIZER': 'path.to.custom.TokenSerializer',
+}
