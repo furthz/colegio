@@ -67,7 +67,8 @@ class ApoderadoInfoListView(ListView):
         profile_id = Profile.objects.get(user_id=iduser)
         apoderado_id = Apoderado.objects.get(persona_id=profile_id)
         # personalcolegio_id = PersonalColegio.objects.values('pk').filter(personal_id=personal_id)[0]['pk']
-        context['id_apoderado'] = apoderado_id
+        get_apoderado_id = Apoderado.objects.values('pk').filter(persona_id=profile_id)[0]['pk']
+        context['id_apoderado'] = get_apoderado_id
         context['nombre_profile'] = Profile.objects.values('nombre').filter(user_id=iduser)[0]['nombre']
         #context['nombre2_profile'] = Profile.objects.values('segundo_nombre').filter(user_id=iduser)[0][
         #    'segundo_nombre']
