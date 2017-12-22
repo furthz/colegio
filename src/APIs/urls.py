@@ -2,7 +2,7 @@
 from django.conf.urls import url, include
 from rest_framework.urlpatterns import format_suffix_patterns
 from . import views
-from .views import UserInfoListView, ApoderadoInfoListView, SnippetDetail
+from .views import UserInfoListView, SnippetDetail, ApoderadoInfo
 
 urlpatterns = [
 
@@ -60,8 +60,7 @@ urlpatterns = [
 
     url(r'^user_info/$', UserInfoListView.as_view(), name='user_info'),
     #url(r'^profesor_info/$', UserInfoListView.as_view(), name='profesor_info'),
-    url(r'^apoderado_info/$', ApoderadoInfoListView.as_view(), name='apoderado_info'),
-
+    url(r'^apoderado_info/$', ApoderadoInfo, name='apoderado_info'),
 
     url(r'^colegio/(?P<pk>[0-9]+)/(?P<nombre>\w+)/$', SnippetDetail.as_view()),
 
