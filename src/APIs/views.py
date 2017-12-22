@@ -1,7 +1,8 @@
-
 from django.shortcuts import render
 
 # Create your views here.
+from rest_framework.decorators import api_view
+
 from AE_academico.models import Asistencia, Aula, AulaMatricula, CursoDocente, AulaCurso
 from enrollment.models import Matricula
 from register.models import Profile, Personal, PersonalColegio, Colegio, Apoderado, Alumno, ApoderadoAlumno
@@ -15,6 +16,7 @@ from authtools.models import User
 from django.http import Http404
 from rest_framework.response import Response
 import logging
+
 logger = logging.getLogger("project")
 
 from rest_framework.filters import SearchFilter
@@ -23,7 +25,9 @@ from django_filters.rest_framework import DjangoFilterBackend
 from django.http import Http404
 from rest_framework.response import Response
 import logging
+
 logger = logging.getLogger("project")
+
 
 class UserInfoListView(ListView):
     model = Profile
@@ -65,21 +69,29 @@ class ApoderadoInfoListView(ListView):
         else:
             iduser = -1
         profile_id = Profile.objects.get(user_id=iduser)
-        apoderado_id = Apoderado.objects.get(persona_id=profile_id)
-        # personalcolegio_id = PersonalColegio.objects.values('pk').filter(personal_id=personal_id)[0]['pk']
         get_apoderado_id = Apoderado.objects.values('pk').filter(persona_id=profile_id)[0]['pk']
         context['id_apoderado'] = get_apoderado_id
         context['nombre_profile'] = Profile.objects.values('nombre').filter(user_id=iduser)[0]['nombre']
-        #context['nombre2_profile'] = Profile.objects.values('segundo_nombre').filter(user_id=iduser)[0][
-        #    'segundo_nombre']
         context['apellido_pa_profile'] = Profile.objects.values('apellido_pa').filter(user_id=iduser)[0]['apellido_pa']
-        #context['apellido_ma_profile'] = Profile.objects.values('apellido_ma').filter(user_id=iduser)[0]['apellido_ma']
         return context
 
+
+from accounts.serializers import UserSerializer
+from rest_framework import viewsets
+
+@api_view(['GET'])
+def current_user(request):
+
+    user = request.user
+    return Response({
+        'username': user.name,
+        'email': user.email,
+    })
 
 class ColegioList(generics.ListCreateAPIView):
     queryset = Colegio.objects.all()
     serializer_class = ColegioSerializer
+
 
 class ColegioDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Colegio.objects.all()
@@ -89,6 +101,7 @@ class ColegioDetail(generics.RetrieveUpdateDestroyAPIView):
 class PerfilList(generics.ListCreateAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
+
 
 class PerfilDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Profile.objects.all()
@@ -147,6 +160,7 @@ class AsistenciaList(generics.ListCreateAPIView):
     queryset = Asistencia.objects.all()
     serializer_class = AsistenciaSerializer
 
+
 class AsistenciaDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Asistencia.objects.all()
     serializer_class = AsistenciaSerializer
@@ -156,9 +170,11 @@ class AulaList(generics.ListCreateAPIView):
     queryset = Aula.objects.all()
     serializer_class = AulaSerializer
 
+
 class AulaDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Aula.objects.all()
     serializer_class = AulaSerializer
+
 
 # AULA DOCENTE
 
@@ -167,6 +183,7 @@ class AulaDetail(generics.RetrieveUpdateDestroyAPIView):
 class MatriculaList(generics.ListCreateAPIView):
     queryset = Matricula.objects.all()
     serializer_class = MatriculaSerializer
+
 
 class MatriculaDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Matricula.objects.all()
@@ -177,14 +194,17 @@ class AlumnoList(generics.ListCreateAPIView):
     queryset = Alumno.objects.all()
     serializer_class = AlumnoSerializer
 
+
 class AlumnoDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Alumno.objects.all()
     serializer_class = AlumnoSerializer
+
 
 class SnippetDetail(APIView):
     """
     Retrieve, update or delete a snippet instance.
     """
+
     def get_object(self, pk):
         try:
             return Colegio.objects.get(pk=pk)
@@ -192,15 +212,15 @@ class SnippetDetail(APIView):
             raise Http404
 
     def get(self, request, pk, nombre, format=None):
-        #snippet = self.get_object(pk)
+        # snippet = self.get_object(pk)
         snippet = Colegio.objects.get(id_colegio=nombre)
-        #snippet = Colegio.objects.get(nombre="Mundopixel")
+        # snippet = Colegio.objects.get(nombre="Mundopixel")
 
         serializer = ColegioSerializer(snippet)
         return Response(serializer.data)
 
-class CursoDocenteList(APIView):
 
+class CursoDocenteList(APIView):
     def get_object(self, pk):
         try:
             return CursoDocente.objects.get(pk=pk)
@@ -224,7 +244,6 @@ class CursoDocenteList(APIView):
 #########################################################
 
 class DocenteCursoList(APIView):
-
     def get_object(self, pk):
         try:
             return CursoDocente.objects.get(pk=pk)
@@ -251,7 +270,6 @@ class DocenteCursoList(APIView):
 #########################################################
 
 class DocenteAulaList(APIView):
-
     def get_object(self, pk):
         try:
             return CursoDocente.objects.get(pk=pk)
@@ -275,13 +293,11 @@ class DocenteAulaList(APIView):
         return Response(serializer.data)
 
 
-
 #################################################################################
 #           views de prueba
 #################################################################################
 
 class RelacionUsuarioPerfilView(APIView):
-
     def get_object(self, pk):
         try:
             return CursoDocente.objects.get(pk=pk)
@@ -290,13 +306,14 @@ class RelacionUsuarioPerfilView(APIView):
 
     def get(self, request, pk, docente, format=None):
 
-        prueba = RelacionUsuarioPerfil(id_persona=1,id_personal=1,numero_documento=74926380,nombre="Marco",apellido_pa="Silva")
+        prueba = RelacionUsuarioPerfil(id_persona=1, id_personal=1, numero_documento=74926380, nombre="Marco",
+                                       apellido_pa="Silva")
 
         serializer = RelacionUsuarioPerfilSerializer(prueba, many=False)
         return Response(serializer.data)
 
-class RelacionPerfilAlumnoView(APIView):
 
+class RelacionPerfilAlumnoView(APIView):
     def get_object(self, pk):
         try:
             return CursoDocente.objects.get(pk=pk)
@@ -305,11 +322,11 @@ class RelacionPerfilAlumnoView(APIView):
 
     def get(self, request, pk, docente, format=None):
 
-        prueba = RelacionPerfilAlumno(id_persona=1,id_matricula=1,id_alumno=1,id_colegio=1,nombre="Marco",apellido_pa="Perez")
+        prueba = RelacionPerfilAlumno(id_persona=1, id_matricula=1, id_alumno=1, id_colegio=1, nombre="Marco",
+                                      apellido_pa="Perez")
 
         serializer = RelacionPerfilAlumnoSerializer(prueba, many=False)
         return Response(serializer.data)
-
 
 
 #########################################################
@@ -317,7 +334,6 @@ class RelacionPerfilAlumnoView(APIView):
 #########################################################
 
 class AulaAsistenciaList(APIView):
-
     def get_object(self, pk):
         try:
             return Asistencia.objects.get(pk=pk)
@@ -327,7 +343,7 @@ class AulaAsistenciaList(APIView):
     def get(self, request, pk, aula, mes):
 
         aula = int(aula)
-        mes = int(mes) # El mes es un número del 1 al 12, correspondiendo de Enero a Diciembre respectivamente
+        mes = int(mes)  # El mes es un número del 1 al 12, correspondiendo de Enero a Diciembre respectivamente
 
         # Obteniendo la lista de alumnos matriculados en dicha aula
         alumnos_aula = []
@@ -354,7 +370,6 @@ class AulaAsistenciaList(APIView):
 #########################################################
 
 class AulaAlumnosList(APIView):
-
     def get_object(self, pk):
         try:
             return Alumno.objects.get(pk=pk)
@@ -372,8 +387,7 @@ class AulaAlumnosList(APIView):
             alumnos_aula.append(matriculado_aula.matricula.alumno)
 
         # Serializando: Se entregan los siguientes datos: 'id_asistencia', 'alumno', 'fecha', 'estado_asistencia'
-        logger.info("Los alumnos del aula {0} son {1}".format(aula,alumnos_aula))
+        logger.info("Los alumnos del aula {0} son {1}".format(aula, alumnos_aula))
         serializer = AlumnoSerializer2(alumnos_aula, many=True)
 
         return Response(serializer.data)
-
