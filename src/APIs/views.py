@@ -79,6 +79,11 @@ class ColegioList(generics.ListCreateAPIView):
     queryset = Colegio.objects.all()
     serializer_class = ColegioSerializer
 
+    def list(self, request, *args, **kwargs):
+        self.object_list = self.filter_queryset(self.get_queryset())
+        serializer = self.get_serializer(self.object_list, many=True)
+        return Response({'colegios': serializer.data})
+
 
 class ColegioDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Colegio.objects.all()
@@ -124,7 +129,10 @@ class ApoderadoAlumnoList(generics.ListCreateAPIView):
     serializer_class = ApoderadoAlumnoSerializer
     filter_backends = (SearchFilter, DjangoFilterBackend)
     search_fields = ['=apoderado_id__id_apoderado', ]
-
+    def list(self, request, *args, **kwargs):
+        self.object_list = self.filter_queryset(self.get_queryset())
+        serializer = self.get_serializer(self.object_list, many=True)
+        return Response({'alumnos': serializer.data})
 
 class ApoderadoAlumnoDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = ApoderadoAlumno.objects.all()
