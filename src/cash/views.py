@@ -236,6 +236,12 @@ class BoxCashierCreationView(CreateView):
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.estado = True
+        obj.save()
+        return super(BoxCashierCreationView, self).form_valid(form)
+
 
 class BoxCashierUpdateView(UpdateView):
     model = CajaCajero
@@ -253,6 +259,13 @@ class BoxCashierUpdateView(UpdateView):
             return super(BoxCashierUpdateView, self).get(request, *args, **kwargs)
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.estado = False
+        obj.save()
+        return super(BoxCashierUpdateView, self).form_valid(form)
+
 
 
 class BoxCashierDeleteView(DeleteView):

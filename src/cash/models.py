@@ -121,12 +121,7 @@ class CajaCajero(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, 
 
     def save(self, *args, **kwargs):
 
-        if not self.pk:
-            #Antes era True
-            self.estado = True
 
-        else:  # modificacion
-            self.estado = False
 
         try:
             remesa = Remesa.objects.latest('id_remesa')
