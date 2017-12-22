@@ -57,35 +57,22 @@ class UserInfoListView(ListView):
         return context
 
 
-class ApoderadoInfoListView(ListView):
-    model = Profile
-    template_name = 'ApoderadoInfo.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(ApoderadoInfoListView, self).get_context_data(**kwargs)
-        usuario = get_current_user()
-        if usuario is not None:
-            iduser = usuario.id
-        else:
-            iduser = -1
-        profile_id = Profile.objects.get(user_id=iduser)
-        get_apoderado_id = Apoderado.objects.values('pk').filter(persona_id=profile_id)[0]['pk']
-        context['id_apoderado'] = get_apoderado_id
-        context['nombre_profile'] = Profile.objects.values('nombre').filter(user_id=iduser)[0]['nombre']
-        context['apellido_pa_profile'] = Profile.objects.values('apellido_pa').filter(user_id=iduser)[0]['apellido_pa']
-        return context
-
-
-from accounts.serializers import UserSerializer
-from rest_framework import viewsets
-
 @api_view(['GET'])
-def current_user(request):
+def ApoderadoInfo(request):
 
     user = request.user
+    iduser = user.pk
+    profile_id = Profile.objects.get(user_id=iduser)
+    id_apoderado = Apoderado.objects.values('pk').filter(persona_id=profile_id)[0]['pk']
+    nombre_apoderado = Profile.objects.values('nombre').filter(user_id=iduser)[0]['nombre']
+    apellido_pa_apoderado = Profile.objects.values('apellido_pa').filter(user_id=iduser)[0]['apellido_pa']
     return Response({
-        'username': user.name,
-        'email': user.email,
+        'id_apoderado': id_apoderado,
+        'nombre_apoderado': nombre_apoderado,
+        'apellido_pa_apoderado': apellido_pa_apoderado,
+        #'id_usuario': user.pk,
+        #'username': user.name,
+        #'email': user.email,
     })
 
 class ColegioList(generics.ListCreateAPIView):
