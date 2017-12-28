@@ -4,7 +4,7 @@ from rest_framework import serializers
 from AE_academico.models import Asistencia, Aula, AulaMatricula, CursoDocente, Curso, AulaCurso
 from enrollment.models import Matricula
 from register.models import Profile, Colegio, Apoderado, Alumno, ApoderadoAlumno
-from APIs.models import *
+
 
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
@@ -101,19 +101,16 @@ class AlumnoSerializer2(serializers.ModelSerializer):
         model = Alumno
         fields = ('id_alumno', 'getNombreFormal')
 
-
-######################################################################
-#           Serializer para webservice prueba
-######################################################################
-
+      
+    
+    
 class RelacionUsuarioPerfilSerializer(serializers.ModelSerializer):
     class Meta:
-        model = RelacionUsuarioPerfil
-        fields = ('id_persona', 'numero_documento', 'id_personal', 'apellido_pa', 'nombre')
+        model = Alumno
+        fields = ('id_persona', 'id_personal', 'numero_documento', 'apellido_pa', 'nombre')
 
 
 class RelacionPerfilAlumnoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = RelacionPerfilAlumno
-        fields = ('id_colegio', 'id_matricula', 'id_alumno', 'id_persona', 'apellido_pa', 'nombre')
-
+        model = Alumno
+        fields = ('id_colegio', 'id_matricula',  'id_alumno', 'id_persona', 'apellido_pa', 'nombre')
