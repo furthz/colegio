@@ -1,11 +1,9 @@
-
 from rest_framework import serializers
 
 from AE_academico.models import Asistencia, Aula, AulaMatricula, CursoDocente, Curso, AulaCurso
 from enrollment.models import Matricula
 from register.models import Profile, Colegio, Apoderado, Alumno, ApoderadoAlumno
-
-
+from alerta.models import *
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -24,21 +22,24 @@ class ColegioSerializer(serializers.ModelSerializer):
 class ApoderadoSerializer(serializers.ModelSerializer):
     nombre_apoderado = serializers.CharField(source='nombre')
     apellido_pa_apoderado = serializers.CharField(source='apellido_pa')
+
     class Meta:
         model = Apoderado
         fields = ('id_apoderado', 'persona_id', 'nombre_apoderado', 'apellido_pa_apoderado')
 
 
 class AlumnoSerializer(serializers.ModelSerializer):
-    #matricula_id = serializers.IntegerField(source='alumno.matricula.id', read_only=True)
+    # matricula_id = serializers.IntegerField(source='alumno.matricula.id', read_only=True)
     class Meta:
         model = Alumno
-        fields = ('id_alumno', 'persona_id', 'picture', 'nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma', 'tipo_documento', 'numero_documento')
+        fields = ('id_alumno', 'persona_id', 'picture', 'nombre', 'segundo_nombre', 'apellido_pa', 'apellido_ma',
+                  'tipo_documento', 'numero_documento')
 
 
 class ApoderadoAlumnoSerializer(serializers.ModelSerializer):
     nombre_alumno = serializers.CharField(source='alumno.nombre', read_only=True)
     apellido_alumno = serializers.CharField(source='alumno.apellido_pa', read_only=True)
+
     class Meta:
         model = ApoderadoAlumno
         fields = ('id_apoderadoalumno', 'alumno_id', 'apoderado_id', 'nombre_alumno', 'apellido_alumno')
@@ -54,11 +55,14 @@ class MatriculaSerializer(serializers.ModelSerializer):
     tipo_documento_alumno = serializers.IntegerField(source='alumno.tipo_documento', read_only=True)
     numero_documento_alumno = serializers.CharField(source='alumno.numero_documento', read_only=True)
 
-    #nombre_alumno = serializers.CharField(source='alumno.nombre', read_only=True)
-    #apellido_alumno = serializers.CharField(source='alumno.apellido_pa', read_only=True)
+    # nombre_alumno = serializers.CharField(source='alumno.nombre', read_only=True)
+    # apellido_alumno = serializers.CharField(source='alumno.apellido_pa', read_only=True)
     class Meta:
         model = Matricula
-        fields = ('id_matricula', 'alumno_id', 'colegio_id', 'persona_id', 'picture', 'nombre_alumno', 'segundo_nombre_alumno', 'apellido_pa_alumno', 'apellido_ma_alumno', 'tipo_documento_alumno', 'numero_documento_alumno')
+        fields = (
+            'id_matricula', 'alumno_id', 'colegio_id', 'persona_id', 'picture', 'nombre_alumno',
+            'segundo_nombre_alumno',
+            'apellido_pa_alumno', 'apellido_ma_alumno', 'tipo_documento_alumno', 'numero_documento_alumno')
 
 
 ###############################################
@@ -101,9 +105,7 @@ class AlumnoSerializer2(serializers.ModelSerializer):
         model = Alumno
         fields = ('id_alumno', 'getNombreFormal')
 
-      
-    
-    
+
 class RelacionUsuarioPerfilSerializer(serializers.ModelSerializer):
     class Meta:
         model = Alumno
@@ -113,4 +115,41 @@ class RelacionUsuarioPerfilSerializer(serializers.ModelSerializer):
 class RelacionPerfilAlumnoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Alumno
-        fields = ('id_colegio', 'id_matricula',  'id_alumno', 'id_persona', 'apellido_pa', 'nombre')
+        fields = ('id_colegio', 'id_matricula', 'id_alumno', 'id_persona', 'apellido_pa', 'nombre')
+
+
+class PersonaEmisorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PersonaEmisor
+        fields = '__all__'
+
+
+class PersonaReceptorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PersonaReceptor
+        fields = '__all__'
+
+
+class TipoAlertaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TipoAlerta
+        fields = '__all__'
+
+
+class EstadoAlertaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EstadoAlerta
+        fields = '__all__'
+
+
+class ContenidoAlertaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ContenidoAlerta
+        fields = '__all__'
+
+
+class AlertaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Alerta
+        fields = '__all__'
+

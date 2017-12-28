@@ -59,7 +59,6 @@ class UserInfoListView(ListView):
 
 @api_view(['GET'])
 def ApoderadoInfo(request):
-
     user = request.user
     iduser = user.pk
     profile_id = Profile.objects.get(user_id=iduser)
@@ -70,10 +69,11 @@ def ApoderadoInfo(request):
         'id_apoderado': id_apoderado,
         'nombre_apoderado': nombre_apoderado,
         'apellido_pa_apoderado': apellido_pa_apoderado,
-        #'id_usuario': user.pk,
-        #'username': user.name,
-        #'email': user.email,
+        # 'id_usuario': user.pk,
+        # 'username': user.name,
+        # 'email': user.email,
     })
+
 
 class ColegioList(generics.ListCreateAPIView):
     queryset = Colegio.objects.all()
@@ -129,10 +129,12 @@ class ApoderadoAlumnoList(generics.ListCreateAPIView):
     serializer_class = ApoderadoAlumnoSerializer
     filter_backends = (SearchFilter, DjangoFilterBackend)
     search_fields = ['=apoderado_id__id_apoderado', ]
+
     def list(self, request, *args, **kwargs):
         self.object_list = self.filter_queryset(self.get_queryset())
         serializer = self.get_serializer(self.object_list, many=True)
         return Response({'alumnos': serializer.data})
+
 
 class ApoderadoAlumnoDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = ApoderadoAlumno.objects.all()
@@ -386,3 +388,62 @@ class AulaAlumnosList(APIView):
         serializer = AlumnoSerializer2(alumnos_aula, many=True)
 
         return Response(serializer.data)
+
+
+class PersonaEmisorList(generics.ListCreateAPIView):
+    queryset = PersonaEmisor.objects.all()
+    serializer_class = PersonaEmisorSerializer
+
+
+class PersonaEmisorDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = PersonaEmisor.objects.all()
+    serializer_class = PersonaEmisorSerializer
+
+
+class PersonaReceptorList(generics.ListCreateAPIView):
+    queryset = PersonaReceptor.objects.all()
+    serializer_class = PersonaReceptorSerializer
+
+
+class PersonaReceptorDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = PersonaReceptor.objects.all()
+    serializer_class = PersonaReceptorSerializer
+
+
+class TipoAlertaList(generics.ListCreateAPIView):
+    queryset = TipoAlerta.objects.all()
+    serializer_class = TipoAlertaSerializer
+
+
+class TipoAlertaDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = TipoAlerta.objects.all()
+    serializer_class = TipoAlertaSerializer
+
+
+class EstadoAlertaList(generics.ListCreateAPIView):
+    queryset = EstadoAlerta.objects.all()
+    serializer_class = EstadoAlertaSerializer
+
+
+class EstadoAlertaDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = EstadoAlerta.objects.all()
+    serializer_class = EstadoAlertaSerializer
+
+class ContenidoAlertaList(generics.ListCreateAPIView):
+    queryset = ContenidoAlerta.objects.all()
+    serializer_class = ContenidoAlertaSerializer
+
+
+class ContenidoAlertaDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = ContenidoAlerta.objects.all()
+    serializer_class = ContenidoAlertaSerializer
+
+class AlertaList(generics.ListCreateAPIView):
+    queryset = Alerta.objects.all()
+    serializer_class = AlertaSerializer
+
+
+class AlertaDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Alerta.objects.all()
+    serializer_class = AlertaSerializer
+

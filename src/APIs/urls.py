@@ -87,6 +87,26 @@ urlpatterns = [
     url(r'^relacionusuarioperfil/(?P<pk>[0-9]+)/(?P<docente>\w+)/$', views.RelacionUsuarioPerfilView.as_view()),
     url(r'^relacionperfilalumno/(?P<pk>[0-9]+)/(?P<docente>\w+)/$', views.RelacionPerfilAlumnoView.as_view()),
 
+
+#################################################################################################################
+    url(r'^personaemisor_api/$', views.PersonaEmisorList.as_view()),
+    url(r'^personaemisor_api/(?P<pk>\d+)/$', views.PersonaEmisorDetail.as_view()),
+###################
+    url(r'^personareceptor_api/$', views.PersonaReceptorList.as_view()),
+    url(r'^personareceptor_api/(?P<pk>\d+)/$', views.PersonaReceptorDetail.as_view()),
+###################
+    url(r'^tipoalerta_api/$', views.TipoAlertaList.as_view()),
+    url(r'^tipoalerta_api/(?P<pk>\d+)/$', views.TipoAlertaDetail.as_view()),
+####################
+    url(r'^estadoalerta_api/$', views.EstadoAlertaList.as_view()),
+    url(r'^estadoalerta_api/(?P<pk>\d+)/$', views.EstadoAlertaDetail.as_view()),
+###################
+    url(r'^contenidoalerta_api/$', views.ContenidoAlertaList.as_view()),
+    url(r'^contenidoalerta_api/(?P<pk>\d+)/$', views.ContenidoAlertaDetail.as_view()),
+###################
+    url(r'^alerta_api/$', views.AlertaList.as_view()),
+    url(r'^alerta_api/(?P<pk>\d+)/$', views.AlertaDetail.as_view()),
+
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
