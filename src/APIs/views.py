@@ -16,6 +16,7 @@ from authtools.models import User
 from django.http import Http404
 from rest_framework.response import Response
 import logging
+from register.models import Docente
 
 logger = logging.getLogger("project")
 
@@ -72,6 +73,22 @@ def ApoderadoInfo(request):
         # 'id_usuario': user.pk,
         # 'username': user.name,
         # 'email': user.email,
+    })
+
+
+@api_view(['GET'])
+def DocenteInfo(request):
+    user = request.user
+    iduser = user.pk
+    profile_id = Profile.objects.get(user_id=iduser)
+    personal_id = Personal.objects.get(persona_id=profile_id)
+    id_docente = Docente.objects.values('pk').filter(empleado_id=personal_id)[0]['pk']
+    nombre_docente = Profile.objects.values('nombre').filter(user_id=iduser)[0]['nombre']
+    apellido_pa_docente = Profile.objects.values('apellido_pa').filter(user_id=iduser)[0]['apellido_pa']
+    return Response({
+        'id_apoderado': id_docente,
+        'nombre_apoderado': nombre_docente,
+        'apellido_pa_apoderado': apellido_pa_docente,
     })
 
 
