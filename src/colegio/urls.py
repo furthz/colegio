@@ -14,6 +14,7 @@ import payments.urls
 import discounts.urls
 import AE_academico.urls
 import APIs.urls
+import alerta.urls
 from . import views
 
 handler404 = mi_error_404
@@ -33,6 +34,8 @@ urlpatterns = [
     url(r'^academic/', include(AE_academico.urls, namespace='academic')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^APIs/', include(APIs.urls, namespace='apis')),
+    url(r'^alerta/', include(alerta.urls, namespace='alerta')),
+
     #url(r'^calendar/', include('schedule.urls', namespace='calendar')),
 
 ]
