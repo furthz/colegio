@@ -86,9 +86,9 @@ def DocenteInfo(request):
     nombre_docente = Profile.objects.values('nombre').filter(user_id=iduser)[0]['nombre']
     apellido_pa_docente = Profile.objects.values('apellido_pa').filter(user_id=iduser)[0]['apellido_pa']
     return Response({
-        'id_apoderado': id_docente,
-        'nombre_apoderado': nombre_docente,
-        'apellido_pa_apoderado': apellido_pa_docente,
+        'id_docente': id_docente,
+        'nombre_docente': nombre_docente,
+        'apellido_pa_docente': apellido_pa_docente,
     })
 
 
