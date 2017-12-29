@@ -134,14 +134,13 @@ class TipoAlertaSerializer(serializers.ModelSerializer):
     activo = serializers.BooleanField(initial=True)
     class Meta:
         model = TipoAlerta
-        fields = '__all__'
-        #fields = ('descripcion', 'activo')
+        fields = ('id_tipo_alerta', 'descripcion', 'activo')
 
 
 class EstadoAlertaSerializer(serializers.ModelSerializer):
     class Meta:
         model = EstadoAlerta
-        fields = '__all__'
+        fields = ('id_estado_alerta', 'descripcion')
 
 
 class ContenidoAlertaSerializer(serializers.ModelSerializer):
@@ -153,5 +152,5 @@ class ContenidoAlertaSerializer(serializers.ModelSerializer):
 class AlertaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Alerta
-        fields = '__all__'
+        fields = ('id_alerta', 'persona_emisor', 'persona_receptor', 'tipo_alerta', 'estado_alerta', 'contenido_alerta', 'fecha_visto', 'visto')
 
