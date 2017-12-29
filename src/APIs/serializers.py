@@ -131,9 +131,11 @@ class PersonaReceptorSerializer(serializers.ModelSerializer):
 
 
 class TipoAlertaSerializer(serializers.ModelSerializer):
+    activo = serializers.BooleanField(initial=True)
     class Meta:
         model = TipoAlerta
         fields = '__all__'
+        #fields = ('descripcion', 'activo')
 
 
 class EstadoAlertaSerializer(serializers.ModelSerializer):
