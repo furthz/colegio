@@ -13,6 +13,7 @@ from enrollment.models import Matricula
 class TipoAlerta(CreacionModificacionFechaMixin, models.Model):
     id_tipo_alerta = models.AutoField(primary_key=True)
     descripcion = models.CharField(max_length=100, blank=True, null=True)
+    activo= models.BooleanField(default=True)
 
     def __str__(self):
         return "{0}".format(self.descripcion)
