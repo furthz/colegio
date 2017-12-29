@@ -411,6 +411,11 @@ class PersonaEmisorList(generics.ListCreateAPIView):
     queryset = PersonaEmisor.objects.all()
     serializer_class = PersonaEmisorSerializer
 
+    def list(self, request, *args, **kwargs):
+        self.object_list = self.filter_queryset(self.get_queryset())
+        serializer = self.get_serializer(self.object_list, many=True)
+        return Response({'persona_emisor': serializer.data})
+
 
 class PersonaEmisorDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = PersonaEmisor.objects.all()
@@ -420,6 +425,11 @@ class PersonaEmisorDetail(generics.RetrieveUpdateDestroyAPIView):
 class PersonaReceptorList(generics.ListCreateAPIView):
     queryset = PersonaReceptor.objects.all()
     serializer_class = PersonaReceptorSerializer
+
+    def list(self, request, *args, **kwargs):
+        self.object_list = self.filter_queryset(self.get_queryset())
+        serializer = self.get_serializer(self.object_list, many=True)
+        return Response({'persona_receptor': serializer.data})
 
 
 class PersonaReceptorDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -431,6 +441,11 @@ class TipoAlertaList(generics.ListCreateAPIView):
     queryset = TipoAlerta.objects.all()
     serializer_class = TipoAlertaSerializer
 
+    def list(self, request, *args, **kwargs):
+        self.object_list = self.filter_queryset(self.get_queryset())
+        serializer = self.get_serializer(self.object_list, many=True)
+        return Response({'tipo_alerta': serializer.data})
+
 
 class TipoAlertaDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = TipoAlerta.objects.all()
@@ -441,26 +456,42 @@ class EstadoAlertaList(generics.ListCreateAPIView):
     queryset = EstadoAlerta.objects.all()
     serializer_class = EstadoAlertaSerializer
 
+    def list(self, request, *args, **kwargs):
+        self.object_list = self.filter_queryset(self.get_queryset())
+        serializer = self.get_serializer(self.object_list, many=True)
+        return Response({'estado_alerta': serializer.data})
+
 
 class EstadoAlertaDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = EstadoAlerta.objects.all()
     serializer_class = EstadoAlertaSerializer
 
+
 class ContenidoAlertaList(generics.ListCreateAPIView):
     queryset = ContenidoAlerta.objects.all()
     serializer_class = ContenidoAlertaSerializer
+
+    def list(self, request, *args, **kwargs):
+        self.object_list = self.filter_queryset(self.get_queryset())
+        serializer = self.get_serializer(self.object_list, many=True)
+        return Response({'contenido_alerta': serializer.data})
 
 
 class ContenidoAlertaDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = ContenidoAlerta.objects.all()
     serializer_class = ContenidoAlertaSerializer
 
+
 class AlertaList(generics.ListCreateAPIView):
     queryset = Alerta.objects.all()
     serializer_class = AlertaSerializer
+
+    def list(self, request, *args, **kwargs):
+        self.object_list = self.filter_queryset(self.get_queryset())
+        serializer = self.get_serializer(self.object_list, many=True)
+        return Response({'alerta': serializer.data})
 
 
 class AlertaDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Alerta.objects.all()
     serializer_class = AlertaSerializer
-
