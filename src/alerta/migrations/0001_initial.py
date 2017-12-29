@@ -21,6 +21,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id_tipo_alerta', models.AutoField(primary_key=True)),
                 ('descripcion', models.CharField(max_length=100, blank=True, null=True)),
+                ('activo', models.BooleanField()),
                 ('fecha_creacion', models.DateTimeField(blank=True, null=True)),
                 ('fecha_modificacion', models.DateTimeField(blank=True, null=True)),
             ],
