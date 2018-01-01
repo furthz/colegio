@@ -74,8 +74,8 @@ class Colegio(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionU
     nombre = models.CharField(max_length=100)
     ruc = models.CharField(max_length=11)
     ugel = models.CharField(max_length=100)
+    numero_recibo = models.IntegerField(default=0)
     personales = models.ManyToManyField(Personal, through='PersonalColegio', related_name='Colegios', null=True)
-
 
     def __str__(self):
         return self.nombre
