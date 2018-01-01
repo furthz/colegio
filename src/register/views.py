@@ -237,7 +237,7 @@ class PersonaDetail(MyLoginRequiredMixin, DetailView):
 class AlumnoCreateView(MyLoginRequiredMixin, CreateView):
     model = Alumno
     form_class = AlumnoForm
-    template_name = "registro_create.html"
+    template_name = "alumno_create.html"
 
     @method_decorator(permission_required('register.alumno_create', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
