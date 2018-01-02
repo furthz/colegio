@@ -156,7 +156,7 @@
           </a>
           <ul class="treeview-menu">
                 {% if perms.cash.Box_Cashier_Creation %}
-                <li><a href="{% url 'income:register' %}"><i class="fa fa-circle-o"></i> Registrar Ingreso</a></li>
+                <li><a href="{% url 'income:filtrar_cuentas' %}"><i class="fa fa-circle-o"></i> Registrar Ingreso</a></li>
                 {% endif %}
                 {% if perms.enrollment.control_ingresos_padres %}
                     <li><a href="{% url 'income:cuentas_cobrar_padres' %}"><i class="fa fa-circle-o"></i> Detalle de Pagos</a></li>
