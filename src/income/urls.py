@@ -7,11 +7,12 @@ from . import views
 from income.views import ControlIngresosPadresView, ControlIngresosPromotorView, ControlIngresosPromotorDetallesView2
 from income.views import ControlIngresosPromotorDetallesView
 from income.views import RegistrarPagoListView
-from income.views import recibo_A6, boleta_A6, recibo_A5, boleta_A5
+from income.views import recibo_A6, boleta_A6, recibo_A5, boleta_A5, FiltrarCuentas
 
 
 urlpatterns = [
-    url(r'^register/$', RegistrarPagoListView.as_view(), name="register"),
+    url(r'^register/filter$', RegistrarPagoListView.as_view(), name="register"),
+    url(r'^register/$', FiltrarCuentas.as_view(), name="filtrar_cuentas"),
 
     url(r'^cuentas_cobrar_padres/filter', ControlIngresosPadresView.as_view(), name="cuentas_cobrar_padres"),
 
