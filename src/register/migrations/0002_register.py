@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
                 ('nombre', models.CharField(max_length=100)),
                 ('ruc', models.CharField(max_length=11)),
                 ('ugel', models.CharField(max_length=100)),
-                ('numero_recibo', models.IntegerField(default=0)),
+                ('numero_recibo', models.IntegerField(default=1)),
                 ('activo', models.BooleanField(default=True)),
                 ('fecha_creacion', models.DateTimeField(null=True)),
                 ('fecha_modificacion', models.DateTimeField(null=True)),
