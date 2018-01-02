@@ -25,6 +25,60 @@ from django.conf import settings
 import logging
 logger = logging.getLogger("project")
 
+class FiltrarCuentas(MyLoginRequiredMixin, TemplateView):
+    """
+
+    """
+    template_name = "filtrar_cuentas.html"
+    cuentas = []
+
+    #@method_decorator(permission_required('income.Registrar_Pago_List', login_url=settings.REDIRECT_PERMISOS,
+    #                                      raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        roles = ['cajero']
+
+        if validar_roles(roles=roles):
+            logger.info("Se tienen los permisos de cajero")
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+        try:
+            usuario = get_current_user()
+            mov = CajaCajero.objects.get(estado=True, usuario_modificacion= str(usuario.id))
+            alerta = False
+        except:
+            alerta = True
+        dato = 1
+        logger.info("Estoy en income pagos")
+        try:
+            dato = request.GET['dato']
+            logger.info("Ver si existe un GET")
+            print(request.GET['filter'])
+            if request.GET['filter'] == 'DNI':
+                print("filtro DNI")
+                alumnos = Alumno.objects.filter(numero_documento=request.GET['dato'])
+            else:
+                alumnos = Alumno.objects.filter(apellido_pa__icontains = request.GET['dato'].upper())
+        except:
+
+            self.cuentas = []
+            alumnos = []
+
+        alumnos1 = []
+        for alumno in alumnos:
+            try:
+                matricula = Matricula.objects.get(colegio=get_current_colegio(), activo=True, alumno= alumno)
+                alumnos1.append(alumno)
+            except:
+                logger.info("no pertenece al colegio")
+
+        return render(request, template_name=self.template_name, context={
+            'alerta':alerta,
+            'dato':dato,
+            'alumnos': alumnos1,
+        })
+
+
+
 class RegistrarPagoListView(MyLoginRequiredMixin, TemplateView):
     """
 
@@ -530,71 +584,304 @@ class ControlIngresosPromotorDetallesView(FormView):
 ########################################################
 
 
-from reportlab.lib.pagesizes import letter
+from reportlab.lib.pagesizes import letter, A5, A6
 from reportlab.pdfgen import canvas
 from django.http import HttpResponse
+from datetime import date
+from register.models import Telefono, Direccion
 
-
-
-
-def generar_pdf(request):
+def recibo_A6(request):
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="somefilename.pdf"'
-    p = canvas.Canvas(response, pagesize=letter)
+    response['Content-Disposition'] = 'attachment; filename="recibo_A6_{0}.pdf"'.format(datetime.today())
+    p = canvas.Canvas(response, pagesize=A6)
     p.setLineWidth(.3)
-    p.setFont('Helvetica', 12)
-    
-    
-    
+    p.setFont('Helvetica', 8)
+
     id_cobranza_actual = request.POST["cobranza"]
     id_alumno = request.POST["alumno"]
     cobranza_actual = Cobranza.objects.get(id_cobranza=id_cobranza_actual)
 
-    colegio =  Colegio.objects.get(pk=get_current_colegio())
+    colegio = Colegio.objects.get(pk=get_current_colegio())
     detalle_cobranza = DetalleCobranza.objects.filter(cobranza=cobranza_actual)
     alumno = Alumno.objects.get(id_alumno=id_alumno)
     cajero = Profile.objects.get(user=get_current_user())
-    
+
     nombre = alumno
     monto = [(str(p.monto)) for p in detalle_cobranza]
     total = sum([(p.monto) for p in detalle_cobranza])
-    descripcion = [(str(p.cuentascobrar.servicio.nombre)+" " +str(p.cuentascobrar.servicio.tipo_servicio)) for p in detalle_cobranza]
-    fecha = datetime.today()
-    
-    p.line(40,600,580,600)
-    p.setFont('Helvetica', 18)
-    p.drawString(40,570,'RECIBO')
-    p.setFont('Helvetica', 10)
-    p.drawString(40,550,'Pagado por:')
-    p.drawString(40,530,'{0}'.format(nombre))
-    p.drawString(320,550,'Pagado a:')
-    p.drawString(320,530,'{0}'.format(cajero))
-    p.setFont('Helvetica', 13)
-    p.line(40,495,580,495)
-    p.line(40,518,580,518)
-    p.line(485,495,485,518)
-    p.drawString(40,500,'DESCRIPCIÓN:')
-    p.drawString(490,500,'CANTIDAD S/.')
-    
-    p.setFont('Helvetica', 10)
+    descripcion = [(str(p.cuentascobrar.servicio.nombre) + " " + str(p.cuentascobrar.servicio.tipo_servicio)) for p in
+                   detalle_cobranza]
+    fecha = date.today()
+
+
+    dire = Direccion.objects.get(colegio=colegio)
+    dir_colegio = dire.calle
+
+    departamento = dire.get_departamento + " - PERU"
+
+    dire_alumno = Direccion.objects.get(persona=alumno.persona)
+    direccion_alumno = dire_alumno.calle
+
+
+
+    numero_recibo = colegio.numero_recibo - 1
+
+    p.line(20, 390, 270, 390)
+    p.setFont('Helvetica', 8)
+    p.drawString(70, 360, '{0}'.format(colegio))
+    p.drawString(70, 350, '{0}'.format(dir_colegio))
+    try:
+        telefono_colegio = Telefono.objects.get(colegio=colegio)
+        p.drawString(70, 340, 'Telf.: {0}'.format(telefono_colegio))
+        p.drawString(70, 330, '{0}'.format(departamento))
+    except:
+        p.drawString(70, 340, '{0}'.format(departamento))
+    p.drawString(195, 360, 'RECIBO {0}'.format(numero_recibo))
+    p.drawString(195, 350, 'FECHA:  {0}'.format(fecha))
+    p.setFont('Helvetica', 6)
+    p.drawString(20, 310, 'Sr(a):   {0}'.format(nombre))
+    p.drawString(20, 300, 'Dirección:  {0}'.format(direccion_alumno))
+    p.setFont('Helvetica', 8)
+    p.line(20, 265, 270, 265)
+    p.line(20, 283, 270, 283)
+    p.line(195, 265, 195, 283)
+    p.drawString(20, 270, 'Descripción:')
+    p.drawString(200, 270, 'Importe S/.')
+
+    p.setFont('Helvetica', 6)
     for k in range(len(descripcion)):
-        p.drawString(40,470-15*k,'{0}'.format(descripcion[k]))
-        p.drawString(490,470-15*k,'{0}'.format(monto[k]))
-    
-    p.line(40,470-15*len(descripcion)-3,580,470-15*len(descripcion)-3)
-    p.line(40,470-15*len(descripcion)-18,580,470-15*len(descripcion)-18)
-    p.drawString(450,470-15*len(descripcion)-15,'TOTAL')
-    p.drawString(490,470-15*len(descripcion)-15,'{0}'.format(total))
-    p.line(40,470-15*len(descripcion)-34,580,470-15*len(descripcion)-34)
-    p.drawString(40,470-15*len(descripcion)-31,'Fecha:')
-    p.drawString(90,470-15*len(descripcion)-31,'{0}'.format(fecha))
+        p.drawString(20, 250 - 15 * k, '{0}'.format(descripcion[k]))
+        p.drawString(200, 250 - 15 * k, '{0}'.format(monto[k]))
+
+    p.line(20, 250 - 15 * len(descripcion) - 3, 270, 250 - 15 * len(descripcion) - 3)
+    p.line(20, 250 - 15 * len(descripcion) - 18, 270, 250 - 15 * len(descripcion) - 18)
+    p.drawString(130, 250 - 15 * len(descripcion) - 15, 'TOTAL S/.:')
+    p.drawString(200, 250 - 15 * len(descripcion) - 15, '{0}'.format(total))
+
     p.showPage()
     p.save()
-    
+
     return response
 
 
+def boleta_A6(request):
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="boleta_A6_{0}.pdf"'.format(datetime.today())
+    p = canvas.Canvas(response, pagesize=A6)
+    p.setLineWidth(.3)
+    p.setFont('Helvetica', 8)
 
+    id_cobranza_actual = request.POST["cobranza"]
+    id_alumno = request.POST["alumno"]
+    cobranza_actual = Cobranza.objects.get(id_cobranza=id_cobranza_actual)
+
+    colegio = Colegio.objects.get(pk=get_current_colegio())
+    detalle_cobranza = DetalleCobranza.objects.filter(cobranza=cobranza_actual)
+    alumno = Alumno.objects.get(id_alumno=id_alumno)
+    cajero = Profile.objects.get(user=get_current_user())
+
+    nombre = alumno
+    monto = [(str(p.monto)) for p in detalle_cobranza]
+    total = sum([(p.monto) for p in detalle_cobranza])
+    descripcion = [(str(p.cuentascobrar.servicio.nombre) + " " + str(p.cuentascobrar.servicio.tipo_servicio)) for p in
+                   detalle_cobranza]
+    fecha = date.today()
+
+
+    dire = Direccion.objects.get(colegio=colegio)
+    dir_colegio = dire.calle
+
+    departamento = dire.get_departamento + " - PERU"
+
+    dire_alumno = Direccion.objects.get(persona=alumno.persona)
+    direccion_alumno = dire_alumno.calle
+    ruc_colegio = colegio.ruc
+    numero_recibo = colegio.numero_recibo - 1
+
+    p.line(20, 390, 270, 390)
+    p.setFont('Helvetica', 8)
+    p.drawString(70, 360, '{0}'.format(colegio))
+    p.drawString(70, 350, '{0}'.format(dir_colegio))
+    try:
+        telefono_colegio = Telefono.objects.get(colegio=colegio)
+        p.drawString(70, 340, 'Telf.: {0}'.format(telefono_colegio))
+        p.drawString(70, 330, '{0}'.format(departamento))
+    except:
+        p.drawString(70, 340, '{0}'.format(departamento))
+    p.drawString(195, 360, 'RUC: {0}'.format(ruc_colegio))
+    p.drawString(195, 350, 'BOLETA DE VENTA')
+    p.drawString(195, 340, '001 - N° {0}'.format(numero_recibo))
+    p.setFont('Helvetica', 6)
+    p.drawString(20, 310, 'Sr(a):   {0}'.format(nombre))
+    p.drawString(20, 300, 'Dirección:  {0}'.format(direccion_alumno))
+    p.drawString(195, 310, 'Fecha:  {0}'.format(fecha))
+
+    p.setFont('Helvetica', 8)
+    p.line(20, 265, 270, 265)
+    p.line(20, 283, 270, 283)
+    p.line(195, 265, 195, 283)
+    p.drawString(20, 270, 'Descripción:')
+    p.drawString(200, 270, 'Importe S/.')
+
+    p.setFont('Helvetica', 6)
+    for k in range(len(descripcion)):
+        p.drawString(20, 250 - 15 * k, '{0}'.format(descripcion[k]))
+        p.drawString(200, 250 - 15 * k, '{0}'.format(monto[k]))
+
+    p.line(20, 250 - 15 * len(descripcion) - 3, 270, 250 - 15 * len(descripcion) - 3)
+    p.line(20, 250 - 15 * len(descripcion) - 18, 270, 250 - 15 * len(descripcion) - 18)
+    p.drawString(130, 250 - 15 * len(descripcion) - 15, 'TOTAL S/.:')
+    p.drawString(200, 250 - 15 * len(descripcion) - 15, '{0}'.format(total))
+
+    p.showPage()
+    p.save()
+
+    return response
+
+def recibo_A5(request):
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="recibo_A5_{0}.pdf"'.format(datetime.today())
+    p = canvas.Canvas(response, pagesize=A5)
+    p.setLineWidth(.3)
+    p.setFont('Helvetica', 8)
+
+    id_cobranza_actual = request.POST["cobranza"]
+    id_alumno = request.POST["alumno"]
+    cobranza_actual = Cobranza.objects.get(id_cobranza=id_cobranza_actual)
+
+    colegio = Colegio.objects.get(pk=get_current_colegio())
+    detalle_cobranza = DetalleCobranza.objects.filter(cobranza=cobranza_actual)
+    alumno = Alumno.objects.get(id_alumno=id_alumno)
+    cajero = Profile.objects.get(user=get_current_user())
+
+    nombre = alumno
+    monto = [(str(p.monto)) for p in detalle_cobranza]
+    total = sum([(p.monto) for p in detalle_cobranza])
+    descripcion = [(str(p.cuentascobrar.servicio.nombre) + " " + str(p.cuentascobrar.servicio.tipo_servicio)) for p in
+                   detalle_cobranza]
+    fecha = date.today()
+
+    dire = Direccion.objects.get(colegio=colegio)
+    dir_colegio = dire.calle
+
+    departamento = dire.get_departamento + " - PERU"
+
+    dire_alumno = Direccion.objects.get(persona=alumno.persona)
+    direccion_alumno = dire_alumno.calle
+
+    numero_recibo = colegio.numero_recibo - 1
+
+
+    p.line(40, 510, 370, 510)
+    p.setFont('Helvetica', 10)
+    p.drawString(90, 490, '{0}'.format(colegio))
+    p.drawString(90, 480, '{0}'.format(dir_colegio))
+    try:
+        telefono_colegio = Telefono.objects.get(colegio=colegio)
+        p.drawString(90, 470, 'Telf.: {0}'.format(telefono_colegio))
+        p.drawString(90, 460, '{0}'.format(departamento))
+    except:
+        p.drawString(90, 470, '{0}'.format(departamento))
+    p.drawString(270, 490, 'RECIBO {0}'.format(numero_recibo))
+    p.drawString(270, 480, 'FECHA:  {0}'.format(fecha))
+    p.setFont('Helvetica', 8)
+    p.drawString(40, 440, 'Sr(a):   {0}'.format(nombre))
+    p.drawString(40, 430, 'Dirección:  {0}'.format(direccion_alumno))
+    p.setFont('Helvetica', 10)
+    p.line(40, 395, 370, 395)
+    p.line(40, 413, 370, 413)
+    p.line(295, 395, 295, 413)
+    p.drawString(40, 400, 'Descripción:')
+    p.drawString(300, 400, 'Importe S/.')
+
+    p.setFont('Helvetica', 8)
+    for k in range(len(descripcion)):
+        p.drawString(40, 370 - 15 * k, '{0}'.format(descripcion[k]))
+        p.drawString(300, 370 - 15 * k, '{0}'.format(monto[k]))
+
+    p.line(40, 370 - 15 * len(descripcion) - 3, 370, 370 - 15 * len(descripcion) - 3)
+    p.line(40, 370 - 15 * len(descripcion) - 18, 370, 370 - 15 * len(descripcion) - 18)
+    p.drawString(230, 370 - 15 * len(descripcion) - 15, 'TOTAL S/.:')
+    p.drawString(300, 370 - 15 * len(descripcion) - 15, '{0}'.format(total))
+
+    p.showPage()
+    p.save()
+
+    return response
+
+
+def boleta_A5(request):
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="boleta_A5_{0}.pdf"'.format(datetime.today())
+    p = canvas.Canvas(response, pagesize=A5)
+    p.setLineWidth(.3)
+    p.setFont('Helvetica', 8)
+
+    id_cobranza_actual = request.POST["cobranza"]
+    id_alumno = request.POST["alumno"]
+    cobranza_actual = Cobranza.objects.get(id_cobranza=id_cobranza_actual)
+
+    colegio = Colegio.objects.get(pk=get_current_colegio())
+    detalle_cobranza = DetalleCobranza.objects.filter(cobranza=cobranza_actual)
+    alumno = Alumno.objects.get(id_alumno=id_alumno)
+    cajero = Profile.objects.get(user=get_current_user())
+
+    nombre = alumno
+    monto = [(str(p.monto)) for p in detalle_cobranza]
+    total = sum([(p.monto) for p in detalle_cobranza])
+    descripcion = [(str(p.cuentascobrar.servicio.nombre) + " " + str(p.cuentascobrar.servicio.tipo_servicio)) for p in
+                   detalle_cobranza]
+    fecha = date.today()
+
+
+    dire = Direccion.objects.get(colegio=colegio)
+    dir_colegio = dire.calle
+
+    departamento = dire.get_departamento + " - PERU"
+
+    dire_alumno = Direccion.objects.get(persona=alumno.persona)
+    direccion_alumno = dire_alumno.calle
+    ruc_colegio = colegio.ruc
+    numero_recibo = colegio.numero_recibo - 1
+
+    p.line(40, 510, 370, 510)
+    p.setFont('Helvetica', 10)
+    p.drawString(90, 490, '{0}'.format(colegio))
+    p.drawString(90, 480, '{0}'.format(dir_colegio))
+    try:
+        telefono_colegio = Telefono.objects.get(colegio=colegio)
+        p.drawString(90, 470, 'Telf.: {0}'.format(telefono_colegio))
+        p.drawString(90, 460, '{0}'.format(departamento))
+    except:
+        p.drawString(90, 470, '{0}'.format(departamento))
+    p.drawString(270, 490, 'RUC: {0}'.format(ruc_colegio))
+    p.drawString(270, 480, 'BOLETA DE VENTA')
+    p.drawString(270, 470, '001 - N° {0}'.format(numero_recibo))
+    p.setFont('Helvetica', 8)
+    p.drawString(40, 440, 'Sr(a):   {0}'.format(nombre))
+    p.drawString(270, 440, 'Fecha:  {0}'.format(fecha))
+    p.drawString(40, 430, 'Dirección:  {0}'.format(direccion_alumno))
+    p.setFont('Helvetica', 10)
+    p.line(40, 395, 370, 395)
+    p.line(40, 413, 370, 413)
+    p.line(295, 395, 295, 413)
+    p.drawString(40, 400, 'Descripción:')
+    p.drawString(300, 400, 'Importe S/.')
+
+    p.setFont('Helvetica', 8)
+    for k in range(len(descripcion)):
+        p.drawString(40, 370 - 15 * k, '{0}'.format(descripcion[k]))
+        p.drawString(300, 370 - 15 * k, '{0}'.format(monto[k]))
+
+    p.line(40, 370 - 15 * len(descripcion) - 3, 370, 370 - 15 * len(descripcion) - 3)
+    p.line(40, 370 - 15 * len(descripcion) - 18, 370, 370 - 15 * len(descripcion) - 18)
+    p.drawString(230, 370 - 15 * len(descripcion) - 15, 'TOTAL S/.:')
+    p.drawString(300, 370 - 15 * len(descripcion) - 15, '{0}'.format(total))
+
+    p.showPage()
+    p.save()
+
+    return response
 
 
 
