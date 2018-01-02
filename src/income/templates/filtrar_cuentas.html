@@ -1,0 +1,119 @@
+{%  extends "page.html" %}
+
+{% block title %}{{ block.super }}Ingresos{% endblock %}
+
+{% block titulo %}
+      <h1>
+        Registrar Ingreso
+        <small>Módulo de Facturación</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+        <li>Módulo de Facturación</li>
+        <li class="active">Registrar Ingreso</li>
+      </ol>
+{% endblock %}
+
+{% block container %}
+<section>
+      <div class="row">
+          <div class="col-md-12">
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Registrar Ingreso</h3>
+                </div>
+                <div class="box-body">
+                  <div class="col-md-9">
+                    <div class="panel-page">
+                      <div class="toolbar-search">
+
+                        <form id="filtro" role="form" name="search" action="" class="form-horizontal">
+                          <div class="form-group">
+                              <label class="col-sm-3 control-label">Criterio de Búsqueda</label>
+                              <div class="col-sm-9">
+                                <div class="radio">
+                                  <label>
+                                    <input name="filter" id="optionsRadios1" value="DNI" checked="checked" type="radio">
+                                    Por DNI Alumno
+                                  </label>
+                                </div>
+                                <div class="radio">
+                                  <label>
+                                    <input name="filter" id="optionsRadios1" value="Apellido"  type="radio">
+                                    Por Apellidos Alumno
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-sm-3 control-label"></label>
+                              <div class="col-sm-9">
+                                <div class="input-group">
+                                {% if alerta == False %}
+                                    {% if dato == 1 %}
+                                  <input id="dato" name="dato" class="form-control" type="text" placeholder="Escriba el DNI o Apellido a buscar">
+                                    {% else %}
+                                    <input id="dato" name="dato" class="form-control" type="text" placeholder="Escriba el DNI o Apellido a buscar" value="{{ dato }}">
+                                    {% endif %}
+                                    <span class="input-group-btn">
+                                      <button type="submit" form="filtro" formmethod="get"  formaction="" class="btn btn-success">
+                                      <i class="fa fa-plus" aria-hidden="true"></i> Buscar</button>
+                                 {% else %}
+                                        <a>No hay ninguna caja abierta---->>>></a>
+
+                                        <a>Para continuar primero aperturar una Caja</a>
+                                  {% endif %}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+
+                        </form>
+
+                      </div>
+                      <div class="panel-body">
+                                <table class="table table-hover">
+                                  <tr class="table-header">
+                                    <th>Alumno</th>
+                                    <th>Seleccionar</th>
+                                  </tr>
+                                    {% for alumno in alumnos %}
+                                            <form name="alumno{{ alumno.id_alumno }}" id="alumno{{ alumno.id_alumno }}">{% csrf_token %}
+                                                <input hidden name="filter" value="DNI">
+                                                <input hidden id="dato" name="dato" value="{{ alumno.persona.numero_documento }}">
+                                          <tr>
+
+                                            <td>{{ alumno }}</td>
+                                            <td><button type="submit" form="alumno{{ alumno.id_alumno }}" formmethod="get" formaction="{% url 'income:register' %}" class="btn btn-success"><i class="fa fa-plus" aria-hidden="true"></i> Seleccionar</button></td>
+
+                                          </tr>
+                                            </form>
+                                    {% empty %}
+                                        <a>Seleccionar un criterio de busqueda</a>
+                                    {% endfor %}
+                                    </form>
+
+                                </table>
+
+                                <div class="form-group">
+                                <div class="col-md-12">
+                                  <div class="pull-right">
+                                    <a href="javascript:history.back()" class="btn btn-default">Cancelar</a>
+                                  </div>
+                                </div>
+                                </div>
+
+                            </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+
+                  </div>
+                </div>
+              </div>
+          </div>
+      </div>
+</section>
+
+
+{% endblock %}
