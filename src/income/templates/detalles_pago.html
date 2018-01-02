@@ -115,29 +115,37 @@
                           </table>
                       </div>
                       <div class="border-detalle">
-                          <div class="col-md-7">
-                          <form class="form-inline">
-                            <div class="form-group">
-                              <div class="input-group">
-                                <div class="input-group-addon">
-                                  <i class="fa fa-envelope" aria-hidden="true"></i>
-                                </div>
-                                <input type="text" class="form-control" id="exampleInputAmount" placeholder="Ingresar correo electronico">
 
-                              </div>
-                              <button type="submit" class="btn btn-primary">Enviar constancia de pago</button>
-                            </div>
-                          </form>
-                          </div>
-                          <form name="imprimirconstancia" id="imprimirconstancia">{% csrf_token %}
+
+                          <form name="imprimirreciboA6" id="imprimirreciboA6">{% csrf_token %}
                               <div class="col-md-5">
                                   <input hidden id="cobranza" name="cobranza" value="{{ cobranza }}" >
                                   <input hidden id="alumno" name="alumno" value="{{ alumno.id_alumno }}" >
-                                  <button formmethod="post" formaction="{% url 'income:generar_pdf' %}" form="imprimirconstancia" class="btn btn-success" ><i class="fa fa-print" aria-hidden="true"></i> Imprimir constancia de pago</button>
+                                  <button formmethod="post" formaction="{% url 'income:recibo_A6' %}" form="imprimirreciboA6" class="btn btn-success" ><i class="fa fa-print" aria-hidden="true"></i> Imprimir recibo A6</button>
                           </div>
                           </form>
-
-                        </div>
+                          <form name="imprimirreciboA5" id="imprimirreciboA5">{% csrf_token %}
+                              <div class="col-md-5">
+                                  <input hidden id="cobranza" name="cobranza" value="{{ cobranza }}" >
+                                  <input hidden id="alumno" name="alumno" value="{{ alumno.id_alumno }}" >
+                                  <button formmethod="post" formaction="{% url 'income:recibo_A5' %}" form="imprimirreciboA5" class="btn btn-success" ><i class="fa fa-print" aria-hidden="true"></i> Imprimir recibo A5</button>
+                          </div>
+                          </form>
+                          <form name="imprimirboletaA6" id="imprimirboletaA6">{% csrf_token %}
+                              <div class="col-md-5">
+                                  <input hidden id="cobranza" name="cobranza" value="{{ cobranza }}" >
+                                  <input hidden id="alumno" name="alumno" value="{{ alumno.id_alumno }}" >
+                                  <button formmethod="post" formaction="{% url 'income:boleta_A6' %}" form="imprimirboletaA6" class="btn btn-success" ><i class="fa fa-print" aria-hidden="true"></i> Imprimir boleta A6</button>
+                          </div>
+                          </form>
+                          <form name="imprimirboletaA5" id="imprimirboletaA5">{% csrf_token %}
+                              <div class="col-md-5">
+                                  <input hidden id="cobranza" name="cobranza" value="{{ cobranza }}" >
+                                  <input hidden id="alumno" name="alumno" value="{{ alumno.id_alumno }}" >
+                                  <button formmethod="post" formaction="{% url 'income:boleta_A5' %}" form="imprimirboletaA5" class="btn btn-success" ><i class="fa fa-print" aria-hidden="true"></i> Imprimir boleta A5</button>
+                          </div>
+                          </form>
+                      </div>
                     </div>
                     <div class="col-md-4">
 
