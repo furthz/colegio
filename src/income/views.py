@@ -25,6 +25,60 @@ from django.conf import settings
 import logging
 logger = logging.getLogger("project")
 
+class FiltrarCuentas(MyLoginRequiredMixin, TemplateView):
+    """
+
+    """
+    template_name = "filtrar_cuentas.html"
+    cuentas = []
+
+    #@method_decorator(permission_required('income.Registrar_Pago_List', login_url=settings.REDIRECT_PERMISOS,
+    #                                      raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        roles = ['cajero']
+
+        if validar_roles(roles=roles):
+            logger.info("Se tienen los permisos de cajero")
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+        try:
+            usuario = get_current_user()
+            mov = CajaCajero.objects.get(estado=True, usuario_modificacion= str(usuario.id))
+            alerta = False
+        except:
+            alerta = True
+        dato = 1
+        logger.info("Estoy en income pagos")
+        try:
+            dato = request.GET['dato']
+            logger.info("Ver si existe un GET")
+            print(request.GET['filter'])
+            if request.GET['filter'] == 'DNI':
+                print("filtro DNI")
+                alumnos = Alumno.objects.filter(numero_documento=request.GET['dato'])
+            else:
+                alumnos = Alumno.objects.filter(apellido_pa__icontains = request.GET['dato'].upper())
+        except:
+
+            self.cuentas = []
+            alumnos = []
+
+        alumnos1 = []
+        for alumno in alumnos:
+            try:
+                matricula = Matricula.objects.get(colegio=get_current_colegio(), activo=True, alumno= alumno)
+                alumnos1.append(alumno)
+            except:
+                logger.info("no pertenece al colegio")
+
+        return render(request, template_name=self.template_name, context={
+            'alerta':alerta,
+            'dato':dato,
+            'alumnos': alumnos1,
+        })
+
+
+
 class RegistrarPagoListView(MyLoginRequiredMixin, TemplateView):
     """
 
