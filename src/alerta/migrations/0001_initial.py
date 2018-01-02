@@ -90,7 +90,7 @@ class Migration(migrations.Migration):
             name='Alerta',
             fields=[
                 ('id_alerta', models.AutoField(primary_key=True)),
-                ('matricula', models.ForeignKey(db_column='id_matricula', to='enrollment.Matricula')),
+                ('matricula', models.ForeignKey(db_column='id_matricula', to='enrollment.Matricula', blank=True, null=True)),
                 ('persona_emisor', models.ForeignKey(db_column='id_persona_emisor', to='alerta.PersonaEmisor')),
                 ('persona_receptor', models.ForeignKey(db_column='id_persona_receptor', to='alerta.PersonaReceptor')),
                 ('tipo_alerta', models.ForeignKey(db_column='id_tipo_alerta', to='alerta.TipoAlerta')),

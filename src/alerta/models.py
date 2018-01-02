@@ -50,6 +50,9 @@ class ContenidoAlerta(models.Model):
 class PersonaEmisor(models.Model):
     id_persona_emisor = models.AutoField(primary_key=True)
     profile = models.ForeignKey(Profile, models.DO_NOTHING, db_column="id_persona")
+    
+    def __str__(self):
+        return "{0}".format(self.profile.getNombreCompleto)
 
     class Meta:
         managed = False
@@ -59,6 +62,9 @@ class PersonaEmisor(models.Model):
 class PersonaReceptor(models.Model):
     id_persona_receptor = models.AutoField(primary_key=True)
     profile = models.ForeignKey(Profile, models.DO_NOTHING, db_column="id_persona")
+    
+    def __str__(self):
+        return "{0}".format(self.profile.getNombreCompleto)
 
     class Meta:
         managed = False
