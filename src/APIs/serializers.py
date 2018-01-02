@@ -5,6 +5,7 @@ from enrollment.models import Matricula
 from register.models import Profile, Colegio, Apoderado, Alumno, ApoderadoAlumno
 from alerta.models import *
 
+
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Profile
@@ -132,9 +133,12 @@ class PersonaReceptorSerializer(serializers.ModelSerializer):
 
 class TipoAlertaSerializer(serializers.ModelSerializer):
     activo = serializers.BooleanField(initial=True)
+
     class Meta:
         model = TipoAlerta
         fields = ('id_tipo_alerta', 'descripcion', 'activo')
+        # fields = ('id_tipo_alerta', 'descripcion', 'activo', 'fecha_creacion')
+        # read_only_fields = ('fecha_creacion',)
 
 
 class EstadoAlertaSerializer(serializers.ModelSerializer):
@@ -152,5 +156,5 @@ class ContenidoAlertaSerializer(serializers.ModelSerializer):
 class AlertaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Alerta
-        fields = ('id_alerta', 'persona_emisor', 'persona_receptor', 'tipo_alerta', 'estado_alerta', 'contenido_alerta', 'fecha_visto', 'visto')
-
+        fields = ('id_alerta', 'persona_emisor', 'persona_receptor', 'tipo_alerta', 'estado_alerta', 'contenido_alerta',
+                  'fecha_visto', 'visto')

@@ -81,6 +81,7 @@
                                     <th class="text-center">Acciones</th>
                                     <th>ID</th>
                                     <th>Descripción Producto</th>
+                                    <th>Alumno</th>
                                     <th>Monto Total</th>
                                     <th>Pago Completo</th>
                                     <th>Pago en Cuotas</th>
@@ -100,6 +101,7 @@
                                             </td>
                                             <td>{{ cuentas.id_cuentascobrar }}</td>
                                             <td>{{ cuentas.servicio.nombre  }} de {{ cuentas.servicio.tipo_servicio }} del {{ cuentas.fecha_ven }}</td>
+                                            <td>{{ cuentas.matricula.alumno }}</td>
                                             <td>{{ cuentas.deuda }}</td>
                                             <td>
                                               <div class="radio">

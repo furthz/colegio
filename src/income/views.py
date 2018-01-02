@@ -134,6 +134,9 @@ class RegistrarPagoListView(MyLoginRequiredMixin, TemplateView):
         cobranza_actual =self.CrearDetallesCobranza(lista_cuentas,lista_montos,total)
         datos_contexto = {}
         datos_contexto['colegio'] = Colegio.objects.get(pk = self.request.session.get('colegio'))
+        colegio = Colegio.objects.get(pk = self.request.session.get('colegio'))
+        colegio.numero_recibo = colegio.numero_recibo + 1
+        colegio.save()
         datos_contexto['alumno'] = lista_cuentas[0].matricula.alumno
         datos_contexto['tiposervicio'] = lista_cuentas[0].matricula.tipo_servicio
         datos_contexto['fecha'] = datetime.today()
