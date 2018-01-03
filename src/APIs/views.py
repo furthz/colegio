@@ -489,7 +489,7 @@ class AlertaList(generics.ListCreateAPIView):
     def list(self, request, *args, **kwargs):
         self.object_list = self.filter_queryset(self.get_queryset())
         serializer = self.get_serializer(self.object_list, many=True)
-        return Response({'alerta': serializer.data})
+        return Response({'alertas': serializer.data})
 
 
 class AlertaDetail(generics.RetrieveUpdateDestroyAPIView):

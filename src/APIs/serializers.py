@@ -154,7 +154,13 @@ class ContenidoAlertaSerializer(serializers.ModelSerializer):
 
 
 class AlertaSerializer(serializers.ModelSerializer):
+    contenido_alerta_string = serializers.CharField(source='contenido_alerta.contenido', read_only=True)
+    tipo_alerta_string = serializers.CharField(source='tipo_alerta.descripcion', read_only=True)
+
+    # contenido_alerta = ContenidoAlertaSerializer()
     class Meta:
         model = Alerta
-        fields = ('id_alerta', 'persona_emisor', 'persona_receptor', 'tipo_alerta', 'estado_alerta', 'contenido_alerta',
-                  'fecha_visto', 'visto')
+        # fields = '__all__'
+        fields = ('id_alerta', 'matricula', 'persona_emisor', 'persona_receptor', 'tipo_alerta', 'estado_alerta',
+                  'contenido_alerta', 'fecha_visto', 'visto', 'contenido_alerta_string', 'tipo_alerta_string')
+        # depth = 1,2,etc

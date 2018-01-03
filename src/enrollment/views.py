@@ -1,4 +1,4 @@
-
+# coding=utf-8
 # from . import forms
 from django.contrib.auth.decorators import permission_required
 from django.utils.decorators import method_decorator
@@ -145,6 +145,15 @@ class TipoServicioRegularCreateView(MyLoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.is_ordinario = True
         form.instance.colegio = Colegio.objects.get(pk=self.request.session.get('colegio'))
+        cole_id = get_current_colegio()
+        grado_prueba = form.instance.grado
+        if TipoServicio.objects.filter(colegio_id=cole_id, grado=grado_prueba, activo=True).exists():
+            #print("Existe. Se creo, pero no podrá ser usado")
+            form.instance.activo = False
+        else:
+            """
+            print ('No existe, fue creado con exito')
+            """
         return super(TipoServicioRegularCreateView, self).form_valid(form)
 
 class TipoServicioExtraCreateView(MyLoginRequiredMixin, CreateView):
