@@ -151,7 +151,9 @@ class TipoServicioRegularCreateView(MyLoginRequiredMixin, CreateView):
             #print("Existe. Se creo, pero no podrá ser usado")
             form.instance.activo = False
         else:
-            #print ('No existe, fue creado con exito')
+            """
+            print ('No existe, fue creado con exito')
+            """
         return super(TipoServicioRegularCreateView, self).form_valid(form)
 
 class TipoServicioExtraCreateView(MyLoginRequiredMixin, CreateView):
