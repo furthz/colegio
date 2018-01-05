@@ -258,7 +258,7 @@ class ColegioForm(ModelForm):
                                  required=False)
     celular = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control'}), label="Celular",
                               required=False)
-    celulares = forms.MultipleChoiceField(widget=forms.SelectMultiple(attrs={'class': 'form-control'}), label="Números",
+    celulares = forms.MultipleChoiceField(widget=forms.SelectMultiple(attrs={'class': 'form-control'}), label="Números".encode('utf-8'),
                                           required=False)
 
     @property
