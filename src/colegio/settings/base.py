@@ -199,7 +199,7 @@ LANGUAGE_CODE = 'es-PE'
 
 TIME_ZONE = 'America/Lima'
 
-USE_I18N = False
+USE_I18N = True
 
 USE_L10N = False
 
