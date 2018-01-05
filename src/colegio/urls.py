@@ -36,7 +36,9 @@ urlpatterns = [
     url(r'^APIs/', include(APIs.urls, namespace='apis')),
     url(r'^alerta/', include(alerta.urls, namespace='alerta')),
 
-    #url(r'^calendar/', include('schedule.urls', namespace='calendar')),
+    url(r'^locale/', views.view_locale),
+
+# url(r'^calendar/', include('schedule.urls', namespace='calendar')),
 
 ]
 
@@ -46,6 +48,7 @@ urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 # Include django debug toolbar if DEBUG is on
 if settings.DEBUG:
     import debug_toolbar
+
     urlpatterns += [
-        url(r'^__debug__/', include(debug_toolbar.urls)),
-    ] + urlpatterns
+                       url(r'^__debug__/', include(debug_toolbar.urls)),
+                   ] + urlpatterns
