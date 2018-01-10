@@ -129,11 +129,11 @@ class PasswordChangeForm(authforms.PasswordChangeForm):
         self.helper = FormHelper()
 
         self.helper.layout = Layout(
-            Field('old_password', placeholder="Enter old password",
+            Field('old_password', placeholder="Ingrese su contraseña actual",
                   autofocus=""),
-            Field('new_password1', placeholder="Enter new password"),
-            Field('new_password2', placeholder="Enter new password (again)"),
-            Submit('pass_change', 'Change Password', css_class="btn-warning"),
+            Field('new_password1', placeholder="Ingrese su nueva contraseña"),
+            Field('new_password2', placeholder="Ingrese su nueva contraseña (otra vez)"),
+            Submit('pass_change', 'Cambiar Contraseña', css_class="btn-warning"),
         )
 
 

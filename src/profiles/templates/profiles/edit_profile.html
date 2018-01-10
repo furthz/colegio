@@ -22,19 +22,13 @@
             </div>
 
             <!-- edit form column -->
-            <div class="col-md-9">
+            <div class="col-md-8">
                 <h3>Información Personal</h3>
                 <form enctype="multipart/form-data" method="post">
                     {% crispy user_form %}
                     {% crispy profile_form %}
+                    <a class="btn btn-default pull-right" href="{% url 'accounts:password-change' %}">Cambiar Contraseña</a>
                 </form>
-            </div>
-        </div>
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <a class="btn btn-default pull-right" href="{% url 'accounts:password-change' %}">Change Password</a>
             </div>
         </div>
     </div>

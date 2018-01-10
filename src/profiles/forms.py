@@ -39,7 +39,7 @@ class ProfileForm(forms.ModelForm):
             Field('bio'),
             Field('nombre'),
             Field('segundo_nombre'),
-            Submit('update', 'Update', css_class="btn-success"),
+            Submit('update', 'Actualizar', css_class="btn-success"),
             )
 
     class Meta:
