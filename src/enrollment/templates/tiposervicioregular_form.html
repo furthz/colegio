@@ -3,6 +3,8 @@
 {% block title %}{{ block.super }}Matrícula{% endblock %}
 
 {% block titulo %}
+    <body onload="set_grado_value()">
+
     <h1>
         Actualización de Grados
         <small>Módulo de Matrícula</small>
@@ -17,48 +19,82 @@
 
 {% block container %}
 
-        <div class="row">
-            <div class="col-md-12">
-              <div class="box box-primary">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
                 <div class="box-header with-border">
                     <h3 class="box-title">Actualización de Servicio Regular</h3>
                 </div>
                 <div class="box-body">
-                    
-                    <form action="" method="POST" class="form-horizontal" id="1">{% csrf_token %}
-                            <p><label for="id_nivel">Nivel:</label>
+
+                    <form action="" method="POST" class="form-horizontal" id="1">
+                        {% csrf_token %}
+                        <p><label for="id_nivel">Nivel:</label>
                             {{ form.nivel }}
-                            <p><label for="id_grado">Grado:</label> <select name="grado" class="form-control" id="id_grado">
-                               <option value="1">3 Años</option><option value="2">4 Años</option><option value="3">5 Años</option>
+                        <p><label for="id_grado">Grado:</label>
+                            <select name="grado" class="form-control" id="id_grado">
+
+                                {% if nivel_value == 1 %}
+                                    <option value="1">3 Años</option>
+                                    <option value="2">4 Años</option>
+                                    <option value="3">5 Años</option>
+                                {% elif nivel_value == 2 %}
+                                    <option value="4">1° Grado</option>
+                                    <option value="5">2° Grado</option>
+                                    <option value="6">3° Grado</option>
+                                    <option value="7">4° Grado</option>
+                                    <option value="8">5° Grado</option>
+                                    <option value="9">6° Grado</option>
+
+                                {% elif nivel_value == 3 %}
+                                    <option value="10">1° Grado</option>
+                                    <option value="11">2° Grado</option>
+                                    <option value="12">3° Grado</option>
+                                    <option value="13">4° Grado</option>
+                                    <option value="14">5° Grado</option>
+
+
+                                {% endif %}
+
 
                             </select></p>
 
-                            <p><label for="id_codigo_modular">Código Modular:</label> <input type="text" name="codigo_modular" class="form-control" id="id_codigo_modular" maxlength="10"></p>
-                        </form>
+                        <p><label for="id_codigo_modular">Código Modular:</label>
+                            <input type="text" name="codigo_modular" class="form-control" id="id_codigo_modular"
+                                   maxlength="10"></p>
+                    </form>
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
                             <a class="btn btn-default" href="{% url 'enrollments:tiposervicio_list' %}">Cancelar</a>
-                            <button type="submit" class="btn btn-success" formaction="{% url 'enrollments:tiposervicioregularend_update' idtipo %}" form="1" formmethod="post">Actualizar Servicio</button>
+                            <button type="submit" class="btn btn-success"
+                                    formaction="{% url 'enrollments:tiposervicioregularend_update' idtipo %}" form="1"
+                                    formmethod="post">Actualizar Servicio
+                            </button>
                         </div>
                     </div>
                 </div>
-              </div>
             </div>
         </div>
+    </div>
+
+    </body>
+
 
 {% endblock container %}
 
 {% block scripts %}
-<script type="text/javascript">
-     $('#id_nivel').change(function () {
-            $('#id_grado').empty();
 
 
-            $.ajax({
+    <script type="text/javascript">
+        $('#id_nivel').change(function () {
+                $('#id_grado').empty();
+
+
+                $.ajax({
                     type: "GET",
                     url: "/enrollments/api/get_grados",
                     datatype: "Json",
-                    data: { id_nivel: $('#id_nivel').val() },
+                    data: {id_nivel: $('#id_nivel').val()},
                     success: function (data) {
                         $.each(data, function (index, value) {
                             $('#id_grado').append('<option value="' + value["id"] + '">' +
@@ -70,9 +106,15 @@
                     }
                 });
 
-     }
-    );
+            }
+        );
     </script>
 
+    <script type="text/javascript">
+        function set_grado_value() {
+            document.getElementById("id_grado").value = {{ grado_value }};
+        }
+
+    </script>
 
 {% endblock scripts %}

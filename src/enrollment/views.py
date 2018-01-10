@@ -46,6 +46,7 @@ import logging
 
 logger = logging.getLogger("project")
 
+
 # logger.info(dato) para mostrar los reportes de eventos
 # logger.debug("usuario logueado: " + str(request.user.is_authenticated()))
 # logger.debug("colegio: " + str(request.session.get('colegio')))
@@ -71,14 +72,13 @@ class TipoServicioListView(MyLoginRequiredMixin, ListView):
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
-
     def get_context_data(self, **kwargs):
         context = super(TipoServicioListView, self).get_context_data(**kwargs)
         tipos_de_servicios = self.model.objects.filter(colegio__id_colegio=self.request.session.get('colegio'))
         try:
-            regulares = tipos_de_servicios.filter(is_ordinario=True,activo=True).order_by("nivel","grado")
+            regulares = tipos_de_servicios.filter(is_ordinario=True, activo=True).order_by("nivel", "grado")
             regularesvacio = (regulares.count() is 0)
-            extra = tipos_de_servicios.filter(is_ordinario=False,activo=True).order_by("nivel","grado")
+            extra = tipos_de_servicios.filter(is_ordinario=False, activo=True).order_by("nivel", "grado")
             extravacio = (extra.count() is 0)
         except:
             regulares = []
@@ -95,16 +95,18 @@ class TipoServicioListView(MyLoginRequiredMixin, ListView):
     def post(self, request, *args, **kwargs):
         tipos_de_servicios = self.model.objects.filter(colegio__id_colegio=self.request.session.get('colegio'))
         if request.POST['nivel'] is '4':
-            regulares = tipos_de_servicios.filter(is_ordinario=True, activo=True).order_by("nivel","grado")
+            regulares = tipos_de_servicios.filter(is_ordinario=True, activo=True).order_by("nivel", "grado")
         else:
-            regulares = tipos_de_servicios.filter(nivel= int(request.POST['nivel']), activo=True).order_by("nivel","grado")
+            regulares = tipos_de_servicios.filter(nivel=int(request.POST['nivel']), activo=True).order_by("nivel",
+                                                                                                          "grado")
 
-        extra = tipos_de_servicios.filter(is_ordinario=False,activo=True).order_by("nivel","grado")
+        extra = tipos_de_servicios.filter(is_ordinario=False, activo=True).order_by("nivel", "grado")
 
         return render(request, template_name=self.template_name, context={
             'serviciosregulares': regulares,
             'serviciosextra': extra,
         })
+
 
 class TipoServicioDetailView(MyLoginRequiredMixin, DetailView):
     """
@@ -141,20 +143,20 @@ class TipoServicioRegularCreateView(MyLoginRequiredMixin, CreateView):
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
-
     def form_valid(self, form):
         form.instance.is_ordinario = True
         form.instance.colegio = Colegio.objects.get(pk=self.request.session.get('colegio'))
         cole_id = get_current_colegio()
         grado_prueba = form.instance.grado
         if TipoServicio.objects.filter(colegio_id=cole_id, grado=grado_prueba, activo=True).exists():
-            #print("Existe. Se creo, pero no podrá ser usado")
+            # print("Existe. Se creo, pero no podrá ser usado")
             form.instance.activo = False
         else:
             """
             print ('No existe, fue creado con exito')
             """
         return super(TipoServicioRegularCreateView, self).form_valid(form)
+
 
 class TipoServicioExtraCreateView(MyLoginRequiredMixin, CreateView):
     """
@@ -173,11 +175,11 @@ class TipoServicioExtraCreateView(MyLoginRequiredMixin, CreateView):
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
-
     def form_valid(self, form):
         form.instance.is_ordinario = False
         form.instance.colegio = Colegio.objects.get(pk=self.request.session.get('colegio'))
         return super(TipoServicioExtraCreateView, self).form_valid(form)
+
 
 class CargarTipoServicioCreateView(MyLoginRequiredMixin, TemplateView):
     """
@@ -204,14 +206,14 @@ class CargarTipoServicioCreateView(MyLoginRequiredMixin, TemplateView):
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
 
-
 class TipoServicioRegularEndUpdateView(MyLoginRequiredMixin, UpdateView):
     """
 
     """
     model = TipoServicio
     form_class = TipoServicioRegularForm
-    #template_name = "tiposervicioregular_form.html"
+
+    # template_name = "tiposervicioregular_form.html"
     def get_success_url(self):
         return reverse_lazy('enrollments:tiposervicio_list')
 
@@ -227,18 +229,42 @@ class TipoServicioRegularUpdateView(MyLoginRequiredMixin, TemplateView):
         roles = ['promotor', 'director', 'administrativo']
 
         if validar_roles(roles=roles):
-            return super(TipoServicioRegularUpdateView, self).get(request, *args, **kwargs)
+            pk_tiposervicio = int(request.POST["tiposervicio"])
+            grado_pk = TipoServicio.objects.values('grado').filter(pk=pk_tiposervicio)[0]['grado']
+            # print('==============================')
+            # print('id_tiposervicio : ' + str(pk_tiposervicio))
+            # print('id_grado dentro de la tabla TipoServicio :  ' + str(grado_pk))
+            # print('==============================')
+
+            return render(request, template_name=self.template_name, context={
+                'form': self.form_class,
+                'value': grado_pk,
+
+            })
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
-
 
     def post(self, request, *args, **kwargs):
 
         tiposervicio = self.model.objects.get(pk=request.POST["tiposervicio"])
         form = self.form_class(instance=tiposervicio)
+
+        pk_tiposervicio = int(request.POST["tiposervicio"])
+        grado_pk = TipoServicio.objects.values('grado').filter(pk=pk_tiposervicio)[0]['grado']
+        nivel_pk = TipoServicio.objects.values('nivel').filter(pk=pk_tiposervicio)[0]['nivel']
+
+        # print('==============================')
+        # print('id_tiposervicio : ' + str(pk_tiposervicio))
+        # print('id_grado dentro de la tabla TipoServicio :  ' + str(grado_pk))
+        # print('id_nivel dentro de la tabla TipoServicio :  ' + str(nivel_pk))
+        # print('==============================')
+
+
         return render(request, template_name=self.template_name, context={
             'form': form,
-            'idtipo':request.POST['tiposervicio'],
+            'grado_value': grado_pk,
+            'nivel_value': nivel_pk,
+            'idtipo': request.POST['tiposervicio'],
         })
 
 
@@ -248,9 +274,11 @@ class TipoServicioExtraEndUpdateView(MyLoginRequiredMixin, UpdateView):
     """
     model = TipoServicio
     form_class = TipoServicioExtraForm
-    #template_name = "tiposervicioregular_form.html"
+
+    # template_name = "tiposervicioregular_form.html"
     def get_success_url(self):
         return reverse_lazy('enrollments:tiposervicio_list')
+
 
 class TipoServicioExtraUpdateView(MyLoginRequiredMixin, TemplateView):
     template_name = "tiposervicioextra_form.html"
@@ -267,18 +295,14 @@ class TipoServicioExtraUpdateView(MyLoginRequiredMixin, TemplateView):
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
-
-
     def post(self, request, *args, **kwargs):
 
         tiposervicio = self.model.objects.get(pk=request.POST["tiposervicio"])
         form = self.form_class(instance=tiposervicio)
         return render(request, template_name=self.template_name, context={
             'form': form,
-            'idtipo':request.POST['tiposervicio'],
+            'idtipo': request.POST['tiposervicio'],
         })
-
-
 
 
 class TipoServicioDeleteView(MyLoginRequiredMixin, TemplateView):
@@ -304,16 +328,11 @@ class TipoServicioDeleteView(MyLoginRequiredMixin, TemplateView):
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
-
-
-
-
     def post(self, request, *args, **kwargs):
 
         return render(request, template_name=self.template_name, context={
             'idtipo': request.POST['tiposervicio'],
         })
-
 
 
 ##########################################################
@@ -337,7 +356,6 @@ class ServicioListView(MyLoginRequiredMixin, ListView):
             return super(ServicioListView, self).get(request, *args, **kwargs)
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
-
 
     def get_queryset(self):
         return self.model.objects.filter(tipo_servicio=self.kwargs["pkts"])
@@ -364,8 +382,6 @@ class ServicioDetailView(MyLoginRequiredMixin, DetailView):
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
 
-
-
 class ServicioRegularCreateView(MyLoginRequiredMixin, CreateView):
     """
 
@@ -375,11 +391,12 @@ class ServicioRegularCreateView(MyLoginRequiredMixin, CreateView):
     template_name = "servicioregular_form.html"
 
     def form_valid(self, form):
-        if int(self.request.POST["cuotas"])>1:
+        if int(self.request.POST["cuotas"]) > 1:
             form.instance.is_periodic = True
         else:
             form.instance.is_periodic = False
         return super(ServicioRegularCreateView, self).form_valid(form)
+
     def get_success_url(self):
         return reverse_lazy('enrollments:tiposervicio_list')
 
@@ -399,8 +416,6 @@ class ServicioRegularCreateView(MyLoginRequiredMixin, CreateView):
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
 
-
-
 class ServicioExtraCreateView(MyLoginRequiredMixin, CreateView):
     """
 
@@ -410,11 +425,12 @@ class ServicioExtraCreateView(MyLoginRequiredMixin, CreateView):
     template_name = "servicioextra_form.html"
 
     def form_valid(self, form):
-        if int(self.request.POST["cuotas"])>1:
+        if int(self.request.POST["cuotas"]) > 1:
             form.instance.is_periodic = True
         else:
             form.instance.is_periodic = False
         return super(ServicioExtraCreateView, self).form_valid(form)
+
     def get_success_url(self):
         return reverse_lazy('enrollments:tiposervicio_list')
 
@@ -431,8 +447,6 @@ class ServicioExtraCreateView(MyLoginRequiredMixin, CreateView):
             })
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
-
-
 
 
 class ServicioRegularEndUpdateView(MyLoginRequiredMixin, TemplateView):
@@ -482,10 +496,19 @@ class ServicioRegularUpdateView(MyLoginRequiredMixin, TemplateView):
 
         servicio = self.model.objects.get(pk=request.POST["idser"])
         form = self.form_class(instance=servicio)
+
+        pk_servicio = int(request.POST['idser'])
+        Tiposervicio_pk = Servicio.objects.values('tipo_servicio_id').filter(pk=pk_servicio)[0]['tipo_servicio_id']
+        grado_pk = TipoServicio.objects.values('grado').filter(pk=Tiposervicio_pk)[0]['grado']
+        print('==============================')
+        print('id_servicio : ' + str(pk_servicio))
+        print('id_tipo_servicio dentro de la tabla servicio :  ' + str(Tiposervicio_pk))
+        print('obtener el grado dentro de la tabla tipo_servicio :  ' + str(grado_pk))
+
         return render(request, template_name=self.template_name, context={
             'tiposervicio': servicio.tipo_servicio,
             'form': form,
-            'idser':int(request.POST['idser']),
+            'idser': int(request.POST['idser']),
         })
 
 
@@ -496,8 +519,10 @@ class ServicioExtraEndUpdateView(MyLoginRequiredMixin, TemplateView):
     model = Servicio
     form_class = ServicioExtraForm
     template_name = "servicioextra_update_form.html"
+
     def get_success_url(self):
         return reverse_lazy('enrollments:tiposervicio_list')
+
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         logger.info("En el POST")
@@ -516,7 +541,6 @@ class ServicioExtraEndUpdateView(MyLoginRequiredMixin, TemplateView):
 
 
 class ServicioExtraUpdateView(MyLoginRequiredMixin, TemplateView):
-
     model = Servicio
     form_class = ServicioExtraForm
     template_name = "servicioextra_update_form.html"
@@ -531,7 +555,6 @@ class ServicioExtraUpdateView(MyLoginRequiredMixin, TemplateView):
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
-
     def post(self, request, *args, **kwargs):
 
         servicio = self.model.objects.get(pk=request.POST["idser"])
@@ -539,9 +562,8 @@ class ServicioExtraUpdateView(MyLoginRequiredMixin, TemplateView):
         return render(request, template_name=self.template_name, context={
             'tiposervicio': servicio.tipo_servicio,
             'form': form,
-            'idser':(request.POST['idser']),
+            'idser': (request.POST['idser']),
         })
-
 
 
 class ServicioDeleteView(MyLoginRequiredMixin, TemplateView):
@@ -564,15 +586,12 @@ class ServicioDeleteView(MyLoginRequiredMixin, TemplateView):
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
-
     def post(self, request, *args, **kwargs):
         logger.info(request.POST)
         logger.info(request.POST['idser'])
         return render(request, template_name=self.template_name, context={
             'idser': int(request.POST['idser']),
         })
-
-
 
 
 #################################################
@@ -586,8 +605,9 @@ class MatriculaListView(MyLoginRequiredMixin, ListView):
     """
     model = Matricula
     template_name = "matricula_list.html"
-    #colegio = get_current_colegio()
-    #queryset = Matricula.objects.filter(colegio=colegio)
+
+    # colegio = get_current_colegio()
+    # queryset = Matricula.objects.filter(colegio=colegio)
 
     @method_decorator(permission_required('enrollment.Matricula_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
@@ -597,17 +617,17 @@ class MatriculaListView(MyLoginRequiredMixin, ListView):
         if validar_roles(roles=roles):
             matriculados = Matricula.objects.filter(colegio_id=self.request.session.get('colegio'), activo=True)
             return render(request, template_name=self.template_name, context={
-                'matriculados':matriculados,
+                'matriculados': matriculados,
             })
             return super(MatriculaListView, self).get(request, *args, **kwargs)
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
-    # def get_queryset(self):
-    #    return self.model.objects.filter(tipo_servicio = self.kwargs["pkts"])
-    #def get_context_data(self,request, **kwargs):
-    #    context = super(ServicioList, self).get_context_data(**kwargs)
-    #    return context
+            # def get_queryset(self):
+            #    return self.model.objects.filter(tipo_servicio = self.kwargs["pkts"])
+            # def get_context_data(self,request, **kwargs):
+            #    context = super(ServicioList, self).get_context_data(**kwargs)
+            #    return context
 
 
 class MatriculaDetailView(MyLoginRequiredMixin, DetailView):
@@ -621,7 +641,6 @@ class MatriculaDetailView(MyLoginRequiredMixin, DetailView):
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
-
 
         if validar_roles(roles=roles):
             return super(MatriculaDetailView, self).get(request, *args, **kwargs)
@@ -651,9 +670,10 @@ class MatriculaCreateView(MyLoginRequiredMixin, CreateView):
 
             list_tiposervicio = []
             alumno = Alumno.objects.get(pk=request.GET["alumno"])
-            matricula = Matricula.objects.filter(alumno=alumno, activo=True, colegio__tiposervicio__is_ordinario= True)
+            matricula = Matricula.objects.filter(alumno=alumno, activo=True, colegio__tiposervicio__is_ordinario=True)
             if matricula.count() > 0:
-                tiposervicios = TipoServicio.objects.filter(colegio_id=self.request.session.get('colegio'), activo=True, is_ordinario=False)
+                tiposervicios = TipoServicio.objects.filter(colegio_id=self.request.session.get('colegio'), activo=True,
+                                                            is_ordinario=False)
             else:
                 tiposervicios = TipoServicio.objects.filter(colegio_id=self.request.session.get('colegio'), activo=True)
             if tiposervicios.count() > 1:
@@ -671,8 +691,6 @@ class MatriculaCreateView(MyLoginRequiredMixin, CreateView):
             })
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
-
-
 
     def post(self, request, *args, **kwargs):
         """
@@ -731,7 +749,7 @@ class MatriculaCreateView(MyLoginRequiredMixin, CreateView):
 
             fecha_facturar = servicio.fecha_facturar
             if fecha_facturar.month < fecha_actual.month:
-                fecha_facturar = fecha_facturar.replace(month= fecha_actual.month)
+                fecha_facturar = fecha_facturar.replace(month=fecha_actual.month)
             logger.info("la fecha a facturar es: {0}".format(fecha_facturar))
 
             if servicio.is_periodic:
@@ -778,6 +796,7 @@ class MatriculaCreateView(MyLoginRequiredMixin, CreateView):
                 cuentas.save()
 
         return "Exito"
+
 
 class MatriculaUpdateView(MyLoginRequiredMixin, UpdateView):
     """
@@ -828,6 +847,7 @@ class MatriculaUpdateView(MyLoginRequiredMixin, UpdateView):
             return HttpResponseRedirect(matricula.get_absolute_url())
 
         return HttpResponseRedirect(reverse('enrollments:matricula_create'))
+
     def CrearCuentasCobrar(self, data_form, matricula):
         """
         Este metodo permite generar las Cuantas por Cobrar producto de una matricula
@@ -850,7 +870,7 @@ class MatriculaUpdateView(MyLoginRequiredMixin, UpdateView):
 
             fecha_facturar = servicio.fecha_facturar
             if fecha_facturar.month < fecha_actual.month:
-                fecha_facturar = fecha_facturar.replace(month= fecha_actual.month)
+                fecha_facturar = fecha_facturar.replace(month=fecha_actual.month)
             logger.info("la fecha a facturar es: {0}".format(fecha_facturar))
 
             if servicio.is_periodic:
@@ -898,6 +918,7 @@ class MatriculaUpdateView(MyLoginRequiredMixin, UpdateView):
 
         return "Exito"
 
+
 class CargarMatriculaUpdateView(MyLoginRequiredMixin, TemplateView):
     template_name = "matricula_form_update.html"
     model = Matricula
@@ -913,7 +934,6 @@ class CargarMatriculaUpdateView(MyLoginRequiredMixin, TemplateView):
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
-
     def post(self, request, *args, **kwargs):
 
         matricula = self.model.objects.get(pk=request.POST["matricula"])
@@ -926,10 +946,11 @@ class CargarMatriculaUpdateView(MyLoginRequiredMixin, TemplateView):
 
         return render(request, template_name=self.template_name, context={
             'form': form,
-            'alumno':matricula.alumno,
+            'alumno': matricula.alumno,
             'tiposerviciolist': list_tiposervico,
-            'matricula':matricula,
+            'matricula': matricula,
         })
+
 
 class MatriculaDeleteView(MyLoginRequiredMixin, DeleteView):
     """
@@ -962,6 +983,7 @@ class MatriculaDeleteView(MyLoginRequiredMixin, DeleteView):
         # tiposervicio = self.object.tipo_servicio
         return reverse('enrollments:matricula_list')
 
+
 class FiltrarAlumnoView(ListView):
     """
     Este View permite filtrar a los alumnos por nombre y/o apellido
@@ -969,9 +991,8 @@ class FiltrarAlumnoView(ListView):
     model = Alumno
     template_name = "alumno_form.html"
 
-
     def get(self, request, *args, **kwargs):
-        personas = Profile.objects.filter(personal__Colegios__id_colegio = get_current_colegio())
+        personas = Profile.objects.filter(personal__Colegios__id_colegio=get_current_colegio())
         id_personas = []
         for persona in personas:
             id_personas.append(persona.user_id)
@@ -979,10 +1000,10 @@ class FiltrarAlumnoView(ListView):
         lista_alumnos = []
         for id_persona in id_personas:
             lista_alumnos.extend(Alumno.objects.filter(usuario_creacion_persona=id_persona))
-        #usuarios = personas.user_id
+        # usuarios = personas.user_id
         return render(request, template_name=self.template_name, context={
-            'object_list':lista_alumnos,
-            #'object_list': Alumno.objects.all(),
+            'object_list': lista_alumnos,
+            # 'object_list': Alumno.objects.all(),
         })
 
     def post(self, request, *args, **kwargs):
@@ -999,13 +1020,13 @@ class FiltrarAlumnoView(ListView):
         object_list_alumnos2.extend(Alumno.objects.filter(apellido_ma__icontains=apellido_pa.upper()))
         dni = request.POST["dni"]
         object_list_alumnos3 = Alumno.objects.filter(numero_documento=dni)
-        #object_list_alumnos3 = self.model.objects.filter(nombre=request.POST["nombre"],apellido_pa=request.POST["apellido_pa"])
+        # object_list_alumnos3 = self.model.objects.filter(nombre=request.POST["nombre"],apellido_pa=request.POST["apellido_pa"])
 
         if len(object_list_alumnos3) is not 0:
             return render(request, template_name=self.template_name, context={
                 'object_list': object_list_alumnos3,
-                'dni':dni,
-                'nombre':nombre,
+                'dni': dni,
+                'nombre': nombre,
             })
         elif len(object_list_alumnos1) is not 0:
             return render(request, template_name=self.template_name, context={
@@ -1026,10 +1047,12 @@ class FiltrarAlumnoView(ListView):
                 'nombre': nombre,
             })
 
+
 class CargarMatriculaCreateView(TemplateView):
     template_name = "matricula_form.html"
     model = Alumno
     form_class = MatriculaForm
+
     def post(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
 
@@ -1042,7 +1065,8 @@ class CargarMatriculaCreateView(TemplateView):
                 tiposervicios = TipoServicio.objects.filter(colegio_id=self.request.session.get('colegio'), activo=True,
                                                             is_ordinario=False).order_by("nivel", "grado")
             else:
-                tiposervicios = TipoServicio.objects.filter(colegio_id=self.request.session.get('colegio'), activo=True).order_by("nivel", "grado")
+                tiposervicios = TipoServicio.objects.filter(colegio_id=self.request.session.get('colegio'),
+                                                            activo=True).order_by("nivel", "grado")
             if tiposervicios.count() > 1:
                 for tiposer in tiposervicios:
                     if Servicio.objects.filter(tipo_servicio=tiposer, activo=True).count() > 0:
@@ -1050,7 +1074,6 @@ class CargarMatriculaCreateView(TemplateView):
             elif tiposervicios.count() is 1:
                 if Servicio.objects.filter(tipo_servicio=tiposervicios, activo=True).count() > 0:
                     list_tiposervicio = tiposervicios
-
 
             return render(request, template_name=self.template_name, context={
                 'alumno': alumno,
@@ -1060,11 +1083,12 @@ class CargarMatriculaCreateView(TemplateView):
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
+
 #######################################################
 #       Descuentos
 #######################################################
 
-class SolicitarDescuentoView(MyLoginRequiredMixin,TemplateView):
+class SolicitarDescuentoView(MyLoginRequiredMixin, TemplateView):
     model = Descuento
     template_name = "solicitar_descuento.html"
     form_class = SolicitarDescuentoForm
@@ -1079,7 +1103,8 @@ class SolicitarDescuentoView(MyLoginRequiredMixin,TemplateView):
             'alumno': Matricula.objects.get(pk=request.POST['matricula']),
         })
 
-class CrearSolicitudView(MyLoginRequiredMixin,TemplateView):
+
+class CrearSolicitudView(MyLoginRequiredMixin, TemplateView):
     model = Descuento
     form_class = SolicitarDescuentoForm
 
@@ -1102,7 +1127,6 @@ class CrearSolicitudView(MyLoginRequiredMixin,TemplateView):
         solicitud.save()
 
         return HttpResponseRedirect(reverse('enrollments:matricula_list'))
-
 
 
 ########################################################
