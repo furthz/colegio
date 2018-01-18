@@ -59,7 +59,7 @@ class CreatePersonaView(MyLoginRequiredMixin, CreateView):
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
 
-        roles = ['promotor', 'director', 'coordinador', 'tesorero', 'sistemas']
+        roles = ['promotor', 'director', 'administrativo', 'tesorero', 'sistemas']
 
         if validar_roles(roles=roles):
             usuario_creado_id = self.request.session['usuario_creado']
@@ -77,7 +77,7 @@ class CreatePersonaView(MyLoginRequiredMixin, CreateView):
     #                                      raise_exception=False))
 
     def post(self, request, *args, **kwargs):
-        roles = ['promotor', 'director', 'coordinador', 'tesorero', 'sistemas']
+        roles = ['promotor', 'director', 'administrativo', 'tesorero', 'sistemas']
 
         if validar_roles(roles=roles):
 
@@ -215,7 +215,7 @@ class PersonaDetail(MyLoginRequiredMixin, DetailView):
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
 
-        roles = ['promotor', 'director', 'coordinador', 'tesorero', 'sistemas']
+        roles = ['promotor', 'director', 'administrativo', 'tesorero', 'sistemas']
 
         if validar_roles(roles=roles):
             return super(PersonaDetail, self).get(request, args, kwargs)
@@ -243,7 +243,7 @@ class AlumnoCreateView(MyLoginRequiredMixin, CreateView):
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
 
-        roles = ['promotor', 'director', 'coordinador', 'sistemas']
+        roles = ['promotor', 'director', 'administrativo', 'sistemas']
 
         if validar_roles(roles=roles):
             return super(AlumnoCreateView, self).get(request, args, kwargs)
@@ -256,7 +256,7 @@ class AlumnoCreateView(MyLoginRequiredMixin, CreateView):
 
         logger.debug("Alumno a crear con DNI: " + form.cleaned_data["numero_documento"])
 
-        roles = ['promotor', 'director', 'coordinador', 'sistemas']
+        roles = ['promotor', 'director', 'administrativo', 'sistemas']
 
         if validar_roles(roles=roles):
             alu = SaveGeneric().saveGeneric(padre=Profile, form=form, hijo=Alumno)
@@ -278,7 +278,7 @@ class AlumnoDetail(MyLoginRequiredMixin, DetailView):
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
 
-        roles = ['promotor', 'director', 'coordinador', 'sistemas']
+        roles = ['promotor', 'director', 'administrativo', 'sistemas']
 
         if validar_roles(roles=roles):
             return super(AlumnoDetail, self).get(request, args, kwargs)
@@ -295,7 +295,7 @@ class ApoderadoCreateView(MyLoginRequiredMixin, CreateView):
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
 
-        roles = ['promotor', 'director', 'coordinador']
+        roles = ['promotor', 'director', 'administrativo']
 
         if validar_roles(roles=roles):
             return super(ApoderadoCreateView, self).get(request, args, kwargs)
@@ -307,7 +307,7 @@ class ApoderadoCreateView(MyLoginRequiredMixin, CreateView):
     def form_valid(self, form):
         logger.debug("Apoderado a crear con DNI: " + form.cleaned_data["numero_documento"])
 
-        roles = ['promotor', 'director', 'coordinador']
+        roles = ['promotor', 'director', 'administrativo']
 
         if validar_roles(roles=roles):
             apoderado = SaveGeneric().saveGeneric(padre=Profile, form=form, hijo=Apoderado)
@@ -328,7 +328,7 @@ class ApoderadoDetailView(MyLoginRequiredMixin, DetailView):
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
 
-        roles = ['promotor', 'director', 'coordinador']
+        roles = ['promotor', 'director', 'administrativo']
 
         if validar_roles(roles=roles):
 
@@ -826,7 +826,7 @@ class PersonaDetailView(MyLoginRequiredMixin, DetailView):
     @method_decorator(permission_required('register.personal_detail', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
-        roles = ['promotor', 'director', 'coordinador', 'tesorero', 'sistemas']
+        roles = ['promotor', 'director', 'administrativo', 'tesorero', 'sistemas']
 
         if validar_roles(roles=roles):
             return super(PersonaDetailView, self).get(request, *args, **kwargs)
@@ -841,7 +841,7 @@ class PersonalDeleteView(MyLoginRequiredMixin, TemplateView):
     @method_decorator(permission_required('register.personal_delete', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
-        roles = ['promotor', 'director', 'coordinador', 'sistemas']
+        roles = ['promotor', 'director', 'administrativo', 'sistemas']
 
         if validar_roles(roles=roles):
             persona = Profile.objects.get(id_persona=int(request.GET['idpersona']))
@@ -890,7 +890,7 @@ class PersonalUpdateView(MyLoginRequiredMixin, UpdateView):
     @method_decorator(permission_required('register.personal_update', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
-        roles = ['promotor', 'director', 'coordinador', 'sistemas']
+        roles = ['promotor', 'director', 'administrativo', 'sistemas']
 
         if validar_roles(roles=roles):
             return super(PersonalUpdateView, self).get(request, args, kwargs)
@@ -1013,7 +1013,7 @@ class PersonaListView(MyLoginRequiredMixin, TemplateView):
                                           raise_exception=False))
     def post(self, request, *args, **kwargs):
 
-        roles = ['promotor', 'director', 'coordinador', 'sistemas']
+        roles = ['promotor', 'director', 'administrativo', 'sistemas']
 
         if validar_roles(roles=roles):
             colegio = get_current_colegio()
@@ -1173,7 +1173,7 @@ class PersonaListView(MyLoginRequiredMixin, TemplateView):
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
 
-        roles = ['promotor', 'director', 'coordinador', 'sistemas']
+        roles = ['promotor', 'director', 'administrativo', 'sistemas']
 
         if validar_roles(roles=roles):
 
