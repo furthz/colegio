@@ -5,10 +5,12 @@
 
     <!--Comienza el contenido!!!!!!!!!!!!!!!!!!!-->
 <h1>Cajas</h1>
+{% if es_cajero %}
     <br>
 
 <a class="btn btn-primary" href="{% url 'cash:boxcashier_AperturarCaja' %}" >Aperturar Caja</a>
     <br>
+    {% endif %}
     <br>
 <!--<p>
     <a href="{% url 'cash:boxcashier_AperturarCaja' %}">Aperturar Caja</a>
