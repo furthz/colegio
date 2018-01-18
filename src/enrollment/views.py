@@ -767,7 +767,18 @@ class MatriculaCreateView(MyLoginRequiredMixin, CreateView):
                     logger.debug("Cuota Nro. {0}".format(cuota))
 
                     if (fecha_facturar.month + cuota) < 13:
-                        fecha_vencimiento = fecha_facturar.replace(month=fecha_facturar.month + cuota)
+                        try:
+                            fecha_vencimiento = fecha_facturar.replace(month=fecha_facturar.month + cuota)
+                        except:
+                            k = 1
+                            dia = fecha_facturar.day
+                            while True:
+                                try:
+                                    fecha_vencimiento = fecha_facturar.replace(month=fecha_facturar.month + cuota, day=(dia-k))
+                                    break
+                                except:
+                                    k = k + 1
+
                         cuentas = Cuentascobrar(matricula=matricula,
                                                 servicio=servicio,
                                                 fecha_ven=fecha_vencimiento,
