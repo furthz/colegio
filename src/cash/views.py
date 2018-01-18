@@ -54,7 +54,8 @@ class CashierListView(MyLoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
             context = super(CashierListView, self).get_context_data(**kwargs)
-
+            roles = ['administrativo', 'tesorero']
+            context['es_tesorero'] = validar_roles(roles = roles)
 
             request = get_current_request()
 
@@ -156,7 +157,8 @@ class BoxCashierListView(ListView):
     def get_context_data(self, **kwargs):
             context = super(BoxCashierListView, self).get_context_data(**kwargs)
 
-
+            roles = ['cajero']
+            context['es_cajero'] = validar_roles(roles=roles)
             request = get_current_request()
 
             if request.session.get('colegio'):
@@ -293,6 +295,12 @@ class ConsignmentListView(ListView):
             return super(ConsignmentListView, self).get(request, *args, **kwargs)
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+    def get_context_data(self, **kwargs):
+            context = super(CashierListView, self).get_context_data(**kwargs)
+            roles = ['cajero']
+            context['es_cajero'] = validar_roles(roles = roles)
+            return context
 
 class ConsignmentDetailView(DetailView):
     model = Remesa

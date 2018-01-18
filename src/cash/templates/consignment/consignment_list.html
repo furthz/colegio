@@ -14,9 +14,11 @@
         <div class="box-body">
             <div class="col-md-9">
                 <div class="panel-page">
+                    {% if es_cajero %}
                     <div class="toolbar-header">
                         <a class="btn btn-success" href='{% url "cash:consignment_create" %}'><i class="fa fa-plus" aria-hidden="true"></i>  Crear remesa</a>
                     </div>
+                    {% endif %}
                     <div class="toolbar-search">
                         <div class="box-body">
 

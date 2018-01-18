@@ -26,10 +26,11 @@
                         <div class="box-body">
                             <div class="col-md-9">
                                 <div class="panel-page">
+                                {% if es_tesorero %}
                                     <div class="toolbar-header">
                                             <a class="btn btn-success" href='{% url "cash:cashier_create" %}'><i class="fa fa-plus" aria-hidden="true"></i>  Crear caja</a>
                                         </div>
-
+                                {% endif %}
 
 
                                     <div class="box-header with-border">
