@@ -59,8 +59,58 @@ class TipoServicioExtraForm(ModelForm):
         self.fields['extra'].widget.attrs.update({'class': 'form-control'})
 
 
+class ServicioRegularForm2(ModelForm):
+    """
+    Formulario de la clase Servicio
+    Nota:
+        solo se añaden com campos los que son definidos por los usuarios
+    """
 
+    class Meta:
+        model = Servicio
+        fields = ['tipo_servicio', 'nombre', 'precio', 'fecha_facturar']
+        labels = {
+            'tipo_servicio': _('Nivel/Grado'),
+            'nombre': _('Concepto de Pago'),
+            'precio': _('Precio'),
 
+            'fecha_facturar': _("Día de inicio de generación de la deuda"),
+        }
+
+    def ListaConceptoPago(self):
+        MY_CHOICES = (
+            ('Matricula', 'Matricula'),
+            ('Pension', 'Pensión'),
+            ('Cuota de Ingreso', 'Cuota de Ingreso'),
+        )
+        return MY_CHOICES
+
+    def ListadeMeses(self):
+        MY_CHOICES = (
+            (1, '1'),
+            (2, '2'),
+            (3, '3'),
+            (4, '4'),
+            (5, '5'),
+            (6, '6'),
+            (7, '7'),
+            (8, '8'),
+            (9, '9'),
+            (10, '10'),
+            (11, '11'),
+            (12, '12'),
+        )
+        return MY_CHOICES
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['nombre'] = forms.ChoiceField(choices=self.ListaConceptoPago())
+
+        self.fields['nombre'].widget.attrs.update({'class': 'form-control'})
+
+        self.fields['tipo_servicio'].widget.attrs.update({'class': 'form-control'})
+        self.fields['precio'].widget.attrs.update({'class': 'form-control'})
+        self.fields['fecha_facturar'].widget.attrs.update({'tabindex': '8', 'class': 'form-control'})
 
 
 class ServicioRegularForm(ModelForm):
@@ -112,6 +162,55 @@ class ServicioRegularForm(ModelForm):
         self.fields['tipo_servicio'].widget.attrs.update({'class': 'form-control'})
         self.fields['precio'].widget.attrs.update({'class': 'form-control'})
         self.fields['fecha_facturar'].widget.attrs.update({'tabindex': '8','class': 'form-control'})
+
+class ServicioExtraCreateForm(ModelForm):
+    """
+    Formulario de la clase Servicio
+    Nota:
+        solo se añaden com campos los que son definidos por los usuarios
+    """
+
+    class Meta:
+        model = Servicio
+        fields = ['tipo_servicio','nombre','precio','fecha_facturar']
+        labels = {
+            'tipo_servicio': _('Extracurricular'),
+            'nombre': _('Concepto de Pago'),
+            'precio': _('Precio'),
+
+            'fecha_facturar': _("Día de inicio de generacion de la deuda"),
+        }
+    def ListaConceptoPago(self):
+        MY_CHOICES = (
+            ('Matricula', 'Matricula'),
+            ('Pension', 'Pensión'),
+            ('Cuota de Ingreso','Cuota de Ingreso'),
+        )
+        return MY_CHOICES
+    def ListadeMeses(self):
+        MY_CHOICES = (
+            (1, '1'),
+            (2, '2'),
+            (3, '3'),
+            (4, '4'),
+            (5, '5'),
+            (6, '6'),
+            (7, '7'),
+            (8, '8'),
+            (9, '9'),
+            (10, '10'),
+            (11, '11'),
+            (12, '12'),
+        )
+        return MY_CHOICES
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['nombre'] = forms.ChoiceField(choices=self.ListaConceptoPago())
+        self.fields['nombre'].widget.attrs.update({'class': 'form-control'})
+        self.fields['tipo_servicio'].widget.attrs.update({'class': 'form-control'})
+        self.fields['precio'].widget.attrs.update({'class': 'form-control'})
+        self.fields['fecha_facturar'].widget.attrs.update({'class': 'form-control'})
+
 
 class ServicioExtraForm(ModelForm):
     """

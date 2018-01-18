@@ -26,7 +26,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views import View
 from django.core.urlresolvers import reverse_lazy
-from enrollment.forms import ServicioRegularForm
+from enrollment.forms import ServicioRegularForm, ServicioRegularForm2, ServicioExtraCreateForm
 from enrollment.forms import ServicioExtraForm
 from enrollment.forms import TipoServicioRegularForm
 from enrollment.forms import TipoServicioExtraForm
@@ -387,11 +387,16 @@ class ServicioRegularCreateView(MyLoginRequiredMixin, CreateView):
 
     """
     model = Servicio
-    form_class = ServicioRegularForm
+    form_class = ServicioRegularForm2
     template_name = "servicioregular_form.html"
 
     def form_valid(self, form):
-        if int(self.request.POST["cuotas"]) > 1:
+        if self.request.POST["nombre"] == 'Pension':
+            form.instance.cuotas = 10
+        else:
+            form.instance.cuotas = 1
+
+        if self.request.POST["nombre"] == 'Pension':
             form.instance.is_periodic = True
         else:
             form.instance.is_periodic = False
@@ -421,14 +426,17 @@ class ServicioExtraCreateView(MyLoginRequiredMixin, CreateView):
 
     """
     model = Servicio
-    form_class = ServicioExtraForm
+    form_class = ServicioExtraCreateForm
     template_name = "servicioextra_form.html"
 
     def form_valid(self, form):
-        if int(self.request.POST["cuotas"]) > 1:
+        if self.request.POST["nombre"] == 'Pension':
+            form.instance.cuotas = 10
             form.instance.is_periodic = True
         else:
+            form.instance.cuotas = 1
             form.instance.is_periodic = False
+
         return super(ServicioExtraCreateView, self).form_valid(form)
 
     def get_success_url(self):
