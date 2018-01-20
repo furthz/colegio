@@ -23,6 +23,32 @@
               <div class="col-md-12">
                   <div class="box box-primary">
                     <div class="box-header with-border">
+                        <h3 class="box-title">Registrar los grados de un nivel completo</h3>
+                    </div>
+
+                    <div class="box-body">
+                        <form action="" method="POST" class="form-horizontal" id="3">{% csrf_token %}
+                            <p><label for="id_nivel_grados">Nivel:</label>
+                                <select name="nivel_grados" class="form-control" id="id_nivel_grados">
+                                  <option value="1">Inicial</option>
+
+                                  <option value="2">Primaria</option>
+
+                                  <option value="3">Secundaria</option>
+
+                                </select>
+                            </p>
+                        </form>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <a class="btn btn-default" href="{% url 'enrollments:tiposervicio_list' %}">Cancelar</a>
+                                <button type="submit" class="btn btn-success" formaction="{% url 'enrollments:tiposervicio_create_nivel_completo' %}" form="3">Registrar Grados de un Nivel</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="box-header with-border">
                         <h3 class="box-title">Registrar Servicio Regular</h3>
                     </div>
 

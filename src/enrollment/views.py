@@ -26,7 +26,8 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views import View
 from django.core.urlresolvers import reverse_lazy
-from enrollment.forms import ServicioRegularForm, ServicioRegularForm2, ServicioExtraCreateForm
+from enrollment.forms import ServicioRegularForm, ServicioRegularForm2, ServicioExtraCreateForm, \
+    TipoServicioRegularNivelCompletoForm
 from enrollment.forms import ServicioExtraForm
 from enrollment.forms import TipoServicioRegularForm
 from enrollment.forms import TipoServicioExtraForm
@@ -125,6 +126,93 @@ class TipoServicioDetailView(MyLoginRequiredMixin, DetailView):
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
+class TipoServicioRegularNivelCompletoCreateView(MyLoginRequiredMixin, CreateView):
+    """
+
+    """
+    model = TipoServicio
+    form_class = TipoServicioRegularNivelCompletoForm
+
+    def post(self, request, *args, **kwargs):
+        #form = self.form_class(request.POST)
+        #logger.info("En el POST")
+        #logger.info(request.POST)
+        #if form.is_valid():
+        #data_form = form.cleaned_data
+        nivel = request.POST['nivel_grados']
+        nivel = int(nivel)
+        cole_id = get_current_colegio()
+        colegio = Colegio.objects.get(pk = cole_id)
+        grados = TipoServicio.objects.filter(nivel=nivel, colegio_id=cole_id, activo=True)
+        if len(grados) > 0:
+            if nivel == 1:
+                for k in [1, 2, 3]:
+                    try:
+                        grado_existente = grados.get(grado=k)
+                    except:
+                        tipo_servicio = TipoServicio(
+                            nivel=nivel,
+                            grado=k,
+                            colegio = colegio,
+                            is_ordinario=True,
+                        )
+                        tipo_servicio.save()
+            elif nivel == 2:
+                for k in [4, 5, 6, 7, 8, 9]:
+                    try:
+                        grado_existente = grados.get(grado=k)
+                    except:
+                        tipo_servicio = TipoServicio(
+                            nivel=nivel,
+                            grado=k,
+                            colegio = colegio,
+                            is_ordinario=True,
+                        )
+                        tipo_servicio.save()
+            elif nivel == 3:
+                for k in [10, 11, 12, 13, 14]:
+                    try:
+                        grado_existente = grados.get(grado=k)
+                    except:
+                        tipo_servicio = TipoServicio(
+                            nivel=nivel,
+                            grado=k,
+                            colegio = colegio,
+                            is_ordinario=True,
+                        )
+                        tipo_servicio.save()
+        else:
+            if nivel == 1:
+                for k in [1, 2, 3]:
+                    tipo_servicio = TipoServicio(
+                        nivel=nivel,
+                        grado=k,
+                        colegio = colegio,
+                        is_ordinario=True,
+                    )
+                    tipo_servicio.save()
+            elif nivel == 2:
+                for k in [4, 5, 6, 7, 8, 9]:
+                    tipo_servicio = TipoServicio(
+                        nivel=nivel,
+                        grado=k,
+                        colegio = colegio,
+                        is_ordinario=True,
+                    )
+                    tipo_servicio.save()
+            elif nivel == 3:
+                for k in [10, 11, 12, 13, 14]:
+                    tipo_servicio = TipoServicio(
+                        nivel=nivel,
+                        grado=k,
+                        colegio = colegio,
+                        is_ordinario=True,
+                    )
+                    tipo_servicio.save()
+
+            return HttpResponseRedirect(reverse('enrollments:tiposervicio_list'))
+        return HttpResponseRedirect(reverse('enrollments:tiposervicio_list'))
+
 
 class TipoServicioRegularCreateView(MyLoginRequiredMixin, CreateView):
     """
@@ -189,6 +277,7 @@ class CargarTipoServicioCreateView(MyLoginRequiredMixin, TemplateView):
     model = TipoServicio
     form1 = TipoServicioRegularForm
     form2 = TipoServicioExtraForm
+    form3 = TipoServicioRegularNivelCompletoCreateView
 
     @method_decorator(permission_required('enrollment.Tipo_Servicio_List', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
@@ -198,9 +287,11 @@ class CargarTipoServicioCreateView(MyLoginRequiredMixin, TemplateView):
         if validar_roles(roles=roles):
             form1 = self.form1
             form2 = self.form2
+            form3 = self.form3
             return render(request, template_name=self.template_name, context={
                 'form1': form1,
                 'form2': form2,
+                'form3': form3,
             })
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)

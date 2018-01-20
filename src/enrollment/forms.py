@@ -9,6 +9,29 @@ from utils.models import TiposNivel
 from utils.models import TiposGrados
 from django.utils.translation import ugettext_lazy as _
 
+class TipoServicioRegularNivelCompletoForm(ModelForm):
+    """
+    Formulario de la clase TipoServicio
+    Nota:
+        solo se añade como campos los que son definidos por los usuarios
+    """
+    class Meta:
+        model = TipoServicio
+        fields = ['nivel']
+        labels = {
+            'nivel':_('Nivel'),
+        }
+
+    def ChoiceNiveles(self):
+        choices = [(d.id_tipo, d.descripcion) for d in TiposNivel.objects.all()]
+        return choices
+
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['nivel'] = forms.ChoiceField(choices=self.ChoiceNiveles())
+        self.fields['nivel'].widget.attrs.update({'class': 'form-control'})
+
 
 
 class TipoServicioRegularForm(ModelForm):
