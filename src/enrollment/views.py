@@ -482,6 +482,16 @@ class ServicioRegularCreateView(MyLoginRequiredMixin, CreateView):
     template_name = "servicioregular_form.html"
 
     def form_valid(self, form):
+
+        tipo_prueba = form.instance.tipo_servicio
+        if Servicio.objects.filter(tipo_servicio=tipo_prueba, nombre=self.request.POST["nombre"], activo=True).exists():
+            # print("Existe. Se creo, pero no podrá ser usado")
+            form.instance.activo = False
+        else:
+            """
+            print ('No existe, fue creado con exito')
+            """
+
         if self.request.POST["nombre"] == 'Pension':
             form.instance.cuotas = 10
         else:
