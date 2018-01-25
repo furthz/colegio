@@ -67,6 +67,8 @@ def ApoderadoInfo(request):
     nombre_apoderado = Profile.objects.values('nombre').filter(user_id=iduser)[0]['nombre']
     apellido_pa_apoderado = Profile.objects.values('apellido_pa').filter(user_id=iduser)[0]['apellido_pa']
 
+    persona_id = Profile.objects.values('pk').filter(user_id=iduser)[0]['pk']
+
     # ==== Query for token_firebase ===
 
     #query = TokenFirebase.objects.all()
@@ -79,7 +81,7 @@ def ApoderadoInfo(request):
         'apellido_pa_apoderado': apellido_pa_apoderado,
     #    'token_firebase': serializer_data_token.data
 
-        'id_persona': profile_id,
+        'id_persona': persona_id,
         # 'username': user.name,
         # 'email': user.email,
     })
