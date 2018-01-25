@@ -114,6 +114,7 @@ INSTALLED_APPS = (
     #'AE_chat',
     #'AE_social',
     'rest_framework',
+    'markdown',
     'rest_framework.authtoken',
     'rest_auth',
     'APIs',

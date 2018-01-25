@@ -110,6 +110,10 @@ urlpatterns = [
     url(r'^alerta_api/$', views.AlertaList.as_view()),
     url(r'^alerta_api/(?P<pk>\d+)/$', views.AlertaDetail.as_view()),
 
+###################
+    url(r'^token_f/$', views.TokenFirebaseList.as_view()),
+    url(r'^token_f/(?P<pk>\d+)/$', views.TokenFirebaseDetail.as_view()),
+
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

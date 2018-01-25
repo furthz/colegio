@@ -66,10 +66,19 @@ def ApoderadoInfo(request):
     id_apoderado = Apoderado.objects.values('pk').filter(persona_id=profile_id)[0]['pk']
     nombre_apoderado = Profile.objects.values('nombre').filter(user_id=iduser)[0]['nombre']
     apellido_pa_apoderado = Profile.objects.values('apellido_pa').filter(user_id=iduser)[0]['apellido_pa']
+
+    # ==== Query for token_firebase ===
+
+    query = TokenFirebase.objects.all()
+    tokens_firebase = query.filter(persona_id=profile_id)
+    serializer_data_token = TokenFirebaseSerializer(tokens_firebase, many=True)
+
     return Response({
         'id_apoderado': id_apoderado,
         'nombre_apoderado': nombre_apoderado,
         'apellido_pa_apoderado': apellido_pa_apoderado,
+        'token_firebase': serializer_data_token.data
+
         # 'id_usuario': user.pk,
         # 'username': user.name,
         # 'email': user.email,
@@ -85,10 +94,19 @@ def DocenteInfo(request):
     id_docente = Docente.objects.values('pk').filter(empleado_id=personal_id)[0]['pk']
     nombre_docente = Profile.objects.values('nombre').filter(user_id=iduser)[0]['nombre']
     apellido_pa_docente = Profile.objects.values('apellido_pa').filter(user_id=iduser)[0]['apellido_pa']
+
+    # ==== Query for token_firebase ===
+
+    query = TokenFirebase.objects.all()
+    tokens_firebase = query.filter(persona_id=profile_id)
+    serializer_data_token = TokenFirebaseSerializer(tokens_firebase, many=True)
+
     return Response({
         'apellido_pa_docente': apellido_pa_docente,
         'id_docente': id_docente,
         'nombre_docente': nombre_docente,
+        'token_firebase': serializer_data_token.data
+
     })
 
 
@@ -495,3 +513,15 @@ class AlertaList(generics.ListCreateAPIView):
 class AlertaDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Alerta.objects.all()
     serializer_class = AlertaSerializer
+
+
+class TokenFirebaseList(generics.ListCreateAPIView):
+    queryset = TokenFirebase.objects.all()
+    serializer_class = TokenFirebaseSerializer
+    filter_backends = (DjangoFilterBackend,)
+    filter_fields = ('alumno_id',)
+
+
+class TokenFirebaseDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = TokenFirebase.objects.all()
+    serializer_class = TokenFirebaseSerializer

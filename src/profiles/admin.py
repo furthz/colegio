@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 from django.contrib import admin
 from authtools.admin import NamedUserAdmin
-from .models import Profile
+from .models import Profile, TokenFirebase
 
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
@@ -51,5 +51,6 @@ class ProfileAdmin(ImportExportModelAdmin):
 admin.site.unregister(User)
 admin.site.register(User, NewUserAdmin)
 admin.site.register(Profile, ProfileAdmin)
+admin.site.register(TokenFirebase)
 
 

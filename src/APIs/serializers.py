@@ -3,6 +3,7 @@ from rest_framework import serializers
 from AE_academico.models import Asistencia, Aula, AulaMatricula, CursoDocente, Curso, AulaCurso
 from enrollment.models import Matricula
 from register.models import Profile, Colegio, Apoderado, Alumno, ApoderadoAlumno
+from profiles.models import TokenFirebase
 from alerta.models import *
 
 
@@ -166,3 +167,9 @@ class AlertaSerializer(serializers.ModelSerializer):
         read_only_fields = ('fecha_creacion',)
 
         # depth = 1,2,etc
+
+
+class TokenFirebaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TokenFirebase
+        fields = ('persona', 'codigo', 'alumno_id')
