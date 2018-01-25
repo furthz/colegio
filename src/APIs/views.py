@@ -69,15 +69,15 @@ def ApoderadoInfo(request):
 
     # ==== Query for token_firebase ===
 
-    query = TokenFirebase.objects.all()
-    tokens_firebase = query.filter(persona_id=profile_id)
-    serializer_data_token = TokenFirebaseSerializer(tokens_firebase, many=True)
+    #query = TokenFirebase.objects.all()
+    #tokens_firebase = query.filter(persona_id=profile_id)
+    #serializer_data_token = TokenFirebaseSerializer(tokens_firebase, many=True)
 
     return Response({
         'id_apoderado': id_apoderado,
         'nombre_apoderado': nombre_apoderado,
         'apellido_pa_apoderado': apellido_pa_apoderado,
-        'token_firebase': serializer_data_token.data
+    #    'token_firebase': serializer_data_token.data
 
         # 'id_usuario': user.pk,
         # 'username': user.name,
@@ -97,15 +97,15 @@ def DocenteInfo(request):
 
     # ==== Query for token_firebase ===
 
-    query = TokenFirebase.objects.all()
-    tokens_firebase = query.filter(persona_id=profile_id)
-    serializer_data_token = TokenFirebaseSerializer(tokens_firebase, many=True)
+    #query = TokenFirebase.objects.all()
+    #tokens_firebase = query.filter(persona_id=profile_id)
+    #serializer_data_token = TokenFirebaseSerializer(tokens_firebase, many=True)
 
     return Response({
         'apellido_pa_docente': apellido_pa_docente,
         'id_docente': id_docente,
         'nombre_docente': nombre_docente,
-        'token_firebase': serializer_data_token.data
+    #    'token_firebase': serializer_data_token.data
 
     })
 
