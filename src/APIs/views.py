@@ -79,7 +79,7 @@ def ApoderadoInfo(request):
         'apellido_pa_apoderado': apellido_pa_apoderado,
     #    'token_firebase': serializer_data_token.data
 
-        # 'id_usuario': user.pk,
+        'id_persona': profile_id,
         # 'username': user.name,
         # 'email': user.email,
     })
