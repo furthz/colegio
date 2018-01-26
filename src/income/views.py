@@ -12,7 +12,7 @@ from django.views.generic import FormView, TemplateView
 from django.shortcuts import render
 from register.models import Cajero
 from enrollment.models import Cuentascobrar, Matricula
-from register.models import Colegio, Alumno, Apoderado, Promotor, PersonalColegio, Personal
+from register.models import Sucursal, Alumno, Apoderado, Promotor, PersonalSucursal, Personal
 from profiles.models import Profile
 from income.models import Cobranza, DetalleCobranza
 from cash.models import CajaCajero
@@ -187,9 +187,9 @@ class RegistrarPagoListView(MyLoginRequiredMixin, TemplateView):
         logger.info(self.request.user)
         cobranza_actual =self.CrearDetallesCobranza(lista_cuentas,lista_montos,total)
         datos_contexto = {}
-        datos_contexto['colegio'] = Colegio.objects.get(pk = self.request.session.get('colegio'))
-        colegio = Colegio.objects.get(pk = self.request.session.get('colegio'))
-        colegio.numero_recibo = colegio.numero_recibo + 1
+        datos_contexto['colegio'] = Sucursal.objects.get(pk = self.request.session.get('colegio'))
+        colegio = Sucursal.objects.get(pk = self.request.session.get('colegio'))
+        #colegio.numero_recibo = colegio.numero_recibo + 1
         colegio.save()
         datos_contexto['alumno'] = lista_cuentas[0].matricula.alumno
         datos_contexto['tiposervicio'] = lista_cuentas[0].matricula.tipo_servicio
@@ -255,7 +255,7 @@ class ControlIngresosPadresView(FormView):
 
         # Obtiene el colegio en cuestión
         id_colegio = get_current_colegio()
-        colegio = Colegio.objects.get(pk=id_colegio)
+        colegio = Sucursal.objects.get(pk=id_colegio)
         # logger.debug("Colegio: " + colegio.nombre)
 
         # Obtiene el usuario que ha iniciado sesión
@@ -601,7 +601,7 @@ def recibo_A6(request):
     id_alumno = request.POST["alumno"]
     cobranza_actual = Cobranza.objects.get(id_cobranza=id_cobranza_actual)
 
-    colegio = Colegio.objects.get(pk=get_current_colegio())
+    colegio = Sucursal.objects.get(pk=get_current_colegio())
     detalle_cobranza = DetalleCobranza.objects.filter(cobranza=cobranza_actual)
     alumno = Alumno.objects.get(id_alumno=id_alumno)
     cajero = Profile.objects.get(user=get_current_user())
@@ -675,7 +675,7 @@ def boleta_A6(request):
     id_alumno = request.POST["alumno"]
     cobranza_actual = Cobranza.objects.get(id_cobranza=id_cobranza_actual)
 
-    colegio = Colegio.objects.get(pk=get_current_colegio())
+    colegio = Sucursal.objects.get(pk=get_current_colegio())
     detalle_cobranza = DetalleCobranza.objects.filter(cobranza=cobranza_actual)
     alumno = Alumno.objects.get(id_alumno=id_alumno)
     cajero = Profile.objects.get(user=get_current_user())
@@ -749,7 +749,7 @@ def recibo_A5(request):
     id_alumno = request.POST["alumno"]
     cobranza_actual = Cobranza.objects.get(id_cobranza=id_cobranza_actual)
 
-    colegio = Colegio.objects.get(pk=get_current_colegio())
+    colegio = Sucursal.objects.get(pk=get_current_colegio())
     detalle_cobranza = DetalleCobranza.objects.filter(cobranza=cobranza_actual)
     alumno = Alumno.objects.get(id_alumno=id_alumno)
     cajero = Profile.objects.get(user=get_current_user())
@@ -821,7 +821,7 @@ def boleta_A5(request):
     id_alumno = request.POST["alumno"]
     cobranza_actual = Cobranza.objects.get(id_cobranza=id_cobranza_actual)
 
-    colegio = Colegio.objects.get(pk=get_current_colegio())
+    colegio = Sucursal.objects.get(pk=get_current_colegio())
     detalle_cobranza = DetalleCobranza.objects.filter(cobranza=cobranza_actual)
     alumno = Alumno.objects.get(id_alumno=id_alumno)
     cajero = Profile.objects.get(user=get_current_user())

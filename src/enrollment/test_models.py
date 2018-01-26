@@ -2,29 +2,29 @@ from django.test import TestCase
 from datetime import date
 # Create your tests here.
 from enrollment.models import TipoServicio
-from enrollment.models import Colegio
+from enrollment.models import Sucursal
 from enrollment.models import Servicio
 
 class TipoServicioModelTest(TestCase):
 
 
     def setUp(self):
-        self.colegio_test1 = Colegio(nombre = 'Trilce',
-                                     ruc = '123456789',
-                                     ugel = '6',
-                                     fecha_creacion = date.today(),
-                                     fecha_modificacion = date.today(),
-                                     usuario_creacion = 'Paul',
-                                     usuario_modificacion = 'Paul'
-                                     )
-        self.colegio_test2 = Colegio(nombre='Pamer',
-                                     ruc='987654321',
-                                     ugel='6',
-                                     fecha_creacion=date.today(),
-                                     fecha_modificacion=date.today(),
-                                     usuario_creacion='Paul',
-                                     usuario_modificacion='Paul'
-                                     )
+        self.colegio_test1 = Sucursal(nombre ='Trilce',
+                                      ruc = '123456789',
+                                      ugel = '6',
+                                      fecha_creacion = date.today(),
+                                      fecha_modificacion = date.today(),
+                                      usuario_creacion = 'Paul',
+                                      usuario_modificacion = 'Paul'
+                                      )
+        self.colegio_test2 = Sucursal(nombre='Pamer',
+                                      ruc='987654321',
+                                      ugel='6',
+                                      fecha_creacion=date.today(),
+                                      fecha_modificacion=date.today(),
+                                      usuario_creacion='Paul',
+                                      usuario_modificacion='Paul'
+                                      )
         self.colegio_test1.save()
         self.colegio_test2.save()
         print(self.colegio_test1)

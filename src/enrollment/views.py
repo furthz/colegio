@@ -11,10 +11,10 @@ from enrollment.models import Servicio
 from enrollment.models import TipoServicio
 from enrollment.models import Matricula
 from enrollment.models import Cuentascobrar
-from register.models import Colegio
+from register.models import Sucursal
 from profiles.models import Profile
 from register.models import Alumno
-from register.models import Promotor, Administrativo, Director, PersonalColegio
+from register.models import Promotor, Administrativo, Director, PersonalSucursal
 from django.views.generic import TemplateView
 from django.views.generic import DetailView
 from django.views.generic import CreateView
@@ -142,7 +142,7 @@ class TipoServicioRegularNivelCompletoCreateView(MyLoginRequiredMixin, CreateVie
         nivel = request.POST['nivel_grados']
         nivel = int(nivel)
         cole_id = get_current_colegio()
-        colegio = Colegio.objects.get(pk = cole_id)
+        colegio = Sucursal.objects.get(pk = cole_id)
         grados = TipoServicio.objects.filter(nivel=nivel, colegio_id=cole_id, activo=True)
         if len(grados) > 0:
             if nivel == 1:
@@ -233,7 +233,7 @@ class TipoServicioRegularCreateView(MyLoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.is_ordinario = True
-        form.instance.colegio = Colegio.objects.get(pk=self.request.session.get('colegio'))
+        form.instance.colegio = Sucursal.objects.get(pk=self.request.session.get('colegio'))
         cole_id = get_current_colegio()
         grado_prueba = form.instance.grado
         if TipoServicio.objects.filter(colegio_id=cole_id, grado=grado_prueba, activo=True).exists():
@@ -265,7 +265,7 @@ class TipoServicioExtraCreateView(MyLoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.is_ordinario = False
-        form.instance.colegio = Colegio.objects.get(pk=self.request.session.get('colegio'))
+        form.instance.colegio = Sucursal.objects.get(pk=self.request.session.get('colegio'))
         return super(TipoServicioExtraCreateView, self).form_valid(form)
 
 
@@ -767,7 +767,7 @@ class MatriculaCreateView(MyLoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         logger.info("Se ejecuto")
-        form.instance.colegio = Colegio.objects.get(pk=self.request.session.get('colegio'))
+        form.instance.colegio = Sucursal.objects.get(pk=self.request.session.get('colegio'))
         return super(MatriculaCreateView, self).form_valid(form)
 
     @method_decorator(permission_required('enrollment.Matricula_List', login_url=settings.REDIRECT_PERMISOS,
@@ -1112,7 +1112,7 @@ class FiltrarAlumnoView(ListView):
     template_name = "alumno_form.html"
 
     def get(self, request, *args, **kwargs):
-        personas = Profile.objects.filter(personal__Colegios__id_colegio=get_current_colegio())
+        personas = Profile.objects.filter(personal__Sucursales__id_colegio=get_current_colegio())
         id_personas = []
         for persona in personas:
             id_personas.append(persona.user_id)
@@ -1235,7 +1235,7 @@ class CrearSolicitudView(MyLoginRequiredMixin, TemplateView):
         data_form = form.cleaned_data
         logger.info(data_form)
         solicitud = Descuento(
-            personal_colegio=PersonalColegio.objects.get(personal__user=request.user),
+            personal_colegio=PersonalSucursal.objects.get(personal__user=request.user),
             estado=1,
             fecha_solicitud=date.today(),
             matricula=data_form['matricula'],

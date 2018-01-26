@@ -20,13 +20,43 @@ class Migration(migrations.Migration):
     operations = [
 
         migrations.CreateModel(
-            name='Colegio',
+            name='Empresa',
+            fields=[
+                ('id_empresa', models.AutoField(auto_created=True, primary_key=True, serialize=False)),
+                ('razon_social', models.CharField(max_length=100)),
+                ('razon_comercial', models.CharField(max_length=100)),
+                ('ruc', models.CharField(max_length=11)),
+                ('resolucion_sunat', models.CharField(max_length=30, null=True, blank=True)),
+                ('direccion', models.CharField(max_length=100)),
+                ('dpto', models.CharField(max_length=15)),
+                ('provincia', models.CharField(max_length=15)),
+                ('distrito', models.CharField(max_length=100)),
+                ('activo', models.BooleanField(default=True)),
+                ('fecha_creacion', models.DateTimeField(null=True)),
+                ('fecha_modificacion', models.DateTimeField(null=True)),
+                ('usuario_creacion', models.CharField(max_length=10, null=True)),
+                ('usuario_modificacion', models.CharField(max_length=10, null=True))
+            ],
+            options={
+                # 'db_table': 'colegio',
+                'managed': settings.IS_MIGRATE,
+            },
+        ),
+        migrations.CreateModel(
+            name='Sucursal',
             fields=[
                 ('id_colegio', models.AutoField(auto_created=True, primary_key=True, serialize=False)),
+                ('id_empresa', models.ForeignKey(db_column='id_empresa', to='register.Empresa')),
                 ('nombre', models.CharField(max_length=100)),
-                ('ruc', models.CharField(max_length=11)),
+                ('codigo_sucursal', models.CharField(max_length=100, null=True, blank=True)),
                 ('ugel', models.CharField(max_length=100)),
-                ('numero_recibo', models.IntegerField(default=1)),
+                ('direccion', models.CharField(max_length=100)),
+                ('dpto', models.CharField(max_length=15)),
+                ('provincia', models.CharField(max_length=15)),
+                ('distrito', models.CharField(max_length=100)),
+                ('telefono_1', models.IntegerField(null=True, blank=True)),
+                ('telefono_2', models.IntegerField(null=True, blank=True)),
+                ('telefono_3', models.IntegerField(null=True, blank=True)),
                 ('activo', models.BooleanField(default=True)),
                 ('fecha_creacion', models.DateTimeField(null=True)),
                 ('fecha_modificacion', models.DateTimeField(null=True)),
@@ -53,7 +83,7 @@ class Migration(migrations.Migration):
                 ('tipo', models.CharField(max_length=10)),
                 ('activo', models.BooleanField(default=True)),
                 ('id_persona', models.ForeignKey(db_column='id_persona', to='profiles.Profile', null=True, blank=True)),
-                ('id_colegio', models.ForeignKey(db_column='id_colegio', to='register.Colegio', null=True, blank=True)),
+                ('id_colegio', models.ForeignKey(db_column='id_colegio', to='register.Sucursal', null=True, blank=True)),
                 ('usuario_creacion',
                  models.CharField(blank=True, max_length=10, null=True, verbose_name='Usuario_Creacion')),
                 ('usuario_modificacion',
@@ -77,7 +107,7 @@ class Migration(migrations.Migration):
                 ('numero', models.CharField(max_length=6, null=True)),
                 ('referencia', models.CharField(max_length=500, null=True)),
                 ('id_persona', models.ForeignKey(db_column='id_persona', to='profiles.Profile', null=True, blank=True)),
-                ('id_colegio', models.ForeignKey(db_column='id_colegio', to='register.Colegio', null=True, blank=True)),
+                ('id_colegio', models.ForeignKey(db_column='id_colegio', to='register.Sucursal', null=True, blank=True)),
                 ('usuario_creacion',
                  models.CharField(blank=True, max_length=10, null=True, verbose_name='Usuario_Creacion')),
                 ('usuario_modificacion',
@@ -330,12 +360,12 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='PersonalColegio',
+            name='PersonalSucursal',
             fields=[
                 ('id_personal_colegio', models.AutoField(auto_created=True, primary_key=True,
                                                         serialize=False, verbose_name='ID')),
                 ('personal', models.ForeignKey(db_column='id_personal', to='register.Personal')),
-                ('colegio', models.ForeignKey(db_column='id_colegio', to='register.Colegio')),
+                ('colegio', models.ForeignKey(db_column='id_colegio', to='register.Sucursal')),
                 ('activo', models.BooleanField(default=True)),
                 ('fecha_creacion', models.DateTimeField(null=True)),
                 ('fecha_modificacion', models.DateTimeField(null=True)),
@@ -410,12 +440,12 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='ProveedorColegio',
+            name='ProveedorSucursal',
             fields=[
                 ('id_proveedor_colegio', models.AutoField(auto_created=True, primary_key=True,
                                                          serialize=False, verbose_name='ID')),
                 ('proveedor', models.ForeignKey(db_column='id_proveedor', to='register.Proveedor')),
-                ('colegio', models.ForeignKey(db_column='id_colegio', to='register.Colegio')),
+                ('colegio', models.ForeignKey(db_column='id_colegio', to='register.Sucursal')),
                 ('activo', models.BooleanField(default=True)),
                 ('fecha_creacion', models.DateTimeField(null=True)),
                 ('fecha_modificacion', models.DateTimeField(null=True)),
@@ -428,6 +458,88 @@ class Migration(migrations.Migration):
                 'managed': settings.IS_MIGRATE,
             },
         ),
+        migrations.CreateModel(
+            name='TipoFormato',
+            fields=[
+                ('id_tipo_formato', models.AutoField(primary_key=True, serialize=False)),
+                ('descripcion', models.CharField(max_length=20)),
+                ('nombre_archivo_formato', models.CharField(max_length=100, null=True, blank=True)),
+                ('activo', models.BooleanField(default=True))
+            ],
+            options={
+                # 'db_table': 'telefono',
+                'managed': settings.IS_MIGRATE,
+            },
+        ),
+        migrations.CreateModel(
+            name='TipoDocumento',
+            fields=[
+                ('id_tipo_documento', models.AutoField(primary_key=True, serialize=False)),
+                ('cod_tipo_documento', models.CharField(max_length=2)),
+                ('nom_tipo_documento', models.CharField(max_length=20)),
+                ('nom_tipo_documento_electronico', models.CharField(max_length=40)),
+                ('tipo_formato', models.ForeignKey(db_column='id_tipo_formato', to='register.TipoFormato')),
+                ('activo', models.BooleanField(default=True))
+            ],
+            options={
+                # 'db_table': 'telefono',
+                'managed': settings.IS_MIGRATE,
+            },
+        ),
+        migrations.CreateModel(
+            name='CorrelativoDocumento',
+            fields=[
+                ('id_documento', models.AutoField(auto_created=True, primary_key=True,
+                                                          serialize=False)),
+                ('sucursal', models.ForeignKey(db_column='id_sucursal', to='register.Sucursal')),
+                ('tipo_documento', models.ForeignKey(db_column='id_tipo_documento', to='register.TipoDocumento')),
+                ('serie_documento', models.CharField(max_length=5)),
+                ('correlativo_documento', models.IntegerField()),
+                ('digitos_correlativo', models.IntegerField()),
+                ('activo', models.BooleanField(default=True)),
+                ('fecha_creacion', models.DateTimeField(null=True)),
+                ('fecha_modificacion', models.DateTimeField(null=True)),
+                ('usuario_creacion', models.CharField(max_length=10, null=True)),
+                ('usuario_modificacion', models.CharField(max_length=10, null=True))
+
+            ],
+            options={
+                # 'db_table': 'proveedor_colegio',
+                'managed': settings.IS_MIGRATE,
+            },
+        ),
+        migrations.CreateModel(
+            name='ModalidadSistema',
+            fields=[
+                ('id_modalidad_sistema', models.AutoField(auto_created=True, primary_key=True,
+                                                              serialize=False)),
+                ('descripcion_modalidad', models.CharField(max_length=200)),
+                ('activo', models.BooleanField(default=True))
+
+            ],
+            options={
+                # 'db_table': 'proveedor_colegio',
+                'managed': settings.IS_MIGRATE,
+            },
+        ),
+        migrations.CreateModel(
+            name='ConfiguracionSistema',
+            fields=[
+                ('id_configuracion_sistema', models.AutoField(auto_created=True, primary_key=True, serialize=False)),
+                ('empresa', models.ForeignKey(db_column='id_empresa', to='register.Empresa')),
+                ('modalidad_sistema', models.ForeignKey(db_column='id_modalidad_sistema', to='register.ModalidadSistema')),
+                ('igv', models.FloatField(default=0)),
+                ('activo', models.BooleanField(default=True)),
+                ('fecha_creacion', models.DateTimeField(null=True)),
+                ('fecha_modificacion', models.DateTimeField(null=True)),
+                ('usuario_creacion', models.CharField(max_length=10, null=True)),
+                ('usuario_modificacion', models.CharField(max_length=10, null=True))
+
+            ],
+            options={
+                # 'db_table': 'proveedor_colegio',
+                'managed': settings.IS_MIGRATE,
+            },
+        ),
+
     ]
-
-

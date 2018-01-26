@@ -19,7 +19,7 @@ from AE_academico.models import CursoDocente
 from AE_academico.models import Curso
 from enrollment.models import Matricula
 from income.models import obtener_mes
-from register.models import Docente, Personal, PersonalColegio, Alumno, Colegio
+from register.models import Docente, Personal, PersonalSucursal, Alumno, Sucursal
 from django.conf import settings
 from utils.middleware import validar_roles, get_current_request, get_current_colegio, get_current_user
 from django.http import HttpResponseRedirect
@@ -95,7 +95,7 @@ class AulaCreationView(CreateView):
     template_name = 'aula_form.html'
 
     def form_valid(self, form):
-        form.instance.colegio = Colegio.objects.get(pk=get_current_colegio())
+        form.instance.colegio = Sucursal.objects.get(pk=get_current_colegio())
         form.instance.tipo = 1
         return super(AulaCreationView, self).form_valid(form)
 
@@ -174,7 +174,7 @@ class CursoCreationView(CreateView):
     template_name = 'curso_form.html'
 
     def form_valid(self, form):
-        form.instance.colegio = Colegio.objects.get(pk=get_current_colegio())
+        form.instance.colegio = Sucursal.objects.get(pk=get_current_colegio())
         return super(CursoCreationView, self).form_valid(form)
 
     def get(self, request, *args, **kwargs):
@@ -217,7 +217,7 @@ class CursoDocenteCreateView(CreateView):
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo', 'tesorero']
         if validar_roles(roles=roles):
-            personalcolegio = PersonalColegio.objects.filter(colegio_id=get_current_colegio(), activo=True)
+            personalcolegio = PersonalSucursal.objects.filter(colegio_id=get_current_colegio(), activo=True)
             personal = []
             docentes = []
             for personalcol in personalcolegio:
@@ -586,13 +586,13 @@ class EventoCreateView(CreateView):
     success_url = reverse_lazy("academic:evento_list")
 
     def form_valid(self, form):
-        form.instance.colegio = Colegio.objects.get(pk=get_current_colegio())
+        form.instance.colegio = Sucursal.objects.get(pk=get_current_colegio())
         return super(EventoCreateView, self).form_valid(form)
 
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'administrativo']
         if validar_roles(roles=roles):
-            personalcolegio = PersonalColegio.objects.filter(colegio_id=get_current_colegio(), activo=True)
+            personalcolegio = PersonalSucursal.objects.filter(colegio_id=get_current_colegio(), activo=True)
             personal = []
             for personalcol in personalcolegio:
                 personal.append(personalcol.personal)
@@ -751,7 +751,7 @@ class PeriodoAcademicoCreationView(CreateView):
     template_name = 'periodo_form.html'
 
     def form_valid(self, form):
-        form.instance.colegio = Colegio.objects.get(pk=get_current_colegio())
+        form.instance.colegio = Sucursal.objects.get(pk=get_current_colegio())
         return super(PeriodoAcademicoCreationView, self).form_valid(form)
 
     def get(self, request, *args, **kwargs):
@@ -863,7 +863,7 @@ class RegistrarNotasAlumnosView(TemplateView):
 
             curso = Curso.objects.get(id_curso=curso_id)
             periodo = PeriodoAcademico.objects.get(id_periodo_academico=periodo_id)
-            colegio = Colegio.objects.get(id_colegio=colegio_id)
+            colegio = Sucursal.objects.get(id_colegio=colegio_id)
 
             num = len(alumnos_id)
 

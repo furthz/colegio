@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view
 
 from AE_academico.models import Asistencia, Aula, AulaMatricula, CursoDocente, AulaCurso
 from enrollment.models import Matricula
-from register.models import Profile, Personal, PersonalColegio, Colegio, Apoderado, Alumno, ApoderadoAlumno
+from register.models import Profile, Personal, PersonalSucursal, Sucursal, Apoderado, Alumno, ApoderadoAlumno
 from APIs.models import RelacionUsuarioPerfil
 from .serializers import *
 from rest_framework import generics
@@ -52,9 +52,9 @@ class UserInfoListView(ListView):
             'segundo_nombre']
         context['apellido_pa_profile'] = Profile.objects.values('apellido_pa').filter(user_id=iduser)[0]['apellido_pa']
         context['apellido_ma_profile'] = Profile.objects.values('apellido_ma').filter(user_id=iduser)[0]['apellido_ma']
-        id_colegio = PersonalColegio.objects.values('colegio_id').filter(personal_id=personal_id)[0]['colegio_id']
+        id_colegio = PersonalSucursal.objects.values('colegio_id').filter(personal_id=personal_id)[0]['colegio_id']
         context['id_colegio'] = id_colegio
-        context['nombre_colegio'] = Colegio.objects.values('nombre').filter(id_colegio=id_colegio)[0]['nombre']
+        context['nombre_colegio'] = Sucursal.objects.values('nombre').filter(id_colegio=id_colegio)[0]['nombre']
         return context
 
 
@@ -93,7 +93,7 @@ def DocenteInfo(request):
 
 
 class ColegioList(generics.ListCreateAPIView):
-    queryset = Colegio.objects.all()
+    queryset = Sucursal.objects.all()
     serializer_class = ColegioSerializer
 
     def list(self, request, *args, **kwargs):
@@ -103,7 +103,7 @@ class ColegioList(generics.ListCreateAPIView):
 
 
 class ColegioDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Colegio.objects.all()
+    queryset = Sucursal.objects.all()
     serializer_class = ColegioSerializer
 
 
@@ -221,13 +221,13 @@ class SnippetDetail(APIView):
 
     def get_object(self, pk):
         try:
-            return Colegio.objects.get(pk=pk)
-        except Colegio.DoesNotExist:
+            return Sucursal.objects.get(pk=pk)
+        except Sucursal.DoesNotExist:
             raise Http404
 
     def get(self, request, pk, nombre, format=None):
         # snippet = self.get_object(pk)
-        snippet = Colegio.objects.get(id_colegio=nombre)
+        snippet = Sucursal.objects.get(id_colegio=nombre)
         # snippet = Colegio.objects.get(nombre="Mundopixel")
 
         serializer = ColegioSerializer(snippet)

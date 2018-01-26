@@ -1,7 +1,7 @@
 from django.db import models
 
 # Create your models here.
-from register.models import Proveedor, Colegio, PersonalColegio, ProveedorColegio
+from register.models import Proveedor, Sucursal, PersonalSucursal, ProveedorSucursal
 from utils.models import ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin
 from utils.middleware import get_current_colegio
 from income.models import obtener_mes
@@ -33,7 +33,7 @@ class TipoPago(ActivoMixin, Eliminar, models.Model):
     Clase para definir y organizar los tipos de pagos que realiza el colegio
     """
     id_tipo_pago = models.AutoField(primary_key=True)
-    colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column='id_colegio', default=get_current_colegio)
+    colegio = models.ForeignKey(Sucursal, models.DO_NOTHING, db_column='id_colegio', default=get_current_colegio)
     descripcion = models.CharField(max_length=100)
     tipo = models.IntegerField(blank=True, null=True)
     padre = models.ForeignKey("self", models.DO_NOTHING, db_column="id_parent", blank=True, null=True)
@@ -64,7 +64,7 @@ class CajaChica(CreacionModificacionFechaMixin, CreacionModificacionUserMixin):
     Clase para definir el monto que dispondrá un colegio para destinar a los pagos varios
     """
     id_caja_chica = models.AutoField(primary_key=True)
-    colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column="id_colegio", related_name="caja_chica")
+    colegio = models.ForeignKey(Sucursal, models.DO_NOTHING, db_column="id_colegio", related_name="caja_chica")
     presupuesto = models.FloatField()
     periodo = models.IntegerField()
     saldo = models.FloatField()
@@ -79,9 +79,9 @@ class Pago(CreacionModificacionFechaMixin, CreacionModificacionUserMixin):
     Clase para definir los pagos que el colegio realiza por los diferentes conceptos
     """
     id_pago = models.AutoField(primary_key=True)
-    proveedor = models.ForeignKey(ProveedorColegio, models.DO_NOTHING, db_column="id_proveedor_colegio")
+    proveedor = models.ForeignKey(ProveedorSucursal, models.DO_NOTHING, db_column="id_proveedor_colegio")
     caja_chica = models.ForeignKey(CajaChica, models.DO_NOTHING, db_column="id_caja_chica", related_name="pagos")
-    personal = models.ForeignKey(PersonalColegio, models.DO_NOTHING, db_column="id_personal_colegio", related_name="pagos")
+    personal = models.ForeignKey(PersonalSucursal, models.DO_NOTHING, db_column="id_personal_colegio", related_name="pagos")
     tipo_pago = models.ForeignKey(TipoPago, models.DO_NOTHING, db_column="id_tipo_pago", related_name="pagos")
     descripcion = models.CharField(max_length=200)
     monto = models.FloatField()

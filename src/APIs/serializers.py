@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from AE_academico.models import Asistencia, Aula, AulaMatricula, CursoDocente, Curso, AulaCurso
 from enrollment.models import Matricula
-from register.models import Profile, Colegio, Apoderado, Alumno, ApoderadoAlumno
+from register.models import Profile, Sucursal, Apoderado, Alumno, ApoderadoAlumno
 from alerta.models import *
 
 
@@ -16,7 +16,7 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
 
 class ColegioSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Colegio
+        model = Sucursal
         fields = ('id_colegio', 'nombre', 'ruc', 'ugel', 'personales')
 
 

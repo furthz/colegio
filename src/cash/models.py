@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.db.models import Sum
 
 #from payments.models import CajaChica
-from register.models import Colegio, PersonalColegio
+from register.models import Sucursal, PersonalSucursal
 from utils.models import CreacionModificacionFechaMixin, CreacionModificacionUserMixin
 from utils.middleware import get_current_colegio, get_current_userID
 import datetime
@@ -37,7 +37,7 @@ class Caja(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, Elimin
     Clase para la Caja
     """
     id_caja = models.AutoField(primary_key=True)
-    colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column='id_colegio', default=get_current_colegio)
+    colegio = models.ForeignKey(Sucursal, models.DO_NOTHING, db_column='id_colegio', default=get_current_colegio)
     numero = models.IntegerField()
     descripcion = models.CharField(max_length=200, blank=True, null=True)
     activo = models.BooleanField(default=True)
@@ -105,7 +105,7 @@ class CajaCajero(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, 
     Clase para CajaCajero
     """
     id_movimiento = models.AutoField(primary_key=True)
-    personal_colegio = models.ForeignKey(PersonalColegio, models.DO_NOTHING,
+    personal_colegio = models.ForeignKey(PersonalSucursal, models.DO_NOTHING,
                                          db_column="id_personal_colegio")  # Persona encargada de la Caja
     caja = models.ForeignKey(Caja, models.DO_NOTHING, db_column='id_caja')  # Caja en la que se apertura la sesión
     saldo = models.FloatField(default=0)  # Sobrante o Faltante al Final de la caja
@@ -178,7 +178,7 @@ class Remesa(models.Model):
     """
 
     id_remesa = models.AutoField(primary_key=True)
-    personal_colegio = models.ForeignKey(PersonalColegio, models.DO_NOTHING, db_column="id_personal_colegio")
+    personal_colegio = models.ForeignKey(PersonalSucursal, models.DO_NOTHING, db_column="id_personal_colegio")
     #caja_chica = models.ForeignKey(CajaChica, models.DO_NOTHING, db_column="id_caja_chica", null=True, blank=True)
     movimiento = models.ForeignKey(CajaCajero, models.DO_NOTHING, db_column='id_movimiento', default=cajeroExist)
     fechacreacion = models.DateTimeField(default=timezone.now)

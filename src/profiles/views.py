@@ -7,7 +7,7 @@ from utils.middleware import get_current_colegio
 from utils.views import MyLoginRequiredMixin
 from . import forms
 from . import models
-from enrollment.models import Colegio
+from enrollment.models import Sucursal
 
 class ShowProfile(MyLoginRequiredMixin, generic.TemplateView):
     template_name = "profiles/show_profile.html"

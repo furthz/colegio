@@ -1,0 +1,76 @@
+{% extends "page.html" %}
+
+{% block container %}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Lista de Registros</h3>
+            </div>
+
+                    <div class="box-body">
+                        <div class="col-md-9">
+                            <div class="panel-page">
+                                <div class="toolbar-header">
+                                    <a class="btn btn-success" href="{% url 'registers:empresa_create' %}">
+                                        <i class="fa fa-plus" aria-hidden="true">
+                                        </i>
+                                        Crear Empresa
+                                    </a>
+                                </div>
+
+                             </div>
+                            <table class="table table-hover">
+                                <tbody>
+                                    <tr class="table-header">
+                                        <th>Código</th>
+                                        <th>Razon Social</th>
+                                        <th>Razon Comercial</th>
+                                        <th>RUC</th>
+                                        <th>Activo</th>
+                                        <th class="text-center">Acciones</th>
+                                    </tr>
+                                {% for empresa in empresas %}
+                                    <form id="{{ empresa.id_empresa }}">
+                                        {% csrf_token %}
+                                        <input hidden value="{{ empresa.id_empresa }}" name="empresa">
+                                    </form>
+                                    <tr>
+                                        <td>{{ empresa.id_empresa }}</td>
+                                        <td>{{ empresa.razon_social }}</td>
+                                        <td>{{ empresa.razon_comercial }}</td>
+                                        <td>{{ empresa.ruc }}</td>
+                                        <td>{{ empresa.activo }}</td>
+                                        <td>
+                                            <div class="btn-group btn-group-sm" role="group" aria-level="...">
+                                                <a title="Editar" href="#" class="btn btn-default">
+                                                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                </a>
+                                                <button type="submit" title="Lista Colegios" formaction="{% url 'registers:colegio_list' %}" formmethod="get" class="btn btn-default" form="{{ empresa.id_empresa }}">
+                                                        <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                                </button>
+                                                <a title="Baja" href="#" class="btn btn-default">
+                                                    <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                                                </a>
+                                                <a title="Configuración" href="{% url 'registers:configuracionsistema_update' empresa.id_empresa %}" class="btn btn-default">
+                                                        <i class="fa fa-cog" aria-hidden="true"></i>
+                                                </a>
+                                                <button type="submit" title="Agregar Sucursal" formaction="{% url 'registers:colegio_create' %}" formmethod="get" class="btn btn-default" form="{{ empresa.id_empresa }}">
+                                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

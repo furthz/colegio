@@ -43,7 +43,7 @@ class Migration(migrations.Migration):
             name='Curso',
             fields=[
                 ('id_curso', models.AutoField(primary_key=True)),
-                ('colegio', models.ForeignKey(db_column="id_colegio", to='register.Colegio')),
+                ('colegio', models.ForeignKey(db_column="id_colegio", to='register.Sucursal')),
                 ('nombre', models.CharField(max_length=100, blank=True, null=True)),
                 ('descripcion', models.CharField(max_length=500, blank=True, null=True)),
                 ('fecha_creacion', models.DateField()),
@@ -125,7 +125,7 @@ class Migration(migrations.Migration):
             name='Evento',
             fields=[
                 ('id_evento', models.AutoField(primary_key=True)),
-                ('colegio', models.ForeignKey(db_column="id_colegio", to='register.Colegio')),
+                ('colegio', models.ForeignKey(db_column="id_colegio", to='register.Sucursal')),
                 ('encargado', models.ForeignKey(db_column="id_personal", to='register.Personal')),
                 ('nombre', models.CharField(max_length=100, blank=True, null=True)),
                 ('descripcion', models.CharField(max_length=500, blank=True, null=True)),
@@ -172,7 +172,7 @@ class Migration(migrations.Migration):
             name='PeriodoAcademico',
             fields=[
                 ('id_periodo_academico', models.AutoField(primary_key=True)),
-                ('colegio', models.ForeignKey(db_column="id_colegio", to='register.Colegio')),
+                ('colegio', models.ForeignKey(db_column="id_colegio", to='register.Sucursal')),
                 ('nombre', models.CharField(max_length=50)),
                 ('fecha_inicio', models.DateField()),
                 ('fecha_fin', models.DateField()),
@@ -194,7 +194,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id_nota', models.AutoField(primary_key=True)),
                 ('curso', models.ForeignKey(db_column="id_curso", to='AE_academico.Curso')),
-                ('colegio', models.ForeignKey(db_column="id_colegio", to='register.Colegio')),
+                ('colegio', models.ForeignKey(db_column="id_colegio", to='register.Sucursal')),
                 ('periodo_academico', models.ForeignKey(db_column="id_periodo_academico", to='AE_academico.PeriodoAcademico')),
                 ('alumno', models.ForeignKey(db_column='id_alumno', to='register.Alumno')),
                 ('nota', models.CharField(max_length=2)),

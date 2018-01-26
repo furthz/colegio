@@ -4,7 +4,7 @@ from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.conf import settings
 from enrollment.models import Matricula
 from profiles.models import Profile
-from register.models import Colegio, Personal, Promotor, Director, Cajero, Tesorero, Administrativo, Apoderado, Sistemas
+from register.models import Sucursal, Personal, Promotor, Director, Cajero, Tesorero, Administrativo, Apoderado, Sistemas
 from utils.middleware import get_current_colegio, get_current_user
 
 import logging
@@ -45,15 +45,15 @@ class Roles:
             logger.debug("usuario NO SUPERUSUARIO")
 
             id_colegio = get_current_colegio()
-            colegio = Colegio.objects.get(pk=id_colegio, activo=True)
+            colegio = Sucursal.objects.get(pk=id_colegio, activo=True)
             logger.debug("ID Colegio: " + str(id_colegio))
 
             profile = Profile.objects.get(user_id=usuario.id)
             logger.debug("Profile: " + profile.apellido_pa )
 
             # determinar si es un personal asociado al colegio logueado
-            empleados = Personal.objects.filter(persona=profile, personalcolegio__colegio=colegio,
-                                                personalcolegio__activo=True)
+            empleados = Personal.objects.filter(persona=profile, personalsucursal__colegio=colegio,
+                                                personalsucursal__activo=True)
             logger.debug("Cantidad de empleados asociados a la cuenta: " + str(empleados.count()))
 
             for empleado in empleados:

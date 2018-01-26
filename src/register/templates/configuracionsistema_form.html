@@ -1,0 +1,79 @@
+{% extends "page.html" %}
+
+{% block titulo %}
+    <h1>{{ form.title.label }}
+        <small>Módulo de Administración</small>
+    </h1>
+{% endblock %}
+
+{% block container %}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-body">
+
+
+                {% if form.errors %}
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <form id="registro" name="registro" action="" method="POST" class="form-horizontal">
+                    {% csrf_token %}
+
+                    <div class="col-md-12">
+                    <!-- DATOS PERSONALES -->
+                        <div class="page-header">
+                            <h4 >Configuracion del sistema</h4>
+                        </div>
+                        <div class="box-body">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Modalidad del Sistema</label>
+                                    <div class="col-sm-9">
+                                        {{ form.modalidad_sistema }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">I.G.V.</label>
+                                    <div class="col-sm-9">
+                                        {{ form.igv }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                                <div class="pull-right">
+                                    <a href="{% url 'registers:empresa_list' %}" class="btn btn-default">
+                                        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                                        Regresar al listado
+                                    </a>
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="fa fa-check" aria-hidden="true"></i>
+                                        Actualizar Configuración del Sistema
+                                    </button>
+                                </div>
+                            </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock container %}

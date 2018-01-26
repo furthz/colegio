@@ -27,7 +27,7 @@ from utils.middleware import get_current_request
 from utils.views import MyLoginRequiredMixin
 
 from utils.middleware import get_current_user, get_current_colegio
-from register.models import PersonalColegio, Personal, Profile
+from register.models import PersonalSucursal, Personal, Profile
 
 def index(request):
     return render(request, 'cash/index.html')
@@ -211,7 +211,7 @@ class BoxCashierCreationView(CreateView):
             # creacion
             #context['yolencios'] = d
 #            print(PersonalColegio.objects.values('pk').filter(personal_id=b)[0]['pk'])
-            personal_colegio = PersonalColegio.objects.get(personal=b)
+            personal_colegio = PersonalSucursal.objects.get(personal=b)
             context['yolencios'] = personal_colegio.id_personal_colegio
             return context
 
@@ -225,7 +225,7 @@ class BoxCashierCreationView(CreateView):
             usuario = get_current_user()
             perfil = Profile.objects.get(user=usuario)
             personal = Personal.objects.filter(persona=perfil)
-            personal_colegio = PersonalColegio.objects.get(personal=personal)
+            personal_colegio = PersonalSucursal.objects.get(personal=personal)
             cajas = Caja.objects.filter(colegio__id_colegio= get_current_colegio(), activo=True)
 
             return render(request, template_name=self.template_name, context={
@@ -335,7 +335,7 @@ class ConsignmentCreationView(CreateView):
                 alerta = False
             except:
                 alerta = True
-            personal = PersonalColegio.objects.filter(colegio=get_current_colegio(), activo=True)
+            personal = PersonalSucursal.objects.filter(colegio=get_current_colegio(), activo=True)
             return render(request, template_name=self.template_name, context={
                 'form': self.form_class,
                 'personal': personal,
@@ -406,7 +406,7 @@ class RecargarCajaChicaView(CreateView):
         if validar_roles(roles=roles):
             persona = Profile.objects.get(user=get_current_user())
             personal = Personal.objects.get(persona=persona)
-            personal = PersonalColegio.objects.filter(personal=personal,colegio=get_current_colegio(), activo=True)
+            personal = PersonalSucursal.objects.filter(personal=personal, colegio=get_current_colegio(), activo=True)
             return render(request, template_name=self.template_name, context={
                 'form': self.form_class,
                 'personal': personal,

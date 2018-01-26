@@ -16,7 +16,7 @@ from authtools.forms import UserCreationForm
 
 from enrollment.models import Matricula
 from profiles.models import Profile
-from register.models import Personal, Apoderado, Colegio
+from register.models import Personal, Apoderado, Sucursal
 
 import logging
 
@@ -75,7 +75,8 @@ class AsignColegioForm(forms.Form):
             personal = Personal.objects.get(persona=profile)
             logger.debug("personal: " + str(personal.id_personal))
 
-            colegios = personal.Colegios.all()
+            colegios = personal.Sucursales.all()
+
             logger.debug("colegios: " + str(colegios.count()))
 
         except Personal.DoesNotExist:
@@ -94,7 +95,7 @@ class AsignColegioForm(forms.Form):
                 logger.debug("Matrícula recuperada: " + str(mat.id_matricula))
                 coles.append(mat.colegio.id_colegio)
 
-            colegios = Colegio.objects.filter(pk__in=coles).all()
+            colegios = Sucursal.objects.filter(pk__in=coles).all()
             logger.debug("Se consultaron los colegios: " + str(colegios))
 
         self.helper = FormHelper()

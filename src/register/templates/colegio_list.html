@@ -21,10 +21,10 @@
                         <div class="col-md-9">
                             <div class="panel-page">
                                 <div class="toolbar-header">
-                                    <a class="btn btn-success" href="{% url 'registers:colegio_create' %}">
-                                        <i class="fa fa-plus" aria-hidden="true">
+                                    <a class="btn btn-success" href="{% url 'registers:empresa_list' %}">
+                                        <i class="fa fa-arrow-left" aria-hidden="true">
                                         </i>
-                                        Crear Colegio
+                                        Regresar
                                     </a>
                                 </div>
 
@@ -34,7 +34,7 @@
                                     <tr class="table-header">
                                         <th>Código</th>
                                         <th>Nombre</th>
-                                        <th>RUC</th>
+                                        <th>Codigo Sucursal</th>
                                         <th>Ugel</th>
                                         <th>Activo</th>
                                         <th class="text-center">Acciones</th>
@@ -43,7 +43,7 @@
                                     <tr>
                                         <td>{{ colegio.id_colegio }}</td>
                                         <td>{{ colegio.nombre }}</td>
-                                        <td>{{ colegio.ruc }}</td>
+                                        <td>{{ colegio.codigo_sucursal }}</td>
                                         <td>{{ colegio.ugel }}</td>
                                         <td>{{ colegio.activo }}</td>
                                         <td>

@@ -35,49 +35,45 @@
                     <div class="col-md-12">
                     <!-- DATOS PERSONALES -->
                         <div class="page-header">
-                            <h4 >Datos del Colegio</h4>
+                            <h4 >Datos de la Empresa</h4>
                         </div>
                         <div class="box-body">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">Nombre</label>
+                                    <label class="col-sm-3 control-label">Razon Social</label>
                                     <div class="col-sm-9">
-                                        {{ form.nombre }}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">UGEL</label>
-                                    <div class="col-sm-9">
-                                        {{ form.ugel }}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">Codigo Sucursal</label>
-                                    <div class="col-sm-9">
-                                        {{ form.codigo_sucursal }}
+                                        {{ form.razon_social }}
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">Empresa</label>
+                                    <label class="col-sm-3 control-label">Razon Comercial</label>
                                     <div class="col-sm-9">
-                                        <select name="empresa" class="form-control" required="" id="id_empresa">
-
-                                          <option value="{{ empresa.id_empresa }}">{{ empresa }}</option>
-
-                                        </select>
+                                        {{ form.razon_comercial }}
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">RUC</label>
+                                    <div class="col-sm-9">
+                                        {{ form.ruc }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Resolución SUNAT</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="resolucion_sunat" class="form-control" id="id_resolucion_sunat">
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                            </div>
                     <!-- TERMINA DATOS PERSONALES -->
 
                     <!-- DATOS DE CONTACTO -->
@@ -85,7 +81,7 @@
                         <div class="page-header">
                             <h4>Datos Contacto y Dirección</h4>
                         </div>
-                        <div class="col-md-12">
+                               <div class="col-md-12">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">Departamento</label>
@@ -126,41 +122,18 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">Telefono 1</label>
-                                        <div class="col-sm-9">
-                                            {{ form.telefono_1 }}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">Telefono 2</label>
-                                        <div class="col-sm-9">
-                                            {{ form.telefono_2 }}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">Telefono 3</label>
-                                        <div class="col-sm-9">
-                                            {{ form.telefono_3 }}
-                                        </div>
-                                    </div>
-                                </div>
+
                             </div>
 
                             <div class="col-md-12">
                                 <div class="pull-right">
-                                    <a href="{% url 'registers:colegio_list' %}" class="btn btn-default">
+                                    <a href="{% url 'registers:empresa_list' %}" class="btn btn-default">
                                         <i class="fa fa-arrow-left" aria-hidden="true"></i>
                                         Regresar al listado
                                     </a>
                                     <button type="submit" class="btn btn-success">
                                         <i class="fa fa-plus" aria-hidden="true"></i>
-                                        Registrar Sucursal
+                                        Registrar Empresa
                                     </button>
                                 </div>
                             </div>
@@ -179,70 +152,6 @@
 </div>
 
 {% block scripts %}
-<script type="text/javascript">
-    function enviarTelefono() {
-        var cadena = "";
-        var sw = true;
-        $('input[name^="nros"]').each( function() {
-
-            this.remove();
-
-        });
-
-        $('input[name^="telefono"]').each( function() {
-
-                if (!sw) {
-                    cadena += ","
-                }else{
-                    sw = false
-                }
-
-                cadena += this.value;
-            });
-
-        $('<input hidden/>').attr({ type: 'text', name: 'nros', value: cadena}).appendTo('#registro');
-    }
-    function agregarTelefono()
-    {
-        var telefono = $('#id_celular').val();
-        var sw = true;
-        if(telefono){
-            $("#id_celulares").find("> option").each(function() {
-                if(telefono == this.value)
-                    sw = false;
-            });
-        }
-        if(sw && telefono){
-            $('#id_celulares').append("<option value=" + telefono + ">" + telefono + "</option>");
-        }
-
-        $('#id_celular').val("");
-
-        $('<input hidden/>').attr({ type: 'text', name: 'telefono[]', value: telefono}).appendTo('#registro');
-    }
-
-    function eliminarTelefono()
-    {
-        $('#id_celulares').find('> :selected').each(function() {
-            var telefono = this.value;
-            $(this).remove();
-            $('input[name^="telefono"]').each( function() {
-
-                if (telefono == this.value){
-                    this.remove();
-                }
-
-            });
-        });
-    }
-
-    function seleccionarMultiselect() {
-        $('#id_celulares option').prop('selected', true);
-
-    }
-
-</script>
-
     <script type="text/javascript">
      $('#id_departamento').change(function () {
             $('#id_provincia').empty();

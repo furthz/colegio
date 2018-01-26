@@ -1,6 +1,6 @@
 from django.db import models
 from django.urls import reverse
-from register.models import Colegio
+from register.models import Sucursal
 from register.models import Alumno
 from profiles.models import Profile
 from utils.models import ActivoMixin
@@ -18,7 +18,7 @@ class TipoServicio(ActivoMixin, CreacionModificacionFechaMixin, CreacionModifica
     codigomodular:      numero que identifica al colegio
     """
     id_tipo_servicio = models.AutoField(primary_key=True)
-    colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column='id_colegio')
+    colegio = models.ForeignKey(Sucursal, models.DO_NOTHING, db_column='id_colegio')
     is_ordinario = models.BooleanField()
     nivel = models.IntegerField(blank=True, null=True)
     grado = models.IntegerField(blank=True, null=True)
@@ -190,7 +190,7 @@ class Matricula(ActivoMixin, CreacionModificacionUserMixin, CreacionModificacion
     """
     id_matricula = models.AutoField(primary_key=True)
     alumno = models.ForeignKey(Alumno, models.DO_NOTHING, db_column='id_alumno')
-    colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column='id_colegio')
+    colegio = models.ForeignKey(Sucursal, models.DO_NOTHING, db_column='id_colegio')
     tipo_servicio = models.ForeignKey(TipoServicio, models.DO_NOTHING, db_column='id_tipo_servicio')
 
     def __str__(self):

@@ -4,9 +4,11 @@ from django.contrib.auth.decorators import permission_required
 from register.views import CreatePersonaView, PersonaDetail, AlumnoCreateView, AlumnoDetail, ApoderadoCreateView, \
     ApoderadoDetailView, PersonalDetailView, PersonalCreateView, PromotorCreateView, PromotorDetailView, \
     DirectorDetailView, DirectorCreateView, CajeroCreateView, CajeroDetailView, TesoreroCreateView, TesoreroDetailView, \
-    ProveedorCreateView, ProveedorDetailView, PersonaListView, PersonaDetailView, ColegioCreateView, ColegioListView, PersonalUpdateView, PersonalDeleteView, \
+    ProveedorCreateView, ProveedorDetailView, PersonaListView, PersonaDetailView, ColegioCreateView, ColegioListView, \
+    PersonalUpdateView, PersonalDeleteView, \
     SistemasCreateView, SistemasDetailView, ProveedorListView, ProveedorDeleteView, ProveedorUpdateView, \
-    AlumnoAutocomplete, DocenteCreateView, DocenteDetailView
+    AlumnoAutocomplete, DocenteCreateView, DocenteDetailView, EmpresaCreateView, EmpresaListView, \
+    ConfiguracionSistemaUpdateView
 from utils.views import get_provincias, get_distritos
 
 from .import_export import exportCSV,exportJSON, simple_upload
@@ -65,4 +67,9 @@ urlpatterns = [
     url(r'^exportCSV/', exportCSV, name='export'),
     url(r'^exportJSON/', exportJSON, name='export'),
     url(r'^import/', simple_upload, name='import'),
+
+    url(r'^empresas/create/$', EmpresaCreateView.as_view(), name="empresa_create"),
+    url(r'^empresas/$', EmpresaListView.as_view(), name="empresa_list"),
+    url(r'^empresas/configuracion/update/(?P<pk>\d+)/$', ConfiguracionSistemaUpdateView.as_view(), name="configuracionsistema_update"),
+
 ]

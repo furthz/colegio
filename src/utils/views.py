@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 
 from profiles.models import Profile
-from register.models import Personal, Colegio, PersonalColegio, Direccion, Telefono, ApoderadoAlumno, Apoderado
+from register.models import Personal, Sucursal, PersonalSucursal, Direccion, Telefono, ApoderadoAlumno, Apoderado
 from utils.middleware import get_current_colegio
 from utils.models import Provincia, Distrito, TiposGrados, TiposNivel
 
@@ -214,7 +214,7 @@ class SaveGeneric(MyLoginRequiredMixin):
         elif padre is Personal:
             id_colegio = get_current_colegio()
 
-            colegio = Colegio.objects.get(id_colegio=id_colegio)
+            colegio = Sucursal.objects.get(id_colegio=id_colegio)
             logger.debug("Colegio logueado: " + str(colegio))
 
             # Si la persona existe
@@ -244,13 +244,13 @@ class SaveGeneric(MyLoginRequiredMixin):
 
                 # Verificar que no exista la relación del personal con el colegio previamente
                 try:
-                    per_col = PersonalColegio.objects.get(personal=rpta.personal)
+                    per_col = PersonalSucursal.objects.get(personal=rpta.personal)
                     per_col.activo = True
                     per_col.save()
                     logger.debug("Se actualiza la relación colegio y personal a activo")
                     logger.info("Se actualiza la relacion del colegio y personal a activo")
-                except PersonalColegio.DoesNotExist:
-                    per_col = PersonalColegio()
+                except PersonalSucursal.DoesNotExist:
+                    per_col = PersonalSucursal()
                     per_col.personal = rpta.personal
                     per_col.colegio = colegio
                     per_col.save()
@@ -285,7 +285,7 @@ class SaveGeneric(MyLoginRequiredMixin):
                         pass
 
                     # Crear la relación del personal con el colegio logueado
-                    personal_colegio = PersonalColegio()
+                    personal_colegio = PersonalSucursal()
                     personal_colegio.personal = instance.empleado
                     personal_colegio.colegio = colegio
                     personal_colegio.save()

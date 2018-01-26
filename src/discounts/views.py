@@ -24,8 +24,8 @@ from enrollment.models import Servicio
 from enrollment.models import Matricula
 from enrollment.models import Cuentascobrar
 from income.models import obtener_mes
-from register.models import Colegio, Personal, Promotor
-from register.models import PersonalColegio
+from register.models import Sucursal, Personal, Promotor
+from register.models import PersonalSucursal
 from discounts.forms import SolicitarDescuentoForm
 from discounts.forms import TipoDescuentForm
 from discounts.forms import DetalleDescuentosForm
@@ -79,7 +79,7 @@ class CrearSolicitudView(MyLoginRequiredMixin,TemplateView):
         data_form = form.cleaned_data
         logger.info(data_form)
         solicitud = Descuento(
-            personal_colegio=PersonalColegio.objects.get(personal__user=request.user),
+            personal_colegio=PersonalSucursal.objects.get(personal__user=request.user),
             estado=1,
             fecha_solicitud=date.today(),
             matricula=data_form['matricula'],
@@ -101,7 +101,7 @@ class TipoDescuentoCreateView(MyLoginRequiredMixin,CreateView):
         return reverse_lazy('enrollments:matricula_list')
 
     def form_valid(self, form):
-        form.instance.colegio = Colegio.objects.get(pk = self.request.session.get('colegio'))
+        form.instance.colegio = Sucursal.objects.get(pk = self.request.session.get('colegio'))
         return super(TipoDescuentoCreateView, self).form_valid(form)
 
     def get(self, request, *args, **kwargs):

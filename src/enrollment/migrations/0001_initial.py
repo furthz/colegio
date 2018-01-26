@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
             name='TipoServicio',
             fields=[
                 ('id_tipo_servicio', models.AutoField(primary_key=True, serialize=False)),
-                ('colegio', models.ForeignKey(db_column='id_colegio',to='register.Colegio')),
+                ('colegio', models.ForeignKey(db_column='id_colegio', to='register.Sucursal')),
                 ('is_ordinario', models.BooleanField()),
                 ('nivel', models.IntegerField(blank=True, null=True)),
                 ('grado', models.IntegerField(blank=True, null=True)),
@@ -88,7 +88,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id_matricula', models.AutoField(primary_key=True)),
                 ('alumno', models.ForeignKey(db_column='id_alumno',to='register.Alumno')),
-                ('colegio', models.ForeignKey(db_column='id_colegio',to='register.Colegio')),
+                ('colegio', models.ForeignKey(db_column='id_colegio', to='register.Sucursal')),
                 ('tipo_servicio', models.ForeignKey(db_column='id_tipo_servicio',to='enrollment.TipoServicio')),
                 ('fecha_creacion', models.DateField()),
                 ('fecha_modificacion', models.DateField()),

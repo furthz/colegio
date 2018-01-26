@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
             name='TipoDescuento',
             fields=[
                 ('id_tipo_descuento', models.AutoField(primary_key=True, serialize=False)),
-                ('colegio', models.ForeignKey(db_column='id_colegio',to='register.Colegio')),
+                ('colegio', models.ForeignKey(db_column='id_colegio', to='register.Sucursal')),
                 ('servicio', models.ForeignKey(db_column='id_servicio', to='enrollment.Servicio')),
                 ('descripcion', models.CharField(max_length=50)),
                 ('porcentaje', models.FloatField()),
@@ -39,7 +39,7 @@ class Migration(migrations.Migration):
             name='Descuento',
             fields=[
                 ('id_descuento', models.AutoField(primary_key=True, serialize=False)),
-                ('personal_colegio',models.ForeignKey(db_column='id_persona_colegio',to='register.PersonalColegio')),
+                ('personal_colegio',models.ForeignKey(db_column='id_persona_colegio', to='register.PersonalSucursal')),
                 ('tipo_descuento', models.ForeignKey(db_column='id_tipo_descuento',to='discounts.TipoDescuento')),
                 ('matricula', models.ForeignKey(db_column='id_matricula', to='enrollment.Matricula')),
                 ('numero_expediente', models.CharField(max_length=200, null=True)),

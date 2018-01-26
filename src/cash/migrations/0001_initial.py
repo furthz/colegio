@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
             name='Caja',
             fields=[
                 ('id_caja', models.AutoField(primary_key=True, serialize=False)),
-                ('colegio', models.ForeignKey(db_column='id_colegio', to='register.Colegio')),
+                ('colegio', models.ForeignKey(db_column='id_colegio', to='register.Sucursal')),
                 ('numero', models.IntegerField()),
                 ('descripcion', models.CharField(blank=True, max_length=500, null=True)),
                 ('activo', models.BooleanField(default=True)),
@@ -48,7 +48,7 @@ class Migration(migrations.Migration):
             name='CajaCajero',
             fields=[
                 ('id_movimiento', models.AutoField(primary_key=True, serialize=False)),
-                ('personal_colegio', models.ForeignKey(db_column='id_personal_colegio', to='register.PersonalColegio')),
+                ('personal_colegio', models.ForeignKey(db_column='id_personal_colegio', to='register.PersonalSucursal')),
                 ('caja', models.ForeignKey(db_column='id_caja', to='cash.Caja')),
                 ('saldo', models.FloatField()),
                 ('ventas', models.FloatField()),
@@ -78,7 +78,7 @@ class Migration(migrations.Migration):
             name='Remesa',
             fields=[
                 ('id_remesa', models.AutoField(primary_key=True, serialize=False)),
-                ('personal_colegio', models.ForeignKey(db_column='id_personal_colegio', to='register.PersonalColegio')),
+                ('personal_colegio', models.ForeignKey(db_column='id_personal_colegio', to='register.PersonalSucursal')),
                 #('caja_chica', models.ForeignKey(db_column="id_caja_chica",to='payments.CajaChica', null=True, blank=True)),
                 ('movimiento', models.ForeignKey(db_column='id_movimiento', to='cash.CajaCajero')),
                 ('fechacreacion', models.DateTimeField()),

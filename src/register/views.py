@@ -22,9 +22,11 @@ from django.shortcuts import render
 from django.views.generic import CreateView
 
 from register.forms import PersonaForm, AlumnoForm, ApoderadoForm, PersonalForm, PromotorForm, DirectorForm, CajeroForm, \
-    TesoreroForm, ProveedorForm, ColegioForm, SistemasForm, AdministrativoForm, DocenteForm
-from register.models import Alumno, Apoderado, Personal, Promotor, Director, Cajero, Tesorero, Colegio, Proveedor, \
-    ProveedorColegio, PersonalColegio, Administrativo, Direccion, Telefono, Sistemas, Docente
+    TesoreroForm, ProveedorForm, ColegioForm, SistemasForm, AdministrativoForm, DocenteForm, EmpresaForm, \
+    ConfiguracionSistemaForm
+from register.models import Alumno, Apoderado, Personal, Promotor, Director, Cajero, Tesorero, Sucursal, Proveedor, \
+    ProveedorSucursal, PersonalSucursal, Administrativo, Direccion, Telefono, Sistemas, Docente, Empresa, \
+    ConfiguracionSistema
 from utils.middleware import get_current_colegio, validar_roles, get_current_user
 from utils.views import SaveGeneric, MyLoginRequiredMixin
 from payments.models import CajaChica
@@ -66,7 +68,7 @@ class CreatePersonaView(MyLoginRequiredMixin, CreateView):
             usuario_creado = Userss.objects.get(pk = usuario_creado_id)
 
             is_sistemas = usuario_creado.groups.filter(name="Sistemas").exists()
-            colegios = Colegio.objects.filter(activo=True)
+            colegios = Sucursal.objects.filter(activo=True)
 
             return render(request, template_name=self.template_name, context={'isSistemas': is_sistemas, 'colegios': colegios, 'form': self.form_class})  #super(CreatePersonaView, self).get(request, args, kwargs)
 
@@ -730,13 +732,13 @@ class ProveedorCreateView(CreateView):
 
             try:
                 id_colegio = self.request.session.get('colegio')
-                cole = Colegio.objects.get(pk=id_colegio)
+                cole = Sucursal.objects.get(pk=id_colegio)
 
-                prov_col = ProveedorColegio()
+                prov_col = ProveedorSucursal()
                 prov_col.colegio = cole
                 prov_col.proveedor = instance
                 prov_col.save()
-            except Colegio.DoesNotExist:
+            except Sucursal.DoesNotExist:
                 pass
 
             return HttpResponseRedirect(instance.get_absolute_url())
@@ -780,7 +782,7 @@ class ProveedorDeleteView(MyLoginRequiredMixin, TemplateView):
 
             if id_colegio is None:
 
-                provs = ProveedorColegio.objects.filter(proveedor=proveedor)
+                provs = ProveedorSucursal.objects.filter(proveedor=proveedor)
 
                 for prov in provs:
                     prov.activo = False
@@ -789,12 +791,12 @@ class ProveedorDeleteView(MyLoginRequiredMixin, TemplateView):
             else:
 
                 try:
-                    prov = ProveedorColegio.objects.get(proveedor=proveedor, colegio__id_colegio=id_colegio, activo=True)
+                    prov = ProveedorSucursal.objects.get(proveedor=proveedor, colegio__id_colegio=id_colegio, activo=True)
 
                     prov.activo = False
                     prov.save()
 
-                except ProveedorColegio.DoesNotExist:
+                except ProveedorSucursal.DoesNotExist:
                     pass
 
             return HttpResponseRedirect(reverse('registers:proveedor_list'))
@@ -858,7 +860,7 @@ class PersonalDeleteView(MyLoginRequiredMixin, TemplateView):
                         alu.activo = False
                         alu.save()
                 else:
-                    personales = PersonalColegio.objects.filter(personal__id_persona=persona.id_persona)
+                    personales = PersonalSucursal.objects.filter(personal__id_persona=persona.id_persona)
 
                     for personal in personales:
                         personal.activo = False
@@ -871,7 +873,7 @@ class PersonalDeleteView(MyLoginRequiredMixin, TemplateView):
                     alu.activo = False
                     alu.save()
                 else:
-                    personal = PersonalColegio.objects.get(personal__id_persona=persona.id_persona, colegio__id_colegio=id_colegio)
+                    personal = PersonalSucursal.objects.get(personal__id_persona=persona.id_persona, colegio__id_colegio=id_colegio)
 
                     personal.activo = False
                     personal.save()
@@ -972,14 +974,14 @@ class ProveedorListView(MyLoginRequiredMixin, TemplateView):
             logger.debug("colegio id: " + str(id_colegio))
 
             try:
-                colegio = Colegio.objects.get(pk=id_colegio)
+                colegio = Sucursal.objects.get(pk=id_colegio)
                 logger.debug("colegio: " + str(colegio))
 
                 # Obtener los empleados del colegio
                 proveedores = Proveedor.objects.filter(proveedores__activo=True, proveedores__colegio=colegio).order_by('razon_social')
                 logger.debug("cantidad de proveedores: " + str(proveedores.count()))
 
-            except Colegio.DoesNotExist:
+            except Sucursal.DoesNotExist:
                 # Obtener los empleados del colegio
                 proveedores = Proveedor.objects.all().order_by('razon_social')
                 logger.debug("cantidad de empleados: " + str(proveedores.count()))
@@ -1185,19 +1187,19 @@ class PersonaListView(MyLoginRequiredMixin, TemplateView):
 
             alumnos = []
             try:
-                colegio = Colegio.objects.get(pk=id_colegio)
+                colegio = Sucursal.objects.get(pk=id_colegio)
                 logger.debug("colegio: " + str(colegio))
 
                 # Obtener los empleados del colegio
-                empleados = PersonalColegio.objects.filter(colegio=colegio, activo=True).all()
+                empleados = PersonalSucursal.objects.filter(colegio=colegio, activo=True).all()
                 logger.debug("cantidad de empleados: " + str(empleados.count()))
 
                 alumnos = Matricula.objects.filter(colegio=colegio, activo=True).all()
                 logger.debug("Cantidad de alumnos: " + str(alumnos.count()))
 
-            except Colegio.DoesNotExist:
+            except Sucursal.DoesNotExist:
                 # Obtener los empleados del colegio
-                empleados = PersonalColegio.objects.filter(activo=True).all()
+                empleados = PersonalSucursal.objects.filter(activo=True).all()
                 logger.debug("cantidad de empleados: " + str(empleados.count()))
 
             personal = []
@@ -1284,14 +1286,15 @@ class ColegioCreateView(MyLoginRequiredMixin, TemplateView):
 
     """
     template_name = "colegio_create.html"
-    model = Colegio
+    model = Sucursal
     form_class = ColegioForm
-
     @method_decorator(permission_required('register.colegio_create', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
+        empresa = Empresa.objects.get(id_empresa=int(request.GET['empresa']))
         return render(request, template_name=self.template_name, context={
             'form': self.form_class,
+            'empresa':empresa,
         })
 
     @method_decorator(permission_required('register.colegio_create', login_url=settings.REDIRECT_PERMISOS,
@@ -1305,34 +1308,28 @@ class ColegioCreateView(MyLoginRequiredMixin, TemplateView):
             logger.info(data_form)
             logger.info(form.data)
 
-            colegio = Colegio(
+            colegio = Sucursal(
                 nombre=data_form['nombre'],
-                ruc=data_form['ruc'],
-                ugel=data_form['ugel']
+                empresa=data_form['empresa'],
+                ugel=data_form['ugel'],
+                codigo_sucursal=data_form['codigo_sucursal'],
+                dpto=data_form['departamento'],
+                direccion=data_form['direccion'],
+                provincia=data_form['provincia'],
+                distrito=data_form['distrito'],
+                telefono_1=data_form['telefono_1'],
+                telefono_2=data_form['telefono_2'],
+                telefono_3=data_form['telefono_3']
             )
             colegio.save()
-            direccion = Direccion(
-                colegio= colegio,
-                dpto= data_form['departamento'],
-                calle= data_form['direccion'],
-                referencia= data_form['referencia'],
-                provincia= data_form['provincia'],
-                distrito= data_form['distrito']
+
+            configuracion = ConfiguracionColegio(
+                sucursal=colegio,
+                emision_boleta=False,
+                emision_factura=False,
+                emision_recibo=True,
             )
-            direccion.save()
-            try:
-                celulares = form.data['nros']
-                lst_celulares = celulares.split(',')
-                lista_numeros = []
-                for cel in lst_celulares:
-                    telef = Telefono(
-                        colegio= colegio,
-                        numero=cel,
-                        tipo="Celular"
-                    )
-                    telef.save()
-            except:
-                logger.info("no se registraron numeros del colegio")
+            configuracion.save()
             logger.info("El formulario es valido")
             caja_chica = CajaChica(
                 colegio= colegio,
@@ -1346,13 +1343,13 @@ class ColegioCreateView(MyLoginRequiredMixin, TemplateView):
 
 
 class ColegioListView(MyLoginRequiredMixin, TemplateView):
-    model = Colegio
+    model = Sucursal
     template_name = 'colegio_list.html'
 
     @method_decorator(permission_required('register.colegio_list', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
-        colegios = Colegio.objects.all()
+        colegios = Sucursal.objects.filter(empresa_id=request.GET['empresa'])
 
         return render(request, template_name=self.template_name, context={
             'colegios': colegios,
@@ -1415,3 +1412,78 @@ class DocenteDetailView(MyLoginRequiredMixin, DetailView):
 
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+
+
+class EmpresaCreateView(MyLoginRequiredMixin, TemplateView):
+    """
+
+    """
+    template_name = "empresa_create.html"
+    model = Empresa
+    form_class = EmpresaForm
+
+    @method_decorator(permission_required('register.colegio_create', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        return render(request, template_name=self.template_name, context={
+            'form': self.form_class,
+        })
+
+    @method_decorator(permission_required('register.colegio_create', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        logger.info("En el POST")
+        logger.info(request.POST)
+        if form.is_valid():
+            data_form = form.cleaned_data
+            logger.info(data_form)
+            logger.info(form.data)
+
+            empresa = Empresa(
+                razon_comercial=data_form['razon_comercial'],
+                razon_social=data_form['razon_social'],
+                ruc=data_form['ruc'],
+                resolucion_sunat=data_form['resolucion_sunat'],
+                dpto=data_form['departamento'],
+                direccion=data_form['direccion'],
+                provincia=data_form['provincia'],
+                distrito=data_form['distrito']
+            )
+            empresa.save()
+            id = empresa.id_empresa
+            configuracion = ConfiguracionSistema(
+                id_configuracion_sistema=id,
+                empresa=empresa,
+                modalidad_sistema=0,
+                igv=0,
+            )
+            configuracion.save()
+            logger.info("El formulario es valido")
+            return HttpResponseRedirect(reverse('registers:empresa_list'))
+        print("no se registro")
+        return HttpResponseRedirect(reverse('registers:empresa_list'))
+
+
+class EmpresaListView(MyLoginRequiredMixin, TemplateView):
+    model = Empresa
+    template_name = 'empresa_list.html'
+
+    @method_decorator(permission_required('register.colegio_list', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        empresas = Empresa.objects.all()
+
+        return render(request, template_name=self.template_name, context={
+            'empresas': empresas,
+        })
+
+class ConfiguracionSistemaUpdateView(MyLoginRequiredMixin, UpdateView):
+    """
+
+    """
+    template_name = "configuracionsistema_form.html"
+    model = ConfiguracionSistema
+    form_class = ConfiguracionSistemaForm
+

@@ -66,16 +66,47 @@ class Personal(CreacionModificacionUserPersonalMixin, CreacionModificacionFechaP
         )
 
 
-class Colegio(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
+
+class Empresa(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
+    """
+    Clase para el Colegio
+    """
+    id_empresa = models.AutoField(primary_key=True)
+    razon_social = models.CharField(max_length=100)
+    razon_comercial = models.CharField(max_length=100)
+    ruc = models.CharField(max_length=11)
+    direccion = models.CharField(max_length=100)
+    dpto = models.CharField(max_length=15)
+    provincia = models.CharField(max_length=15)
+    distrito = models.CharField(max_length=100)
+    resolucion_sunat = models.CharField(max_length=30, null=True, blank=True)
+    email = models.CharField(max_length=100, null=True, blank=True)
+
+    def __str__(self):
+        return self.razon_social
+
+    class Meta:
+        managed = True
+
+
+class Sucursal(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
     """
     Clase para el Colegio
     """
     id_colegio = models.AutoField(primary_key=True)
+    empresa = models.ForeignKey(Empresa, models.DO_NOTHING, db_column='id_empresa')
     nombre = models.CharField(max_length=100)
-    ruc = models.CharField(max_length=11)
+    codigo_sucursal = models.CharField(max_length=100, null=True, blank=True)
     ugel = models.CharField(max_length=100)
-    numero_recibo = models.IntegerField(default=1)
-    personales = models.ManyToManyField(Personal, through='PersonalColegio', related_name='Colegios', null=True)
+    personales = models.ManyToManyField(Personal, through='PersonalSucursal', related_name='Sucursales', null=True)
+    direccion = models.CharField(max_length=100)
+    dpto = models.CharField(max_length=15)
+    provincia = models.CharField(max_length=15)
+    distrito = models.CharField(max_length=100)
+    telefono_1 = models.IntegerField(null=True, blank=True)
+    telefono_2 = models.IntegerField(null=True, blank=True)
+    telefono_3 = models.IntegerField(null=True, blank=True)
+    email = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
         return self.nombre
@@ -98,7 +129,7 @@ class Telefono(ActivoMixin, CreacionModificacionUserMixin, CreacionModificacionF
     o #Colegio
     """
     id_telefono = models.AutoField(primary_key=True)
-    colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column='id_colegio', related_name="telefonos")
+    colegio = models.ForeignKey(Sucursal, models.DO_NOTHING, db_column='id_colegio', related_name="telefonos")
     persona = models.ForeignKey(Profile, models.DO_NOTHING, db_column='id_persona', related_name="telefonos")
     numero = models.IntegerField()
     tipo = models.CharField(max_length=10)
@@ -118,7 +149,7 @@ class Direccion(CreacionModificacionUserMixin, CreacionModificacionFechaMixin, m
 
     id_direccion = models.AutoField(primary_key=True)
     persona = models.ForeignKey(Profile, models.DO_NOTHING, db_column='id_persona', related_name="direcciones")
-    colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column='id_colegio', related_name="direcciones")
+    colegio = models.ForeignKey(Sucursal, models.DO_NOTHING, db_column='id_colegio', related_name="direcciones")
     calle = models.CharField(max_length=100)
     dpto = models.CharField(max_length=15)
     provincia = models.CharField(max_length=15)
@@ -542,13 +573,13 @@ class Docente(CreacionModificacionUserSistemasMixin, CreacionModificacionFechaSi
         )
 
 
-class PersonalColegio(ActivoMixin, CreacionModificacionUserMixin, CreacionModificacionFechaMixin, models.Model):
+class PersonalSucursal(ActivoMixin, CreacionModificacionUserMixin, CreacionModificacionFechaMixin, models.Model):
     """
     Clase que relacion el Personal con un Colegio
     """
     id_personal_colegio = models.AutoField(primary_key=True)
     personal = models.ForeignKey(Personal, models.DO_NOTHING, db_column="id_personal")
-    colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column="id_colegio")
+    colegio = models.ForeignKey(Sucursal, models.DO_NOTHING, db_column="id_colegio")
 
     class Meta:
         managed = True
@@ -610,7 +641,7 @@ class Proveedor(CreacionModificacionUserProveedorMixin, CreacionModificacionFech
     """
     id_proveedor = models.AutoField(primary_key=True)
     razon_social = models.CharField(max_length=100)
-    ruc = models.IntegerField(max_length=11, unique=True)
+    ruc = models.IntegerField(unique=True)
 
     def __str__(self):
         return self.razon_social
@@ -639,13 +670,13 @@ class Proveedor(CreacionModificacionUserProveedorMixin, CreacionModificacionFech
         )
 
 
-class ProveedorColegio(ActivoMixin, CreacionModificacionUserProveedorMixin, CreacionModificacionFechaProveedorMixin, models.Model):
+class ProveedorSucursal(ActivoMixin, CreacionModificacionUserProveedorMixin, CreacionModificacionFechaProveedorMixin, models.Model):
     """
     Proveedor Colegio
     """
     id_proveedor_colegio = models.AutoField(primary_key=True)
     proveedor = models.ForeignKey(Proveedor, models.DO_NOTHING, db_column="id_proveedor", related_name="proveedores")
-    colegio = models.ForeignKey(Colegio, models.DO_NOTHING, db_column="id_colegio", related_name="colegios")
+    colegio = models.ForeignKey(Sucursal, models.DO_NOTHING, db_column="id_colegio", related_name="sucursales")
 
     class Meta:
         managed = True
@@ -654,7 +685,78 @@ class ProveedorColegio(ActivoMixin, CreacionModificacionUserProveedorMixin, Crea
     def __str__(self):
         return self.proveedor.razon_social
 
+##################################################################################
+#           Modificaciones 21 de Enero 2018
+##################################################################################
 
+class TipoFormato(ActivoMixin, models.Model):
+    """
+    Catalogo de los tipos de formatos en una sucursal
+    """
+    id_tipo_formato = models.AutoField(primary_key=True)
+    descripcion = models.CharField(max_length=20)
+    nombre_archivo_formato = models.CharField(max_length=100, null=True, blank=True)
+
+    class Meta:
+        managed = True
+
+
+class TipoDocumento(ActivoMixin, models.Model):
+    """
+    Catalogo de los tipos de documentos comerciales
+    """
+    id_tipo_documento = models.AutoField(primary_key=True)
+    cod_tipo_documento = models.CharField(max_length=2)
+    nom_tipo_documento = models.CharField(max_length=20)
+    nom_tipo_documento_electronico = models.CharField(max_length=40)
+    tipo_formato = models.ForeignKey(TipoFormato, models.DO_NOTHING, db_column='id_tipo_formato')
+
+    class Meta:
+        managed = True
+
+
+class CorrelativoDocumento(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
+    """
+    Clase para los relativos de documentos
+    """
+    id_documento = models.AutoField(primary_key=True)
+    sucursal = models.ForeignKey(Sucursal, models.DO_NOTHING, db_column='id_sucursal')
+    tipo_documento = models.ForeignKey(TipoDocumento, models.DO_NOTHING, db_column='id_tipo_documento')
+    serie_documento = models.CharField(max_length=5)
+    correlativo_documento = models.IntegerField()
+    digitos_correlativo = models.IntegerField()
+
+    class Meta:
+        managed = True
+
+
+
+class ModalidadSistema(ActivoMixin, models.Model):
+    """
+    Catalogo de tipos de modalidad del sistema
+    """
+    id_modalidad_sistema = models.AutoField(primary_key=True)
+    descripcion_modalidad = models.CharField(max_length=200)
+
+    class Meta:
+        managed = True
+
+
+class ConfiguracionSistema(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
+    """
+    Clase para la configuracion del sistema
+    """
+    id_configuracion_sistema = models.AutoField(primary_key=True)
+    empresa = models.ForeignKey(Empresa, models.DO_NOTHING, db_column='id_empresa')
+    modalidad_sistema = models.ForeignKey(ModalidadSistema, models.DO_NOTHING, db_column = 'id_modalidad_sistema')
+    igv = models.FloatField(default = 0)
+
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('registers:empresa_list')
+
+    class Meta:
+        managed = True
 
 
 

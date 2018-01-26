@@ -9,7 +9,7 @@ from django.views.generic.edit import CreateView,UpdateView
 from payments.models import TipoPago
 from payments.models import CajaChica
 
-from register.models import PersonalColegio, Tesorero, Colegio, Personal, Promotor, ProveedorColegio
+from register.models import PersonalSucursal, Tesorero, Sucursal, Personal, Promotor, ProveedorSucursal
 from payments.forms import TipoPagoForm
 from profiles.models import Profile
 from payments.forms import PagoForm
@@ -140,14 +140,14 @@ class RegistrarPagoCreateView(CreateView):
 
 
     def form_valid(self, form):
-        form.instance.personal = PersonalColegio.objects.get(pagos__proveedor__user=self.request.user)
+        form.instance.personal = PersonalSucursal.objects.get(pagos__proveedor__user=self.request.user)
         form.instance.caja_chica = CajaChica.objects.get(colegio__id_colegio = self.request.session.get('colegio'))
         form.instance.fecha = datetime.today()
         return super(RegistrarPagoCreateView, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super(RegistrarPagoCreateView, self).get_context_data(**kwargs)
-        proovedores = ProveedorColegio.objects.filter(colegio__id_colegio = self.request.session.get('colegio'), activo = True)
+        proovedores = ProveedorSucursal.objects.filter(colegio__id_colegio = self.request.session.get('colegio'), activo = True)
         tipo_pago = TipoPago.objects.filter(colegio__id_colegio = self.request.session.get('colegio'), eliminado=False)
         cajachica_actual = CajaChica.objects.get(colegio__id_colegio = self.request.session.get('colegio'))
         saldo = cajachica_actual.saldo
@@ -167,7 +167,7 @@ class RegistrarPagoCreateView(CreateView):
 
                 pago = self.model(proveedor=data_form['proveedor'],
                                   caja_chica=cajachica_actual,
-                                  personal=PersonalColegio.objects.get(personal__tesorero__user=self.request.user),
+                                  personal=PersonalSucursal.objects.get(personal__tesorero__user=self.request.user),
                                   tipo_pago=data_form['tipo_pago'],
                                   descripcion=data_form['descripcion'],
                                   monto=data_form['monto'],
@@ -229,7 +229,7 @@ class ControlPagosPromotorView(FormView):
             # Cargamos los tipos de pago
             id_colegio = get_current_colegio()
             logger.debug("El id del colegio es {0}".format(id_colegio))
-            colegio = Colegio.objects.get(pk=id_colegio)
+            colegio = Sucursal.objects.get(pk=id_colegio)
             tipos = TipoPago.objects.filter(colegio=colegio)
             tipos_pagos = []
             tipos_pagos.append("Todos")
@@ -346,7 +346,7 @@ class ControlPagosDirectorView(FormView):
             # Cargamos los tipos de pago
             id_colegio = get_current_colegio()
             logger.debug("El id del colegio es {0}".format(id_colegio))
-            colegio = Colegio.objects.get(pk=id_colegio)
+            colegio = Sucursal.objects.get(pk=id_colegio)
             tipos = TipoPago.objects.filter(colegio=colegio)
             tipos_pagos = []
             tipos_pagos.append("Todos")

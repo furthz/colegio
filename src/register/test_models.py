@@ -17,8 +17,8 @@ from .models import Personal
 from .models import Promotor
 from .models import Cajero
 from .models import Director
-from .models import Colegio
-from .models import PersonalColegio
+from .models import Sucursal
+from .models import PersonalSucursal
 from profiles.models import Profile
 
 from django.utils.timezone import now as timezone_now
@@ -225,7 +225,7 @@ class AlumnoModelTest(TestCase):
 
 class ColegioModelTest(TestCase):
     def setUp(self):
-        self.colegio = Colegio(nombre="Juan Bautista", ruc="11223344", ugel="dos", activo=True)
+        self.colegio = Sucursal(nombre="Juan Bautista", ruc="11223344", ugel="dos", activo=True)
         self.colegio.save()
 
     def test_colegio(self):
@@ -268,7 +268,7 @@ class ColegioModelTest(TestCase):
 
         tesorero = Tesorero(personaltesorero=pers)
 
-        persocole = PersonalColegio(personal=pers, colegio=self.colegio, activo=True)
+        persocole = PersonalSucursal(personal=pers, colegio=self.colegio, activo=True)
         persocole.save()
 
         self.assertEquals(self.colegio.personales.count(), 1)
