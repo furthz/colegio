@@ -80,7 +80,6 @@ class Empresa(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionU
     provincia = models.CharField(max_length=15)
     distrito = models.CharField(max_length=100)
     resolucion_sunat = models.CharField(max_length=30, null=True, blank=True)
-    email = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
         return self.razon_social
@@ -106,7 +105,6 @@ class Sucursal(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacion
     telefono_1 = models.IntegerField(null=True, blank=True)
     telefono_2 = models.IntegerField(null=True, blank=True)
     telefono_3 = models.IntegerField(null=True, blank=True)
-    email = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
         return self.nombre
@@ -741,6 +739,8 @@ class ModalidadSistema(ActivoMixin, models.Model):
     class Meta:
         managed = True
 
+    def __str__(self):
+        return self.descripcion_modalidad
 
 class ConfiguracionSistema(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
     """

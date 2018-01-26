@@ -26,7 +26,7 @@ from register.forms import PersonaForm, AlumnoForm, ApoderadoForm, PersonalForm,
     ConfiguracionSistemaForm
 from register.models import Alumno, Apoderado, Personal, Promotor, Director, Cajero, Tesorero, Sucursal, Proveedor, \
     ProveedorSucursal, PersonalSucursal, Administrativo, Direccion, Telefono, Sistemas, Docente, Empresa, \
-    ConfiguracionSistema
+    ConfiguracionSistema, ModalidadSistema
 from utils.middleware import get_current_colegio, validar_roles, get_current_user
 from utils.views import SaveGeneric, MyLoginRequiredMixin
 from payments.models import CajaChica
@@ -1323,13 +1323,6 @@ class ColegioCreateView(MyLoginRequiredMixin, TemplateView):
             )
             colegio.save()
 
-            configuracion = ConfiguracionColegio(
-                sucursal=colegio,
-                emision_boleta=False,
-                emision_factura=False,
-                emision_recibo=True,
-            )
-            configuracion.save()
             logger.info("El formulario es valido")
             caja_chica = CajaChica(
                 colegio= colegio,
@@ -1338,8 +1331,8 @@ class ColegioCreateView(MyLoginRequiredMixin, TemplateView):
                 periodo=1,
             )
             caja_chica.save()
-            return HttpResponseRedirect(reverse('registers:colegio_list'))
-        return HttpResponseRedirect(reverse('registers:colegio_list'))
+            return HttpResponseRedirect(reverse('registers:empresa_list'))
+        return HttpResponseRedirect(reverse('registers:empresa_list'))
 
 
 class ColegioListView(MyLoginRequiredMixin, TemplateView):
@@ -1456,7 +1449,7 @@ class EmpresaCreateView(MyLoginRequiredMixin, TemplateView):
             configuracion = ConfiguracionSistema(
                 id_configuracion_sistema=id,
                 empresa=empresa,
-                modalidad_sistema=0,
+                modalidad_sistema=ModalidadSistema.objects.get(pk=1),
                 igv=0,
             )
             configuracion.save()

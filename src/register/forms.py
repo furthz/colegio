@@ -354,3 +354,7 @@ class ConfiguracionSistemaForm(ModelForm):
             'modalidad_sistema',
             'igv',
         ]
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['modalidad_sistema'].widget.attrs.update({'class': 'form-control'})
+        self.fields['igv'].widget.attrs.update({'class': 'form-control'})
