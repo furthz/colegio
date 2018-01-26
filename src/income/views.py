@@ -10,7 +10,7 @@ from django.db.models import Q
 from income.models import calculo_ingresos_promotor, obtener_mes, calculo_ingresos_alumno, calculo_por_nivel_promotor
 from django.views.generic import FormView, TemplateView
 from django.shortcuts import render
-from register.models import Cajero
+from register.models import Cajero, Empresa
 from enrollment.models import Cuentascobrar, Matricula
 from register.models import Sucursal, Alumno, Apoderado, Promotor, PersonalSucursal, Personal
 from profiles.models import Profile
@@ -613,18 +613,16 @@ def recibo_A6(request):
                    detalle_cobranza]
     fecha = date.today()
 
+    dir_colegio = colegio.direccion
 
-    dire = Direccion.objects.get(colegio=colegio)
-    dir_colegio = dire.calle
-
-    departamento = dire.get_departamento + " - PERU"
+    departamento = colegio.dpto + " - PERU"
 
     dire_alumno = Direccion.objects.get(persona=alumno.persona)
     direccion_alumno = dire_alumno.calle
 
 
 
-    numero_recibo = colegio.numero_recibo - 1
+    #numero_recibo = colegio.numero_recibo - 1
 
     p.line(20, 390, 270, 390)
     p.setFont('Helvetica', 8)
@@ -636,7 +634,7 @@ def recibo_A6(request):
         p.drawString(70, 330, '{0}'.format(departamento))
     except:
         p.drawString(70, 340, '{0}'.format(departamento))
-    p.drawString(195, 360, 'RECIBO {0}'.format(numero_recibo))
+    #p.drawString(195, 360, 'RECIBO {0}'.format(numero_recibo))
     p.drawString(195, 350, 'FECHA:  {0}'.format(fecha))
     p.setFont('Helvetica', 6)
     p.drawString(20, 310, 'Sr(a):   {0}'.format(nombre))
@@ -687,16 +685,14 @@ def boleta_A6(request):
                    detalle_cobranza]
     fecha = date.today()
 
+    dir_colegio = colegio.direccion
 
-    dire = Direccion.objects.get(colegio=colegio)
-    dir_colegio = dire.calle
-
-    departamento = dire.get_departamento + " - PERU"
+    departamento = colegio.dpto + " - PERU"
 
     dire_alumno = Direccion.objects.get(persona=alumno.persona)
     direccion_alumno = dire_alumno.calle
-    ruc_colegio = colegio.ruc
-    numero_recibo = colegio.numero_recibo - 1
+    ruc_colegio = colegio.empresa.ruc
+    #numero_recibo = colegio.numero_recibo - 1
 
     p.line(20, 390, 270, 390)
     p.setFont('Helvetica', 8)
@@ -710,7 +706,7 @@ def boleta_A6(request):
         p.drawString(70, 340, '{0}'.format(departamento))
     p.drawString(195, 360, 'RUC: {0}'.format(ruc_colegio))
     p.drawString(195, 350, 'BOLETA DE VENTA')
-    p.drawString(195, 340, '001 - N° {0}'.format(numero_recibo))
+    #p.drawString(195, 340, '001 - N° {0}'.format(numero_recibo))
     p.setFont('Helvetica', 6)
     p.drawString(20, 310, 'Sr(a):   {0}'.format(nombre))
     p.drawString(20, 300, 'Dirección:  {0}'.format(direccion_alumno))
@@ -761,15 +757,14 @@ def recibo_A5(request):
                    detalle_cobranza]
     fecha = date.today()
 
-    dire = Direccion.objects.get(colegio=colegio)
-    dir_colegio = dire.calle
+    dir_colegio = colegio.direccion
 
-    departamento = dire.get_departamento + " - PERU"
+    departamento = colegio.dpto + " - PERU"
 
     dire_alumno = Direccion.objects.get(persona=alumno.persona)
     direccion_alumno = dire_alumno.calle
 
-    numero_recibo = colegio.numero_recibo - 1
+    #numero_recibo = colegio.numero_recibo - 1
 
 
     p.line(40, 510, 370, 510)
@@ -782,7 +777,7 @@ def recibo_A5(request):
         p.drawString(90, 460, '{0}'.format(departamento))
     except:
         p.drawString(90, 470, '{0}'.format(departamento))
-    p.drawString(270, 490, 'RECIBO {0}'.format(numero_recibo))
+    #p.drawString(270, 490, 'RECIBO {0}'.format(numero_recibo))
     p.drawString(270, 480, 'FECHA:  {0}'.format(fecha))
     p.setFont('Helvetica', 8)
     p.drawString(40, 440, 'Sr(a):   {0}'.format(nombre))
@@ -833,16 +828,14 @@ def boleta_A5(request):
                    detalle_cobranza]
     fecha = date.today()
 
+    dir_colegio = colegio.direccion
 
-    dire = Direccion.objects.get(colegio=colegio)
-    dir_colegio = dire.calle
-
-    departamento = dire.get_departamento + " - PERU"
+    departamento = colegio.dpto + " - PERU"
 
     dire_alumno = Direccion.objects.get(persona=alumno.persona)
     direccion_alumno = dire_alumno.calle
-    ruc_colegio = colegio.ruc
-    numero_recibo = colegio.numero_recibo - 1
+    ruc_colegio = colegio.empresa.ruc
+    #numero_recibo = colegio.numero_recibo - 1
 
     p.line(40, 510, 370, 510)
     p.setFont('Helvetica', 10)
@@ -856,7 +849,7 @@ def boleta_A5(request):
         p.drawString(90, 470, '{0}'.format(departamento))
     p.drawString(270, 490, 'RUC: {0}'.format(ruc_colegio))
     p.drawString(270, 480, 'BOLETA DE VENTA')
-    p.drawString(270, 470, '001 - N° {0}'.format(numero_recibo))
+    #p.drawString(270, 470, '001 - N° {0}'.format(numero_recibo))
     p.setFont('Helvetica', 8)
     p.drawString(40, 440, 'Sr(a):   {0}'.format(nombre))
     p.drawString(270, 440, 'Fecha:  {0}'.format(fecha))
