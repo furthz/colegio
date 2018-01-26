@@ -12,13 +12,12 @@ from django.core.urlresolvers import reverse_lazy
 from os.path import dirname, join, exists, os, sys
 from decouple import config, Csv
 
-
 # Build paths inside the project like this: join(BASE_DIR, "directory")
 BASE_ROOT = dirname(dirname(dirname(dirname(__file__))))
 
 BASE_DIR = dirname(dirname(dirname(__file__)))
 
-EXTERNAL_LIBS_PATH = os.path.join(BASE_DIR,"externals","libs")
+EXTERNAL_LIBS_PATH = os.path.join(BASE_DIR, "externals", "libs")
 
 EXTERNAL_APPS_PATH = os.path.join(BASE_DIR, "externals", "apps")
 
@@ -51,7 +50,7 @@ TEMPLATES = [
                 'django.template.context_processors.static',
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
-                #'django.core.context_processors.request', #añadido por Edwin para probar calendario
+                # 'django.core.context_processors.request', #añadido por Edwin para probar calendario
             ],
         },
     },
@@ -59,6 +58,7 @@ TEMPLATES = [
 
 # Use 12factor inspired environment variables or from a file
 import environ
+
 env = environ.Env()
 
 # Ideally move env file should be outside the git repo
@@ -67,8 +67,8 @@ try:
     env_file = join(dirname(__file__), 'local.env')
 except NameError:
     import sys
-    env_file = join(dirname(sys.argv[0]), 'local.env')
 
+    env_file = join(dirname(sys.argv[0]), 'local.env')
 
 if exists(env_file):
     environ.Env.read_env(str(env_file))
@@ -96,7 +96,7 @@ INSTALLED_APPS = (
     'authtools',
     'crispy_forms',
     'easy_thumbnails',
-    #'schedule',  #añadido por Edwin para probar calendario, luego de ejecutar pip install django-scheduler
+    # 'schedule',  #añadido por Edwin para probar calendario, luego de ejecutar pip install django-scheduler
 
     'utils',
     'accounts',
@@ -110,10 +110,11 @@ INSTALLED_APPS = (
     'import_export',
     'django_filters',
     'AE_academico',
-    #'AE_agenda',
-    #'AE_chat',
-    #'AE_social',
+    # 'AE_agenda',
+    # 'AE_chat',
+    # 'AE_social',
     'rest_framework',
+    'markdown',
     'rest_framework.authtoken',
     'rest_auth',
     'APIs',
@@ -123,8 +124,8 @@ INSTALLED_APPS = (
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        #'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
-        #'rest_framework.permissions.IsAdminUser',
+        # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+        # 'rest_framework.permissions.IsAdminUser',
         'rest_framework.permissions.IsAuthenticated',
 
     ],
@@ -134,6 +135,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
 
     ],
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
     'PAGE_SIZE': 10
 }
 
@@ -149,7 +151,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'utils.middleware.ThreadLocalMiddleware',
-    #'django.middleware.cache.FetchFromCacheMiddleware',
+    # 'django.middleware.cache.FetchFromCacheMiddleware',
 )
 
 """
@@ -191,7 +193,6 @@ DATABASES = {
     'TEST': env.db(),
 }
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/dev/topics/i18n/
 
@@ -208,13 +209,14 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/dev/howto/static-files/
 
-STATIC_URL = '/static/' #% get_git_changeset(BASE_DIR)
+STATIC_URL = '/static/'  # % get_git_changeset(BASE_DIR)
 
 # Crispy Form Theme - Bootstrap 3
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 # For Bootstrap 3, change error alert to 'danger'
 from django.contrib import messages
+
 MESSAGE_TAGS = {
     messages.ERROR: 'danger'
 }
@@ -239,16 +241,15 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-#LOGIN_REDIRECT_URL = reverse_lazy("profiles:show_self")
+# LOGIN_REDIRECT_URL = reverse_lazy("profiles:show_self")
 LOGIN_REDIRECT_URL = reverse_lazy("accounts:tocolegio_self")
 LOGIN_URL = reverse_lazy("accounts:login")
 
-THUMBNAIL_EXTENSION = 'png'     # Or any extn for your thumbnails
+THUMBNAIL_EXTENSION = 'png'  # Or any extn for your thumbnails
 
 REDIRECT_PERMISOS = '/about/'
 
-
 REST_AUTH_SERIALIZERS = {
-    #'LOGIN_SERIALIZER': 'accounts.models.EmailBackend',
-    #'TOKEN_SERIALIZER': 'path.to.custom.TokenSerializer',
+    # 'LOGIN_SERIALIZER': 'accounts.models.EmailBackend',
+    # 'TOKEN_SERIALIZER': 'path.to.custom.TokenSerializer',
 }

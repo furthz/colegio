@@ -12,7 +12,6 @@ from django.conf import settings
 from utils.models import CreacionModificacionFechaProfileMixin, CreacionModificacionUserProfileMixin
 from authtools.models import User
 
-
 """
 def useridExist():
     #Verifica la existencia de un registro en CajaCajero 
@@ -24,11 +23,10 @@ def useridExist():
     return userid
 """
 
+
 class BaseProfile(CreacionModificacionFechaProfileMixin, CreacionModificacionUserProfileMixin, models.Model):
-
-
     user = models.OneToOneField(settings.AUTH_USER_MODEL, null=True)
-    #user = models.OneToOneField(User, models.DO_NOTHING, db_column='user_id', default=useridExist, null=True)
+    # user = models.OneToOneField(User, models.DO_NOTHING, db_column='user_id', default=useridExist, null=True)
     slug = models.UUIDField(default=uuid.uuid4, blank=True, editable=False, null=True)
     # Add more user profile fields here. Make sure they are nullable
     # or with default values
@@ -46,8 +44,9 @@ class BaseProfile(CreacionModificacionFechaProfileMixin, CreacionModificacionUse
     tipo_documento = models.IntegerField(null=True)
     numero_documento = models.CharField(db_index=True, max_length=15, null=True)
     sexo = models.IntegerField(null=True)
-    correo = models.EmailField(db_index= True, max_length=100, blank=True, null=True)
+    correo = models.EmailField(db_index=True, max_length=100, blank=True, null=True)
     fecha_nac = models.DateField(null=True)
+
     # fecha_creacion_persona = models.DateField()
     # fecha_modificacion_persona = models.DateField()
     # usuario_creacion_persona = models.CharField(max_length=10)
@@ -73,8 +72,7 @@ class BaseProfile(CreacionModificacionFechaProfileMixin, CreacionModificacionUse
         if self.apellido_ma:
             cadena += self.apellido_ma.capitalize()
 
-
-        #return "{0} {1} {2} {3}".format(self.nombre, self.segundo_nombre, self.apellido_pa, self.apellido_ma)
+        # return "{0} {1} {2} {3}".format(self.nombre, self.segundo_nombre, self.apellido_pa, self.apellido_ma)
         return "{0}".format(cadena)
 
     @cached_property
@@ -145,7 +143,8 @@ class BaseProfile(CreacionModificacionFechaProfileMixin, CreacionModificacionUse
     class Meta:
         abstract = True
 
-        #unique_together = (("tipo_documento", "numero_documento"),)
+        # unique_together = (("tipo_documento", "numero_documento"),)
+
 
 @python_2_unicode_compatible
 class Profile(BaseProfile):
@@ -183,5 +182,18 @@ class Profile(BaseProfile):
         return self.direcciones.select_related('persona')
 
     def __str__(self):
-        return "{}'s profile". format(self.user)
+        return "{}'s profile".format(self.user)
 
+
+class TokenFirebase(models.Model):
+    id_token = models.AutoField(primary_key=True)
+    persona = models.ForeignKey(Profile, models.DO_NOTHING, db_column="id_persona")
+    codigo = models.CharField(max_length=1000, blank=True, null=True)
+    alumno_id = models.IntegerField(null=True)
+
+    def __str__(self):
+        return "{0} {1} {2}".format(' Token: ', self.codigo)
+
+    class Meta:
+        managed = False
+        ordering = ["id_token"]
