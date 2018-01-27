@@ -141,7 +141,9 @@ class Servicio(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacion
         Solo retorna informacion de la clase como string
         :return: nombre del servicio
         """
-        return  "Servicio:  {0}    ------------------- precio: {1}".format(self.nombre,self.precio)
+        return  "Servicio:  {0}    --- precio: {1}".format(self.nombre,self.precio)
+    def nombre_servicio(self):
+        return "{0} de {1}".format(self.nombre, self.tipo_servicio)
 
     def full_detail(self):
         """

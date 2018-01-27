@@ -1002,3 +1002,40 @@ class ControlIngresosPromotorDetallesView2(TemplateView):
         #contexto['form'] = CuentasCobrarPromotorDetalleForm
 
         return render(request, self.template_name, contexto)
+
+
+from import_export import resources
+from django.http import HttpResponse
+from import_export.fields import Field
+
+class PagoResource(resources.ModelResource):
+    alumno = Field()
+    concepto_de_pago = Field()
+    class Meta:
+        model = Cuentascobrar
+        exclude = (
+            'matricula',
+            'servicio',
+            'fecha_creacion',
+            'fecha_modificacion',
+            'usuario_modificacion',
+            'usuario_creacion',
+            'activo',
+            'id_cuentascobrar',
+            'estado',
+        )
+
+    def dehydrate_alumno(self, cuentas):
+        return '{0}'.format(cuentas.matricula.alumno)
+    def dehydrate_concepto_de_pago(self, cuentas):
+        return '{0}'.format(cuentas.servicio.nombre_servicio())
+
+
+def exportIngresosCSV(request):
+    pago_resource = PagoResource()
+    queryset = Cuentascobrar.objects.filter(matricula__colegio__id_colegio=get_current_colegio(), activo=True)
+    dataset = pago_resource.export(queryset)
+    response = HttpResponse(dataset.csv, content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="ingresos_{0}.csv"'.format(datetime.today())
+    return response
+
