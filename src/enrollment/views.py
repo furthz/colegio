@@ -491,7 +491,7 @@ class ServicioRegularCreateView(MyLoginRequiredMixin, CreateView):
             """
             print ('No existe, fue creado con exito')
             """
-
+        print(self.request.POST['fecha_facturar'])
         if self.request.POST["nombre"] == 'Pension':
             form.instance.cuotas = 10
         else:
@@ -520,6 +520,57 @@ class ServicioRegularCreateView(MyLoginRequiredMixin, CreateView):
             })
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+
+class ServicioRegularNivelCompletoCreateView(MyLoginRequiredMixin, CreateView):
+    """
+
+    """
+    model = Servicio
+    #form_class = TipoServicioRegularNivelCompletoForm
+
+    def post(self, request, *args, **kwargs):
+        #form = self.form_class(request.POST)
+        #logger.info("En el POST")
+        #logger.info(request.POST)
+        #if form.is_valid():
+        #data_form = form.cleaned_data
+        nivel = request.POST['nivel_grados']
+        nivel = int(nivel)
+        nombre = request.POST['nombre']
+        precio = float(request.POST['precio'])
+        fecha = request.POST['fecha_facturar']
+        cole_id = get_current_colegio()
+        colegio = Colegio.objects.get(pk = cole_id)
+        grados = TipoServicio.objects.filter(nivel=nivel, colegio_id=cole_id, activo=True)
+        for grado in grados:
+
+            if not Servicio.objects.filter(tipo_servicio=grado, nombre=nombre, activo=True).exists():
+
+                if nombre == "Pension":
+                    servicio = Servicio(
+                        nombre=nombre,
+                        tipo_servicio=grado,
+                        precio=precio,
+                        is_periodic=True,
+                        fecha_facturar=fecha,
+                        cuotas=10,
+                    )
+                    servicio.save()
+                else:
+                    servicio = Servicio(
+                        nombre=nombre,
+                        tipo_servicio=grado,
+                        precio=precio,
+                        is_periodic=True,
+                        fecha_facturar=fecha,
+                        cuotas=1,
+                    )
+                    servicio.save()
+        return HttpResponseRedirect(reverse('enrollments:tiposervicio_list'))
+
+
+
 
 
 class ServicioExtraCreateView(MyLoginRequiredMixin, CreateView):

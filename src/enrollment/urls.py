@@ -1,5 +1,6 @@
 from django.conf.urls import url
 from enrollment.views import TipoServicioRegularCreateView, TipoServicioRegularNivelCompletoCreateView
+from enrollment.views import ServicioRegularNivelCompletoCreateView
 from enrollment.views import TipoServicioExtraCreateView
 from enrollment.views import CargarTipoServicioCreateView
 from enrollment.views import TipoServicioRegularEndUpdateView
@@ -55,6 +56,7 @@ urlpatterns = [
 
     # URL para servicios
     url(r'^service/create/regular/$', ServicioRegularCreateView.as_view(), name="servicioregular_create"),
+    url(r'^service/create/regular/nivelcompleto/$', ServicioRegularNivelCompletoCreateView.as_view(), name="servicioregularcompleto_create"),
     url(r'^service/create/extra/$', ServicioExtraCreateView.as_view(), name="servicioextra_create"),
     url(r'^service/detail/(?P<pk>\d+)/$', ServicioDetailView.as_view(), name='servicio_detail'),
     url(r'^service/update/end1/$', ServicioRegularEndUpdateView.as_view(), name="servicioregularend_update"),
