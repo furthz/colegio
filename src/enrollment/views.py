@@ -908,15 +908,16 @@ class MatriculaCreateView(MyLoginRequiredMixin, CreateView):
             logger.info(servicio)
 
             fecha_facturar = servicio.fecha_facturar
-            if fecha_facturar.month < fecha_actual.month:
-                fecha_facturar = fecha_facturar.replace(month=fecha_actual.month)
-            logger.info("la fecha a facturar es: {0}".format(fecha_facturar))
+            if fecha_actual.year == fecha_facturar.year:
+                if fecha_facturar.month < fecha_actual.month:
+                    fecha_facturar = fecha_facturar.replace(month=fecha_actual.month)
+                logger.info("la fecha a facturar es: {0}".format(fecha_facturar))
 
             if servicio.is_periodic:
                 logger.debug(str(servicio.is_periodic))
                 logger.info("El servicio es periodico {0}".format(servicio.is_periodic))
 
-                if servicio.fecha_facturar.month < fecha_actual.month:
+                if (servicio.fecha_facturar.month < fecha_actual.month) and (fecha_actual.year == fecha_facturar.year):
                     numero_cuotas = servicio.cuotas - (fecha_actual.month - servicio.fecha_facturar.month)
                 else:
                     numero_cuotas = servicio.cuotas
