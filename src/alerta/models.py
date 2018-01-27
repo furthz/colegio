@@ -84,4 +84,4 @@ class Alerta(CreacionModificacionFechaMixin, models.Model):
 
     class Meta:
         managed = False
-        ordering = ["id_alerta"]
+        ordering = ["fecha_creacion"]

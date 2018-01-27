@@ -1,9 +1,13 @@
 from django.http import HttpResponse
 from django.views import generic
 from django.views.defaults import page_not_found
-
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
 import locale
 import sys
+
+from profiles.models import Profile
 
 
 class HomePage(generic.TemplateView):
@@ -27,3 +31,17 @@ def view_locale(request):
                "<br/>sys default encoding: " + str(sys.getdefaultencoding()) + \
                "<br/>sys default encoding: " + str(sys.getdefaultencoding())
     return HttpResponse(loc_info)
+
+
+class Login_api_general(ObtainAuthToken):
+    def post(self, request, *args, **kwargs):
+        response = super(Login_api_general, self).post(request, *args, **kwargs)
+        token = Token.objects.get(key=response.data['token'])
+        user = token.user
+        perfil = Profile.objects.values('pk').filter(user_id=user.id)[0]['pk']
+        return Response({
+            'token': token.key,
+            'idUsuario': user.id,
+            'idPersona': perfil
+
+        })

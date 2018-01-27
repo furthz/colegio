@@ -37,7 +37,7 @@ urlpatterns = [
     url(r'^alerta/', include(alerta.urls, namespace='alerta')),
 
     url(r'^locale/', views.view_locale),
-
+    url(r'^login_api/', views.Login_api_general.as_view()),
 # url(r'^calendar/', include('schedule.urls', namespace='calendar')),
 
 ]

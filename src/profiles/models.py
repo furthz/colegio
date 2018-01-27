@@ -188,11 +188,11 @@ class Profile(BaseProfile):
 class TokenFirebase(models.Model):
     id_token = models.AutoField(primary_key=True)
     persona = models.ForeignKey(Profile, models.DO_NOTHING, db_column="id_persona")
-    codigo = models.CharField(max_length=1000, blank=True, null=True)
+    codigo = models.CharField(max_length=1000, blank=True, null=True, unique=True)
     alumno_id = models.IntegerField(null=True)
 
     def __str__(self):
-        return "{0} {1} {2}".format(' Token: ', self.codigo)
+        return "{0} {1}".format(' Token: ', self.codigo)
 
     class Meta:
         managed = False
