@@ -47,7 +47,11 @@
                                       <label>Año</label>
                                         <select name="anio"  class="form-control">
                                             {% for anio in anios %}
-                                                <option>{{ anio }}</option>
+                                                {% if anio_actual == anio %}
+                                                    <option selected>{{ anio }}</option>
+                                                {%  else %}
+                                                    <option>{{ anio }}</option>
+                                                {% endif %}
                                             {% endfor %}
                                         </select>
                                       </div>

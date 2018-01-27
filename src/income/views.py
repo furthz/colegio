@@ -394,7 +394,7 @@ class ControlIngresosPromotorView(FormView):
             for i in range(0, num_mes + 1):
                 meses.append(meses_todos[i])
 
-            return {'anios': anios, 'meses': meses_todos}
+            return {'anio_actual': anio, 'anios': anios, 'meses': meses_todos}
 
         else:
             mensaje_error = "No tienes acceso a esta vista"
@@ -498,7 +498,7 @@ class ControlIngresosPromotorDetallesView(FormView):
             # Cargamos los estados
             estados = ["Todos", "Pagado", "No pagado"]
 
-            return {'anios': anios, 'meses': meses_todos, 'estados': estados}
+            return {'anio_actual':anio, 'anios': anios, 'meses': meses_todos, 'estados': estados}
 
         else:
             mensaje_error = "No tienes acceso a esta vista"
