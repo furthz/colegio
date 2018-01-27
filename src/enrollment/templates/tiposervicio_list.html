@@ -113,7 +113,7 @@ function confirmDel()
                                                 <tbody>
 
                                                     {% for servicio in tiposervicio.getServiciosAsociados %}
-                                                        <form id="{{ servicio }}">{% csrf_token %}
+                                                        <form id="{{ servicio.id_servicio }}">{% csrf_token %}
                                                             <input hidden value="{{ servicio.id_servicio }}" name="idser">
                                                         </form>
                                                       <tr>
@@ -122,13 +122,13 @@ function confirmDel()
                                                         <td>s/. {{ servicio.precio }}</td>
                                                         <td>
                                                           <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                                                            <button type="submit" form="{{ servicio }}" formmethod="post" formaction="{% url 'enrollments:servicioregular_update' %}" title="Editar" class="btn btn-default">
+                                                            <button type="submit" form="{{ servicio.id_servicio }}" formmethod="post" formaction="{% url 'enrollments:servicioregular_update' %}" title="Editar" class="btn btn-default">
                                                                 <i class="fa fa-pencil" aria-hidden="true"></i>
                                                             </button>
                                                             <a title="Detalle" href="{% url 'enrollments:servicio_detail' servicio.id_servicio %}" class="btn btn-default">
                                                               <i class="fa fa-info-circle" aria-hidden="true"></i>
                                                             </a>
-                                                            <button form="{{ servicio }}" onclick="return confirmDel();" formmethod="get" formaction="{% url 'enrollments:servicio_delete' %}" title="Eliminar" class="btn btn-default">
+                                                            <button form="{{ servicio.id_servicio }}" onclick="return confirmDel();" formmethod="get" formaction="{% url 'enrollments:servicio_delete' %}" title="Eliminar" class="btn btn-default">
                                                               <i class="fa fa-trash" aria-hidden="true"></i>
                                                             </button>
                                                           </div>
