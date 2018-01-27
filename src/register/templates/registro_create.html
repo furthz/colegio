@@ -241,7 +241,7 @@
                                                 <label class="col-sm-3 control-label">Distrito</label>
                                                 <div class="col-sm-9">
                                                     <!--{{ form.distrito }}-->
-                                                    <select id="id_distrito" name="distrito" class="form-control">
+                                                    <select id="id_distrito" name="distrito" required class="form-control">
 
                                                     </select>
                                                 </div>
@@ -252,7 +252,7 @@
                                                 <label class="col-sm-3 control-label">Provincia</label>
                                                 <div class="col-sm-9">
                                                     <!--{{ form.provincia }}-->
-                                                    <select id="id_provincia" name="provincia" class="form-control">
+                                                    <select id="id_provincia" name="provincia" required class="form-control">
 
                                                     </select>
                                                 </div>
@@ -369,7 +369,7 @@
      $('#id_departamento').change(function () {
             $('#id_provincia').empty();
             $('#id_distrito').empty();
-            $('#id_provincia').append('<option value="-1">Seleccione</option>');
+            $('#id_provincia').append('<option value="">Seleccione</option>');
             $.ajax({
                     type: "GET",
                     url: "/registers/api/get_provincias",
@@ -393,7 +393,7 @@
     <script type="text/javascript">
      $('#id_provincia').change(function () {
             $('#id_distrito').empty();
-            $('#id_distrito').append('<option value="-1">Seleccione</option>');
+            $('#id_distrito').append('<option value="">Seleccione</option>');
             $.ajax({
                     type: "GET",
                     url: "/registers/api/get_distritos",
