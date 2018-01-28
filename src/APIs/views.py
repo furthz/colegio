@@ -218,6 +218,8 @@ class AulaDetail(generics.RetrieveUpdateDestroyAPIView):
 class MatriculaList(generics.ListCreateAPIView):
     queryset = Matricula.objects.all()
     serializer_class = MatriculaSerializer
+    filter_fields = ('colegio',)
+
 
 
 class MatriculaDetail(generics.RetrieveUpdateDestroyAPIView):

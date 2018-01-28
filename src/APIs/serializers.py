@@ -138,16 +138,18 @@ class AulaSerializer(serializers.ModelSerializer):
         fields = ('id_aula', 'nombre', 'get_tipo_servicio')
 
 
-class MatriculaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Matricula
-        fields = ('id_matricula', 'alumno', 'colegio', 'tipo_servicio')
-
-
 class AlumnoSerializer2(serializers.ModelSerializer):
     class Meta:
         model = Alumno
         fields = ('id_alumno', 'getNombreFormal')
+
+
+class MatriculaSerializer(serializers.ModelSerializer):
+    alumno = AlumnoSerializer2()
+
+    class Meta:
+        model = Matricula
+        fields = ('id_matricula', 'colegio', 'tipo_servicio', 'alumno')
 
 
 class RelacionUsuarioPerfilSerializer(serializers.ModelSerializer):
