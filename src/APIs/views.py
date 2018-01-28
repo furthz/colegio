@@ -166,7 +166,7 @@ class AlumnoDetail(generics.RetrieveUpdateDestroyAPIView):
 class ApoderadoAlumnoList(generics.ListCreateAPIView):
     queryset = ApoderadoAlumno.objects.all()
     serializer_class = ApoderadoAlumnoSerializer
-    filter_fields = ('apoderado_id',)
+    filter_fields = ('apoderado_id', 'alumno_id')
 
     def list(self, request, *args, **kwargs):
         self.object_list = self.filter_queryset(self.get_queryset())
