@@ -142,8 +142,7 @@ class PerfilDetail(generics.RetrieveUpdateDestroyAPIView):
 class ApoderadoList(generics.ListCreateAPIView):
     queryset = Apoderado.objects.all()
     serializer_class = ApoderadoSerializer
-    filter_backends = (SearchFilter, DjangoFilterBackend)
-    search_fields = ['=numero_documento', ]
+    filter_fields = ('id_apoderado',)
 
 
 class ApoderadoDetail(generics.RetrieveUpdateDestroyAPIView):
