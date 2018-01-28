@@ -108,6 +108,17 @@ class CashierUpdateView(UpdateView):
     template_name = 'cashier/cashier_form.html'
     # fields = ['id_remesa', 'id_persona', 'id_movimiento', 'fechacreacion', 'monto', 'comentario']
 
+    @method_decorator(permission_required('cash.Cashier_Delete', login_url=settings.REDIRECT_PERMISOS,
+                                          raise_exception=False))
+    def get(self, request, *args, **kwargs):
+        roles = ['promotor', 'director', 'administrativo', 'tesorero']
+
+        if validar_roles(roles=roles):
+            return super(CashierUpdateView, self).get(request, *args, **kwargs)
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+
 """
 
 class CashierDeleteView(DeleteView):
@@ -125,7 +136,7 @@ class CashierDeleteView(UpdateView):
     @method_decorator(permission_required('cash.Cashier_Delete', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
     def get(self, request, *args, **kwargs):
-        roles = ['promotor', 'director', 'administrativo']
+        roles = ['promotor', 'director', 'administrativo', 'tesorero']
 
         if validar_roles(roles=roles):
             return super(CashierDeleteView, self).get(request, *args, **kwargs)
