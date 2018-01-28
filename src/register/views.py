@@ -302,7 +302,7 @@ class ApoderadoCreateView(MyLoginRequiredMixin, CreateView):
 
         if validar_roles(roles=roles):
             usuario_creado_id = self.request.session['usuario_creado']
-            print("Recibiendo el id del usuario en REGISTRO PERSONA: " + str(usuario_creado_id))
+            # print("Recibiendo el id del usuario en REGISTRO PERSONA: " + str(usuario_creado_id))
             usuario_creado = Userss.objects.get(pk=usuario_creado_id)
             is_sistemas = usuario_creado.groups.filter(name="Sistemas").exists()
             colegios = Colegio.objects.filter(activo=True)
