@@ -434,7 +434,6 @@ class PersonaEmisorList(generics.ListCreateAPIView):
     serializer_class = PersonaEmisorSerializer
     filter_fields = ('profile',)
 
-
     def list(self, request, *args, **kwargs):
         self.object_list = self.filter_queryset(self.get_queryset())
         serializer = self.get_serializer(self.object_list, many=True)
@@ -449,6 +448,7 @@ class PersonaEmisorDetail(generics.RetrieveUpdateDestroyAPIView):
 class PersonaReceptorList(generics.ListCreateAPIView):
     queryset = PersonaReceptor.objects.all()
     serializer_class = PersonaReceptorSerializer
+    filter_fields = ('profile',)
 
     def list(self, request, *args, **kwargs):
         self.object_list = self.filter_queryset(self.get_queryset())
@@ -557,6 +557,7 @@ class PersonalColegioDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = PersonalColegio.objects.all()
     serializer_class = PersonalColegioSerializer
 
+
 class PersonalList(generics.ListCreateAPIView):
     queryset = Personal.objects.all()
     serializer_class = PersonalSerializer
@@ -566,6 +567,7 @@ class PersonalList(generics.ListCreateAPIView):
 class PersonalDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Personal.objects.all()
     serializer_class = PersonalSerializer
+
 
 class AlertaDataList(generics.ListCreateAPIView):
     queryset = Alerta.objects.all()
