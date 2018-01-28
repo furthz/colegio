@@ -432,6 +432,8 @@ class AulaAlumnosList(APIView):
 class PersonaEmisorList(generics.ListCreateAPIView):
     queryset = PersonaEmisor.objects.all()
     serializer_class = PersonaEmisorSerializer
+    filter_fields = ('profile',)
+
 
     def list(self, request, *args, **kwargs):
         self.object_list = self.filter_queryset(self.get_queryset())
