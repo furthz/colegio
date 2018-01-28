@@ -47,6 +47,7 @@ class AlumnoAutocomplete(autocomplete.Select2QuerySetView):
 
         return qs
 
+
 class CreatePersonaView(MyLoginRequiredMixin, CreateView):
     """
     Vista para poder crear una persona
@@ -63,17 +64,19 @@ class CreatePersonaView(MyLoginRequiredMixin, CreateView):
 
         if validar_roles(roles=roles):
             usuario_creado_id = self.request.session['usuario_creado']
-            usuario_creado = Userss.objects.get(pk = usuario_creado_id)
+            usuario_creado = Userss.objects.get(pk=usuario_creado_id)
 
             is_sistemas = usuario_creado.groups.filter(name="Sistemas").exists()
             colegios = Colegio.objects.filter(activo=True)
 
-            return render(request, template_name=self.template_name, context={'isSistemas': is_sistemas, 'colegios': colegios, 'form': self.form_class})  #super(CreatePersonaView, self).get(request, args, kwargs)
+            return render(request, template_name=self.template_name,
+                          context={'isSistemas': is_sistemas, 'colegios': colegios,
+                                   'form': self.form_class})  # super(CreatePersonaView, self).get(request, args, kwargs)
 
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
-    #@method_decorator(permission_required('register.persona_create', login_url=settings.REDIRECT_PERMISOS,
+    # @method_decorator(permission_required('register.persona_create', login_url=settings.REDIRECT_PERMISOS,
     #                                      raise_exception=False))
 
     def post(self, request, *args, **kwargs):
@@ -96,7 +99,6 @@ class CreatePersonaView(MyLoginRequiredMixin, CreateView):
                     self.model = Sistemas
                     self.form_class = SistemasForm
 
-
                     f1 = self.form_class(request.POST)
                     f1.is_valid()
 
@@ -106,7 +108,7 @@ class CreatePersonaView(MyLoginRequiredMixin, CreateView):
                 elif gr.name == "Administradores":
                     self.model = Administrativo
                     self.form_class = AdministrativoForm
-                    #self.request.session['colegio'] = str(colegio)
+                    # self.request.session['colegio'] = str(colegio)
 
                     f1 = self.form_class(request.POST)
                     f1.is_valid()
@@ -117,7 +119,7 @@ class CreatePersonaView(MyLoginRequiredMixin, CreateView):
                 elif gr.name == "Promotores":
                     self.model = Promotor
                     self.form_class = PromotorForm
-                    #self.request.session['colegio'] = str(colegio)
+                    # self.request.session['colegio'] = str(colegio)
 
                     f1 = self.form_class(request.POST)
                     f1.is_valid()
@@ -128,7 +130,7 @@ class CreatePersonaView(MyLoginRequiredMixin, CreateView):
                 elif gr.name == "Directores":
                     self.model = Director
                     self.form_class = DirectorForm
-                    #self.request.session['colegio'] = str(colegio)
+                    # self.request.session['colegio'] = str(colegio)
 
                     f1 = self.form_class(request.POST)
                     f1.is_valid()
@@ -139,7 +141,7 @@ class CreatePersonaView(MyLoginRequiredMixin, CreateView):
                 elif gr.name == "Tesoreros":
                     self.model = Tesorero
                     self.form_class = TesoreroForm
-                    #self.request.session['colegio'] = str(colegio)
+                    # self.request.session['colegio'] = str(colegio)
 
                     f1 = self.form_class(request.POST)
                     f1.is_valid()
@@ -150,7 +152,7 @@ class CreatePersonaView(MyLoginRequiredMixin, CreateView):
                 elif gr.name == "Cajeros":
                     self.model = Cajero
                     self.form_class = CajeroForm
-                    #self.request.session['colegio'] = str(colegio)
+                    # self.request.session['colegio'] = str(colegio)
 
                     f1 = self.form_class(request.POST)
                     f1.is_valid()
@@ -161,7 +163,7 @@ class CreatePersonaView(MyLoginRequiredMixin, CreateView):
                 elif gr.name == "Docentes":
                     self.model = Docente
                     self.form_class = DocenteForm
-                    #self.request.session['colegio'] = str(colegio)
+                    # self.request.session['colegio'] = str(colegio)
 
                     f1 = self.form_class(request.POST)
                     f1.is_valid()
@@ -176,8 +178,8 @@ class CreatePersonaView(MyLoginRequiredMixin, CreateView):
             except:
                 pass
 
-
-            return HttpResponseRedirect(reverse('registers:personal_list'))  # super(CreatePersonaView, self).form_valid(form)
+            return HttpResponseRedirect(
+                reverse('registers:personal_list'))  # super(CreatePersonaView, self).form_valid(form)
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
@@ -207,6 +209,7 @@ class CreatePersonaView(MyLoginRequiredMixin, CreateView):
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
     """
 
+
 class PersonaDetail(MyLoginRequiredMixin, DetailView):
     model = Profile
     template_name = "persona_detail.html"
@@ -222,7 +225,7 @@ class PersonaDetail(MyLoginRequiredMixin, DetailView):
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
-    #@method_decorator(permission_required('register.persona_detail', login_url=settings.REDIRECT_PERMISOS,
+    # @method_decorator(permission_required('register.persona_detail', login_url=settings.REDIRECT_PERMISOS,
     #                                      raise_exception=False))
     def form_valid(self, form):
 
@@ -250,7 +253,7 @@ class AlumnoCreateView(MyLoginRequiredMixin, CreateView):
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
-    #@method_decorator(permission_required('register.alumno_create', login_url=settings.REDIRECT_PERMISOS,
+    # @method_decorator(permission_required('register.alumno_create', login_url=settings.REDIRECT_PERMISOS,
     #                                      raise_exception=False))
     def form_valid(self, form):
 
@@ -298,11 +301,20 @@ class ApoderadoCreateView(MyLoginRequiredMixin, CreateView):
         roles = ['promotor', 'director', 'administrativo']
 
         if validar_roles(roles=roles):
-            return super(ApoderadoCreateView, self).get(request, args, kwargs)
+            usuario_creado_id = self.request.session['usuario_creado']
+            print("Recibiendo el id del usuario en REGISTRO PERSONA: " + str(usuario_creado_id))
+            usuario_creado = Userss.objects.get(pk=usuario_creado_id)
+            is_sistemas = usuario_creado.groups.filter(name="Sistemas").exists()
+            colegios = Colegio.objects.filter(activo=True)
+
+            return render(request, template_name=self.template_name,
+                          context={'isSistemas': is_sistemas, 'colegios': colegios,
+                                   'form': self.form_class})  # super(CreatePersonaView, self).get(request, args, kwargs)
+
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
-    #@method_decorator(permission_required('register.apoderado_create', login_url=settings.REDIRECT_PERMISOS,
+    # @method_decorator(permission_required('register.apoderado_create', login_url=settings.REDIRECT_PERMISOS,
     #                                      raise_exception=False))
     def form_valid(self, form):
         logger.debug("Apoderado a crear con DNI: " + form.cleaned_data["numero_documento"])
@@ -310,9 +322,12 @@ class ApoderadoCreateView(MyLoginRequiredMixin, CreateView):
         roles = ['promotor', 'director', 'administrativo']
 
         if validar_roles(roles=roles):
+            usuario_creado_id = self.request.session['usuario_creado']
             apoderado = SaveGeneric().saveGeneric(padre=Profile, form=form, hijo=Apoderado)
             logger.debug("Se creó el apoderado en la vista")
-
+            obj = form.save(commit=False)
+            obj.user_id = usuario_creado_id
+            obj.save()
             logger.debug("Se creó el apoderado")
             return HttpResponseRedirect(apoderado.get_absolute_url())
 
@@ -357,7 +372,7 @@ class PersonalCreateView(MyLoginRequiredMixin, CreateView):
 
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
-    #@method_decorator(permission_required('register.personal_create', login_url=settings.REDIRECT_PERMISOS,
+    # @method_decorator(permission_required('register.personal_create', login_url=settings.REDIRECT_PERMISOS,
     #                                      raise_exception=False))
     def form_valid(self, form):
         logger.debug("Personal a crear con DNI: " + form.cleaned_data["numero_documento"])
@@ -411,7 +426,7 @@ class SistemasCreateView(MyLoginRequiredMixin, CreateView):
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
-    #@method_decorator(permission_required('register.sistemas_create', login_url=settings.REDIRECT_PERMISOS,
+    # @method_decorator(permission_required('register.sistemas_create', login_url=settings.REDIRECT_PERMISOS,
     #                                      raise_exception=False))
     def form_valid(self, form):
         logger.debug("Sistemas a crear con DNI: " + form.cleaned_data["numero_documento"])
@@ -446,7 +461,6 @@ class SistemasDetailView(MyLoginRequiredMixin, DetailView):
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
 
-
 class PromotorCreateView(MyLoginRequiredMixin, CreateView):
     model = Promotor
     form_class = PromotorForm
@@ -464,7 +478,7 @@ class PromotorCreateView(MyLoginRequiredMixin, CreateView):
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
-    #@method_decorator(permission_required('register.promotor_create', login_url=settings.REDIRECT_PERMISOS,
+    # @method_decorator(permission_required('register.promotor_create', login_url=settings.REDIRECT_PERMISOS,
     #                                      raise_exception=True))
     def form_valid(self, form):
         logger.debug("Promotor a crear con DNI: " + form.cleaned_data["numero_documento"])
@@ -515,7 +529,7 @@ class DirectorCreateView(MyLoginRequiredMixin, CreateView):
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
-    #@method_decorator(permission_required('register.director_create', login_url=settings.REDIRECT_PERMISOS,
+    # @method_decorator(permission_required('register.director_create', login_url=settings.REDIRECT_PERMISOS,
     #                                      raise_exception=False))
     def form_valid(self, form):
         logger.debug("Director a crear con DNI: " + form.cleaned_data["numero_documento"])
@@ -566,7 +580,7 @@ class CajeroCreateView(MyLoginRequiredMixin, CreateView):
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
-    #@method_decorator(permission_required('register.cajero_create', login_url=settings.REDIRECT_PERMISOS,
+    # @method_decorator(permission_required('register.cajero_create', login_url=settings.REDIRECT_PERMISOS,
     #                                      raise_exception=False))
     def form_valid(self, form):
         logger.debug("Cajero a crear con DNI: " + form.cleaned_data["numero_documento"])
@@ -616,7 +630,7 @@ class TesoreroCreateView(MyLoginRequiredMixin, CreateView):
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
-    #@method_decorator(permission_required('register.tesorero_create', login_url=settings.REDIRECT_PERMISOS,
+    # @method_decorator(permission_required('register.tesorero_create', login_url=settings.REDIRECT_PERMISOS,
     #                                      raise_exception=False))
     def form_valid(self, form):
         logger.debug("Tesorero a crear con DNI: " + form.cleaned_data["numero_documento"])
@@ -667,7 +681,7 @@ class DocenteCreateView(MyLoginRequiredMixin, CreateView):
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
-    #@method_decorator(permission_required('register.sistemas_create', login_url=settings.REDIRECT_PERMISOS,
+    # @method_decorator(permission_required('register.sistemas_create', login_url=settings.REDIRECT_PERMISOS,
     #                                      raise_exception=False))
     def form_valid(self, form):
         logger.debug("Docente a crear con DNI: " + form.cleaned_data["numero_documento"])
@@ -709,7 +723,6 @@ class ProveedorCreateView(CreateView):
 
     @method_decorator(permission_required('register.proveedor_create', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
-
     def get(self, request, *args, **kwargs):
         roles = ['promotor', 'director', 'tesorero', 'sistemas']
 
@@ -718,7 +731,7 @@ class ProveedorCreateView(CreateView):
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
-    #@method_decorator(permission_required('register.proveedor_create', login_url=settings.REDIRECT_PERMISOS,
+    # @method_decorator(permission_required('register.proveedor_create', login_url=settings.REDIRECT_PERMISOS,
     #                                      raise_exception=True))
     def form_valid(self, form):
         'sistemas'
@@ -789,7 +802,8 @@ class ProveedorDeleteView(MyLoginRequiredMixin, TemplateView):
             else:
 
                 try:
-                    prov = ProveedorColegio.objects.get(proveedor=proveedor, colegio__id_colegio=id_colegio, activo=True)
+                    prov = ProveedorColegio.objects.get(proveedor=proveedor, colegio__id_colegio=id_colegio,
+                                                        activo=True)
 
                     prov.activo = False
                     prov.save()
@@ -871,7 +885,8 @@ class PersonalDeleteView(MyLoginRequiredMixin, TemplateView):
                     alu.activo = False
                     alu.save()
                 else:
-                    personal = PersonalColegio.objects.get(personal__id_persona=persona.id_persona, colegio__id_colegio=id_colegio)
+                    personal = PersonalColegio.objects.get(personal__id_persona=persona.id_persona,
+                                                           colegio__id_colegio=id_colegio)
 
                     personal.activo = False
                     personal.save()
@@ -924,15 +939,14 @@ class ProveedorListView(MyLoginRequiredMixin, TemplateView):
 
             nombres = request.POST["nombres"]
 
-
             if nombres:
                 if colegio is None:
                     proveedores = Proveedor.objects.filter(Q(razon_social__icontains=nombres.upper()))
 
                 else:
                     proveedores = Proveedor.objects.filter(
-                                                       Q(razon_social__icontains=nombres.upper())
-                                                       ).filter(proveedores__colegio=colegio, proveedores__activo=True)
+                        Q(razon_social__icontains=nombres.upper())
+                    ).filter(proveedores__colegio=colegio, proveedores__activo=True)
 
 
             else:
@@ -976,7 +990,8 @@ class ProveedorListView(MyLoginRequiredMixin, TemplateView):
                 logger.debug("colegio: " + str(colegio))
 
                 # Obtener los empleados del colegio
-                proveedores = Proveedor.objects.filter(proveedores__activo=True, proveedores__colegio=colegio).order_by('razon_social')
+                proveedores = Proveedor.objects.filter(proveedores__activo=True, proveedores__colegio=colegio).order_by(
+                    'razon_social')
                 logger.debug("cantidad de proveedores: " + str(proveedores.count()))
 
             except Colegio.DoesNotExist:
@@ -984,7 +999,7 @@ class ProveedorListView(MyLoginRequiredMixin, TemplateView):
                 proveedores = Proveedor.objects.all().order_by('razon_social')
                 logger.debug("cantidad de empleados: " + str(proveedores.count()))
 
-            #for p in proveedores:
+            # for p in proveedores:
             #    result.append(p.proveedor)
 
             page = request.GET.get('page', 1)
@@ -1025,15 +1040,15 @@ class PersonaListView(MyLoginRequiredMixin, TemplateView):
             if numero_documento and not nombres:
                 if colegio is None:
                     empleados = Profile.objects.filter(numero_documento=numero_documento,
-                                                   personal__Colegios__activo=True)
+                                                       personal__Colegios__activo=True)
 
                     alumnos = Matricula.objects.filter(alumno__numero_documento=numero_documento,
                                                        activo=True)
 
                 else:
                     empleados = Profile.objects.filter(numero_documento=numero_documento,
-                                                   personal__Colegios__id_colegio=colegio,
-                                                   personal__Colegios__activo=True)
+                                                       personal__Colegios__id_colegio=colegio,
+                                                       personal__Colegios__activo=True)
 
                     alumnos = Matricula.objects.filter(alumno__numero_documento=numero_documento,
                                                        activo=True, colegio__id_colegio=colegio)
@@ -1045,51 +1060,57 @@ class PersonaListView(MyLoginRequiredMixin, TemplateView):
                                                        Q(segundo_nombre__icontains=nombres.upper()) |
                                                        Q(apellido_pa__icontains=nombres.upper()) |
                                                        Q(apellido_ma__icontains=nombres.upper())).filter(
-                                                                personal__Colegios__activo=True)
+                        personal__Colegios__activo=True)
 
                     alumnos = Matricula.objects.filter(Q(alumno__numero_documento=numero_documento),
                                                        Q(alumno__nombre__icontains=nombres.upper()) |
                                                        Q(alumno__segundo_nombre__icontains=nombres.upper()) |
                                                        Q(alumno__apellido_pa__icontains=nombres.upper()) |
-                                                       Q(alumno__pellido_ma__icontains=nombres.upper())).filter(activo=True)
+                                                       Q(alumno__pellido_ma__icontains=nombres.upper())).filter(
+                        activo=True)
                 else:
                     empleados = Profile.objects.filter(Q(numero_documento=numero_documento),
                                                        Q(nombre__icontains=nombres.upper()) |
                                                        Q(segundo_nombre__icontains=nombres.upper()) |
                                                        Q(apellido_pa__icontains=nombres.upper()) |
-                                                       Q(apellido_ma__icontains=nombres.upper())).filter(personal__Colegios__id_colegio=colegio,
-                                                                                                         personal__Colegios__activo=True)
+                                                       Q(apellido_ma__icontains=nombres.upper())).filter(
+                        personal__Colegios__id_colegio=colegio,
+                        personal__Colegios__activo=True)
 
                     alumnos = Matricula.objects.filter(Q(alumno__numero_documento=numero_documento),
                                                        Q(alumno__nombre__icontains=nombres.upper()) |
                                                        Q(alummno__segundo_nombre__icontains=nombres.upper()) |
                                                        Q(alumno__apellido_pa__icontains=nombres.upper()) |
-                                                       Q(alumno__apellido_ma__icontains=nombres.upper())).filter(colegio__id_colegio=colegio,
-                                                                                                         activo=True)
+                                                       Q(alumno__apellido_ma__icontains=nombres.upper())).filter(
+                        colegio__id_colegio=colegio,
+                        activo=True)
 
             elif not numero_documento and nombres:
                 if colegio is None:
                     empleados = Profile.objects.filter(Q(nombre__icontains=nombres.upper()) |
-                                                       Q(segundo_nombre__icontains=nombres.upper())|
+                                                       Q(segundo_nombre__icontains=nombres.upper()) |
                                                        Q(apellido_pa__icontains=nombres.upper()) |
                                                        Q(apellido_ma__icontains=nombres.upper())).filter(
-                                                                            personal__Colegios__activo=True)
+                        personal__Colegios__activo=True)
 
                     alumnos = Matricula.objects.filter(Q(alumno__nombre__icontains=nombres.upper()) |
                                                        Q(alumno__segundo_nombre__icontains=nombres.upper()) |
                                                        Q(alumno__apellido_pa__icontains=nombres.upper()) |
-                                                       Q(alumno__apellido_ma__icontains=nombres.upper())).filter(activo=True)
+                                                       Q(alumno__apellido_ma__icontains=nombres.upper())).filter(
+                        activo=True)
                 else:
                     empleados = Profile.objects.filter(Q(nombre__icontains=nombres.upper()) |
                                                        Q(apellido_pa__icontains=nombres.upper()) |
                                                        Q(segundo_nombre__icontains=nombres.upper()) |
-                                                       Q(apellido_ma__icontains=nombres.upper())).filter(personal__Colegios__id_colegio=colegio,
-                                                                                                         personal__Colegios__activo=True)
+                                                       Q(apellido_ma__icontains=nombres.upper())).filter(
+                        personal__Colegios__id_colegio=colegio,
+                        personal__Colegios__activo=True)
 
                     alumnos = Matricula.objects.filter(Q(alumno__nombre__icontains=nombres.upper()) |
                                                        Q(alumno__apellido_pa__icontains=nombres.upper()) |
                                                        Q(alumno__segundo_nombre__icontains=nombres.upper()) |
-                                                       Q(alumno__apellido_ma__icontains=nombres.upper())).filter(colegio__id_colegio=colegio,activo=True)
+                                                       Q(alumno__apellido_ma__icontains=nombres.upper())).filter(
+                        colegio__id_colegio=colegio, activo=True)
             else:
                 return self.get(request)
 
@@ -1252,7 +1273,6 @@ class PersonaListView(MyLoginRequiredMixin, TemplateView):
 
                 personal.append(empleado.personal.persona)
 
-
             # verificamos los alumnos matriculados
             for alumno in alumnos:
                 alumno.alumno.persona.rol = "Alumno"
@@ -1278,6 +1298,7 @@ class PersonaListView(MyLoginRequiredMixin, TemplateView):
             return render(request, self.template_name, {'empleados': empleados})  # return context
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
 
 class ColegioCreateView(MyLoginRequiredMixin, TemplateView):
     """
@@ -1312,12 +1333,12 @@ class ColegioCreateView(MyLoginRequiredMixin, TemplateView):
             )
             colegio.save()
             direccion = Direccion(
-                colegio= colegio,
-                dpto= data_form['departamento'],
-                calle= data_form['direccion'],
-                referencia= data_form['referencia'],
-                provincia= data_form['provincia'],
-                distrito= data_form['distrito']
+                colegio=colegio,
+                dpto=data_form['departamento'],
+                calle=data_form['direccion'],
+                referencia=data_form['referencia'],
+                provincia=data_form['provincia'],
+                distrito=data_form['distrito']
             )
             direccion.save()
             try:
@@ -1326,7 +1347,7 @@ class ColegioCreateView(MyLoginRequiredMixin, TemplateView):
                 lista_numeros = []
                 for cel in lst_celulares:
                     telef = Telefono(
-                        colegio= colegio,
+                        colegio=colegio,
                         numero=cel,
                         tipo="Celular"
                     )
@@ -1335,9 +1356,9 @@ class ColegioCreateView(MyLoginRequiredMixin, TemplateView):
                 logger.info("no se registraron numeros del colegio")
             logger.info("El formulario es valido")
             caja_chica = CajaChica(
-                colegio= colegio,
-                presupuesto= 1000,
-                saldo= 1000,
+                colegio=colegio,
+                presupuesto=1000,
+                saldo=1000,
                 periodo=1,
             )
             caja_chica.save()
@@ -1363,8 +1384,6 @@ def renderToRegistro(request, template_name, context):
     return render(request, template_name=template_name, context=context)
 
 
-
-
 class DocenteCreateView(MyLoginRequiredMixin, CreateView):
     model = Docente
     form_class = DocenteForm
@@ -1382,7 +1401,7 @@ class DocenteCreateView(MyLoginRequiredMixin, CreateView):
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
-    #@method_decorator(permission_required('register.sistemas_create', login_url=settings.REDIRECT_PERMISOS,
+    # @method_decorator(permission_required('register.sistemas_create', login_url=settings.REDIRECT_PERMISOS,
     #                                      raise_exception=False))
     def form_valid(self, form):
         logger.debug("Docente a crear con DNI: " + form.cleaned_data["numero_documento"])

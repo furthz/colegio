@@ -261,7 +261,7 @@ class RegistroUsuario(CreateView):
 
             grupos = data_form['groups']
 
-            #from django.contrib.auth.models import Group
+            # from django.contrib.auth.models import Group
 
             for g in grupos:
                 g.user_set.add(usuario)
@@ -393,6 +393,7 @@ from django.contrib.auth.models import User as UserAPI, Group as GroupAPI
 from rest_framework import viewsets
 from .serializers import UserSerializer, GroupSerializer
 
+
 class UserViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
@@ -416,13 +417,20 @@ class RegistroUsuarioApoderado(CreateView):
     success_url = reverse_lazy('registers:apoderado_create')
 
     def get(self, request, *args, **kwargs):
-        logger.debug("Inicio GET RegistroUsuario")
+        logger.debug("Inicio GET RegistroUsuarioApoderado")
+        print("==========================")
+        print('Inicio GET RegistroUsuarioApoderado')
 
         roles = ['sistemas', 'director', 'promotor']
         logger.info("Roles: " + str(roles))
+        print("Roles: " + str(roles))
+        print("==========================")
 
         if request.user.is_superuser:
             logger.info("Es super usuario")
+            print("==========================")
+            print('Es super usuario')
+            print("==========================")
 
             grupos = []
             grup = Group.objects.get(id=10)
@@ -436,16 +444,19 @@ class RegistroUsuarioApoderado(CreateView):
             })
         elif validar_roles(roles):
             logger.debug("No es super usuario")
-
+            print('No es super usuario')
+            print("==========================")
             lista_roles = [7]
             grupos = []
             for rol in lista_roles:
                 grup = Group.objects.get(id=rol)
                 logger.debug("Grupo: " + str(grup.name))
-
+                print("Grupo: " + str(grup.name))
+                print("==========================")
                 grupos.append(grup)
 
             logger.info("Se asignó el usuario a los grupos: " + str(lista_roles))
+            print("Se asignó el usuario a los grupos: " + str(lista_roles))
             return render(request, template_name=self.template_name, context={
                 'form': self.form_class,
                 'grupos': grupos,
@@ -455,6 +466,8 @@ class RegistroUsuarioApoderado(CreateView):
 
     def post(self, request, *args, **kwargs):
         logger.debug("Inicio POST RegistroUsuario")
+        print('Inicio POST RegistroUsuario')
+        print("==========================")
 
         roles = ['sistemas', 'director', 'promotor']
 
@@ -463,6 +476,8 @@ class RegistroUsuarioApoderado(CreateView):
         form = self.form_class(request.POST)
 
         if form.is_valid():
+            print('Validación de form correcto')
+            print("==========================")
             data_form = form.cleaned_data
             usuario.name = data_form['name']
             usuario.email = data_form['email']
@@ -472,12 +487,14 @@ class RegistroUsuarioApoderado(CreateView):
 
             grupos = data_form['groups']
 
-            #from django.contrib.auth.models import Group
+            # from django.contrib.auth.models import Group
 
             for g in grupos:
                 g.user_set.add(usuario)
 
             request.session['usuario_creado'] = usuario.id
+            print('usuario_creado En USUARIO FORM : ' + str(request.session['usuario_creado']))
+            print("==========================")
             # request['grupos'] = grupos
 
             return HttpResponseRedirect(self.success_url)
