@@ -221,7 +221,6 @@ class MatriculaList(generics.ListCreateAPIView):
     filter_fields = ('colegio',)
 
 
-
 class MatriculaDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Matricula.objects.all()
     serializer_class = MatriculaSerializer
@@ -544,3 +543,24 @@ class GroupList(generics.ListCreateAPIView):
 class GroupDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = Usuario_permisoSerializer
+
+
+class PersonalColegioList(generics.ListCreateAPIView):
+    queryset = PersonalColegio.objects.all()
+    serializer_class = PersonalColegioSerializer
+    filter_fields = ('personal',)
+
+
+class PersonalColegioDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = PersonalColegio.objects.all()
+    serializer_class = PersonalColegioSerializer
+
+class PersonalList(generics.ListCreateAPIView):
+    queryset = Personal.objects.all()
+    serializer_class = PersonalSerializer
+    filter_fields = ('persona',)
+
+
+class PersonalDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Personal.objects.all()
+    serializer_class = PersonalSerializer

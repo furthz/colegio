@@ -105,6 +105,13 @@ urlpatterns = [
     url(r'^usuarios_permisos/$', views.GroupList.as_view()),
     url(r'^usuarios_permisos/(?P<pk>\d+)/$', views.GroupDetail.as_view()),
 
+    ###################
+    url(r'^colegio_personal/$', views.PersonalColegioList.as_view()),
+    url(r'^colegio_personal/(?P<pk>\d+)/$', views.PersonalColegioDetail.as_view()),
+
+    ###################
+    url(r'^personal/$', views.PersonalList.as_view()),
+    url(r'^personal/(?P<pk>\d+)/$', views.PersonalDetail.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

@@ -2,7 +2,8 @@ from rest_framework import serializers
 
 from AE_academico.models import Asistencia, Aula, AulaMatricula, CursoDocente, Curso, AulaCurso
 from enrollment.models import Matricula
-from register.models import Profile, Colegio, Apoderado, Alumno, ApoderadoAlumno, Direccion, Telefono
+from register.models import Profile, Colegio, Apoderado, Alumno, ApoderadoAlumno, Direccion, Telefono, PersonalColegio, \
+    Personal
 from profiles.models import TokenFirebase
 from alerta.models import *
 from authtools.models import User
@@ -220,3 +221,38 @@ class TokenFirebaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = TokenFirebase
         fields = ('persona', 'codigo', 'alumno_id')
+
+
+class Profile_personalSerializer(serializers.ModelSerializer):
+    idProfile = serializers.IntegerField(source='id_persona')
+
+    class Meta:
+        model = Profile
+        fields = ('idProfile',)
+
+
+class PersonalSerializer(serializers.ModelSerializer):
+    idPersonal = serializers.IntegerField(source='id_personal')
+    persona = Profile_personalSerializer()
+
+    class Meta:
+        model = Personal
+        fields = ('idPersonal', 'persona')
+
+
+class ColegioPersonalSerializer(serializers.ModelSerializer):
+    idColegio = serializers.IntegerField(source='id_colegio')
+
+    class Meta:
+        model = Colegio
+        fields = ('idColegio', 'nombre',)
+
+
+class PersonalColegioSerializer(serializers.ModelSerializer):
+    idPersonalColegio = serializers.IntegerField(source='id_personal_colegio')
+    personal = PersonalSerializer()
+    colegio = ColegioPersonalSerializer()
+
+    class Meta:
+        model = PersonalColegio
+        fields = ('idPersonalColegio', 'colegio', 'personal')
