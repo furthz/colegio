@@ -112,6 +112,9 @@ urlpatterns = [
     ###################
     url(r'^personal/$', views.PersonalList.as_view()),
     url(r'^personal/(?P<pk>\d+)/$', views.PersonalDetail.as_view()),
+    ###################
+    url(r'^alertadata_api/$', views.AlertaDataList.as_view()),
+    url(r'^alertadata_api/(?P<pk>\d+)/$', views.AlertaDataDetail.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

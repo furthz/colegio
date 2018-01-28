@@ -564,3 +564,17 @@ class PersonalList(generics.ListCreateAPIView):
 class PersonalDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Personal.objects.all()
     serializer_class = PersonalSerializer
+
+class AlertaDataList(generics.ListCreateAPIView):
+    queryset = Alerta.objects.all()
+    serializer_class = Alerta_dataSerializer
+    filter_fields = ('persona_receptor',)
+
+    def filter_queryset(self, queryset):
+        queryset = super(AlertaDataList, self).filter_queryset(queryset)
+        return queryset.order_by('-fecha_creacion')
+
+
+class AlertaDataDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Alerta.objects.all()
+    serializer_class = Alerta_dataSerializer
