@@ -1,5 +1,6 @@
-from django.core.urlresolvers import reverse_lazy
-from django.shortcuts import render
+from django.core.checks import messages
+from django.core.urlresolvers import reverse_lazy, reverse
+from django.shortcuts import render, render_to_response, redirect
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import (
@@ -27,6 +28,9 @@ from utils.views import MyLoginRequiredMixin
 
 from utils.middleware import get_current_user, get_current_colegio
 from register.models import PersonalColegio, Personal, Profile
+from django.contrib.auth import get_user_model
+import json
+User = get_user_model()
 
 
 def index(request):
@@ -349,7 +353,7 @@ class ConsignmentCreationView(CreateView):
         if validar_roles(roles=roles):
             try:
                 usuario = get_current_user()
-                mov = CajaCajero.objects.get(estado=True, usuario_modificacion=str(usuario.id))
+                # mov = CajaCajero.objects.get(estado=False, usuario_modificacion=str(usuario.id))
                 alerta = False
             except:
                 alerta = True
@@ -361,6 +365,47 @@ class ConsignmentCreationView(CreateView):
             })
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+    def form_valid(self, form):
+        print("** Empieza el form_valid ** ")
+        print("=======")
+        obj = form.save(commit=False)
+        # obj.estado = False
+        get_personal_id = obj.personal_colegio.pk  # IdUsuario_Segun_Persona_Encargada
+        print("IdPersonal_Seleccionado: " + str(get_personal_id))
+        print("=======")
+        personal_dentro_personal_colegio = PersonalColegio.objects.values('personal_id').filter(pk=get_personal_id)[0][
+            'personal_id']
+        print("Personal dentro de PersonalColegio :  " + str(personal_dentro_personal_colegio))
+        print("=======")
+        persona_dentro_personal = Personal.objects.values('persona_id').filter(pk=personal_dentro_personal_colegio)[0][
+            'persona_id']
+        print("Persona(profile) dentro de personal :  " + str(persona_dentro_personal))
+        print("=======")
+        id_usuario_dentro_profiles = Profile.objects.values('user_id').filter(pk=persona_dentro_personal)[0]['user_id']
+        print("Id_usuario dentro de Profiles_Profiles :  " + str(id_usuario_dentro_profiles))
+        print("=======")
+
+        user_get_id = User.objects.values('id').filter(pk=id_usuario_dentro_profiles)[0]['id']
+
+        password_get_id = obj.pusu
+        print("Contraseña OBTENIDA ")
+        print(password_get_id)
+        print("=======")
+        user = User.objects.get(id=user_get_id)
+        if user.check_password(password_get_id):
+            print("Contraseña Correcta ")
+            print("=======")
+            obj.pusu = str("  ")
+            obj.save()
+            return super(ConsignmentCreationView, self).form_valid(form)
+        else:
+            print("Contraseña Incorrecta ")
+            print("=======")
+            return HttpResponse("<script>alert('Contraseña Incorrecta !!');window.history.back();</script>")
+            #return render_to_response('template_name', message='asdcxzasde')
+            # return redirect(reverse("cash:consignment_create"), {"alert": 'Contraseña Incorrecta !! '})
+            # return HttpResponse('Contraseña Incorrecta !!')
 
 
 """

@@ -110,6 +110,7 @@ class ConsignmentForm(forms.ModelForm):
             'fechacreacion',
             'monto',
             'comentario',
+            'pusu'
         ]
 
         labels = {
@@ -118,6 +119,7 @@ class ConsignmentForm(forms.ModelForm):
             'fechacreacion': 'Fecha Creación',
             'monto': 'Monto',
             'comentario': 'Comentario',
+            'pusu': 'Usuario_contraseña'
         }
 
         widgets = {
@@ -131,6 +133,7 @@ class ConsignmentForm(forms.ModelForm):
                        'placeholder': 'Escribe el monto a entregar',
                        "onchange": "document.getElementById('monto').innerHTML = montodine = this.value", 'tabindex': '2'}),
             'comentario': forms.Textarea(attrs={'class': 'form-control', 'rows': '3', 'tabindex': '3'}),
+            'pusu': forms.TextInput(attrs={'id': 'n222', 'name': 'n222'}),
         }
 
 class CajaChicaConsignmentForm(forms.ModelForm):

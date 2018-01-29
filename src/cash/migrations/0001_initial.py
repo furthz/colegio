@@ -84,6 +84,8 @@ class Migration(migrations.Migration):
                 ('fechacreacion', models.DateTimeField()),
                 ('monto', models.FloatField()),
                 ('comentario', models.CharField(blank=True, max_length=500, null=True)),
+                ('pusu', models.CharField(blank=True, max_length=500, null=True)),
+
             ],
             options={
                 # 'db_table': 'remesa',

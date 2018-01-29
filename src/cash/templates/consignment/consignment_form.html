@@ -9,151 +9,168 @@
 
 {% block container %}
 
-<div class="box box-primary">
-    <div class="box-header with-border">
-        <h3 class="box-title">Generar remesas</h3>
-    </div>
-    <div id="search" class="form-horizontal">
-        <div class="box-body">
-            {% if alerta == False %}
-            <div class="col-md-9">
-                <div class="panel-page">
-                    <form id="myform" method="post">
-                        {% csrf_token %}
-                        <div style="display: none;">
-                            {{ form.movimiento }}
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Encargado de remesa</label>
-                            <div class="col-sm-10">
-                                <select name="personal_colegio" id="personaTxt" class="form-control" tabindex="1" required="" onchange="personaSelect()">
-                                    <option value="" selected="">---------</option>
-
-                                    {% for persona in personal %}
-                                    <option value="{{ persona.pk }}">{{ persona }}</option>
-                                    {% endfor %}
-
-                                </select>
-
-                            </div>
-                        </div>
-                        {{ form.fechacreacion }}
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Monto S/.</label>
-                            <div class="col-sm-10">
-                                {{ form.monto }}
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Comentario:</label>
-                            <div class="col-sm-10">
-                                {{ form.comentario }}
-                            </div>
-                        </div>
-                    </form>
-                    <div class="form-group">
-                        <div class="col-sm-offset-2 col-sm-10">
-                            <a href="{% url 'cash:consignment_list'  %}" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i>
-                                Regresar a la lista
-                            </a>
-                            <button type="button" class="btn btn-success" onclick="validar()" tabindex="4">
-                                <i class="fa fa-plus" aria-hidden="true"></i> Generar remesa</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% else %}
-                 <a>No hay ninguna caja abierta---->>>></a>
-
-                 <a>Para continuar primero aperturar una Caja</a>
-            {% endif %}
-            <div class="col-md-3">
-            
-            </div>
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Generar remesas</h3>
         </div>
-    </div>
-</div>
+        <div id="search" class="form-horizontal">
+            <div class="box-body">
+                {% if alerta == False %}
+                    <div class="col-md-9">
+                        <div class="panel-page">
+                            <form id="myform" method="post">
+                                {% csrf_token %}
+                                <div style="display: none;">
+                                    {{ form.movimiento }}
+                                    {{ form.pusu }}
 
-<!-- INICIO DE MODAL -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Confirmación de remesa</h4>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>Encargado de remesa:</label>
-                    <div class="input-group">
-                        <div class="input-group">
-                            <li id="selecPerso"></li>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Encargado de remesa</label>
+                                    <div class="col-sm-10">
+                                        <select name="personal_colegio" id="personaTxt" class="form-control"
+                                                tabindex="1" required="" onchange="personaSelect()">
+                                            <option value="" selected="">---------</option>
+
+                                            {% for persona in personal %}
+                                                <option value="{{ persona.pk }}">{{ persona }}</option>
+                                            {% endfor %}
+
+                                        </select>
+
+                                    </div>
+                                </div>
+                                {{ form.fechacreacion }}
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Monto S/.</label>
+                                    <div class="col-sm-10">
+                                        {{ form.monto }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Comentario:</label>
+                                    <div class="col-sm-10">
+                                        {{ form.comentario }}
+                                    </div>
+                                </div>
+
+
+                            </form>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <a href="{% url 'cash:consignment_list' %}" class="btn btn-default"><i
+                                            class="fa fa-arrow-left" aria-hidden="true"></i>
+                                        Regresar a la lista
+                                    </a>
+                                    <button type="button" class="btn btn-success" onclick="validar()" tabindex="4">
+                                        <i class="fa fa-plus" aria-hidden="true"></i> Generar remesa
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label>Monto Total:</label>
-                        <div class="input-group">
-                            <li id="monto"></li>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Confirmar Contranseña:</label>
-                        <div class="input-group">
-                            <input type="password" class="form-control" placeholder="Ingrese contraseña">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary" onclick="this.disabled=true; document.getElementById('myform').submit();">Confirmar</button>
+                {% else %}
+                    <a>No hay ninguna caja abierta---->>>></a>
+
+                    <a>Para continuar primero aperturar una Caja</a>
+                {% endif %}
+                <div class="col-md-3">
+
                 </div>
             </div>
         </div>
     </div>
-    <!-- FIN DE MODAL -->
-</div>
+
+    <!-- INICIO DE MODAL -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Confirmación de remesa</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Encargado de remesa:</label>
+                        <div class="input-group">
+                            <div class="input-group">
+                                <li id="selecPerso"></li>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Monto Total:</label>
+                            <div class="input-group">
+                                <li id="monto"></li>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Confirmar Contranseña:</label>
+                            <div class="input-group">
+                                <input type="password" name="n111" id="n111" onkeyup="sync()" class="form-control"
+                                       placeholder="Ingrese contraseña">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary"
+                                onclick="this.disabled=true; document.getElementById('myform').submit();">Confirmar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- FIN DE MODAL -->
+    </div>
 
 {% endblock container %}
 {% block scripts %}
-<script type="text/javascript">
-    //Solo permite ingresar numeros.
+    <script type="text/javascript">
+        function sync() {
+            var n111 = document.getElementById('n111');
+            var n222 = document.getElementById('n222');
+            n222.value = n111.value;
+        }
+        //Solo permite ingresar numeros.
 
-function NumCheck(e, field) {
-  key = e.keyCode ? e.keyCode : e.which
-  // backspace
-  if (key == 8) return true
-  // 0-9
-  if (key > 47 && key < 58) {
-    if (field.value == "") return true
-    regexp = /.[0-9]{2}$/
-    return !(regexp.test(field.value))
-  }
-  // .
-  if (key == 46) {
-    if (field.value == "") return false
-    regexp = /^[0-9]+$/
-    return regexp.test(field.value)
-  }
-  // other key
-  return false
+        function NumCheck(e, field) {
+            key = e.keyCode ? e.keyCode : e.which
+            // backspace
+            if (key == 8) return true
+            // 0-9
+            if (key > 47 && key < 58) {
+                if (field.value == "") return true
+                regexp = /.[0-9]{2}$/
+                return !(regexp.test(field.value))
+            }
+            // .
+            if (key == 46) {
+                if (field.value == "") return false
+                regexp = /^[0-9]+$/
+                return regexp.test(field.value)
+            }
+            // other key
+            return false
 
-}
+        }
 
 
-     // Para obtener el texto
+        // Para obtener el texto
 
-    function personaSelect(){
-        var combo = document.getElementById("personaTxt");
-        var selected = combo.options[combo.selectedIndex].text;
-        document.getElementById("selecPerso").innerHTML = selected;}
+        function personaSelect() {
+            var combo = document.getElementById("personaTxt");
+            var selected = combo.options[combo.selectedIndex].text;
+            document.getElementById("selecPerso").innerHTML = selected;
+        }
 
-    function validar(){
-         valor = document.getElementById("id_monto").value;
-         if( valor != "" ) {
-             $("#myModal").modal()
-         }else{
-             alert('Debe de ingresar un monto');
-         }
-     }
-</script>
+        function validar() {
+            valor = document.getElementById("id_monto").value;
+            if (valor != "") {
+                $("#myModal").modal()
+            } else {
+                alert('Debe de ingresar un monto');
+            }
+        }
+    </script>
 {% endblock scripts %}
