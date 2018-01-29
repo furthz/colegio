@@ -173,6 +173,12 @@ class PersonaEmisorSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class PersonaReceptorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PersonaReceptor
+        fields = '__all__'
+
+
 class Alerta_dataSerializer(serializers.ModelSerializer):
     contenido_alerta_string = serializers.CharField(source='contenido_alerta.contenido', read_only=True)
     tipo_alerta_string = serializers.CharField(source='tipo_alerta.descripcion', read_only=True)
@@ -184,12 +190,6 @@ class Alerta_dataSerializer(serializers.ModelSerializer):
         fields = ('id_alerta', 'matricula', 'persona_emisor', 'persona_receptor', 'tipo_alerta', 'estado_alerta',
                   'contenido_alerta', 'fecha_creacion', 'visto', 'contenido_alerta_string', 'tipo_alerta_string')
         read_only_fields = ('fecha_creacion',)
-
-
-class PersonaReceptorSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = PersonaReceptor
-        fields = '__all__'
 
 
 class TipoAlertaSerializer(serializers.ModelSerializer):
@@ -214,11 +214,17 @@ class ContenidoAlertaSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class PersonaEmisor_alertaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PersonaEmisor
+        fields = '__all__'
+
+
 class AlertaSerializer(serializers.ModelSerializer):
     contenido_alerta_string = serializers.CharField(source='contenido_alerta.contenido', read_only=True)
     tipo_alerta_string = serializers.CharField(source='tipo_alerta.descripcion', read_only=True)
-
-    # persona_emisor = PersonaEmisorSerializer()
+    persona_emisor = PersonaEmisor_alertaSerializer()
+    persona_receptor = PersonaReceptorSerializer()
 
     # contenido_alerta = ContenidoAlertaSerializer()
     class Meta:
