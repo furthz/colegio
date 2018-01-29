@@ -46,6 +46,33 @@ class Migration(migrations.Migration):
             bases=(models.Model,),
         ),
         migrations.CreateModel(
+            name='PersonaEmisor',
+            fields=[
+                ('id_persona_emisor', models.AutoField(primary_key=True)),
+                ('persona', models.ForeignKey(db_column='id_persona', to='profiles.Profile'))
+            ],
+            options={
+                'db_table': 'alerta_personaemisor',
+                'managed': settings.IS_MIGRATE,
+                # 'managed': False,
+
+            },
+        ),
+        migrations.CreateModel(
+            name='PersonaReceptor',
+            fields=[
+                ('id_persona_receptor', models.AutoField(primary_key=True)),
+                ('persona', models.ForeignKey(db_column='id_persona', to='profiles.Profile'))
+            ],
+            options={
+                'db_table': 'alerta_personareceptor',
+                'managed': settings.IS_MIGRATE,
+                # 'managed': False,
+
+            },
+        ),
+
+        migrations.CreateModel(
             name='TokenFirebase',
             fields=[
                 ('id_token', models.AutoField(primary_key=True, serialize=False)),

@@ -61,38 +61,12 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='PersonaEmisor',
-            fields=[
-                ('id_persona_emisor', models.AutoField(primary_key=True)),
-                ('persona', models.ForeignKey(db_column='id_persona', to='profiles.Profile'))
-            ],
-            options={
-                # 'db_table': 'matricula',
-                'managed': settings.IS_MIGRATE,
-                # 'managed': False,
-
-            },
-        ),
-        migrations.CreateModel(
-            name='PersonaReceptor',
-            fields=[
-                ('id_persona_receptor', models.AutoField(primary_key=True)),
-                ('persona', models.ForeignKey(db_column='id_persona', to='profiles.Profile'))
-            ],
-            options={
-                # 'db_table': 'matricula',
-                'managed': settings.IS_MIGRATE,
-                # 'managed': False,
-
-            },
-        ),
-        migrations.CreateModel(
             name='Alerta',
             fields=[
                 ('id_alerta', models.AutoField(primary_key=True)),
                 ('matricula', models.ForeignKey(db_column='id_matricula', to='enrollment.Matricula', blank=True, null=True)),
-                ('persona_emisor', models.ForeignKey(db_column='id_persona_emisor', to='alerta.PersonaEmisor')),
-                ('persona_receptor', models.ForeignKey(db_column='id_persona_receptor', to='alerta.PersonaReceptor')),
+                ('persona_emisor', models.ForeignKey(db_column='id_persona_emisor', to='profiles.PersonaEmisor')),
+                ('persona_receptor', models.ForeignKey(db_column='id_persona_receptor', to='profiles.PersonaReceptor')),
                 ('tipo_alerta', models.ForeignKey(db_column='id_tipo_alerta', to='alerta.TipoAlerta')),
                 ('estado_alerta', models.ForeignKey(db_column='id_estado_alerta', to='alerta.EstadoAlerta')),
                 ('contenido_alerta', models.ForeignKey(db_column='id_contenido_alerta', to='alerta.ContenidoAlerta')),
