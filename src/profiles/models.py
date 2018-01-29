@@ -186,6 +186,7 @@ class Profile(BaseProfile):
 
     def save(self, **kwargs):
         super(Profile, self).save(**kwargs)
+        # Poner condicional de existencia para cada guardado
         persona_emisor = PersonaEmisor(profile=self)
         persona_emisor.save()
         persona_receptor = PersonaReceptor(profile=self)

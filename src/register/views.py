@@ -860,6 +860,12 @@ class PersonalDeleteView(MyLoginRequiredMixin, TemplateView):
         if validar_roles(roles=roles):
             persona = Profile.objects.get(id_persona=int(request.GET['idpersona']))
             perfil = request.GET['perfil']
+            user_id = Profile.objects.values('user_id').filter(pk=int(request.GET['idpersona']))[0]['user_id']
+            get_user = Userss.objects.get(pk=user_id)
+            get_user.name = str("mpixel_elnom"+str(user_id))
+            get_user.email = str("mpixel_elmai"+str(user_id))
+            get_user.is_active = False
+            get_user.save()
 
             id_colegio = get_current_colegio()
 
