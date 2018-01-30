@@ -1023,6 +1023,7 @@ class PagoResource(resources.ModelResource):
             'activo',
             'id_cuentascobrar',
             'estado',
+            'comentario',
         )
 
     def dehydrate_alumno(self, cuentas):

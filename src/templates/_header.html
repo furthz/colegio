@@ -17,7 +17,7 @@
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           {% block navbar-right %}
-            {% if user.is_authenticated %}
+            {% if not user.is_authenticated %}
                 <li class="dropdown user user-menu">
                   <a href="{% url 'admin:index' %}" class="dropdown-toggle" data-toggle="dropdown">
                     <img src="{% thumbnail user.profile.picture|default:'default_profile.png' 30x30 crop %}" class="user-image" alt="" />
