@@ -17,7 +17,7 @@
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           {% block navbar-right %}
-            {% if user.is_authenticated %}
+            {% if not user.is_authenticated %}
                 <li class="dropdown user user-menu">
                 {% if user.is_staff %}
                   <a href="{% url 'admin:index' %}" class="dropdown-toggle" data-toggle="dropdown">
