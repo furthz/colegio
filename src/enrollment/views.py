@@ -245,7 +245,7 @@ class TipoServicioRegularCreateView(MyLoginRequiredMixin, CreateView):
 
         else:
             """
-            print ('No existe, fue creado con exito')
+            print ('No existe, fue creado con exito ')
             """
             return super(TipoServicioRegularCreateView, self).form_valid(form)
 
