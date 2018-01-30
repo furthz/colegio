@@ -39,13 +39,17 @@ class ProfileForm(forms.ModelForm):
             Field('bio'),
             Field('nombre'),
             Field('segundo_nombre'),
+            Field('apellido_pa'),
+            Field('apellido_ma'),
             Submit('update', 'Actualizar', css_class="btn-success"),
             )
 
     class Meta:
         model = models.Profile
-        fields = ['picture', 'bio','nombre', 'segundo_nombre']
+        fields = ['picture', 'bio','nombre', 'segundo_nombre','apellido_pa','apellido_ma']
         labels = {
             'picture': 'Imagen de Perfil',
             'bio': 'Información sobre ti',
+            'apellido_pa': 'Apellido Paterno',
+            'apellido_ma': 'Apellido Materno',
         }
