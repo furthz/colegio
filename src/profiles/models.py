@@ -184,15 +184,49 @@ class Profile(BaseProfile):
     def __str__(self):
         return "{}'s profile".format(self.user)
 
+    def save(self, **kwargs):
+        super(Profile, self).save(**kwargs)
+        # Poner condicional de existencia para cada guardado
+        persona_emisor = PersonaEmisor(profile=self)
+        persona_emisor.save()
+        persona_receptor = PersonaReceptor(profile=self)
+        persona_receptor.save()
+
+
+class PersonaEmisor(models.Model):
+    id_persona_emisor = models.AutoField(primary_key=True)
+    profile = models.ForeignKey(Profile, models.DO_NOTHING, db_column="id_persona")
+
+    def __str__(self):
+        return "{0}".format(self.profile.getNombreCompleto)
+
+    class Meta:
+        managed = False
+        ordering = ["id_persona_emisor"]
+        db_table = 'alerta_personaemisor'  # Verificar luego del migrate, posible error
+
+
+class PersonaReceptor(models.Model):
+    id_persona_receptor = models.AutoField(primary_key=True)
+    profile = models.ForeignKey(Profile, models.DO_NOTHING, db_column="id_persona")
+
+    def __str__(self):
+        return "{0}".format(self.profile.getNombreCompleto)
+
+    class Meta:
+        managed = False
+        ordering = ["id_persona_receptor"]
+        db_table = 'alerta_personareceptor'  # Verificar luego del migrate, posible error
+
 
 class TokenFirebase(models.Model):
     id_token = models.AutoField(primary_key=True)
     persona = models.ForeignKey(Profile, models.DO_NOTHING, db_column="id_persona")
-    codigo = models.CharField(max_length=1000, blank=True, null=True)
+    codigo = models.CharField(max_length=1000, blank=True, null=True, unique=True)
     alumno_id = models.IntegerField(null=True)
 
     def __str__(self):
-        return "{0} {1} {2}".format(' Token: ', self.codigo)
+        return "{0} {1}".format(' Token: ', self.codigo)
 
     class Meta:
         managed = False

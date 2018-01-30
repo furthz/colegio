@@ -115,6 +115,7 @@ def DocenteInfo(request):
 class ColegioList(generics.ListCreateAPIView):
     queryset = Colegio.objects.all()
     serializer_class = ColegioSerializer
+    filter_fields = ('id_colegio',)
 
     def list(self, request, *args, **kwargs):
         self.object_list = self.filter_queryset(self.get_queryset())
@@ -130,6 +131,7 @@ class ColegioDetail(generics.RetrieveUpdateDestroyAPIView):
 class PerfilList(generics.ListCreateAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
+    filter_fields = ('id_persona',)
 
 
 class PerfilDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -140,8 +142,7 @@ class PerfilDetail(generics.RetrieveUpdateDestroyAPIView):
 class ApoderadoList(generics.ListCreateAPIView):
     queryset = Apoderado.objects.all()
     serializer_class = ApoderadoSerializer
-    filter_backends = (SearchFilter, DjangoFilterBackend)
-    search_fields = ['=numero_documento', ]
+    filter_fields = ('id_apoderado',)
 
 
 class ApoderadoDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -164,8 +165,7 @@ class AlumnoDetail(generics.RetrieveUpdateDestroyAPIView):
 class ApoderadoAlumnoList(generics.ListCreateAPIView):
     queryset = ApoderadoAlumno.objects.all()
     serializer_class = ApoderadoAlumnoSerializer
-    filter_backends = (SearchFilter, DjangoFilterBackend)
-    search_fields = ['=apoderado_id__id_apoderado', ]
+    filter_fields = ('apoderado_id', 'alumno_id')
 
     def list(self, request, *args, **kwargs):
         self.object_list = self.filter_queryset(self.get_queryset())
@@ -217,6 +217,7 @@ class AulaDetail(generics.RetrieveUpdateDestroyAPIView):
 class MatriculaList(generics.ListCreateAPIView):
     queryset = Matricula.objects.all()
     serializer_class = MatriculaSerializer
+    filter_fields = ('colegio',)
 
 
 class MatriculaDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -430,6 +431,7 @@ class AulaAlumnosList(APIView):
 class PersonaEmisorList(generics.ListCreateAPIView):
     queryset = PersonaEmisor.objects.all()
     serializer_class = PersonaEmisorSerializer
+    filter_fields = ('profile',)
 
     def list(self, request, *args, **kwargs):
         self.object_list = self.filter_queryset(self.get_queryset())
@@ -445,6 +447,7 @@ class PersonaEmisorDetail(generics.RetrieveUpdateDestroyAPIView):
 class PersonaReceptorList(generics.ListCreateAPIView):
     queryset = PersonaReceptor.objects.all()
     serializer_class = PersonaReceptorSerializer
+    filter_fields = ('profile',)
 
     def list(self, request, *args, **kwargs):
         self.object_list = self.filter_queryset(self.get_queryset())
@@ -505,11 +508,11 @@ class ContenidoAlertaDetail(generics.RetrieveUpdateDestroyAPIView):
 class AlertaList(generics.ListCreateAPIView):
     queryset = Alerta.objects.all()
     serializer_class = AlertaSerializer
+    filter_fields = ('persona_receptor',)
 
-    def list(self, request, *args, **kwargs):
-        self.object_list = self.filter_queryset(self.get_queryset())
-        serializer = self.get_serializer(self.object_list, many=True)
-        return Response({'alertas': serializer.data})
+    def filter_queryset(self, queryset):
+        queryset = super(AlertaList, self).filter_queryset(queryset)
+        return queryset.order_by('-fecha_creacion')
 
 
 class AlertaDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -531,3 +534,50 @@ class TokenFirebaseList(generics.ListCreateAPIView):
 class TokenFirebaseDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = TokenFirebase.objects.all()
     serializer_class = TokenFirebaseSerializer
+
+
+class GroupList(generics.ListCreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = Usuario_permisoSerializer
+
+
+class GroupDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = Usuario_permisoSerializer
+
+
+class PersonalColegioList(generics.ListCreateAPIView):
+    queryset = PersonalColegio.objects.all()
+    serializer_class = PersonalColegioSerializer
+    filter_fields = ('personal',)
+
+
+class PersonalColegioDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = PersonalColegio.objects.all()
+    serializer_class = PersonalColegioSerializer
+
+
+class PersonalList(generics.ListCreateAPIView):
+    queryset = Personal.objects.all()
+    serializer_class = PersonalSerializer
+    filter_fields = ('persona',)
+
+
+class PersonalDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Personal.objects.all()
+    serializer_class = PersonalSerializer
+
+
+class AlertaDataList(generics.ListCreateAPIView):
+    queryset = Alerta.objects.all()
+    serializer_class = Alerta_dataSerializer
+    filter_fields = ('persona_receptor',)
+
+    def filter_queryset(self, queryset):
+        queryset = super(AlertaDataList, self).filter_queryset(queryset)
+        return queryset.order_by('-fecha_creacion')
+
+
+class AlertaDataDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Alerta.objects.all()
+    serializer_class = Alerta_dataSerializer

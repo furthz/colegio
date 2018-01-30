@@ -6,14 +6,14 @@ from django.db import models
 from django.db import models
 from utils.models import CreacionModificacionUserMixin, ActivoMixin
 from utils.models import CreacionModificacionFechaMixin
-from profiles.models import Profile
 from enrollment.models import Matricula
+from profiles.models import PersonaReceptor, PersonaEmisor
 
 
 class TipoAlerta(CreacionModificacionFechaMixin, models.Model):
     id_tipo_alerta = models.AutoField(primary_key=True)
     descripcion = models.CharField(max_length=100, blank=True, null=True)
-    activo= models.BooleanField(default=True)
+    activo = models.BooleanField(default=True)
 
     def __str__(self):
         return "{0}".format(self.descripcion)
@@ -47,30 +47,6 @@ class ContenidoAlerta(models.Model):
         ordering = ["id_contenido_alerta"]
 
 
-class PersonaEmisor(models.Model):
-    id_persona_emisor = models.AutoField(primary_key=True)
-    profile = models.ForeignKey(Profile, models.DO_NOTHING, db_column="id_persona")
-    
-    def __str__(self):
-        return "{0}".format(self.profile.getNombreCompleto)
-
-    class Meta:
-        managed = False
-        ordering = ["id_persona_emisor"]
-
-
-class PersonaReceptor(models.Model):
-    id_persona_receptor = models.AutoField(primary_key=True)
-    profile = models.ForeignKey(Profile, models.DO_NOTHING, db_column="id_persona")
-    
-    def __str__(self):
-        return "{0}".format(self.profile.getNombreCompleto)
-
-    class Meta:
-        managed = False
-        ordering = ["id_persona_receptor"]
-
-
 class Alerta(CreacionModificacionFechaMixin, models.Model):
     id_alerta = models.AutoField(primary_key=True)
     matricula = models.ForeignKey(Matricula, models.DO_NOTHING, db_column="id_matricula")
@@ -84,4 +60,4 @@ class Alerta(CreacionModificacionFechaMixin, models.Model):
 
     class Meta:
         managed = False
-        ordering = ["id_alerta"]
+        ordering = ["fecha_creacion"]

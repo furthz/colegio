@@ -2,12 +2,11 @@ from django.db import models
 from django.utils import timezone
 from django.db.models import Sum
 
-#from payments.models import CajaChica
+# from payments.models import CajaChica
 from register.models import Colegio, PersonalColegio
 from utils.models import CreacionModificacionFechaMixin, CreacionModificacionUserMixin
 from utils.middleware import get_current_colegio, get_current_userID
 import datetime
-
 
 
 class Eliminar(models.Model):
@@ -71,7 +70,7 @@ class EstadoCambio(models.Model):
     def save(self, *args, **kwargs):
         # creación
         if not self.pk:
-            #Antes era True
+            # Antes era True
             self.estado = False
 
         else:  # modificacion
@@ -93,11 +92,13 @@ Cobranza.monto
 
 def getRemesasTotal():
     today = datetime.datetime.today()
-    TotalRemesa = Remesa.objects.filter(fechacreacion__year=today.year, fechacreacion__month=today.month, fechacreacion__day=today.day).aggregate(Sum('monto'))['monto__sum']
+    TotalRemesa = Remesa.objects.filter(fechacreacion__year=today.year, fechacreacion__month=today.month,
+                                        fechacreacion__day=today.day).aggregate(Sum('monto'))['monto__sum']
 
     return TotalRemesa
 
-#Cajacajero.movimiento
+
+# Cajacajero.movimiento
 
 
 class CajaCajero(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
@@ -118,10 +119,7 @@ class CajaCajero(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, 
 
     estado = models.BooleanField()
 
-
     def save(self, *args, **kwargs):
-
-
 
         try:
             remesa = Remesa.objects.latest('id_remesa')
@@ -179,11 +177,12 @@ class Remesa(models.Model):
 
     id_remesa = models.AutoField(primary_key=True)
     personal_colegio = models.ForeignKey(PersonalColegio, models.DO_NOTHING, db_column="id_personal_colegio")
-    #caja_chica = models.ForeignKey(CajaChica, models.DO_NOTHING, db_column="id_caja_chica", null=True, blank=True)
+    # caja_chica = models.ForeignKey(CajaChica, models.DO_NOTHING, db_column="id_caja_chica", null=True, blank=True)
     movimiento = models.ForeignKey(CajaCajero, models.DO_NOTHING, db_column='id_movimiento', default=cajeroExist)
     fechacreacion = models.DateTimeField(default=timezone.now)
     monto = models.FloatField()
     comentario = models.CharField(max_length=200, blank=True, null=True)
+    pusu = models.CharField(max_length=200, blank=True, null=True)
 
     def __str__(self):
         """

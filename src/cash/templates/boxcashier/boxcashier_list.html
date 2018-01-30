@@ -4,15 +4,15 @@
 {% block container %}
 
     <!--Comienza el contenido!!!!!!!!!!!!!!!!!!!-->
-<h1>Cajas</h1>
-{% if es_cajero %}
-    <br>
+    <h1>Cajas</h1>
+    {% if es_cajero %}
+        <br>
 
-<a class="btn btn-primary" href="{% url 'cash:boxcashier_AperturarCaja' %}" >Aperturar Caja</a>
-    <br>
+        <a class="btn btn-primary" href="{% url 'cash:boxcashier_AperturarCaja' %}">Aperturar Caja</a>
+        <br>
     {% endif %}
     <br>
-<!--<p>
+    <!--<p>
     <a href="{% url 'cash:boxcashier_AperturarCaja' %}">Aperturar Caja</a>
      <a href="{ url "cash:boxcashier_CerrarCaja" %}">Cerrar Caja</a>                PARA CERRAR CAJA ANTES DEBE DE HABER UNA APERTURA DE CAJA
             DENTRO DE LA LÓGICA DE CERRAR CAJA AL MOMENTO DE DARLE CERRAR CAJA ES UN UPDATE DE LA TABLA CAJACAJERO DONDE SE CAMBIÁN CIERTOS VALORES, PERO SE DEBE INGRESAR LA LLAVE PRIMARIA
@@ -22,80 +22,89 @@
 
     <body>
 
-        <table class="table table-hover">
-            <tr class="table-header">
-                <th>Item</th>
+    <table class="table table-hover">
+        <tr class="table-header">
+            <th>Item</th>
 
-                <th>Total de Remesas</th>
+            <th>Total de Remesas</th>
 
-                <th>Cajero</th>
-                <th>N° de Caja</th>
-                <th>Monto de Apertura</th>
-                <th>Monto de Cierre</th>
-                <th>Saldo</th>
-                <th>Fecha Creación</th>
-                <th>Acciones</th>
-            </tr>
-            {% for cajacajero in object_list %}
-            {% if cajacajero.caja.colegio.id_colegio == idcolegio %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
+            <th>Cajero</th>
+            <th>N° de Caja</th>
+            <th>Monto de Apertura</th>
+            <th>Monto de Cierre</th>
+            <th>Saldo</th>
+            <th>Fecha Creación</th>
+            <th>Acciones</th>
+        </tr>
+        {% for cajacajero in object_list %}
+            {% if cajacajero.personal_colegio_id == personal_id_cajero %}
+                {% if cajacajero.caja.colegio.id_colegio == idcolegio %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
 
-            {% if cajacajero.total_remesa == None %}
-                <td></td>
-            {% else %}
-                <td>S/. {{ cajacajero.total_remesa }}</td>
+                        {% if cajacajero.total_remesa == None %}
+                            <td></td>
+                        {% else %}
+                            <td>S/. {{ cajacajero.total_remesa }}</td>
+                        {% endif %}
+
+                        <td>{{ cajacajero.personal_colegio }}</td>
+                        <td>{{ cajacajero.caja }}</td>
+                        {% if cajacajero.monto_apertura == 0 %}
+                            <td>S/.----</td>
+                        {% else %}
+                            <td>S/. {{ cajacajero.monto_apertura }}</td>
+                        {% endif %}
+
+                        {% if cajacajero.monto_cierre == 0 %}
+                            <td>S/.----</td>
+                        {% else %}
+                            <td>S/. {{ cajacajero.monto_cierre }}</td>
+                        {% endif %}
+
+                        {% if cajacajero.saldo == 0 %}
+                            <td>S/.----</td>
+                        {% else %}
+                            <td>S/. {{ cajacajero.saldo }}</td>
+                        {% endif %}
+
+
+                        <td>{{ cajacajero.fecha_creacion }}</td>
+
+
+                        <td class="text-center">
+                            {% if cajacajero.estado == 1 %}
+                                <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                                    <a href='{% url "cash:boxcashier_detail" cajacajero.id_movimiento %}'
+                                       class="btn btn-default">
+                                        <i class="fa fa-info-circle" aria-hidden="true"></i> Detalles
+                                    </a>
+                                    <a href='{% url "cash:boxcashier_CerrarCaja" cajacajero.id_movimiento %}'
+                                       class="btn btn-default">
+                                        <i class="fa fa-info-circle" aria-hidden="true"></i> Cerrar Caja
+                                    </a>
+                                </div>
+                            {% else %}
+                                <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                                    <a href='{% url "cash:boxcashier_detail" cajacajero.id_movimiento %}'
+                                       class="btn btn-default">
+                                        <i class="fa fa-info-circle" aria-hidden="true"></i> Detalles
+                                    </a>
+                                    <a disabled class="btn btn-default">
+                                        <i class="fa fa-info-circle" aria-hidden="true"></i> Cerrar Caja
+                                    </a>
+                                </div>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
             {% endif %}
 
-                <td>{{ cajacajero.personal_colegio }}</td>
-                <td>{{ cajacajero.caja }}</td>
-            {% if cajacajero.monto_apertura == 0 %}
-                <td>S/.----</td>
-            {% else %}
-                <td>S/. {{ cajacajero.monto_apertura }}</td>
-            {% endif %}
+        {% endfor %}
+    </table>
 
-            {% if cajacajero.monto_cierre == 0 %}
-                <td>S/.----</td>
-            {% else %}
-                <td>S/. {{ cajacajero.monto_cierre }}</td>
-            {% endif %}
-
-            {% if cajacajero.saldo == 0 %}
-                <td>S/.----</td>
-            {% else %}
-                <td>S/. {{ cajacajero.saldo }}</td>
-            {% endif %}
-
-
-                <td>{{ cajacajero.fecha_creacion }}</td>
-
-
-                <td class="text-center">
-                    {% if cajacajero.estado == 1 %}
-                    <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                        <a href='{% url "cash:boxcashier_detail" cajacajero.id_movimiento %}' class="btn btn-default">
-                            <i class="fa fa-info-circle" aria-hidden="true"></i> Detalles
-                        </a>
-                        <a href='{% url "cash:boxcashier_CerrarCaja" cajacajero.id_movimiento %}' class="btn btn-default">
-                            <i class="fa fa-info-circle" aria-hidden="true"></i> Cerrar Caja
-                        </a>
-                    </div>
-                    {% else %}
-                    <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                        <a href='{% url "cash:boxcashier_detail" cajacajero.id_movimiento %}' class="btn btn-default">
-                            <i class="fa fa-info-circle" aria-hidden="true"></i> Detalles
-                        </a>
-                        <a disabled class="btn btn-default">
-                            <i class="fa fa-info-circle" aria-hidden="true"></i> Cerrar Caja
-                        </a>
-                    </div>
-                    {% endif %}
-                </td>
-            </tr>
-            {% endif %}
-            {% endfor %}
-        </table>
+    <br>
+    personal_id_cajero : {{ personal_id_cajero }}
     </body>
 
 
