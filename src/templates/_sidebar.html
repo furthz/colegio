@@ -133,8 +133,11 @@
                     {% if perms.cash.Box_Cashier_Creation %}
                     <li><a href="{% url 'cash:boxcashier_AperturarCaja' %}"><i class="fa fa-circle-o"></i> Aperturar Caja</a></li>
                     {% endif %}
-                    {% if perms.cash.Box_Cashier_List %}
+                    {% if perms.cash.Box_Cashier_List and not perms.enrollment.control_ingresos_promotor_detalle%}
                     <li><a href="{% url 'cash:boxcashier_list' %}"><i class="fa fa-circle-o"></i> Cerrar Caja</a></li>
+                    {% endif %}
+                    {% if perms.enrollment.control_ingresos_promotor_detalle %}
+                    <li><a href="{% url 'cash:boxcashier_list' %}"><i class="fa fa-circle-o"></i> Lista de Cajas</a></li>
                     {% endif %}
                     {% if perms.cash.Consigment_Creation %}
                     <li><a href="{% url 'cash:consignment_create' %}"><i class="fa fa-circle-o"></i> Crear Remesa</a></li>
