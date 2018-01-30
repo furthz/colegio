@@ -126,6 +126,7 @@ class TipoServicioDetailView(MyLoginRequiredMixin, DetailView):
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
+
 class TipoServicioRegularNivelCompletoCreateView(MyLoginRequiredMixin, CreateView):
     """
 
@@ -134,15 +135,15 @@ class TipoServicioRegularNivelCompletoCreateView(MyLoginRequiredMixin, CreateVie
     form_class = TipoServicioRegularNivelCompletoForm
 
     def post(self, request, *args, **kwargs):
-        #form = self.form_class(request.POST)
-        #logger.info("En el POST")
-        #logger.info(request.POST)
-        #if form.is_valid():
-        #data_form = form.cleaned_data
+        # form = self.form_class(request.POST)
+        # logger.info("En el POST")
+        # logger.info(request.POST)
+        # if form.is_valid():
+        # data_form = form.cleaned_data
         nivel = request.POST['nivel_grados']
         nivel = int(nivel)
         cole_id = get_current_colegio()
-        colegio = Colegio.objects.get(pk = cole_id)
+        colegio = Colegio.objects.get(pk=cole_id)
         grados = TipoServicio.objects.filter(nivel=nivel, colegio_id=cole_id, activo=True)
         if len(grados) > 0:
             if nivel == 1:
@@ -153,7 +154,7 @@ class TipoServicioRegularNivelCompletoCreateView(MyLoginRequiredMixin, CreateVie
                         tipo_servicio = TipoServicio(
                             nivel=nivel,
                             grado=k,
-                            colegio = colegio,
+                            colegio=colegio,
                             is_ordinario=True,
                         )
                         tipo_servicio.save()
@@ -165,7 +166,7 @@ class TipoServicioRegularNivelCompletoCreateView(MyLoginRequiredMixin, CreateVie
                         tipo_servicio = TipoServicio(
                             nivel=nivel,
                             grado=k,
-                            colegio = colegio,
+                            colegio=colegio,
                             is_ordinario=True,
                         )
                         tipo_servicio.save()
@@ -177,7 +178,7 @@ class TipoServicioRegularNivelCompletoCreateView(MyLoginRequiredMixin, CreateVie
                         tipo_servicio = TipoServicio(
                             nivel=nivel,
                             grado=k,
-                            colegio = colegio,
+                            colegio=colegio,
                             is_ordinario=True,
                         )
                         tipo_servicio.save()
@@ -187,7 +188,7 @@ class TipoServicioRegularNivelCompletoCreateView(MyLoginRequiredMixin, CreateVie
                     tipo_servicio = TipoServicio(
                         nivel=nivel,
                         grado=k,
-                        colegio = colegio,
+                        colegio=colegio,
                         is_ordinario=True,
                     )
                     tipo_servicio.save()
@@ -196,7 +197,7 @@ class TipoServicioRegularNivelCompletoCreateView(MyLoginRequiredMixin, CreateVie
                     tipo_servicio = TipoServicio(
                         nivel=nivel,
                         grado=k,
-                        colegio = colegio,
+                        colegio=colegio,
                         is_ordinario=True,
                     )
                     tipo_servicio.save()
@@ -205,7 +206,7 @@ class TipoServicioRegularNivelCompletoCreateView(MyLoginRequiredMixin, CreateVie
                     tipo_servicio = TipoServicio(
                         nivel=nivel,
                         grado=k,
-                        colegio = colegio,
+                        colegio=colegio,
                         is_ordinario=True,
                     )
                     tipo_servicio.save()
@@ -239,11 +240,14 @@ class TipoServicioRegularCreateView(MyLoginRequiredMixin, CreateView):
         if TipoServicio.objects.filter(colegio_id=cole_id, grado=grado_prueba, activo=True).exists():
             # print("Existe. Se creo, pero no podrá ser usado")
             form.instance.activo = False
+            return HttpResponse(
+                "<script>alert('Este grado ya existe!!');window.history.back();</script>")
+
         else:
             """
             print ('No existe, fue creado con exito')
             """
-        return super(TipoServicioRegularCreateView, self).form_valid(form)
+            return super(TipoServicioRegularCreateView, self).form_valid(form)
 
 
 class TipoServicioExtraCreateView(MyLoginRequiredMixin, CreateView):
@@ -527,21 +531,22 @@ class ServicioRegularNivelCompletoCreateView(MyLoginRequiredMixin, CreateView):
 
     """
     model = Servicio
-    #form_class = TipoServicioRegularNivelCompletoForm
+
+    # form_class = TipoServicioRegularNivelCompletoForm
 
     def post(self, request, *args, **kwargs):
-        #form = self.form_class(request.POST)
-        #logger.info("En el POST")
-        #logger.info(request.POST)
-        #if form.is_valid():
-        #data_form = form.cleaned_data
+        # form = self.form_class(request.POST)
+        # logger.info("En el POST")
+        # logger.info(request.POST)
+        # if form.is_valid():
+        # data_form = form.cleaned_data
         nivel = request.POST['nivel_grados']
         nivel = int(nivel)
         nombre = request.POST['nombre']
         precio = float(request.POST['precio'])
         fecha = request.POST['fecha_facturar']
         cole_id = get_current_colegio()
-        colegio = Colegio.objects.get(pk = cole_id)
+        colegio = Colegio.objects.get(pk=cole_id)
         grados = TipoServicio.objects.filter(nivel=nivel, colegio_id=cole_id, activo=True)
         for grado in grados:
 
@@ -568,9 +573,6 @@ class ServicioRegularNivelCompletoCreateView(MyLoginRequiredMixin, CreateView):
                     )
                     servicio.save()
         return HttpResponseRedirect(reverse('enrollments:tiposervicio_list'))
-
-
-
 
 
 class ServicioExtraCreateView(MyLoginRequiredMixin, CreateView):
@@ -935,7 +937,8 @@ class MatriculaCreateView(MyLoginRequiredMixin, CreateView):
                             dia = fecha_facturar.day
                             while True:
                                 try:
-                                    fecha_vencimiento = fecha_facturar.replace(month=fecha_facturar.month + cuota, day=(dia-k))
+                                    fecha_vencimiento = fecha_facturar.replace(month=fecha_facturar.month + cuota,
+                                                                               day=(dia - k))
                                     break
                                 except:
                                     k = k + 1
