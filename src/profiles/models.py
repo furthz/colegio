@@ -1,3 +1,4 @@
+# coding=utf-8
 from __future__ import unicode_literals
 
 from django.urls import reverse
@@ -186,11 +187,19 @@ class Profile(BaseProfile):
 
     def save(self, **kwargs):
         super(Profile, self).save(**kwargs)
-        # Poner condicional de existencia para cada guardado
-        persona_emisor = PersonaEmisor(profile=self)
-        persona_emisor.save()
-        persona_receptor = PersonaReceptor(profile=self)
-        persona_receptor.save()
+
+        if PersonaEmisor.objects.filter(profile_id=self.id_persona).exists():
+            pass
+
+        else:
+            persona_emisor = PersonaEmisor(profile=self)
+            persona_emisor.save()
+
+        if PersonaReceptor.objects.filter(profile_id=self.id_persona).exists():
+            pass
+        else:
+            persona_receptor = PersonaReceptor(profile=self)
+            persona_receptor.save()
 
 
 class PersonaEmisor(models.Model):
