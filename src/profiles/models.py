@@ -202,6 +202,7 @@ class Profile(BaseProfile):
             persona_receptor.save()
 
 
+
 class PersonaEmisor(models.Model):
     id_persona_emisor = models.AutoField(primary_key=True)
     profile = models.ForeignKey(Profile, models.DO_NOTHING, db_column="id_persona")
