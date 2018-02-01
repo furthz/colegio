@@ -182,11 +182,17 @@ class BoxCashierListView(ListView):
         user_id = get_current_user().id
         personal_colegio_id = PersonalColegio.objects.values('pk').filter(personal_id__persona_id__user_id=user_id)[0][
             'pk']
+        puede_ver_lista = ['promotor', 'director', 'tesorero']
+        if validar_roles(roles=puede_ver_lista):
+            puede_ver = True
+        else:
+            puede_ver = False
 
         if request.session.get('colegio'):
             id = request.session.get('colegio')
             context['idcolegio'] = id
             context['personal_id_cajero'] = personal_colegio_id
+            context['permisos_valido'] = puede_ver
 
         return context
 
