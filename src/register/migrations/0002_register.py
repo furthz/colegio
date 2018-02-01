@@ -484,6 +484,7 @@ class Migration(migrations.Migration):
             options={
                 # 'db_table': 'telefono',
                 'managed': settings.IS_MIGRATE,
+
             },
         ),
         migrations.CreateModel(
@@ -506,6 +507,9 @@ class Migration(migrations.Migration):
             options={
                 # 'db_table': 'proveedor_colegio',
                 'managed': settings.IS_MIGRATE,
+                'permissions': (
+                    ("configurar_documentos", "configurar documentos"),
+                )
             },
         ),
         migrations.CreateModel(

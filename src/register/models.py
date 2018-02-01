@@ -712,6 +712,8 @@ class TipoDocumento(ActivoMixin, models.Model):
     class Meta:
         managed = True
 
+    def __str__(self):
+        return "{0} de {1}".format(self.nom_tipo_documento, self.tipo_formato.descripcion)
 
 class CorrelativoDocumento(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
     """
@@ -724,9 +726,15 @@ class CorrelativoDocumento(ActivoMixin, CreacionModificacionFechaMixin, Creacion
     correlativo_documento = models.IntegerField()
     digitos_correlativo = models.IntegerField()
 
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('registers:correlativodocumento_list')
+
     class Meta:
         managed = True
-
+        permissions = (
+            ("configurar_documentos", "configurar documentos"),
+        )
 
 
 class ModalidadSistema(ActivoMixin, models.Model):

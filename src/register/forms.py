@@ -5,7 +5,7 @@ from django import forms
 from django.forms import ModelForm
 from profiles.models import Profile
 from register.models import Alumno, Apoderado, Personal, Promotor, Director, Cajero, Tesorero, Proveedor, Sucursal, \
-    Sistemas, Administrativo, Direccion, Docente, Empresa, ConfiguracionSistema
+    Sistemas, Administrativo, Direccion, Docente, Empresa, ConfiguracionSistema, CorrelativoDocumento
 from utils.forms import ValidProfileFormMixin
 from utils.models import TipoDocumento, TipoSexo, Departamento, Provincia, Distrito
 
@@ -358,3 +358,36 @@ class ConfiguracionSistemaForm(ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['modalidad_sistema'].widget.attrs.update({'class': 'form-control'})
         self.fields['igv'].widget.attrs.update({'class': 'form-control'})
+
+
+class CorrelativoDocumentosForm(ModelForm):
+
+    @property
+    def ChoiceDigitos(self):
+        choices = [(d + 1, str(d+1)) for d in range(20)]
+        return choices
+
+
+    class Meta:
+        model = CorrelativoDocumento
+        fields = [
+            'tipo_documento',
+            'serie_documento',
+            'correlativo_documento',
+            'digitos_correlativo',
+        ]
+        labels = {
+            'tipo_documento': 'Tipo de documento',
+            'serie_documento': 'Serie del documento',
+            'correlativo_documento': 'N° del Correlativo',
+            'digitos_correlativo': "N° de digitos para el correlativo",
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['tipo_documento'].widget.attrs.update({'class': 'form-control'})
+        self.fields['serie_documento'].widget.attrs.update({'class': 'form-control'})
+        self.fields['correlativo_documento'].widget.attrs.update({'class': 'form-control'})
+        self.fields['digitos_correlativo'].widget.attrs.update({'class': 'form-control'})
+        self.fields['digitos_correlativo'] = forms.ChoiceField(choices=self.ChoiceDigitos,
+                                                        widget=forms.Select(attrs={'class': 'form-control'}))

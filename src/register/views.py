@@ -23,10 +23,10 @@ from django.views.generic import CreateView
 
 from register.forms import PersonaForm, AlumnoForm, ApoderadoForm, PersonalForm, PromotorForm, DirectorForm, CajeroForm, \
     TesoreroForm, ProveedorForm, ColegioForm, SistemasForm, AdministrativoForm, DocenteForm, EmpresaForm, \
-    ConfiguracionSistemaForm
+    ConfiguracionSistemaForm, CorrelativoDocumentosForm
 from register.models import Alumno, Apoderado, Personal, Promotor, Director, Cajero, Tesorero, Sucursal, Proveedor, \
     ProveedorSucursal, PersonalSucursal, Administrativo, Direccion, Telefono, Sistemas, Docente, Empresa, \
-    ConfiguracionSistema, ModalidadSistema
+    ConfiguracionSistema, ModalidadSistema, CorrelativoDocumento
 from utils.middleware import get_current_colegio, validar_roles, get_current_user
 from utils.views import SaveGeneric, MyLoginRequiredMixin
 from payments.models import CajaChica
@@ -1479,4 +1479,108 @@ class ConfiguracionSistemaUpdateView(MyLoginRequiredMixin, UpdateView):
     template_name = "configuracionsistema_form.html"
     model = ConfiguracionSistema
     form_class = ConfiguracionSistemaForm
+
+class CorrelativoDocumentoCreateView(MyLoginRequiredMixin, CreateView):
+    """
+
+    """
+    template_name = "correlativo_form.html"
+    model = CorrelativoDocumento
+    form_class = CorrelativoDocumentosForm
+
+    def form_valid(self, form):
+        form.instance.sucursal = Sucursal.objects.get(pk=self.request.session.get('colegio'))
+
+        return super(CorrelativoDocumentoCreateView, self).form_valid(form)
+
+    def get(self, request, *args, **kwargs):
+        roles = ['promotor', 'director']
+        if validar_roles(roles=roles):
+            return super(CorrelativoDocumentoCreateView, self).get(request, args, kwargs)
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        logger.info("En el POST")
+        logger.info(request.POST)
+        if form.is_valid():
+            data_form = form.cleaned_data
+            sucursal = Sucursal.objects.get(pk=self.request.session.get('colegio'))
+            lista_documentos = self.model.objects.filter(serie_documento=data_form['serie_documento'], activo=True)
+            for doc in lista_documentos:
+                if doc.sucursal.empresa == sucursal.empresa:
+                    return HttpResponseRedirect(reverse('registers:correlativodocumento_list'))
+            documento = self.model(
+                sucursal=sucursal,
+                tipo_documento=data_form['tipo_documento'],
+                serie_documento=data_form['serie_documento'],
+                correlativo_documento=data_form['correlativo_documento'],
+                digitos_correlativo=data_form['digitos_correlativo'],
+            )
+            documento.save()
+            return HttpResponseRedirect(reverse('registers:correlativodocumento_list'))
+        return HttpResponseRedirect(reverse('registers:correlativodocumento_list'))
+
+class CorrelativoDocumentoListView(MyLoginRequiredMixin, TemplateView):
+    """
+
+    """
+    template_name = "correlativo_list.html"
+    model = CorrelativoDocumento
+    form_class = CorrelativoDocumentosForm
+
+
+    def get(self, request, *args, **kwargs):
+        roles = ['promotor', 'director']
+        if validar_roles(roles=roles):
+            sucursal_id = get_current_colegio()
+            configuraciones = CorrelativoDocumento.objects.filter(sucursal_id=sucursal_id, activo=True)
+            return render(request, template_name=self.template_name, context={
+                'configuraciones': configuraciones,
+            })
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+
+class CorrelativoDocumentoDetailView(MyLoginRequiredMixin, DetailView):
+    """
+
+    """
+    model = CorrelativoDocumento
+    template_name = "correlativo_detail.html"
+
+
+    def get(self, request, *args, **kwargs):
+        roles = ['promotor', 'director']
+
+        if validar_roles(roles=roles):
+            return super(CorrelativoDocumentoDetailView, self).get(request, *args, **kwargs)
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+
+class CorrelativoDocumentoDeleteView(MyLoginRequiredMixin, TemplateView):
+    """
+
+    """
+    model = CorrelativoDocumento
+    template_name = "correlativo_detail.html"
+
+    def get(self, request, *args, **kwargs):
+        roles = ['promotor', 'director']
+
+        if validar_roles(roles=roles):
+            documento = self.model.objects.get(pk=int(request.GET['documento']))
+            documento.activo = False
+            documento.save()
+            return HttpResponseRedirect(reverse('registers:correlativodocumento_list'))
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+    def post(self, request, *args, **kwargs):
+
+        return render(request, template_name=self.template_name, context={
+            'idtipo': request.POST['tiposervicio'],
+        })
 
