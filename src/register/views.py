@@ -329,7 +329,7 @@ class ApoderadoCreateView(MyLoginRequiredMixin, CreateView):
             obj.user_id = usuario_creado_id
             obj.save()
             logger.debug("Se creó el apoderado")
-            return HttpResponseRedirect(apoderado.get_absolute_url())
+            return HttpResponseRedirect(reverse('registers:personal_list'))
 
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
@@ -862,8 +862,8 @@ class PersonalDeleteView(MyLoginRequiredMixin, TemplateView):
             perfil = request.GET['perfil']
             user_id = Profile.objects.values('user_id').filter(pk=int(request.GET['idpersona']))[0]['user_id']
             get_user = Userss.objects.get(pk=user_id)
-            get_user.name = str("mpixel_elnom"+str(user_id))
-            get_user.email = str("mpixel_elmai"+str(user_id))
+            get_user.name = str("mpixel_elnom" + str(user_id))
+            get_user.email = str("mpixel_elmai" + str(user_id))
             get_user.is_active = False
             get_user.save()
 

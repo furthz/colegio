@@ -3,15 +3,15 @@
 {% block title %}{{ block.super }}Facturación{% endblock %}
 
 {% block titulo %}
-      <h1>
+    <h1>
         Lista de Cajas
         <small>Módúlo de Facturación</small>
-      </h1>
-      <ol class="breadcrumb">
+    </h1>
+    <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
         <li>Módúlo de Facturación</li>
         <li class="active">Lista de Cajas</li>
-      </ol>
+    </ol>
 {% endblock %}
 
 {% block container %}
@@ -26,11 +26,12 @@
                         <div class="box-body">
                             <div class="col-md-9">
                                 <div class="panel-page">
-                                {% if es_tesorero %}
-                                    <div class="toolbar-header">
-                                            <a class="btn btn-success" href='{% url "cash:cashier_create" %}'><i class="fa fa-plus" aria-hidden="true"></i>  Crear caja</a>
+                                    {% if es_tesorero %}
+                                        <div class="toolbar-header">
+                                            <a class="btn btn-success" href='{% url "cash:cashier_create" %}'><i
+                                                    class="fa fa-plus" aria-hidden="true"></i> Crear caja</a>
                                         </div>
-                                {% endif %}
+                                    {% endif %}
 
 
                                     <div class="box-header with-border">
@@ -51,16 +52,20 @@
 
                                                 </tr>
                                                 {% for cashier in object_list %}
-                                                {% if cashier.colegio.id_colegio == idcolegio %}
-                                                <tr>
-                                                    {% if cashier.eliminado == 1 %}
-                                                    {% else %}
-                                                    <td>{{ forloop.counter }}</td>
-                                                    <td>{{ cashier.numero }}</td>
-                                                    <td>{{ cashier.descripcion }}</td>
+                                                    {% if cashier.colegio.id_colegio == idcolegio %}
+                                                        <tr>
+                                                            {% if cashier.eliminado == 1 %}
+                                                            {% else %}
+                                                                <td>{{ forloop.counter }}</td>
+                                                                <td>{{ cashier.numero }}</td>
+                                                                {% if cashier.descripcion == None %}
+                                                                    <td>No hay descripción</td>
+                                                                {% else %}
+                                                                    <td>{{ cashier.descripcion }}</td>
+                                                                {% endif %}
 
 
-                                                    <!--
+                                                                <!--
 
                                                     <td>
                                                         {% if cashier.activo == 1 %}
@@ -71,23 +76,30 @@
                                                     </td>
                                                     <td>{{ cashier.eliminado }}</td> -->
 
-                                                    <td>
-                                                        <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                                                         <a title="Editar" href='{% url "cash:cashier_edit" cashier.id_caja %}' class="btn btn-default">
-                                                                <i class="fa fa-pencil" aria-hidden="true"></i>
-                                                            </a>
-                                                            <a title="Detalle" href='{% url "cash:cashier_detail" cashier.id_caja %}' class="btn btn-default">
-                                                                <i class="fa fa-info-circle" aria-hidden="true"></i>
-                                                            </a>
-                                                            <!--<a title="Eliminar" href="{% url 'cash:cashier_delete' cashier.id_caja %}" class="btn btn-default">
+                                                                <td>
+                                                                    <div class="btn-group btn-group-sm" role="group"
+                                                                         aria-label="...">
+                                                                        <a title="Editar"
+                                                                           href='{% url "cash:cashier_edit" cashier.id_caja %}'
+                                                                           class="btn btn-default">
+                                                                            <i class="fa fa-pencil"
+                                                                               aria-hidden="true"></i>
+                                                                        </a>
+                                                                        <a title="Detalle"
+                                                                           href='{% url "cash:cashier_detail" cashier.id_caja %}'
+                                                                           class="btn btn-default">
+                                                                            <i class="fa fa-info-circle"
+                                                                               aria-hidden="true"></i>
+                                                                        </a>
+                                                                        <!--<a title="Eliminar" href="{% url 'cash:cashier_delete' cashier.id_caja %}" class="btn btn-default">
                                                                 <i class="fa fa-trash" aria-hidden="true"></i>
                                                             </a>-->
-                                                        </div>
-                                                    </td>
-                                                    {% endif %}
+                                                                    </div>
+                                                                </td>
+                                                            {% endif %}
 
-                                                </tr>
-                                                {% endif %}
+                                                        </tr>
+                                                    {% endif %}
                                                 {% endfor %}
                                                 </tbody>
                                             </table>

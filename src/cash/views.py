@@ -1,3 +1,4 @@
+# coding=utf-8
 from django.core.checks import messages
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.shortcuts import render, render_to_response, redirect
@@ -108,6 +109,20 @@ class CashierCreationView(CreateView):
             return super(CashierCreationView, self).get(request, *args, **kwargs)
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        cole_id = get_current_colegio()
+        numero_caja = obj.numero
+        if Caja.objects.filter(colegio_id=cole_id, numero=numero_caja).exists():
+            return HttpResponse(
+                "<script>alert('Este número de caja ya existe!!');window.history.back();</script>")
+
+        else:
+            obj.save()
+            # print ('No existe, fue creado con exito ')
+            # print ("====================================")
+            return super(CashierCreationView, self).form_valid(form)
 
 
 class CashierUpdateView(UpdateView):
