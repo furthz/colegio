@@ -63,7 +63,7 @@ class PersonaForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['tipo_documento'] = forms.ChoiceField(choices=self.ChoiceTipoDocumento,
-                                                          widget=forms.Select(attrs={'tabindex': '5', 'class': 'form-control', 'onchange': 'dni()'}))
+                                                          widget=forms.Select(attrs={'tabindex': '5', 'class': 'form-control'}))
         self.fields['sexo'] = forms.ChoiceField(choices=self.ChoiceTipoSexo,
                                                 widget=forms.Select(attrs={'tabindex': '7', 'class': 'form-control'}))
         self.fields['departamento'] = forms.ChoiceField(choices = self.ChoiceDepartamento, initial='-1',
