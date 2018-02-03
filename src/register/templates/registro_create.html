@@ -121,7 +121,10 @@
                                         </div>
                                     </div>
                                     <div style="display: none;">
-                                        {{ form.user }}
+
+                                        {{ form.correo }}
+                                        {{ form.tipo_documento }}
+                                        {{ form.numero_documento }}
 
                                     </div>
 
@@ -134,26 +137,12 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">Tipo de Documento</label>
-                                        <div class="col-sm-9">
-                                            {{ form.tipo_documento }}
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
                                         <label class="col-sm-3 control-label">Sexo</label>
                                         <div class="col-sm-9">
                                             {{ form.sexo }}
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
-
-                                        <label class="col-sm-3 control-label">Correo</label>
-                                        <div class="col-sm-9">
-                                            {{ form.correo }}
-                                        </div>
-
-                                    </div>
 
                                     <div class="form-group">
                                         {% if form.alumno %}
@@ -177,13 +166,6 @@
                                         <label class="col-sm-3 control-label">Apellido Materno</label>
                                         <div class="col-sm-9">
                                             {{ form.apellido_ma }}
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">N° Documento</label>
-                                        <div class="col-sm-9">
-                                            {{ form.numero_documento }}
-
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -360,17 +342,6 @@
 
 
         });
-
-        function myFunction() {
-            var x = document.getElementById("id_user");
-            var optionVal = [];
-            for (i = 0; i < x.length; i++) {
-                optionVal.push(x.options[i].value);
-            }
-            document.getElementById('id_user').value = Math.max.apply(null, optionVal);
-        }
-        window.onload = myFunction;
-
     </script>
 
     <script type="text/javascript">
