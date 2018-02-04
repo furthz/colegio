@@ -315,8 +315,13 @@ class ApoderadoCreateView(MyLoginRequiredMixin, CreateView):
             colegios = Colegio.objects.filter(activo=True)
 
             return render(request, template_name=self.template_name,
-                          context={'isSistemas': is_sistemas, 'colegios': colegios,
-                                   'form': self.form_class})  # super(CreatePersonaView, self).get(request, args, kwargs)
+                          context={'isSistemas': is_sistemas,
+                                   'colegios': colegios,
+                                   'form': self.form_class,
+                                   'tipo_documento_val': str(request.session['tipo_documento_value']),
+                                   'num_documento': str(request.session['num_documento']),
+                                   'correo_mail': str(request.session['correo']),
+                                   })  # super(CreatePersonaView, self).get(request, args, kwargs)
 
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
