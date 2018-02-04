@@ -1171,7 +1171,7 @@ class FiltrarAlumnoView(ListView):
         id_personas = []
         for persona in personas:
             id_personas.append(persona.user_id)
-        print(id_personas)
+        # print(id_personas)
         lista_alumnos = []
         for id_persona in id_personas:
             lista_alumnos.extend(Alumno.objects.filter(usuario_creacion_persona=id_persona))

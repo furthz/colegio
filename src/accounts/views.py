@@ -269,13 +269,13 @@ class RegistroUsuario(CreateView):
             request.session['num_documento'] = usuario.name
             request.session['correo'] = usuario.email
 
-            print ('id_usuario: ' + str(request.session['usuario_creado']))
-            print ("=======================================================")
-            print ('tipo_documento_val: ' + str(request.session['tipo_documento_value']))
-            print ("=======================================================")
-            print ('num_documento: ' + str(request.session['num_documento']))
-            print ("=======================================================")
-            print ('correo_mail: ' + str(request.session['correo']))
+            # print ('id_usuario: ' + str(request.session['usuario_creado']))
+            # print ("=======================================================")
+            # print ('tipo_documento_val: ' + str(request.session['tipo_documento_value']))
+            # print ("=======================================================")
+            # print ('num_documento: ' + str(request.session['num_documento']))
+            # print ("=======================================================")
+            # print ('correo_mail: ' + str(request.session['correo']))
 
             #            request.session['docu_num'] = documento_num
             #           print(documento_num)
@@ -510,13 +510,13 @@ class RegistroUsuarioApoderado(CreateView):
             request.session['num_documento'] = usuario.name
             request.session['correo'] = usuario.email
 
-            print ('id_usuario: ' + str(request.session['usuario_creado']))
-            print ("=======================================================")
-            print ('tipo_documento_val: ' + str(request.session['tipo_documento_value']))
-            print ("=======================================================")
-            print ('num_documento: ' + str(request.session['num_documento']))
-            print ("=======================================================")
-            print ('correo_mail: ' + str(request.session['correo']))
+            # print ('id_usuario: ' + str(request.session['usuario_creado']))
+            # print ("=======================================================")
+            # print ('tipo_documento_val: ' + str(request.session['tipo_documento_value']))
+            # print ("=======================================================")
+            # print ('num_documento: ' + str(request.session['num_documento']))
+            # print ("=======================================================")
+            # print ('correo_mail: ' + str(request.session['correo']))
 
             # print('usuario_creado En USUARIO FORM : ' + str(request.session['usuario_creado']))
             # print("==========================")
