@@ -132,10 +132,7 @@
 
 {% block scripts %}
     <script type="text/javascript">
-        function myFunction() {
-            $("#id_groups option[value=1]").remove();
-        }
-        window.onload = myFunction;
+        window.onload = dni;
         function dni() {
             if (document.getElementById('select_documento').value == "1") {
                 document.getElementById('id_name').value = '';
@@ -145,6 +142,5 @@
                 document.getElementById('id_name').type = 'text';
             }
         }
-        window.onload = document.getElementById('id_name').type = 'number';
     </script>
 {% endblock scripts %}
