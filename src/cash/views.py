@@ -114,7 +114,7 @@ class CashierCreationView(CreateView):
         obj = form.save(commit=False)
         cole_id = get_current_colegio()
         numero_caja = obj.numero
-        if Caja.objects.filter(colegio_id=cole_id, numero=numero_caja).exists():
+        if Caja.objects.filter(colegio_id=cole_id, numero=numero_caja, eliminado=True).exists():
             return HttpResponse(
                 "<script>alert('Este número de caja ya existe!!');window.history.back();</script>")
 
@@ -269,7 +269,7 @@ class BoxCashierCreationView(CreateView):
             perfil = Profile.objects.get(user=usuario)
             personal = Personal.objects.filter(persona=perfil)
             personal_colegio = PersonalColegio.objects.get(personal=personal)
-            cajas = Caja.objects.filter(colegio__id_colegio=get_current_colegio(), activo=True)
+            cajas = Caja.objects.filter(colegio__id_colegio=get_current_colegio(), eliminado=True)
 
             return render(request, template_name=self.template_name, context={
                 'form': self.form_class,
@@ -312,7 +312,8 @@ class BoxCashierUpdateView(UpdateView):
         ventas = obj.ventas
         remesa = obj.total_remesa
         cierre = obj.monto_cierre
-        obj.saldo = (((apertura + ventas) - remesa) - cierre)
+        saldo = (((apertura + ventas) - remesa) - cierre)
+        obj.saldo = saldo
         obj.estado = False
         obj.save()
         return super(BoxCashierUpdateView, self).form_valid(form)
@@ -423,6 +424,10 @@ class ConsignmentCreationView(CreateView):
         if user.check_password(password_get_id):
             # print("Contraseña Correcta ")
             # print("=======")
+            cajacajero_id = obj.movimiento_id
+            get_cajacajero = CajaCajero.objects.get(pk=cajacajero_id)
+            get_cajacajero.total_remesa += obj.monto
+            get_cajacajero.save()
             obj.pusu = str("  ")
             obj.save()
             return super(ConsignmentCreationView, self).form_valid(form)

@@ -54,7 +54,7 @@
                                                 {% for cashier in object_list %}
                                                     {% if cashier.colegio.id_colegio == idcolegio %}
                                                         <tr>
-                                                            {% if cashier.eliminado == 1 %}
+                                                            {% if cashier.eliminado == False %}
                                                             {% else %}
                                                                 <td>{{ forloop.counter }}</td>
                                                                 <td>{{ cashier.numero }}</td>
