@@ -46,7 +46,9 @@ class TipoPagoListView(ListView):
         roles = ['promotor', 'director', 'tesorero', 'administrativo']
 
         if validar_roles(roles=roles):
-            return super(TipoPagoListView, self).get(request, *args, **kwargs)
+            return render(request, template_name=self.template_name, context={
+                'list_tipo_pago': self.model.objects.filter(colegio_id=get_current_colegio(),activo=True)
+            })
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 

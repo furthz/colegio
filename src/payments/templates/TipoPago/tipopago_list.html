@@ -68,7 +68,7 @@
                                                                     <th>Acciones</th>
                                                                 </tr>
                                                                 <tbody>
-                                                                {% for tipopago in object_list %}
+                                                                {% for tipopago in list_tipo_pago %}
                                                                     {% if tipopago.tipo == 0 and tipopago.eliminado == 0  %}
                                                                         {% if tipopago.padre == None %}
                                                                             <tr>
@@ -134,7 +134,7 @@
                                                                     <th>Acciones</th>
                                                                 </tr>
                                                                 <tbody>
-                                                                    {% for tipopago in object_list %}
+                                                                    {% for tipopago in list_tipo_pago %}
                                                                         {% if tipopago.tipo == 1 and tipopago.eliminado == 0  %}
                                                                             {% if tipopago.padre == None %}
                                                                                 <tr>
