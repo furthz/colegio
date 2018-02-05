@@ -52,8 +52,8 @@
                                                 <button form="{{ configuracion.id_documento }}" onclick="return confirmDel();" formmethod="get" formaction="{% url 'registers:documento_delete' %}" title="Eliminar" class="btn btn-default">
                                                     <i class="fa fa-trash" aria-hidden="true"></i>
                                                 </button>
-                                                <button form="{{ configuracion.id_documento }}" formmethod="get" formaction="{% url 'registers:documento_update' %}" title="Modificar" class="btn btn-default">
-                                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                                <button form="{{ configuracion.id_documento }}" formmethod="get" formaction="{% url 'registers:documento_update' %}" title="Editar" class="btn btn-default">
+                                                    <i class="fa fa-pencil" aria-hidden="true"></i>
                                                 </button>
                                             </div>
                                         </td>
