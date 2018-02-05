@@ -1511,7 +1511,7 @@ class CorrelativoDocumentoCreateView(MyLoginRequiredMixin, CreateView):
             for doc in lista_documentos:
                 if doc.sucursal.empresa == sucursal.empresa:
                     return render(request, template_name=self.template_name, context={
-                        'mensaje_error': "El numero de serie y tipo de documento ya existen",
+                        'mensaje_error': "El Tipo de Documento y Serie ya existen",
                         'form': form,
                     })
             documento = self.model(
@@ -1620,7 +1620,7 @@ class CorrelativoDocumentoUpdateView(MyLoginRequiredMixin, UpdateView):
             for doc in lista_documentos:
                 if doc.sucursal.empresa == sucursal.empresa and doc != documento:
                     return render(request, template_name=self.template_name, context={
-                        'mensaje_error': "El numero de serie y tipo de documento ya existen",
+                        'mensaje_error': "El Tipo de Documento y Serie ya existen",
                         'form': form,
                         'documento': documento.pk,
                     })
