@@ -98,13 +98,62 @@
                         </td>
                     </tr>
                 {% endif %}
+            {% elif permisos_valido == True %}
+
+                {% if cajacajero.caja.colegio.id_colegio == idcolegio %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+
+                        {% if cajacajero.total_remesa == None %}
+                            <td></td>
+                        {% else %}
+                            <td>S/. {{ cajacajero.total_remesa }}</td>
+                        {% endif %}
+
+                        <td>{{ cajacajero.personal_colegio }}</td>
+                        <td>{{ cajacajero.caja }}</td>
+                        {% if cajacajero.monto_apertura == 0 %}
+                            <td>S/.----</td>
+                        {% else %}
+                            <td>S/. {{ cajacajero.monto_apertura }}</td>
+                        {% endif %}
+
+                        {% if cajacajero.monto_cierre == 0 %}
+                            <td>S/.----</td>
+                        {% else %}
+                            <td>S/. {{ cajacajero.monto_cierre }}</td>
+                        {% endif %}
+
+                        {% if cajacajero.saldo == 0 %}
+                            <td>S/.----</td>
+                        {% else %}
+                            <td>S/. {{ cajacajero.saldo }}</td>
+                        {% endif %}
+
+
+                        <td>{{ cajacajero.fecha_creacion }}</td>
+
+
+                        <td class="text-center">
+                            <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                                <a href='{% url "cash:boxcashier_detail" cajacajero.id_movimiento %}'
+                                   class="btn btn-default">
+                                    <i class="fa fa-info-circle" aria-hidden="true"></i> Detalles
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endif %}
+
+
             {% endif %}
+
+
 
         {% endfor %}
     </table>
 
     <br>
-    personal_id_cajero : {{ personal_id_cajero }}
     </body>
 
 

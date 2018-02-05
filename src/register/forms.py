@@ -63,7 +63,7 @@ class PersonaForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['tipo_documento'] = forms.ChoiceField(choices=self.ChoiceTipoDocumento,
-                                                          widget=forms.Select(attrs={'tabindex': '5', 'class': 'form-control', 'onchange': 'dni()'}))
+                                                          widget=forms.Select(attrs={'tabindex': '-5', 'class': 'form-control'}))
         self.fields['sexo'] = forms.ChoiceField(choices=self.ChoiceTipoSexo,
                                                 widget=forms.Select(attrs={'tabindex': '7', 'class': 'form-control'}))
         self.fields['departamento'] = forms.ChoiceField(choices = self.ChoiceDepartamento, initial='-1',
@@ -72,8 +72,8 @@ class PersonaForm(ModelForm):
         self.fields['segundo_nombre'].widget.attrs = {'tabindex': '2', 'class': 'form-control', 'maxlength': '200'}
         self.fields['apellido_pa'].widget.attrs = {'tabindex': '3', 'class': 'form-control', 'maxlength': '50'}
         self.fields['apellido_ma'].widget.attrs = {'tabindex': '4', 'class': 'form-control', 'maxlength': '50'}
-        self.fields['numero_documento'].widget.attrs = {'tabindex': '6', 'class': 'form-control', 'maxlength': '15'}
-        self.fields['correo'].widget.attrs = {'tabindex': '7', 'class': 'form-control'}
+        self.fields['numero_documento'].widget.attrs = {'tabindex': '-6' , 'class': 'form-control'}
+        self.fields['correo'].widget.attrs = {'tabindex': '-7', 'class': 'form-control'}
         self.fields['fecha_nac'] = forms.DateField(widget=forms.DateInput, input_formats=['%Y-%m-%d'])
         self.fields['fecha_nac'].widget.attrs = {'tabindex': '8', 'class': 'form-control', 'onChange': 'validarFecNac()'}
 

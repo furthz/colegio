@@ -244,18 +244,16 @@ class RegistroUsuario(CreateView):
 
     def post(self, request, *args, **kwargs):
         logger.debug("Inicio POST RegistroUsuario")
-
         roles = ['sistemas', 'director', 'promotor']
-
         usuario = Userss()
-
         form = self.form_class(request.POST)
-
         if form.is_valid():
             data_form = form.cleaned_data
             usuario.name = data_form['name']
             usuario.email = data_form['email']
             usuario.set_password(data_form['password1'])
+
+            tipo_documento_val = data_form.get('select_documento')
 
             usuario.save()
 
@@ -267,6 +265,20 @@ class RegistroUsuario(CreateView):
                 g.user_set.add(usuario)
 
             request.session['usuario_creado'] = usuario.id
+            request.session['tipo_documento_value'] = tipo_documento_val
+            request.session['num_documento'] = usuario.name
+            request.session['correo'] = usuario.email
+
+            # print ('id_usuario: ' + str(request.session['usuario_creado']))
+            # print ("=======================================================")
+            # print ('tipo_documento_val: ' + str(request.session['tipo_documento_value']))
+            # print ("=======================================================")
+            # print ('num_documento: ' + str(request.session['num_documento']))
+            # print ("=======================================================")
+            # print ('correo_mail: ' + str(request.session['correo']))
+
+            #            request.session['docu_num'] = documento_num
+            #           print(documento_num)
             # request['grupos'] = grupos
 
             return HttpResponseRedirect(self.success_url)
@@ -482,6 +494,7 @@ class RegistroUsuarioApoderado(CreateView):
             usuario.name = data_form['name']
             usuario.email = data_form['email']
             usuario.set_password(data_form['password1'])
+            tipo_documento_val = data_form.get('select_documento')
 
             usuario.save()
 
@@ -493,6 +506,18 @@ class RegistroUsuarioApoderado(CreateView):
                 g.user_set.add(usuario)
 
             request.session['usuario_creado'] = usuario.id
+            request.session['tipo_documento_value'] = tipo_documento_val
+            request.session['num_documento'] = usuario.name
+            request.session['correo'] = usuario.email
+
+            # print ('id_usuario: ' + str(request.session['usuario_creado']))
+            # print ("=======================================================")
+            # print ('tipo_documento_val: ' + str(request.session['tipo_documento_value']))
+            # print ("=======================================================")
+            # print ('num_documento: ' + str(request.session['num_documento']))
+            # print ("=======================================================")
+            # print ('correo_mail: ' + str(request.session['correo']))
+
             # print('usuario_creado En USUARIO FORM : ' + str(request.session['usuario_creado']))
             # print("==========================")
             # request['grupos'] = grupos

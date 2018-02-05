@@ -1,3 +1,4 @@
+# coding=utf-8
 from django.core.checks import messages
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.shortcuts import render, render_to_response, redirect
@@ -109,6 +110,20 @@ class CashierCreationView(CreateView):
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        cole_id = get_current_colegio()
+        numero_caja = obj.numero
+        if Caja.objects.filter(colegio_id=cole_id, numero=numero_caja).exists():
+            return HttpResponse(
+                "<script>alert('Este número de caja ya existe!!');window.history.back();</script>")
+
+        else:
+            obj.save()
+            # print ('No existe, fue creado con exito ')
+            # print ("====================================")
+            return super(CashierCreationView, self).form_valid(form)
+
 
 class CashierUpdateView(UpdateView):
     model = Caja
@@ -182,11 +197,17 @@ class BoxCashierListView(ListView):
         user_id = get_current_user().id
         personal_colegio_id = PersonalColegio.objects.values('pk').filter(personal_id__persona_id__user_id=user_id)[0][
             'pk']
+        puede_ver_lista = ['promotor', 'director', 'tesorero']
+        if validar_roles(roles=puede_ver_lista):
+            puede_ver = True
+        else:
+            puede_ver = False
 
         if request.session.get('colegio'):
             id = request.session.get('colegio')
             context['idcolegio'] = id
             context['personal_id_cajero'] = personal_colegio_id
+            context['permisos_valido'] = puede_ver
 
         return context
 

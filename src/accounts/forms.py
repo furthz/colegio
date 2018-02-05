@@ -29,7 +29,7 @@ class LoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        #self.fields["username"].widget.input_type = "email"  # ugly hack
+        # self.fields["username"].widget.input_type = "email"  # ugly hack
         self.fields["username"].widget.attrs.update({'class': 'form-control'})
         self.fields["password"].widget.attrs.update({'class': 'form-control'})
 
@@ -45,11 +45,10 @@ class LoginForm(AuthenticationForm):
 
 
 class AsignColegioForm(forms.Form):
-
     colegios = forms.ModelChoiceField(
         label='Colegios',
         queryset=None,
-        required=True,)
+        required=True, )
 
     def __init__(self, *args, **kwargs):
 
@@ -81,7 +80,7 @@ class AsignColegioForm(forms.Form):
         except Personal.DoesNotExist:
             logger.info("El usuario no es un personal")
 
-            #Verificar que sea un apoderado
+            # Verificar que sea un apoderado
             apoderado = Apoderado.objects.get(persona=profile)
             logger.debug("Apoderado: " + str(apoderado.id_apoderado))
 
@@ -101,12 +100,13 @@ class AsignColegioForm(forms.Form):
         self.helper.form_id = "idcolegios"
         self.helper.form_method = "post"
 
-        self.fields['colegios'].queryset=colegios
+        self.fields['colegios'].queryset = colegios
         self.fields['colegios'].widget.attrs.update({'class': 'form-control'})
 
-        #self.helper.add_input(Submit('submit', 'Asignar', css_class="btn btn-primary btn-block btn-flat"))
+        # self.helper.add_input(Submit('submit', 'Asignar', css_class="btn btn-primary btn-block btn-flat"))
 
         logger.info("Se asignaron los colegios para ser logueados")
+
 
 class SignupForm(authtoolsforms.UserCreationForm):
     def __init__(self, *args, **kwargs):
@@ -163,7 +163,12 @@ class SetPasswordForm(authforms.SetPasswordForm):
 
 
 class RegistroUsuarioForm(UserCreationForm):
+    TIPO_DOCUMENTOS_CHOICES = ((1, 'DNI'), (2, 'Carnet de Extranjeria'),)
     groups = forms.ModelMultipleChoiceField(queryset=Group.objects.all(), required=True)
+    # a = forms.CharField(max_length=20)
+    select_documento = forms.ChoiceField(
+        widget=forms.Select(attrs={'class': 'form-control', 'id': 'select_documento', 'onchange': 'dni()'}),
+        choices=TIPO_DOCUMENTOS_CHOICES)
 
     class Meta:
         model = User

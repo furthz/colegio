@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^apoderados/create/$', ApoderadoCreateView.as_view(), name="apoderado_create"),
     url(r'^apoderados/(?P<pk>\d+)/$', ApoderadoDetailView.as_view(), name='apoderado_detail'),
 
+# $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     # url(r'^personales/create/$',PersonalCreateView.as_view(), name="personal_create"),
     # url(r'^personales/(?P<pk>\d+)/$',PersonalDetailView.as_view(), name='personal_detail'),
 

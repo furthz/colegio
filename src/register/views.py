@@ -70,8 +70,15 @@ class CreatePersonaView(MyLoginRequiredMixin, CreateView):
             colegios = Colegio.objects.filter(activo=True)
 
             return render(request, template_name=self.template_name,
-                          context={'isSistemas': is_sistemas, 'colegios': colegios,
-                                   'form': self.form_class})  # super(CreatePersonaView, self).get(request, args, kwargs)
+                          context={'isSistemas': is_sistemas,
+                                   'colegios': colegios,
+                                   'form': self.form_class,
+                                   'tipo_documento_val': str(request.session['tipo_documento_value']),
+                                   'num_documento': str(request.session['num_documento']),
+                                   'correo_mail': str(request.session['correo']),
+
+                                   }
+                          )  # super(CreatePersonaView, self).get(request, args, kwargs)
 
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
@@ -308,8 +315,13 @@ class ApoderadoCreateView(MyLoginRequiredMixin, CreateView):
             colegios = Colegio.objects.filter(activo=True)
 
             return render(request, template_name=self.template_name,
-                          context={'isSistemas': is_sistemas, 'colegios': colegios,
-                                   'form': self.form_class})  # super(CreatePersonaView, self).get(request, args, kwargs)
+                          context={'isSistemas': is_sistemas,
+                                   'colegios': colegios,
+                                   'form': self.form_class,
+                                   'tipo_documento_val': str(request.session['tipo_documento_value']),
+                                   'num_documento': str(request.session['num_documento']),
+                                   'correo_mail': str(request.session['correo']),
+                                   })  # super(CreatePersonaView, self).get(request, args, kwargs)
 
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
@@ -329,7 +341,7 @@ class ApoderadoCreateView(MyLoginRequiredMixin, CreateView):
             obj.user_id = usuario_creado_id
             obj.save()
             logger.debug("Se creó el apoderado")
-            return HttpResponseRedirect(apoderado.get_absolute_url())
+            return HttpResponseRedirect(reverse('registers:personal_list'))
 
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
@@ -862,8 +874,8 @@ class PersonalDeleteView(MyLoginRequiredMixin, TemplateView):
             perfil = request.GET['perfil']
             user_id = Profile.objects.values('user_id').filter(pk=int(request.GET['idpersona']))[0]['user_id']
             get_user = Userss.objects.get(pk=user_id)
-            get_user.name = str("mpixel_elnom"+str(user_id))
-            get_user.email = str("mpixel_elmai"+str(user_id))
+            get_user.name = str("mpixel_elnom" + str(user_id))
+            get_user.email = str("mpixel_elmai" + str(user_id))
             get_user.is_active = False
             get_user.save()
 

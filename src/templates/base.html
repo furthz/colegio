@@ -1,8 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-    {% load staticfiles %}
-    {% load thumbnail %}
-  <head>
+{% load staticfiles %}
+{% load thumbnail %}
+<head>
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,8 +11,53 @@
     <!-- Favicon -->
     <link rel="shortcut icon" href="{% static 'site/ico/favicon.ico' %}">
     <link rel="stylesheet" href="{% static 'components/font-awesome/css/font-awesome.min.css' %}">
-    <link rel="stylesheet" href="{% static 'components/bootstrap/dist/css/bootstrap.min.css' %}" >
+    <link rel="stylesheet" href="{% static 'components/bootstrap/dist/css/bootstrap.min.css' %}">
     <link href="{% static 'site/css/style.css' %}" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .dropbtn {
+            background-color: #3498DB;
+            color: white;
+            padding: 16px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .dropbtn:hover, .dropbtn:focus {
+            background-color: #2980B9;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            overflow: auto;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown a:hover {
+            background-color: #f1f1f1
+        }
+
+        .show {
+            display: block;
+        }
+    </style>
     {% block styles %}
     {% endblock styles %}
 
@@ -25,13 +69,13 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
-  </head>
+</head>
 
-  <body>
+<body>
 
-    <!-- HEADER DE PAGE -->
-    <header id="header">
-        <div class="container">
+<!-- HEADER DE PAGE -->
+<header id="header">
+    <div class="container">
         <div class="row">
             <div class="col-md-4">
                 <nav class="left">
@@ -44,110 +88,146 @@
                 </a>
             </div>
             <div class="col-md-4">
-             <nav class="right">
-                {% if user.is_authenticated %}
-                {% if user.is_staff %}
+                <nav class="right">
+                    {% if user.is_authenticated %}
+                        {% if user.is_staff %}
 
-                {% endif %}
-                <div class="dropdown">
-                    <button class="btn btn-default dropdown-toggle" type="button" id="profile-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        <img src="{% thumbnail user.profile.picture|default:'default_profile.png' 30x30 crop %}" alt="" />
-                    {{ user.get_full_name|truncatechars:20 }}
-                    <span class="caret"></span>
-                    </button>
-                  <ul class="dropdown-menu" role="menu">
-                    <li><a href="{% url 'profiles:show_self' %}">Mi perfil</a></li>
-                    <li><a href="{% url 'accounts:logout' %}">Cerrar sesión</a></li>
-                  </ul>
-                </div>
-            {% else %}
-                <a href="{% url 'accounts:login' %}" class="btn btn-default"><i class="fa fa-sign-in" aria-hidden="true"></i></a>
-            {% endif %}
-             </nav>
+                        {% endif %}
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="profile-menu"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                <img src="{% thumbnail user.profile.picture|default:'default_profile.png' 30x30 crop %}"
+                                     alt=""/>
+                                {{ user.get_full_name|truncatechars:20 }}
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="{% url 'profiles:show_self' %}">Mi perfil</a></li>
+                                <li><a href="{% url 'accounts:logout' %}">Cerrar sesión</a></li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <a href="{% url 'accounts:login' %}" class="btn btn-default">Iniciar Sesión  <i class="fa fa-sign-in"
+                                                                                        aria-hidden="true"></i></a>
+                    {% endif %}
+                </nav>
             </div>
         </div>
     </div>
-    </header>
+</header>
 
-    <!-- MENU DE PAGE -->
-    <nav id="menu">
-        {% block navbar %}
-            <ul class="links">
-                {% include "_navbar.html" with active_link="home" %}
-                <!--<li><a href="home.html">Inicio</a></li>
-                <li><a href="generic.html">Sobre Nosotros</a></li>
-                <li><a href="elements.html">Contacto</a></li>-->
-            </ul>
-            <ul class="actions vertical">
-                {% if user.is_authenticated %}
+<!-- MENU DE PAGE -->
+<nav id="menu">
+    {% block navbar %}
+        <ul class="links">
+            {% include "_navbar.html" with active_link="home" %}
+            <!--<li><a href="home.html">Inicio</a></li>
+            <li><a href="generic.html">Sobre Nosotros</a></li>
+            <li><a href="elements.html">Contacto</a></li>-->
+        </ul>
+        <ul class="actions vertical">
+            {% if user.is_authenticated %}
                 {% if user.is_staff %}
 
                 {% endif %}
                 <div class="dropdown">
-                    <a href="#" class="dropdown-toggle profile-sidebar" data-toggle="dropdown">
-                    <img src="{% thumbnail user.profile.picture|default:'default_profile.png' 30x30 crop %}" alt="" />
-                    {{ user.get_full_name|truncatechars:20 }}
-                        <span class="caret"></span>
-		            </a>
-
-                  <ul class="dropdown-menu" role="menu">
-                    <li><a href="{% url 'profiles:show_self' %}">Mi perfil</a></li>
-                    <li><a href="{% url 'accounts:logout' %}">Cerrar sesión</a></li>
-                  </ul>
+                    <a onclick="myFunction()" class="dropdown-toggle profile-sidebar"><img
+                            src="{% thumbnail user.profile.picture|default:'default_profile.png' 30x30 crop %}"
+                            alt=""/>   {{ user.get_full_name|truncatechars:20 }}
+                        <span class="caret"></span></a>
+                    <div id="myDropdown" class="dropdown-content">
+                        <a href="{% url 'profiles:show_self' %}">Mi perfil</a>
+                        <a href="{% url 'accounts:logout' %}">Cerrar sesión</a>
+                    </div>
                 </div>
+                <!--
+                <div class="dropdown">
+                    <a href="#" class="dropdown-toggle profile-sidebar" data-toggle="dropdown" id="dropbtn">
+                        <img src="{% thumbnail user.profile.picture|default:'default_profile.png' 30x30 crop %}"
+                             alt=""/>
+                        {{ user.get_full_name|truncatechars:20 }}
+                        <span class="caret"></span>
+                    </a>
+
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="{% url 'profiles:show_self' %}">Mi perfil</a></li>
+                        <li><a href="{% url 'accounts:logout' %}">Cerrar sesión</a></li>
+                    </ul>
+                </div>
+                -->
             {% else %}
-                <a href="{% url 'accounts:login' %}" class="btn btn-default"><i class="fa fa-sign-in" aria-hidden="true"></i></a>
+                <a href="{% url 'accounts:login' %}" class="btn btn-default"><i class="fa fa-sign-in"
+                                                                                aria-hidden="true"></i></a>
             {% endif %}
-            </ul>
-        {% endblock navbar %}
-    </nav>
+        </ul>
+    {% endblock navbar %}
+</nav>
 
-    {% block messages %}
-      {% if messages %}
+{% block messages %}
+    {% if messages %}
         {% for message in messages %}
-          <div class="alert alert-{{ message.tags }}">  <!-- singular -->
-            <a class="close" data-dismiss="alert">×</a>
-            {{ message|safe }}
-          </div>
+            <div class="alert alert-{{ message.tags }}">  <!-- singular -->
+                <a class="close" data-dismiss="alert">×</a>
+                {{ message|safe }}
+            </div>
         {% endfor %}
-      {% endif %}
-    {% endblock %}
+    {% endif %}
+{% endblock %}
 
-    {% block splash %}
-    {% endblock splash %}
+{% block splash %}
+{% endblock splash %}
 
-    <div class="page">
-        {% block container %}
+<div class="page">
+    {% block container %}
 
-        {% endblock container %}
-    </div>
-    {% block footer %}
-      <!-- FOOTER -->
-			<footer id="footer">
-				<div class="inner">
-					<h2>Contáctenos</h2>
-					<ul class="actions">
-						<li><span class="icon fa-phone"></span> Telf. +51 (01) 758 3337</li>
-						<li><span class="icon fa-envelope"></span> <a href="#">info@mundopixel.pe</a></li>
-						<li><span class="icon fa-map-marker"></span> Jr. Natalio Sanchez 220 Of. 503 - Jesus Maria, Lima </li>
-					</ul>
-				</div>
-				<div class="copyright">
-					&copy; <a href=""> Mundo Pixel S.A.C.</a> - Derechos reservados.
-				</div>
-			</footer>
-    {% endblock %}
+    {% endblock container %}
+</div>
+{% block footer %}
+    <!-- FOOTER -->
+    <footer id="footer">
+        <div class="inner">
+            <h2>Contáctenos</h2>
+            <ul class="actions">
+                <li><span class="icon fa-phone"></span> Telf. +51 (01) 758 3337</li>
+                <li><span class="icon fa-envelope"></span> <a href="#">info@mundopixel.pe</a></li>
+                <li><span class="icon fa-map-marker"></span> Jr. Natalio Sanchez 220 Of. 503 - Jesus Maria, Lima</li>
+            </ul>
+        </div>
+        <div class="copyright">
+            &copy; <a href=""> Mundo Pixel S.A.C.</a> - Derechos reservados.
+        </div>
+    </footer>
+{% endblock %}
 
-    <!-- SCRIPTS TEMPLATES -->
-        <script src="{% static 'components/jquery/dist/jquery.min.js' %}"></script>
-        <script src="{% static 'components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
-        <script src="{% static 'site/js/jquery.scrolly.min.js' %}"></script>
-        <script src="{% static 'site/js/skel.min.js' %}"></script>
-        <script src="{% static 'site/js/util.js' %}"></script>
-        <script src="{% static 'site/js/main.js' %}"></script>
-    {% block scripts %}
-    {% endblock scripts %}
-  </body>
-</html>
+<!-- SCRIPTS TEMPLATES -->
+<script src="{% static 'components/jquery/dist/jquery.min.js' %}"></script>
+<script src="{% static 'components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'site/js/jquery.scrolly.min.js' %}"></script>
+<script src="{% static 'site/js/skel.min.js' %}"></script>
+<script src="{% static 'site/js/util.js' %}"></script>
+<script src="{% static 'site/js/main.js' %}"></script>
+
+<script>
+    function myFunction() {
+        document.getElementById("myDropdown").classList.toggle("show");
+    }
+    window.onclick = function (event) {
+        if (!event.target.matches('.dropbtn')) {
+
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+</script>
+
+{% block scripts %}
+{% endblock scripts %}
+</body>
 
 
