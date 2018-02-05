@@ -90,14 +90,6 @@ Cobranza.monto
 """
 
 
-def getRemesasTotal():
-    today = datetime.datetime.today()
-    TotalRemesa = Remesa.objects.filter(fechacreacion__year=today.year, fechacreacion__month=today.month,
-                                        fechacreacion__day=today.day).aggregate(Sum('monto'))['monto__sum']
-
-    return TotalRemesa
-
-
 # Cajacajero.movimiento
 
 
@@ -111,11 +103,11 @@ class CajaCajero(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, 
     caja = models.ForeignKey(Caja, models.DO_NOTHING, db_column='id_caja')  # Caja en la que se apertura la sesión
     saldo = models.FloatField(default=0)  # Sobrante o Faltante al Final de la caja
     ventas = models.FloatField(default=0)
-    monto_apertura = models.FloatField(default=0.0)  # Caja Inicial
-    monto_cierre = models.FloatField(default=0.0)  # Caja Final
+    monto_apertura = models.FloatField(default=0)  # Caja Inicial
+    monto_cierre = models.FloatField(default=0)  # Caja Final
     comentario_apertura = models.CharField(max_length=250, blank=True, null=True)
     comentario_cierre = models.CharField(max_length=250, blank=True, null=True)
-    total_remesa = models.FloatField(default=getRemesasTotal, blank=True, null=True)
+    total_remesa = models.FloatField(default=0, blank=True, null=True)
 
     estado = models.BooleanField()
 
@@ -173,20 +165,6 @@ class Remesa(models.Model):
         """
 
         return "{0} {1} {2}".format(self.personal_colegio, ' - ', self.fechacreacion)
-
-    def save(self, **kwargs):
-        super(Remesa, self).save(**kwargs)
-        # Obtengo el id_ de la caja a la que hago la remesa (movimiento)
-        cajacajero_id = self.movimiento_id
-        # Obtengoi el monto actual de la remesa en ese cajacajero
-        monto_antiguo = CajaCajero.objects.values('total_remesa').filter(pk=cajacajero_id)[0]['total_remesa']
-        # Sumo el nuevo monto al antiguo
-        monto_nuevo = monto_antiguo + self.monto
-        # Obtengo la cajacajero a la que se hace la remesa
-        get_cajacajero = CajaCajero.objects.get(id=cajacajero_id)
-        # Actualizo y guardo el nuevo monto de la remesa
-        get_cajacajero.total_remesa = monto_nuevo
-        get_cajacajero.save()
 
     class Meta:
         managed = False
