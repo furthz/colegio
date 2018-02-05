@@ -712,7 +712,7 @@ class TipoDocumento(ActivoMixin, models.Model):
         managed = True
 
     def __str__(self):
-        return "{0} de {1}".format(self.nom_tipo_documento, self.tipo_formato.descripcion)
+        return "{0}".format(self.nom_tipo_documento)
 
 class CorrelativoDocumento(ActivoMixin, CreacionModificacionFechaMixin, CreacionModificacionUserMixin, models.Model):
     """
