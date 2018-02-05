@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.core.urlresolvers import reverse_lazy
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.utils.decorators import method_decorator
 from django.views import generic
 from django.contrib.auth import get_user_model
@@ -31,7 +31,7 @@ from django.views import View
 
 from django.contrib.auth.decorators import permission_required
 from utils.middleware import validar_roles
-
+from register.models import Profile
 from . import forms
 
 import logging
@@ -88,11 +88,17 @@ class AsignColegioView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         logger.debug("Inicio GET AsignColegioView")
+        user_id = request.user
+        try:
+            profile = Profile.objects.get(user=user_id)
+            logger.debug("Inicio GET AsignColegioView")
+            form = forms.AsignColegioForm(request.POST, user=user_id)
+            logger.debug("Formulario para mostrar selección de colegios")
+            return render(request, self.template_name, {'form': form})
 
-        form = forms.AsignColegioForm(request.POST, user=request.user)
-        logger.debug("Formulario para mostrar selección de colegios")
-
-        return render(request, self.template_name, {'form': form})
+        except Profile.DoesNotExist:
+            return HttpResponseRedirect(
+                "/Crear_un_html_que_indique_que_el_usuario_no_tiene_un_perfil_asignado_y_debe_ser_creado")
 
     @method_decorator(cache_page(CACHE_TTL))
     def post(self, request, **kwargs):
