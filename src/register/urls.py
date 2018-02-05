@@ -77,6 +77,6 @@ urlpatterns = [
     url(r'^configuracion/correlativo/list/$', CorrelativoDocumentoListView.as_view(), name="correlativodocumento_list"),
     url(r'^configuracion/correlativo/list/(?P<pk>\d+)/$',CorrelativoDocumentoDetailView.as_view(), name='documento_detail'),
     url(r'^configuracion/correlativo/list/delete/$',CorrelativoDocumentoDeleteView.as_view(), name='documento_delete'),
-    url(r'^configuracion/correlativo/list/update/(?P<pk>\d+)/$',CorrelativoDocumentoUpdateView.as_view(), name='documento_update'),
+    url(r'^configuracion/correlativo/list/update/$',CorrelativoDocumentoUpdateView.as_view(), name='documento_update'),
 
 ]
