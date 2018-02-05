@@ -478,7 +478,6 @@ class Migration(migrations.Migration):
                 ('cod_tipo_documento', models.CharField(max_length=2)),
                 ('nom_tipo_documento', models.CharField(max_length=20)),
                 ('nom_tipo_documento_electronico', models.CharField(max_length=40)),
-                ('tipo_formato', models.ForeignKey(db_column='id_tipo_formato', to='register.TipoFormato')),
                 ('activo', models.BooleanField(default=True))
             ],
             options={
@@ -497,6 +496,7 @@ class Migration(migrations.Migration):
                 ('serie_documento', models.CharField(max_length=5)),
                 ('correlativo_documento', models.IntegerField()),
                 ('digitos_correlativo', models.IntegerField()),
+                ('tipo_formato', models.ForeignKey(db_column='id_tipo_formato', to='register.TipoFormato')),
                 ('activo', models.BooleanField(default=True)),
                 ('fecha_creacion', models.DateTimeField(null=True)),
                 ('fecha_modificacion', models.DateTimeField(null=True)),

@@ -707,7 +707,6 @@ class TipoDocumento(ActivoMixin, models.Model):
     cod_tipo_documento = models.CharField(max_length=2)
     nom_tipo_documento = models.CharField(max_length=20)
     nom_tipo_documento_electronico = models.CharField(max_length=40)
-    tipo_formato = models.ForeignKey(TipoFormato, models.DO_NOTHING, db_column='id_tipo_formato')
 
     class Meta:
         managed = True
@@ -725,6 +724,7 @@ class CorrelativoDocumento(ActivoMixin, CreacionModificacionFechaMixin, Creacion
     serie_documento = models.CharField(max_length=5)
     correlativo_documento = models.IntegerField()
     digitos_correlativo = models.IntegerField()
+    tipo_formato = models.ForeignKey(TipoFormato, models.DO_NOTHING, db_column='id_tipo_formato')
 
     def get_absolute_url(self):
         from django.urls import reverse
