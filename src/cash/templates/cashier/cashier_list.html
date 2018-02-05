@@ -15,7 +15,7 @@
 {% endblock %}
 
 {% block container %}
-
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <!--Comienza el contenido!!!!!!!!!!!!!!!!!!!-->
     <section>
         <div class="row">
@@ -79,12 +79,28 @@
                                                                 <td>
                                                                     <div class="btn-group btn-group-sm" role="group"
                                                                          aria-label="...">
-                                                                        <a title="Editar"
-                                                                           href='{% url "cash:cashier_edit" cashier.id_caja %}'
-                                                                           class="btn btn-default">
-                                                                            <i class="fa fa-pencil"
-                                                                               aria-hidden="true"></i>
-                                                                        </a>
+                                                                        {% if permiso_para_editar == True %}
+                                                                            <a title="Editar"
+                                                                               href='{% url "cash:cashier_edit" cashier.id_caja %}'
+                                                                               class="btn btn-default">
+                                                                                <i class="fa fa-pencil"
+                                                                                   aria-hidden="true"></i>
+                                                                            </a>
+                                                                        {% else %}
+
+                                                                            <a title="Editar"
+                                                                               onclick="no_tiene_permisos()"
+                                                                               class="btn btn-default">
+                                                                                <i class="fa fa-pencil"
+                                                                                   aria-hidden="true"></i>
+                                                                            </a>
+                                                                            <script>
+                                                                                function no_tiene_permisos() {
+                                                                                    alert("Este usuario no tiene privilegios para modificar caja. Contacte con el tesorero");
+                                                                                }
+                                                                            </script>
+                                                                        {% endif %}
+
                                                                         <a title="Detalle"
                                                                            href='{% url "cash:cashier_detail" cashier.id_caja %}'
                                                                            class="btn btn-default">

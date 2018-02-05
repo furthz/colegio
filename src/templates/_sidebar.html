@@ -126,7 +126,7 @@
                 </a>
                 <ul class="treeview-menu">
                     {% if perms.cash.Cashier_List %}
-                    <li><a href="{% url 'cash:cashier_list' %}"><i class="fa fa-circle-o"></i> Manejo de Cajas</a></li>
+                    <li><a href="{% url 'cash:cashier_list' %}"><i class="fa fa-circle-o"></i> Detalle de Cajas</a></li>
                     {% endif %}
                     {% if perms.cash.Box_Cashier_Creation %}
                     <li><a href="{% url 'cash:boxcashier_AperturarCaja' %}"><i class="fa fa-circle-o"></i> Aperturar Caja</a></li>

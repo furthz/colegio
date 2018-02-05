@@ -62,12 +62,18 @@ class CashierListView(MyLoginRequiredMixin, ListView):
         context = super(CashierListView, self).get_context_data(**kwargs)
         roles = ['administrativo', 'tesorero']
         context['es_tesorero'] = validar_roles(roles=roles)
-
         request = get_current_request()
+
+        puede_editar_caja = ['tesorero']
+        if validar_roles(roles=puede_editar_caja):
+            puede_ver = True
+        else:
+            puede_ver = False
 
         if request.session.get('colegio'):
             id = request.session.get('colegio')
             context['idcolegio'] = id
+            context['permiso_para_editar'] = puede_ver
         return context
 
 
