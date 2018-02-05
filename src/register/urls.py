@@ -9,7 +9,7 @@ from register.views import CreatePersonaView, PersonaDetail, AlumnoCreateView, A
     SistemasCreateView, SistemasDetailView, ProveedorListView, ProveedorDeleteView, ProveedorUpdateView, \
     AlumnoAutocomplete, DocenteCreateView, DocenteDetailView, EmpresaCreateView, EmpresaListView, \
     ConfiguracionSistemaUpdateView, CorrelativoDocumentoCreateView, CorrelativoDocumentoListView, \
-    CorrelativoDocumentoDetailView, CorrelativoDocumentoDeleteView
+    CorrelativoDocumentoDetailView, CorrelativoDocumentoDeleteView, CorrelativoDocumentoUpdateView
 from utils.views import get_provincias, get_distritos
 
 from .import_export import exportCSV,exportJSON, simple_upload
@@ -77,5 +77,6 @@ urlpatterns = [
     url(r'^configuracion/correlativo/list/$', CorrelativoDocumentoListView.as_view(), name="correlativodocumento_list"),
     url(r'^configuracion/correlativo/list/(?P<pk>\d+)/$',CorrelativoDocumentoDetailView.as_view(), name='documento_detail'),
     url(r'^configuracion/correlativo/list/delete/$',CorrelativoDocumentoDeleteView.as_view(), name='documento_delete'),
+    url(r'^configuracion/correlativo/list/update/(?P<pk>\d+)/$',CorrelativoDocumentoUpdateView.as_view(), name='documento_update'),
 
 ]

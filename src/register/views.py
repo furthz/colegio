@@ -1588,3 +1588,49 @@ class CorrelativoDocumentoDeleteView(MyLoginRequiredMixin, TemplateView):
             'idtipo': request.POST['tiposervicio'],
         })
 
+class CorrelativoDocumentoUpdateView(MyLoginRequiredMixin, UpdateView):
+    """
+
+    """
+    template_name = "correlativo_form_update.html"
+    model = CorrelativoDocumento
+    form_class = CorrelativoDocumentosForm
+
+    def get(self, request, *args, **kwargs):
+        roles = ['promotor', 'director']
+        if validar_roles(roles=roles):
+            corrdocumento = CorrelativoDocumento.objects.get(pk = request.GET['documento'])
+            form = self.form_class(instance=corrdocumento)
+            return render(request, template_name=self.template_name, context={
+                'form':form,
+                'documento':corrdocumento.pk,
+            })
+        else:
+            return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        logger.info("En el POST")
+        logger.info(request.POST)
+        documento = self.model.objects.get(pk = request.POST['documento'])
+        if form.is_valid():
+            data_form = form.cleaned_data
+            sucursal = Sucursal.objects.get(pk=self.request.session.get('colegio'))
+            lista_documentos = self.model.objects.filter(serie_documento=data_form['serie_documento'], tipo_documento=data_form['tipo_documento'], activo=True)
+            for doc in lista_documentos:
+                if doc.sucursal.empresa == sucursal.empresa and doc != documento:
+                    return render(request, template_name=self.template_name, context={
+                        'mensaje_error': "El numero de serie y tipo de documento ya existen",
+                        'form': form,
+                        'documento': documento.pk,
+                    })
+            documento(
+                tipo_documento=data_form['tipo_documento'],
+                serie_documento=data_form['serie_documento'],
+                correlativo_documento=data_form['correlativo_documento'],
+                digitos_correlativo=data_form['digitos_correlativo'],
+                tipo_formato=TipoFormato.objects.get(pk=1),
+            )
+            documento.save()
+            return HttpResponseRedirect(reverse('registers:correlativodocumento_list'))
+        return HttpResponseRedirect(reverse('registers:correlativodocumento_list'))
