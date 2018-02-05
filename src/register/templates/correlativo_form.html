@@ -7,14 +7,17 @@
 {% endblock %}
 
 {% block container %}
-{% if mensaje_error %}
-    {{ mensaje_error }}
-{% endif %}
+
 <div class="row">
     <div class="col-md-12">
         <div class="box box-primary">
             <div class="box-body">
 
+                    {% if mensaje_error %}
+                        <div class="alert alert-warning">
+                        {{ mensaje_error }}
+                        </div>
+                    {% endif %}
                         <form id="configurar" name="configurar" action="" method="POST" class="form-horizontal">
                             {% csrf_token %}
 
