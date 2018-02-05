@@ -7,7 +7,9 @@
 {% endblock %}
 
 {% block container %}
-
+{% if mensaje_error %}
+    {{ mensaje_error }}
+{% endif %}
 <div class="row">
     <div class="col-md-12">
         <div class="box box-primary">
