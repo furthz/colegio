@@ -364,7 +364,8 @@ class CorrelativoDocumentosForm(ModelForm):
 
     @property
     def ChoiceDigitos(self):
-        choices = [(d + 1, str(d+1)) for d in range(20)]
+        choices = [("", "Seleccionar")]
+        [choices.append((d + 1, str(d+1))) for d in range(20)]
         return choices
 
 

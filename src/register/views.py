@@ -26,7 +26,7 @@ from register.forms import PersonaForm, AlumnoForm, ApoderadoForm, PersonalForm,
     ConfiguracionSistemaForm, CorrelativoDocumentosForm
 from register.models import Alumno, Apoderado, Personal, Promotor, Director, Cajero, Tesorero, Sucursal, Proveedor, \
     ProveedorSucursal, PersonalSucursal, Administrativo, Direccion, Telefono, Sistemas, Docente, Empresa, \
-    ConfiguracionSistema, ModalidadSistema, CorrelativoDocumento
+    ConfiguracionSistema, ModalidadSistema, CorrelativoDocumento, TipoFormato
 from utils.middleware import get_current_colegio, validar_roles, get_current_user
 from utils.views import SaveGeneric, MyLoginRequiredMixin
 from payments.models import CajaChica
@@ -1507,16 +1507,20 @@ class CorrelativoDocumentoCreateView(MyLoginRequiredMixin, CreateView):
         if form.is_valid():
             data_form = form.cleaned_data
             sucursal = Sucursal.objects.get(pk=self.request.session.get('colegio'))
-            lista_documentos = self.model.objects.filter(serie_documento=data_form['serie_documento'], activo=True)
+            lista_documentos = self.model.objects.filter(serie_documento=data_form['serie_documento'], tipo_documento=data_form['tipo_documento'], activo=True)
             for doc in lista_documentos:
                 if doc.sucursal.empresa == sucursal.empresa:
-                    return HttpResponseRedirect(reverse('registers:correlativodocumento_list'))
+                    return render(request, template_name=self.template_name, context={
+                        'mensaje_error': "El numero de serie y tipo de documento ya existen",
+                        'form': form,
+                    })
             documento = self.model(
                 sucursal=sucursal,
                 tipo_documento=data_form['tipo_documento'],
                 serie_documento=data_form['serie_documento'],
                 correlativo_documento=data_form['correlativo_documento'],
                 digitos_correlativo=data_form['digitos_correlativo'],
+                tipo_formato=TipoFormato.objects.get(pk=1),
             )
             documento.save()
             return HttpResponseRedirect(reverse('registers:correlativodocumento_list'))
