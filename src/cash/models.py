@@ -119,24 +119,6 @@ class CajaCajero(CreacionModificacionFechaMixin, CreacionModificacionUserMixin, 
 
     estado = models.BooleanField()
 
-    def save(self, *args, **kwargs):
-
-        try:
-            remesa = Remesa.objects.latest('id_remesa')
-
-        except Remesa.DoesNotExist:
-            self.saldo = self.monto_apertura - self.monto_cierre
-            super().save(*args, **kwargs)
-
-            pass
-        except Remesa.MultipleObjectsReturned:
-            self.total_remesa = getRemesasTotal()
-            self.saldo = ((self.monto_apertura) - getRemesasTotal()) - self.monto_cierre
-            super().save(*args, **kwargs)
-
-            pass
-        super().save(*args, **kwargs)
-
     def __str__(self):
         """
         Devuelve la Caja(Número de caja + Descripción) + Cajero asignado(Nombre+Correo)
@@ -191,6 +173,20 @@ class Remesa(models.Model):
         """
 
         return "{0} {1} {2}".format(self.personal_colegio, ' - ', self.fechacreacion)
+
+    def save(self, **kwargs):
+        super(Remesa, self).save(**kwargs)
+        # Obtengo el id_ de la caja a la que hago la remesa (movimiento)
+        cajacajero_id = self.movimiento_id
+        # Obtengoi el monto actual de la remesa en ese cajacajero
+        monto_antiguo = CajaCajero.objects.values('total_remesa').filter(pk=cajacajero_id)[0]['total_remesa']
+        # Sumo el nuevo monto al antiguo
+        monto_nuevo = monto_antiguo + self.monto
+        # Obtengo la cajacajero a la que se hace la remesa
+        get_cajacajero = CajaCajero.objects.get(id=cajacajero_id)
+        # Actualizo y guardo el nuevo monto de la remesa
+        get_cajacajero.total_remesa = monto_nuevo
+        get_cajacajero.save()
 
     class Meta:
         managed = False

@@ -18,7 +18,7 @@ urlpatterns = [
     # URL's del CRUD de CAJA
     url(r'^cashier/$', CashierListView.as_view(), name='cashier_list'),
 
-    #url(r'^cashier/(?P<pk>\d+)$', CashierDetailView.as_view(), name='cashier_detail'),
+    # url(r'^cashier/(?P<pk>\d+)$', CashierDetailView.as_view(), name='cashier_detail'),
     url(r'^cashier/(?P<pk>\d+)$', CashierDetailView.as_view(), name='cashier_detail'),
 
     url(r'^cashier/create$', CashierCreationView.as_view(), name='cashier_create'),
@@ -36,8 +36,8 @@ urlpatterns = [
 
     # URL's del CRUD de Remesas
 
-    #url(r'^search/$', search, name='search'),
-    #url(r'^consignment/$', ConsignmentListView.as_view(), name='consignment_list'),
+    # url(r'^search/$', search, name='search'),
+    # url(r'^consignment/$', ConsignmentListView.as_view(), name='consignment_list'),
     url(r'^consignment/$', search, name='consignment_list'),
     url(r'^consignment/(?P<pk>\d+)$', ConsignmentDetailView.as_view(), name='consignment_detail'),
     url(r'^consignment/create$', ConsignmentCreationView.as_view(), name='consignment_create'),
@@ -45,4 +45,3 @@ urlpatterns = [
     url(r'^consignment/delete/(?P<pk>\d+)$', ConsignmentDeleteView.as_view(), name='consignment_delete'),
 
 ]
-

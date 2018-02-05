@@ -308,6 +308,11 @@ class BoxCashierUpdateView(UpdateView):
 
     def form_valid(self, form):
         obj = form.save(commit=False)
+        apertura = obj.monto_apertura
+        ventas = obj.ventas
+        remesa = obj.total_remesa
+        cierre = obj.monto_cierre
+        obj.saldo = (((apertura + ventas) - remesa) - cierre)
         obj.estado = False
         obj.save()
         return super(BoxCashierUpdateView, self).form_valid(form)
