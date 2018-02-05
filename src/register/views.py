@@ -1628,8 +1628,7 @@ class CorrelativoDocumentoUpdateView(MyLoginRequiredMixin, UpdateView):
                 tipo_documento=data_form['tipo_documento'],
                 serie_documento=data_form['serie_documento'],
                 correlativo_documento=data_form['correlativo_documento'],
-                digitos_correlativo=data_form['digitos_correlativo'],
-                tipo_formato=TipoFormato.objects.get(pk=1),
+                digitos_correlativo=data_form['digitos_correlativo']
             )
             documento.save()
             return HttpResponseRedirect(reverse('registers:correlativodocumento_list'))
