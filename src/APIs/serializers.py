@@ -231,14 +231,15 @@ class AlertaSerializer(serializers.ModelSerializer):
         model = Alerta
         fields = '__all__'
         fields = ('id_alerta', 'matricula', 'persona_emisor', 'persona_receptor', 'tipo_alerta', 'estado_alerta',
-                  'contenido_alerta', 'fecha_creacion', 'visto', 'contenido_alerta_string', 'tipo_alerta_string')
+                  'contenido_alerta', 'fecha_creacion', 'visto', 'contenido_alerta_string', 'tipo_alerta_string', 'fecha_visto')
         read_only_fields = ('fecha_creacion', 'fecha_modificacion')
 
 
 class TokenFirebaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = TokenFirebase
-        fields = ('persona', 'codigo', 'alumno_id')
+        fields = ('id_token', 'persona', 'codigo', 'alumno_id')
+        read_only_fields = ('id_token',)
 
 
 class Profile_personalSerializer(serializers.ModelSerializer):

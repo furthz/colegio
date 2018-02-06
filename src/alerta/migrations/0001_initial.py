@@ -51,7 +51,7 @@ class Migration(migrations.Migration):
             name='ContenidoAlerta',
             fields=[
                 ('id_contenido_alerta', models.AutoField(primary_key=True)),
-                ('contenido', models.CharField(max_length=100, blank=True, null=True)),
+                ('contenido', models.CharField(blank=True, null=True)),
             ],
             options={
                 # 'db_table': 'matricula',
