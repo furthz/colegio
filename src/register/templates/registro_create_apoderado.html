@@ -1,0 +1,404 @@
+{% extends "page.html" %}
+
+{% block titulo %}
+    <h1>{{ form.title.label }}
+        <small>Módulo de Registro Usuarios</small>
+    </h1>
+{% endblock %}
+
+{% block container %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-body">
+
+                    <script type="text/javascript">
+
+                        function validarFecNac() {
+                            var today = new Date();
+                            var from = $('#id_fecha_nac').val().split("/");
+                            var fecnac = new Date(from[2], from[1] - 1, from[0]);
+
+                            if (fecnac >= today) {
+                                alert("La Fecha de Nacimiento no puede ser mayor o igual al día de hoy");
+                                $('#id_fecha_nac').val("");
+                            }
+                        }
+                        function enviarTelefono() {
+                            var cadena = "";
+                            var sw = true;
+                            $('input[name^="nros"]').each(function () {
+
+                                this.remove();
+
+                            });
+
+                            $('input[name^="telefono"]').each(function () {
+
+                                if (!sw) {
+                                    cadena += ","
+                                } else {
+                                    sw = false
+                                }
+
+                                cadena += this.value;
+                            });
+
+                            $('<input hidden/>').attr({
+                                type: 'text',
+                                name: 'nros',
+                                value: cadena
+                            }).appendTo('#registro');
+                        }
+                        function agregarTelefono() {
+                            var telefono = $('#id_celular').val();
+                            var sw = true;
+                            if (telefono) {
+                                $("#id_celulares").find("> option").each(function () {
+                                    if (telefono == this.value)
+                                        sw = false;
+                                });
+                            }
+                            if (sw && telefono) {
+                                $('#id_celulares').append("<option value=" + telefono + ">" + telefono + "</option>");
+                            }
+
+                            $('#id_celular').val("");
+
+                            $('<input hidden/>').attr({
+                                type: 'text',
+                                name: 'telefono[]',
+                                value: telefono
+                            }).appendTo('#registro');
+                        }
+
+                        function eliminarTelefono() {
+                            $('#id_celulares').find('> :selected').each(function () {
+                                var telefono = this.value;
+                                $(this).remove();
+                                $('input[name^="telefono"]').each(function () {
+
+                                    if (telefono == this.value) {
+                                        this.remove();
+                                    }
+
+                                });
+                            });
+                        }
+
+                    </script>
+
+                    {% if form.errors %}
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <div class="alert alert-danger">
+                                    <strong>{{ error|escape }}</strong>
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form id="registro" name="registro" action="" method="POST" class="form-horizontal">
+                        {% csrf_token %}
+
+                        <div class="col-md-12">
+                            <!-- DATOS PERSONALES -->
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Datos personales</h3>
+                            </div>
+                            <div class="box-body">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Nombre</label>
+                                        <div class="col-sm-9">
+                                            {{ form.nombre }}
+                                        </div>
+                                    </div>
+                                    <div style="display: none;">
+
+                                        {{ form.correo }}
+                                        {{ form.tipo_documento }}
+                                        {{ form.numero_documento }}
+
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Apellido Paterno</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" name="apellido_pa" tabindex="3" class="form-control"
+                                                   maxlength="50" required id="id_apellido_pa">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Sexo</label>
+                                        <div class="col-sm-9">
+                                            {{ form.sexo }}
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                            <label class="col-sm-3 control-label">Alumno</label>
+                                            <div class="col-sm-9">
+                                                {{ form.alumno }}
+                                            </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Segundo Nombre</label>
+                                        <div class="col-sm-9">
+                                            {{ form.segundo_nombre }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Apellido Materno</label>
+                                        <div class="col-sm-9">
+                                            {{ form.apellido_ma }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">F. Nacimiento</label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group date">
+                                                {{ form.fecha_nac }}
+                                                <span class="input-group-addon">
+                                                        <!--
+                                                        <button class="btn btn-default">
+                                                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                        </button>-->
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <!-- atributo parentesco sólo para el apoderado -->
+                                        {% if form.parentesco %}
+                                            <label class="col-sm-3 control-label">Parentesco</label>
+                                            <div class="col-sm-9">
+                                                {{ form.parentesco }}
+                                            </div>
+                                        {% endif %}
+
+                                    </div>
+
+                                    {% if isSistemas %}
+                                        <div class="form-group">
+                                            <label class="col-sm-5 control-label">Colegio</label>
+                                            <div class="col-sm-7">
+                                                <select id="id_colegio" name="colegio" class="form-control">
+                                                    {% for c in colegios %}
+                                                        <option value="{{ c.id_colegio }}">{{ c.nombre }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+                                </div>
+                            </div>
+                            <!-- TERMINA DATOS PERSONALES -->
+
+                            <!-- DATOS DE CONTACTO -->
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Datos Contacto y Dirección</h3>
+                            </div>
+                            <div class="box-body">
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Departamento</label>
+                                        <div class="col-sm-9">
+                                            {{ form.departamento }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Distrito</label>
+                                        <div class="col-sm-9">
+                                            <!--{{ form.distrito }}-->
+                                            <select id="id_distrito" name="distrito" required class="form-control">
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Provincia</label>
+                                        <div class="col-sm-9">
+                                            <!--{{ form.provincia }}-->
+                                            <select id="id_provincia" name="provincia" required class="form-control">
+
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Dirección</label>
+                                        <div class="col-sm-9">
+                                            {{ form.direccion }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Referencia</label>
+                                        <div class="col-sm-9">
+                                            {{ form.referencia }}
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-6">
+                                    <!--
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Tipo Teléfono</label>
+                                                <div class="col-sm-9">
+                                                    {{ form.tipo_cel }}
+                                                </div>
+                                            </div>
+                                            -->
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Teléfonos</label>
+                                        <div class="col-sm-9">
+                                            {{ form.celular }}
+                                            <div class="btn-group" role="group">
+                                                <button type="button" class="btn btn-success" name="agregartelefono"
+                                                        id="agregartelefono" onclick="agregarTelefono()">
+                                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-danger" name="quitartelefono"
+                                                        id="id_quitartelefono" onclick="eliminarTelefono()">
+                                                    <i class="fa fa-minus" aria-hidden="true"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label"></label>
+                                        <div class="col-sm-9">
+                                            {{ form.celulares }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="box-body">
+
+                                <div class="action-footer">
+                                    <a href="#" class="btn btn-default">
+                                        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                                        Regresar al listado
+                                    </a>
+                                    <button type="submit" class="btn btn-success" onclick="enviarTelefono()">
+                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                        Agregar persona
+                                    </button>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- BLOQUE DE AYUDA -->
+                        <!-- FIN DE BLOQUE DE AYUDA -->
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock container %}
+{% block scripts %}
+    {{ form.media }}
+    <script>
+        $(function () {
+            //Date range picker
+            $('#id_fecha_nac').datepicker(
+                {
+                    format: 'yyyy-mm-dd'
+                }
+            );
+
+
+        });
+    </script>
+
+    <script type="text/javascript">
+        $('#id_departamento').change(function () {
+                $('#id_provincia').empty();
+                $('#id_distrito').empty();
+                $('#id_provincia').append('<option value="">Seleccione</option>');
+                $.ajax({
+                    type: "GET",
+                    url: "/registers/api/get_provincias",
+                    datatype: "Json",
+                    data: {id_dpto: $('#id_departamento').val()},
+                    success: function (data) {
+                        $.each(data, function (index, value) {
+                            $('#id_provincia').append('<option value="' + value["id"] + '">' +
+                                value["value"] + '</option>');
+                        });
+                    },
+                    error: function (error) {
+                        alert("Error Ajax not working: " + error);
+                    }
+                });
+
+            }
+        );
+    </script>
+
+    <script type="text/javascript">
+        $('#id_provincia').change(function () {
+                $('#id_distrito').empty();
+                $('#id_distrito').append('<option value="">Seleccione</option>');
+                $.ajax({
+                    type: "GET",
+                    url: "/registers/api/get_distritos",
+                    datatype: "Json",
+                    data: {id_prov: $('#id_provincia').val()},
+                    success: function (data) {
+                        $.each(data, function (index, value) {
+                            $('#id_distrito').append('<option value="' + value["id"] + '">' +
+                                value["value"] + '</option>');
+                        });
+                    },
+                    error: function (error) {
+                        alert("Error Ajax not working: " + error);
+                    }
+                });
+
+            }
+        );
+
+        window.onload = load_defaults;
+        function load_defaults() {
+            document.getElementById("id_tipo_documento").value = {{ tipo_documento_val }};
+            document.getElementById("id_numero_documento").value = "{{ num_documento }}";
+            document.getElementById("id_correo").value = "{{ correo_mail }}";
+
+        }
+
+    </script>
+
+
+{% endblock scripts %}

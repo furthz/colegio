@@ -299,7 +299,7 @@ class AlumnoDetail(MyLoginRequiredMixin, DetailView):
 class ApoderadoCreateView(MyLoginRequiredMixin, CreateView):
     model = Apoderado
     form_class = ApoderadoForm
-    template_name = "registro_create.html"
+    template_name = "registro_create_apoderado.html"
 
     @method_decorator(permission_required('register.apoderado_create', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))
