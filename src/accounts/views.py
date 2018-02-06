@@ -213,7 +213,7 @@ class RegistroUsuario(CreateView):
     def get(self, request, *args, **kwargs):
         logger.debug("Inicio GET RegistroUsuario")
 
-        roles = ['sistemas', 'director', 'promotor']
+        roles = ['sistemas', 'director', 'promotor', 'administrativo']
         logger.info("Roles: " + str(roles))
 
         if request.user.is_superuser:
@@ -250,7 +250,7 @@ class RegistroUsuario(CreateView):
 
     def post(self, request, *args, **kwargs):
         logger.debug("Inicio POST RegistroUsuario")
-        roles = ['sistemas', 'director', 'promotor']
+        roles = ['sistemas', 'director', 'promotor', 'administrativo']
         usuario = Userss()
         form = self.form_class(request.POST)
         if form.is_valid():
