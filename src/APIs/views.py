@@ -523,7 +523,7 @@ class AlertaDetail(generics.RetrieveUpdateDestroyAPIView):
 class TokenFirebaseList(generics.ListCreateAPIView):
     queryset = TokenFirebase.objects.all()
     serializer_class = TokenFirebaseSerializer
-    filter_fields = ('alumno_id',)
+    filter_fields = ('alumno_id', 'codigo')
 
     def list(self, request, *args, **kwargs):
         self.object_list = self.filter_queryset(self.get_queryset())

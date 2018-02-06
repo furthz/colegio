@@ -37,7 +37,7 @@ class EstadoAlerta(CreacionModificacionFechaMixin, models.Model):
 
 class ContenidoAlerta(models.Model):
     id_contenido_alerta = models.AutoField(primary_key=True)
-    contenido = models.CharField(blank=True, null=True)
+    contenido = models.CharField(max_length=10000, blank=True, null=True)
 
     def __str__(self):
         return "{0}".format(self.contenido)
@@ -55,6 +55,7 @@ class Alerta(CreacionModificacionFechaMixin, models.Model):
     tipo_alerta = models.ForeignKey(TipoAlerta, models.DO_NOTHING, db_column="id_tipo_alerta")
     estado_alerta = models.ForeignKey(EstadoAlerta, models.DO_NOTHING, db_column="id_estado_alerta")
     contenido_alerta = models.ForeignKey(ContenidoAlerta, models.DO_NOTHING, db_column='id_contenido_alerta')
+    img_url_alertas = models.CharField(max_length=10000, blank=True, null=True)
     fecha_visto = models.DateTimeField(blank=True, null=True)
     visto = models.IntegerField(default=0, blank=True, null=True)
 

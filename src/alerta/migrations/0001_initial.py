@@ -51,7 +51,7 @@ class Migration(migrations.Migration):
             name='ContenidoAlerta',
             fields=[
                 ('id_contenido_alerta', models.AutoField(primary_key=True)),
-                ('contenido', models.CharField(blank=True, null=True)),
+                ('contenido', models.CharField(max_length=10000, blank=True, null=True)),
             ],
             options={
                 # 'db_table': 'matricula',
@@ -70,6 +70,7 @@ class Migration(migrations.Migration):
                 ('tipo_alerta', models.ForeignKey(db_column='id_tipo_alerta', to='alerta.TipoAlerta')),
                 ('estado_alerta', models.ForeignKey(db_column='id_estado_alerta', to='alerta.EstadoAlerta')),
                 ('contenido_alerta', models.ForeignKey(db_column='id_contenido_alerta', to='alerta.ContenidoAlerta')),
+                ('img_url_alertas', models.CharField(max_length=10000, blank=True, null=True)),
                 ('fecha_visto', models.DateTimeField(blank=True, null=True)),
                 ('visto', models.IntegerField()),
                 ('fecha_creacion', models.DateTimeField(blank=True, null=True)),
