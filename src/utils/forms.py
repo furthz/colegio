@@ -14,22 +14,33 @@ class ValidProfileFormMixin():
         logger.debug("Redefiniendo el método Valid")
 
         try:
-            persona_registrada = Profile.objects.get(numero_documento=self.cleaned_data["numero_documento"],
-                                                     tipo_documento=self.cleaned_data["tipo_documento"])
-            logger.debug("Se encontró una persona registrada: " + str(persona_registrada.id_persona))
+            if self.cleaned_data["numero_documento"] != "00000000":
+                persona_registrada = Profile.objects.get(numero_documento=self.cleaned_data["numero_documento"],
+                                                         tipo_documento=self.cleaned_data["tipo_documento"])
+                logger.debug("Se encontró una persona registrada: " + str(persona_registrada.id_persona))
 
-            if (persona_registrada.apellido_pa.upper() != self.cleaned_data["apellido_pa"].upper()) \
-                    and (persona_registrada.apellido_ma.upper() != self.cleaned_data["apellido_ma"].upper()):
+                try:
+                    if (persona_registrada.apellido_pa.upper() != self.cleaned_data["apellido_pa"].upper()) \
+                            and (persona_registrada.apellido_ma.upper() != self.cleaned_data["apellido_ma"].upper()):
 
-                self.add_error('numero_documento', 'La persona a ingresar no coincide con el ya existente, '
-                                                   'verifique el número de documento ingresado '
-                                                   'la persona ya registrada es: ' +
-                               persona_registrada.getNombreCompleto.title())
+                        self.add_error('numero_documento', 'La persona a ingresar no coincide con el ya existente, '
+                                                           'verifique el número de documento ingresado '
+                                                           'la persona ya registrada es: ' +
+                                       persona_registrada.getNombreCompleto.title())
 
-                logger.error("Existe una persona igual con el mismo número de documento")
+                        logger.error("Existe una persona igual con el mismo número de documento")
 
-                valid = False
+                        valid = False
+                except:
+                    if (persona_registrada.apellido_pa.upper() != self.cleaned_data["apellido_pa"].upper()):
+                        self.add_error('numero_documento', 'La persona a ingresar no coincide con el ya existente, '
+                                                           'verifique el número de documento ingresado '
+                                                           'la persona ya registrada es: ' +
+                                       persona_registrada.getNombreCompleto.title())
 
+                        logger.error("Existe una persona igual con el mismo número de documento")
+
+                        valid = False
         except Profile.DoesNotExist:
             pass
 
