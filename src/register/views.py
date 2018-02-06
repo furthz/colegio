@@ -341,7 +341,7 @@ class ApoderadoCreateView(MyLoginRequiredMixin, CreateView):
             obj.user_id = usuario_creado_id
             obj.save()
             logger.debug("Se creó el apoderado")
-            return HttpResponseRedirect(reverse('registers:personal_list'))
+            return HttpResponseRedirect(reverse('enrollments:matricula_list'))
 
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
