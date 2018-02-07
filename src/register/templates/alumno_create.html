@@ -90,7 +90,8 @@
                         {% endfor %}
                     {% endif %}
 
-                    <form id="registro" name="registro" action="" onsubmit="return validar()" method="POST" class="form-horizontal">
+                    <form id="registro" name="registro" action="" onsubmit="return validar()" method="POST"
+                          class="form-horizontal">
                         {% csrf_token %}
 
                         <div class="col-md-12">
@@ -108,6 +109,7 @@
                                     </div>
                                     <div style="display: none;">
                                         {{ form.user }}
+                                    {{ form.colegio_id }}
 
                                     </div>
 
@@ -161,7 +163,9 @@
                                         <label class="col-sm-3 control-label">N° Documento</label>
                                         <div class="col-sm-9">
 
-                                            <input type="number" oninput="maxLengthCheck(this)" name="numero_documento" tabindex="-6" class="form-control" required="" maxlength="8" id="id_numero_documento">
+                                            <input type="number" oninput="maxLengthCheck(this)" name="numero_documento"
+                                                   tabindex="-6" class="form-control" required="" maxlength="8"
+                                                   id="id_numero_documento">
 
                                         </div>
                                     </div>
@@ -247,7 +251,6 @@
                                     </div>
 
 
-
                                 </div>
 
                                 <div class="col-md-6">
@@ -280,7 +283,8 @@
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">Teléfonos</label>
                                         <div class="col-sm-9">
-                                            <input type="number" oninput="maxLengthCheckTelf(this)" name="celular" tabindex="16" class="form-control" maxlength="9" id="id_celular">
+                                            <input type="number" oninput="maxLengthCheckTelf(this)" name="celular"
+                                                   tabindex="16" class="form-control" maxlength="9" id="id_celular">
                                             <div class="btn-group" role="group">
                                                 <button type="button" class="btn btn-success" name="agregartelefono"
                                                         id="agregartelefono" onclick="agregarTelefono()">
@@ -410,45 +414,46 @@
             }
         }
         window.onload = document.getElementById('id_numero_documento').type = 'number';
+        window.onload = document.getElementById('id_colegio_id').value = {{ idcolegio }};
+
     </script>
     <script>
-      // This is an old version, for a more recent version look at
-      // https://jsfiddle.net/DRSDavidSoft/zb4ft1qq/2/
-      function maxLengthCheck(object)
-      {
-        if (document.getElementById('id_tipo_documento').value == "1") {
+        // This is an old version, for a more recent version look at
+        // https://jsfiddle.net/DRSDavidSoft/zb4ft1qq/2/
+        function maxLengthCheck(object) {
+            if (document.getElementById('id_tipo_documento').value == "1") {
                 document.getElementById('id_numero_documento').type = 'number';
-                document.getElementById('id_numero_documento').maxLength= 8;
+                document.getElementById('id_numero_documento').maxLength = 8;
+
             } else if (document.getElementById('id_tipo_documento').value == "2") {
                 document.getElementById('id_numero_documento').type = 'text';
-                document.getElementById('id_numero_documento').maxLength= 15;
+                document.getElementById('id_numero_documento').maxLength = 15;
             } else {
                 document.getElementById('id_numero_documento').type = 'number';
-                document.getElementById('id_numero_documento').maxLength= 9;
+                document.getElementById('id_numero_documento').maxLength = 9;
             }
-        if (object.value.length > object.maxLength)
-          object.value = object.value.slice(0, object.maxLength)
-      }
+            if (object.value.length > object.maxLength)
+                object.value = object.value.slice(0, object.maxLength)
+        }
     </script>
     <script>
-      // This is an old version, for a more recent version look at
-      // https://jsfiddle.net/DRSDavidSoft/zb4ft1qq/2/
-      function maxLengthCheckTelf(object)
-      {
-        if (object.value.length > object.maxLength)
-          object.value = object.value.slice(0, object.maxLength)
-      }
+        // This is an old version, for a more recent version look at
+        // https://jsfiddle.net/DRSDavidSoft/zb4ft1qq/2/
+        function maxLengthCheckTelf(object) {
+            if (object.value.length > object.maxLength)
+                object.value = object.value.slice(0, object.maxLength)
+        }
     </script>
     <script>
-        function validar(){
+        function validar() {
 
             //Almacenamos los valores
-            tip_doc=$('#id_tipo_documento').val();
-            num_doc=$('#id_numero_documento').val();
+            tip_doc = $('#id_tipo_documento').val();
+            num_doc = $('#id_numero_documento').val();
 
-           //Comprobamos la longitud de caracteres
-            if (tip_doc == "1"){
-                if (num_doc.length == 8){
+            //Comprobamos la longitud de caracteres
+            if (tip_doc == "1") {
+                if (num_doc.length == 8) {
                     return true;
                 }
                 else {
@@ -456,8 +461,8 @@
                     return false;
 
                 }
-            } else if (tip_doc == "3"){
-                if (num_doc.length == 9){
+            } else if (tip_doc == "3") {
+                if (num_doc.length == 9) {
                     return true;
                 }
                 else {
@@ -465,7 +470,7 @@
                     return false;
 
                 }
-            } else{
+            } else {
                 return true;
             }
 
