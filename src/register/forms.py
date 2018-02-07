@@ -20,7 +20,7 @@ class PersonaForm(ModelForm):
     distrito = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-control'}), label="Distrito", required=False)
     tipo_cel = forms.ChoiceField(widget=forms.Select(attrs={'tabindex': '15', 'class': 'form-control'}), label="Tipo Movil",
                                  required=False)
-    celular = forms.CharField(widget=forms.NumberInput(attrs={'tabindex': '16', 'class': 'form-control'}), label="Celular",
+    celular = forms.CharField(widget=forms.NumberInput(attrs={'tabindex': '16', 'class': 'form-control', 'maxlength':'9'}), label="Celular",
                               required=False)
     celulares = forms.MultipleChoiceField(widget=forms.SelectMultiple(attrs={'tabindex': '17', 'class': 'form-control'}), label="Números",
                                           required=False)

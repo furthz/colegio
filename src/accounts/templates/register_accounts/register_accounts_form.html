@@ -14,7 +14,7 @@
                 <div class="col-md-12">
                     <div class="panel-page">
                         <div class="box-body">
-                            <form id="myform" class="form-horizontal" method="post">
+                            <form id="myform" onsubmit="return validar()" class="form-horizontal" method="post">
                                 {% csrf_token %}
                                 <div style="display: none;">
 
@@ -59,7 +59,7 @@
                                         <div class="form-group">
                                             <label class="col-sm-4 control-label">N° de documento</label>
                                             <div class="col-sm-8">
-                                                {{ form.name }}
+                                                <input type="number" name="name" oninput="maxLengthCheck(this)" maxlength="8" required="" id="id_name">
                                             </div>
                                         </div>
                                     </div>
@@ -138,11 +138,44 @@
             if (document.getElementById('select_documento').value == "1") {
                 document.getElementById('id_name').value = '';
                 document.getElementById('id_name').type = 'number';
+                document.getElementById('id_name').maxLength = 8;
 
             } else {
                 document.getElementById('id_name').value = '';
                 document.getElementById('id_name').type = 'text';
+                document.getElementById('id_name').maxLength = 15;
             }
+        }
+    </script>
+    <script>
+    function maxLengthCheck(object)
+      {
+        if (object.value.length > object.maxLength)
+          object.value = object.value.slice(0, object.maxLength)
+      }
+      </script>
+    <script>
+        function validar(){
+
+            //Almacenamos los valores
+            tip_doc=$('#select_documento').val();
+            num_doc=$('#id_name').val();
+
+           //Comprobamos la longitud de caracteres
+            if (tip_doc == "1"){
+                if (num_doc.length == 8){
+                    return true;
+                }
+                else {
+                    alert('El DNI debe tener 8 digitos');
+                    return false;
+
+                }
+            } else{
+                return true;
+            }
+
+
         }
     </script>
 {% endblock scripts %}
