@@ -188,7 +188,7 @@ class Alerta_dataSerializer(serializers.ModelSerializer):
     class Meta:
         model = Alerta
         fields = ('id_alerta', 'matricula', 'persona_emisor', 'persona_receptor', 'tipo_alerta', 'estado_alerta',
-                  'contenido_alerta', 'fecha_creacion', 'visto', 'contenido_alerta_string', 'tipo_alerta_string')
+                  'contenido_alerta', 'img_url_alertas', 'fecha_creacion', 'visto', 'contenido_alerta_string', 'tipo_alerta_string')
         read_only_fields = ('fecha_creacion',)
 
 
