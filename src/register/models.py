@@ -229,6 +229,7 @@ class Alumno(CreacionModificacionUserAlumnoMixin, CreacionModificacionFechaAlumn
     codigoint = models.CharField(max_length=15, blank=True, null=True)
     persona = models.OneToOneField(Profile, models.DO_NOTHING, parent_link=True, unique=True)
     apoderados = models.ManyToManyField(Apoderado, through='ApoderadoAlumno', related_name='alumnos', null=True)
+    colegio_id = models.IntegerField(blank=True, null=True)
 
     def get_absolute_url(self):
         """

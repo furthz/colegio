@@ -100,7 +100,8 @@ class Migration(migrations.Migration):
                 ('fecha_creacion', models.DateTimeField(null=True)),
                 ('fecha_modificacion', models.DateTimeField(null=True)),
                 ('usuario_creacion', models.CharField(max_length=10, null=True)),
-                ('usuario_modificacion', models.CharField(max_length=10, null=True))
+                ('usuario_modificacion', models.CharField(max_length=10, null=True)),
+                ('colegio_id', models.IntegerField(blank=True, null=True)),
 
             ],
             options={

@@ -25,10 +25,11 @@ from register.forms import PersonaForm, AlumnoForm, ApoderadoForm, PersonalForm,
     TesoreroForm, ProveedorForm, ColegioForm, SistemasForm, AdministrativoForm, DocenteForm
 from register.models import Alumno, Apoderado, Personal, Promotor, Director, Cajero, Tesorero, Colegio, Proveedor, \
     ProveedorColegio, PersonalColegio, Administrativo, Direccion, Telefono, Sistemas, Docente
-from utils.middleware import get_current_colegio, validar_roles, get_current_user
+from utils.middleware import get_current_colegio, validar_roles, get_current_user, get_current_request
 from utils.views import SaveGeneric, MyLoginRequiredMixin
 from payments.models import CajaChica
 from django.db.models import Subquery
+from django.db.models import Q
 from authtools.models import User as Userss
 
 logger = logging.getLogger("project")
@@ -40,15 +41,16 @@ class AlumnoAutocomplete(autocomplete.Select2QuerySetView):
         if not self.request.user.is_authenticated():
             return Alumno.objects.none()
 
+        colegio_id = get_current_colegio()
         matri_alumns = Matricula.objects.all().distinct('alumno_id')
-        # alumnos = Alumno.objects.exclude(id_alumno__in=Subquery(matri_alumns.values('alumno_id')))
-        qs = Alumno.objects.exclude(id_alumno__in=Subquery(matri_alumns.values('alumno_id')))
-        # qs = Alumno.objects.all()
+        filtrar_alumno = Alumno.objects.filter(colegio_id=colegio_id)
+        alumnos = filtrar_alumno.exclude(id_alumno__in=Subquery(matri_alumns.values('alumno_id')))
 
         if self.q:
-            qs = qs.filter(apellido_pa__istartswith=self.q)
+            alumnos = alumnos.filter(Q(nombre__startswith=self.q) | Q(segundo_nombre__startswith=self.q) | Q(
+                apellido_pa__startswith=self.q) | Q(apellido_ma__startswith=self.q))
 
-        return qs
+        return alumnos
 
 
 class CreatePersonaView(MyLoginRequiredMixin, CreateView):
@@ -265,6 +267,15 @@ class AlumnoCreateView(MyLoginRequiredMixin, CreateView):
 
     # @method_decorator(permission_required('register.alumno_create', login_url=settings.REDIRECT_PERMISOS,
     #                                      raise_exception=False))
+
+    def get_context_data(self, **kwargs):
+        context = super(AlumnoCreateView, self).get_context_data(**kwargs)
+        request = get_current_request()
+        if request.session.get('colegio'):
+            id = request.session.get('colegio')
+            context['idcolegio'] = id
+        return context
+
     def form_valid(self, form):
 
         logger.debug("Alumno a crear con DNI: " + form.cleaned_data["numero_documento"])
