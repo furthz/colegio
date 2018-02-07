@@ -516,11 +516,17 @@ class ServicioRegularCreateView(MyLoginRequiredMixin, CreateView):
         roles = ['promotor', 'director', 'administrativo']
 
         if validar_roles(roles=roles):
+            tiposervicio = TipoServicio.objects.filter(is_ordinario=True, activo=True,
+                                        colegio_id=get_current_colegio()).order_by("nivel",
+                                                                                   "grado")
+            if tiposervicio == []:
+                mensaje_error = True
+            else:
+                mensaje_error = False
             return render(request, template_name=self.template_name, context={
-                'tiposervicio': TipoServicio.objects.filter(is_ordinario=True, activo=True,
-                                                            colegio_id=get_current_colegio()).order_by("nivel",
-                                                                                                       "grado"),
+                'tiposervicio': tiposervicio,
                 'form': self.form_class,
+                'mensaje_error': mensaje_error,
             })
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
@@ -602,10 +608,16 @@ class ServicioExtraCreateView(MyLoginRequiredMixin, CreateView):
         roles = ['promotor', 'director', 'administrativo']
 
         if validar_roles(roles=roles):
+            tiposervicio = TipoServicio.objects.filter(is_ordinario=False, activo=True,
+                                                            colegio_id=get_current_colegio())
+            if tiposervicio == []:
+                mensaje_error = True
+            else:
+                mensaje_error = False
             return render(request, template_name=self.template_name, context={
-                'tiposervicio': TipoServicio.objects.filter(is_ordinario=False, activo=True,
-                                                            colegio_id=get_current_colegio()),
+                'tiposervicio': tiposervicio,
                 'form': self.form_class,
+                'mensaje_error':mensaje_error,
             })
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)

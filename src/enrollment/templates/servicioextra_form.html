@@ -22,7 +22,11 @@
                             <h3 class="box-title">Asociar pago a servicio</h3>
                           </div>
                           <div class="box-body">
-
+                            {% if mensaje_error %}
+                                <div class="alert alert-warning">
+                                    <strong>¡Alerta!</strong> Primero debe registrar los grados.
+                                </div>
+                              {% endif %}
                             <form action="" method="POST" class="form-horizontal" id="1">{% csrf_token %}
                               <div class="form-group">
                                 <label class="col-sm-2 control-label"for="id_tipo_servicio">Extracurricular:</label>

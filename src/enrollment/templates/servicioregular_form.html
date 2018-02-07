@@ -33,76 +33,14 @@
                             <!-- BAR CHART -->
                             <div class="box box-success">
                               <div class="box-header with-border">
-                                <h3 class="box-title">Asociar Pago a Servicio</h3>
+                                <h3 class="box-title">Asociar Pago a un Nivel</h3>
                               </div>
                               <div class="box-body">
-                              {% if tiposervicio %}
+                              {% if mensaje_error %}
                                 <div class="alert alert-warning">
                                     <strong>¡Alerta!</strong> Primero debe registrar los grados.
                                 </div>
                               {% endif %}
-                                <form action="" method="POST" class="form-horizontal" id="1">{% csrf_token %}
-                                  <div class="form-group">
-                                    <label class="col-sm-2 control-label"for="id_tipo_servicio">Nivel/Grado:</label>
-                                    <div class="col-sm-10">
-                                      <select name="tipo_servicio" required="" id="id_tipo_servicio" class="form-control">
-                                            {% for servicio in tiposervicio %}
-                                                <option value="{{ servicio.id_tipo_servicio }}">{{ servicio }} </option>
-                                            {% endfor %}
-                                      </select>
-                                    </div>
-                                  </div>
-
-                                  <div class="form-group">
-                                      <label for="id_nombre" class="col-sm-2 control-label">Concepto de Pago:</label>
-                                    <div class="col-sm-10">
-                                      {{ form.nombre }}
-                                    </div>
-                                  </div>
-
-                                  <div class="form-group">
-                                      <label for="id_precio" class="col-sm-2 control-label">Monto:</label>
-
-                                    <div class="col-sm-10">
-                                      {{ form.precio }}
-                                    </div>
-                                  </div>
-<!--
-                                  <div class="form-group">
-                                    <label for="id_cuotas" class="col-sm-2 control-label">N° de Meses</label>
-                                    <div class="col-sm-10">
-
-                                    </div>
-                                  </div>
--->
-                                  <div class="form-group">
-                                    <label for="id_fecha_facturar" class="col-sm-2 control-label">Día Generación de Deuda</label>
-                                    <div class="col-sm-10">
-                                      <div class="input-group date">
-                                                        {{ form.fecha_facturar }}
-                                                        <span class="input-group-addon">
-                                                            <span class="glyphicon glyphicon-calendar"></span>
-                                                        </span>
-                                                    </div>
-                                    </div>
-                                  </div>
-
-                                  <div class="form-group">
-                                    <div class="col-sm-offset-2 col-sm-10">
-                                      <a href="{% url 'enrollments:tiposervicio_list' %}" class="btn btn-default">Cancelar</a>
-                                      <button type="submit" form="1" class="btn btn-success">Asignar Precio</button>
-                                    </div>
-                                  </div>
-                                </form>
-
-                              </div>
-
-
-                              <div class="box-header with-border">
-                                <h3 class="box-title">Asociar Pago a un Nivel</h3>
-                              </div>
-                              <div class="box-body">
-
                                 <form action="" method="POST" class="form-horizontal" id="2">{% csrf_token %}
                                   <div class="form-group">
                                     <label class="col-sm-2 control-label"for="id_nivel_grados">Nivel:</label>
@@ -156,6 +94,69 @@
                                     <div class="col-sm-offset-2 col-sm-10">
                                       <a href="{% url 'enrollments:tiposervicio_list' %}" class="btn btn-default">Cancelar</a>
                                       <button type="submit" form="2" formaction="{% url 'enrollments:servicioregularcompleto_create' %}" class="btn btn-success">Asignar Precio</button>
+                                    </div>
+                                  </div>
+                                </form>
+
+                              </div>
+
+
+                              <div class="box-header with-border">
+                                <h3 class="box-title">Asociar Pago a Servicio</h3>
+                              </div>
+                              <div class="box-body">
+
+
+                                <form action="" method="POST" class="form-horizontal" id="1">{% csrf_token %}
+                                  <div class="form-group">
+                                    <label class="col-sm-2 control-label"for="id_tipo_servicio">Nivel/Grado:</label>
+                                    <div class="col-sm-10">
+                                      <select name="tipo_servicio" required="" id="id_tipo_servicio" class="form-control">
+                                            {% for servicio in tiposervicio %}
+                                                <option value="{{ servicio.id_tipo_servicio }}">{{ servicio }} </option>
+                                            {% endfor %}
+                                      </select>
+                                    </div>
+                                  </div>
+
+                                  <div class="form-group">
+                                      <label for="id_nombre" class="col-sm-2 control-label">Concepto de Pago:</label>
+                                    <div class="col-sm-10">
+                                      {{ form.nombre }}
+                                    </div>
+                                  </div>
+
+                                  <div class="form-group">
+                                      <label for="id_precio" class="col-sm-2 control-label">Monto:</label>
+
+                                    <div class="col-sm-10">
+                                      {{ form.precio }}
+                                    </div>
+                                  </div>
+<!--
+                                  <div class="form-group">
+                                    <label for="id_cuotas" class="col-sm-2 control-label">N° de Meses</label>
+                                    <div class="col-sm-10">
+
+                                    </div>
+                                  </div>
+-->
+                                  <div class="form-group">
+                                    <label for="id_fecha_facturar" class="col-sm-2 control-label">Día Generación de Deuda</label>
+                                    <div class="col-sm-10">
+                                      <div class="input-group date">
+                                                        {{ form.fecha_facturar }}
+                                                        <span class="input-group-addon">
+                                                            <span class="glyphicon glyphicon-calendar"></span>
+                                                        </span>
+                                                    </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                      <a href="{% url 'enrollments:tiposervicio_list' %}" class="btn btn-default">Cancelar</a>
+                                      <button type="submit" form="1" class="btn btn-success">Asignar Precio</button>
                                     </div>
                                   </div>
                                 </form>
