@@ -47,11 +47,17 @@
                                     <div class="col-sm-10">
 
                                             <select name="nivel_grados" class="form-control" id="id_nivel_grados">
-                                                <option value="1">Inicial</option>
-
-                                                <option value="2">Primaria</option>
-
-                                                <option value="3">Secundaria</option>
+                                                {% for nivel in niveles %}
+                                                    {% if nivel == 1 %}
+                                                        <option value="1">Inicial</option>
+                                                    {% endif %}
+                                                    {% if nivel == 2 %}
+                                                        <option value="2">Primaria</option>
+                                                    {% endif %}
+                                                    {% if nivel == 3 %}
+                                                        <option value="3">Secundaria</option>
+                                                    {% endif %}
+                                                {% endfor %}
                                             </select>
                                     </div>
                                   </div>

@@ -523,10 +523,20 @@ class ServicioRegularCreateView(MyLoginRequiredMixin, CreateView):
                 mensaje_error = True
             else:
                 mensaje_error = False
+            niveles = []
+            if not mensaje_error:
+                if tiposervicio.filter(nivel=1):
+                    niveles.append(1)
+                if tiposervicio.filter(nivel=2):
+                    niveles.append(2)
+                if tiposervicio.filter(nivel=3):
+                    niveles.append(3)
+
             return render(request, template_name=self.template_name, context={
                 'tiposervicio': tiposervicio,
                 'form': self.form_class,
                 'mensaje_error': mensaje_error,
+                'niveles': niveles,
             })
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
@@ -1196,15 +1206,15 @@ class FiltrarAlumnoView(ListView):
     def post(self, request, *args, **kwargs):
 
         # object_list_alumnos1 =  self.model.objects.filter(nombre=request.POST["nombre"])
-        nombre = request.POST["nombre"]
-        object_list_alumnos1 = []
-        object_list_alumnos1.extend(Alumno.objects.filter(nombre__icontains=nombre.upper()))
-        object_list_alumnos1.extend(Alumno.objects.filter(segundo_nombre__icontains=nombre.upper()))
-        apellido_pa = request.POST["nombre"]
+        #nombre = request.POST["nombre"]
+        #object_list_alumnos1 = []
+        #object_list_alumnos1.extend(Alumno.objects.filter(nombre__icontains=nombre.upper()))
+        #object_list_alumnos1.extend(Alumno.objects.filter(segundo_nombre__icontains=nombre.upper()))
+        #apellido_pa = request.POST["nombre"]
         # object_list_alumnos2 = self.model.objects.filter(apellido_pa=request.POST["apellido_pa"])
-        object_list_alumnos2 = []
-        object_list_alumnos2.extend(Alumno.objects.filter(apellido_pa__icontains=apellido_pa.upper()))
-        object_list_alumnos2.extend(Alumno.objects.filter(apellido_ma__icontains=apellido_pa.upper()))
+        #object_list_alumnos2 = []
+        #object_list_alumnos2.extend(Alumno.objects.filter(apellido_pa__icontains=apellido_pa.upper()))
+        #object_list_alumnos2.extend(Alumno.objects.filter(apellido_ma__icontains=apellido_pa.upper()))
         dni = request.POST["dni"]
         object_list_alumnos3 = Alumno.objects.filter(numero_documento=dni)
         # object_list_alumnos3 = self.model.objects.filter(nombre=request.POST["nombre"],apellido_pa=request.POST["apellido_pa"])
@@ -1213,25 +1223,13 @@ class FiltrarAlumnoView(ListView):
             return render(request, template_name=self.template_name, context={
                 'object_list': object_list_alumnos3,
                 'dni': dni,
-                'nombre': nombre,
-            })
-        elif len(object_list_alumnos1) is not 0:
-            return render(request, template_name=self.template_name, context={
-                'object_list': object_list_alumnos1,
-                'dni': dni,
-                'nombre': nombre,
-            })
-        elif len(object_list_alumnos2) is not 0:
-            return render(request, template_name=self.template_name, context={
-                'object_list': object_list_alumnos2,
-                'dni': dni,
-                'nombre': nombre,
+                #'nombre': nombre,
             })
         else:
             return render(request, template_name=self.template_name, context={
                 'object_list': [],
                 'dni': dni,
-                'nombre': nombre,
+                #'nombre': nombre,
             })
 
 
