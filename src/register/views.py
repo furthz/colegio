@@ -28,7 +28,7 @@ from register.models import Alumno, Apoderado, Personal, Promotor, Director, Caj
 from utils.middleware import get_current_colegio, validar_roles, get_current_user
 from utils.views import SaveGeneric, MyLoginRequiredMixin
 from payments.models import CajaChica
-
+from django.db.models import Subquery
 from authtools.models import User as Userss
 
 logger = logging.getLogger("project")
@@ -40,7 +40,10 @@ class AlumnoAutocomplete(autocomplete.Select2QuerySetView):
         if not self.request.user.is_authenticated():
             return Alumno.objects.none()
 
-        qs = Alumno.objects.all()
+        matri_alumns = Matricula.objects.all().distinct('alumno_id')
+        # alumnos = Alumno.objects.exclude(id_alumno__in=Subquery(matri_alumns.values('alumno_id')))
+        qs = Alumno.objects.exclude(id_alumno__in=Subquery(matri_alumns.values('alumno_id')))
+        # qs = Alumno.objects.all()
 
         if self.q:
             qs = qs.filter(apellido_pa__istartswith=self.q)
