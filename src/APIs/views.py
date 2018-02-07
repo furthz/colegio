@@ -571,7 +571,7 @@ class PersonalDetail(generics.RetrieveUpdateDestroyAPIView):
 class AlertaDataList(generics.ListCreateAPIView):
     queryset = Alerta.objects.all()
     serializer_class = Alerta_dataSerializer
-    filter_fields = ('persona_receptor',)
+    filter_fields = ('persona_receptor', 'visto')
 
     def filter_queryset(self, queryset):
         queryset = super(AlertaDataList, self).filter_queryset(queryset)
