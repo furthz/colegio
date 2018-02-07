@@ -14,12 +14,10 @@
                 <div class="box-body">
 
                     <script type="text/javascript">
-
                         function validarFecNac() {
                             var today = new Date();
                             var from = $('#id_fecha_nac').val().split("/");
                             var fecnac = new Date(from[2], from[1] - 1, from[0]);
-
                             if (fecnac >= today) {
                                 alert("La Fecha de Nacimiento no puede ser mayor o igual al día de hoy");
                                 $('#id_fecha_nac').val("");
@@ -29,22 +27,16 @@
                             var cadena = "";
                             var sw = true;
                             $('input[name^="nros"]').each(function () {
-
                                 this.remove();
-
                             });
-
                             $('input[name^="telefono"]').each(function () {
-
                                 if (!sw) {
                                     cadena += ","
                                 } else {
                                     sw = false
                                 }
-
                                 cadena += this.value;
                             });
-
                             $('<input hidden/>').attr({
                                 type: 'text',
                                 name: 'nros',
@@ -63,30 +55,24 @@
                             if (sw && telefono) {
                                 $('#id_celulares').append("<option value=" + telefono + ">" + telefono + "</option>");
                             }
-
                             $('#id_celular').val("");
-
                             $('<input hidden/>').attr({
                                 type: 'text',
                                 name: 'telefono[]',
                                 value: telefono
                             }).appendTo('#registro');
                         }
-
                         function eliminarTelefono() {
                             $('#id_celulares').find('> :selected').each(function () {
                                 var telefono = this.value;
                                 $(this).remove();
                                 $('input[name^="telefono"]').each(function () {
-
                                     if (telefono == this.value) {
                                         this.remove();
                                     }
-
                                 });
                             });
                         }
-
                     </script>
 
                     {% if form.errors %}
@@ -104,7 +90,7 @@
                         {% endfor %}
                     {% endif %}
 
-                    <form id="registro" name="registro" action="" method="POST" class="form-horizontal">
+                    <form id="registro" name="registro" action="" onsubmit="return validar()" method="POST" class="form-horizontal">
                         {% csrf_token %}
 
                         <div class="col-md-12">
@@ -174,7 +160,8 @@
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">N° Documento</label>
                                         <div class="col-sm-9">
-                                            {{ form.numero_documento }}
+
+                                            <input type="number" oninput="maxLengthCheck(this)" name="numero_documento" tabindex="-6" class="form-control" required="" maxlength="8" id="id_numero_documento">
 
                                         </div>
                                     </div>
@@ -354,10 +341,7 @@
                     format: 'yyyy-mm-dd'
                 }
             );
-
-
         });
-
         function myFunction() {
             var x = document.getElementById("id_user");
             var optionVal = [];
@@ -367,7 +351,6 @@
             document.getElementById('id_user').value = Math.max.apply(null, optionVal);
         }
         window.onload = myFunction;
-
     </script>
 
     <script type="text/javascript">
@@ -390,7 +373,6 @@
                         alert("Error Ajax not working: " + error);
                     }
                 });
-
             }
         );
     </script>
@@ -414,10 +396,8 @@
                         alert("Error Ajax not working: " + error);
                     }
                 });
-
             }
         );
-
         function dni() {
             if (document.getElementById('id_tipo_documento').value == "1") {
                 document.getElementById('id_numero_documento').type = 'number';
@@ -427,6 +407,57 @@
         }
         window.onload = document.getElementById('id_numero_documento').type = 'number';
     </script>
+    <script>
+      // This is an old version, for a more recent version look at
+      // https://jsfiddle.net/DRSDavidSoft/zb4ft1qq/2/
+      function maxLengthCheck(object)
+      {
+        if (document.getElementById('id_tipo_documento').value == "1") {
+                document.getElementById('id_numero_documento').type = 'number';
+                document.getElementById('id_numero_documento').maxLength= 8;
+            } else if (document.getElementById('id_tipo_documento').value == "2") {
+                document.getElementById('id_numero_documento').type = 'text';
+                document.getElementById('id_numero_documento').maxLength= 15;
+            } else {
+                document.getElementById('id_numero_documento').type = 'number';
+                document.getElementById('id_numero_documento').maxLength= 9;
+            }
+        if (object.value.length > object.maxLength)
+          object.value = object.value.slice(0, object.maxLength)
+      }
+    </script>
+
+    <script>
+        function validar(){
+
+            //Almacenamos los valores
+            tip_doc=$('#id_tipo_documento').val();
+            num_doc=$('#id_numero_documento').val();
+
+           //Comprobamos la longitud de caracteres
+            if (tip_doc == "1"){
+                if (num_doc.length == 8){
+                    return true;
+                }
+                else {
+                    alert('El DNI debe tener 8 digitos');
+                    return false;
+
+                }
+            } else if (tip_doc == "3"){
+                if (num_doc.length == 9){
+                    return true;
+                }
+                else {
+                    alert('El Codigo Interno debe tener 9 digitos');
+                    return false;
+
+                }
+            } else{
+                return true;
+            }
 
 
+        }
+    </script>
 {% endblock scripts %}
