@@ -333,14 +333,18 @@
 {% endblock container %}
 {% block scripts %}
     {{ form.media }}
+
     <script>
         $(function () {
             //Date range picker
             $('#id_fecha_nac').datepicker(
                 {
-                    format: 'yyyy-mm-dd'
+                    format: 'yyyy-mm-dd',
+                    startDate: '-99y',
+                    endDate: '-1d'
                 }
             );
+
         });
         function myFunction() {
             var x = document.getElementById("id_user");

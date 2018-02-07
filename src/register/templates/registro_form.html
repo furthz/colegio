@@ -343,7 +343,9 @@
       //Date range picker
         $('#id_fecha_nac').datepicker(
             {
-                format: 'yyyy-mm-dd'
+                format: 'yyyy-mm-dd',
+                startDate: '-99y',
+                endDate: '-1d'
             }
         );
 
