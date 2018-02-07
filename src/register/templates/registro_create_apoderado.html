@@ -276,7 +276,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">Teléfonos</label>
                                         <div class="col-sm-9">
-                                            {{ form.celular }}
+                                            <input type="number" oninput="maxLengthCheckTelf(this)" name="celular" tabindex="16" class="form-control" maxlength="9" id="id_celular">
                                             <div class="btn-group" role="group">
                                                 <button type="button" class="btn btn-success" name="agregartelefono"
                                                         id="agregartelefono" onclick="agregarTelefono()">
@@ -399,6 +399,14 @@
         }
 
     </script>
-
+    <script>
+      // This is an old version, for a more recent version look at
+      // https://jsfiddle.net/DRSDavidSoft/zb4ft1qq/2/
+      function maxLengthCheckTelf(object)
+      {
+        if (object.value.length > object.maxLength)
+          object.value = object.value.slice(0, object.maxLength)
+      }
+    </script>
 
 {% endblock scripts %}
