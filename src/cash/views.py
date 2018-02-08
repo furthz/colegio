@@ -26,7 +26,7 @@ from profiles.models import BaseProfile as Profile
 from utils.middleware import get_current_request
 
 from utils.views import MyLoginRequiredMixin
-
+from django.contrib.messages.views import SuccessMessageMixin
 from utils.middleware import get_current_user, get_current_colegio
 from register.models import PersonalColegio, Personal, Profile
 from django.contrib.auth import get_user_model
@@ -373,11 +373,12 @@ class ConsignmentDetailView(DetailView):
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
 
-class ConsignmentCreationView(CreateView):
+class ConsignmentCreationView(SuccessMessageMixin, CreateView):
     model = Remesa
     form_class = ConsignmentForm
     success_url = reverse_lazy('cash:consignment_list')
     template_name = 'consignment/consignment_form.html'
+    success_message = "La remesa fue creada con exito"
 
     @method_decorator(permission_required('cash.Consigment_Creation', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))

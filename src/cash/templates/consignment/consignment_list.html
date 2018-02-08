@@ -6,160 +6,167 @@
     </h1>
 {% endblock %}
 {% block container %}
-<div class="box box-primary">
-    <form role="form" name="search" action="" class="form-horizontal">
-        <div class="box-body">
-            <div class="col-md-9">
-                <div class="panel-page">
-                    {% if es_cajero %}
-                    <div class="toolbar-header">
-                        <a class="btn btn-success" href='{% url "cash:consignment_create" %}'><i class="fa fa-plus" aria-hidden="true"></i>  Crear remesa</a>
-                    </div>
-                    {% endif %}
-                    <div class="toolbar-search">
-                        <div class="box-body">
+    <div class="box box-primary">
+        <form role="form" name="search" action="" class="form-horizontal">
+            <div class="box-body">
+                <div class="col-md-9">
+                    <div class="panel-page">
+                        {% if es_cajero %}
+                            <div class="toolbar-header">
+                                <a class="btn btn-success" href='{% url "cash:consignment_create" %}'><i
+                                        class="fa fa-plus" aria-hidden="true"></i> Crear remesa</a>
+                            </div>
+                        {% endif %}
+                        <div class="toolbar-search">
+                            <div class="box-body">
 
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Fecha de remesa:</label>
-                                    <div class="input-group date">
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-calendar"></i>
-                                        </div>
-                                        <input type="text" id="nombre" onchange="yolo()" name="daterange" class="form-control">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Fecha de remesa:</label>
+                                        <div class="input-group date">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <input type="text" id="nombre" onchange="yolo()" name="daterange"
+                                                   class="form-control">
 
-                                        <div style="display: none;">
-                                            <p id="startbe"></p>
-                                            <p id="endbe"></p>
-                                            <p id="startAlt"></p>
-                                            <p id="endAlt"></p>
-                                            <p id="startend"></p>
-                                            <p id="elemento1"></p>
-                                            {{ filter.form.as_p }}
+                                            <div style="display: none;">
+                                                <p id="startbe"></p>
+                                                <p id="endbe"></p>
+                                                <p id="startAlt"></p>
+                                                <p id="endAlt"></p>
+                                                <p id="startend"></p>
+                                                <p id="elemento1"></p>
+                                                {{ filter.form.as_p }}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="search-actions">
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="fa fa-search" aria-hidden="true"></i>
-                                        Buscar remesa
-                                    </button>
+                                <div class="col-md-4">
+                                    <div class="search-actions">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fa fa-search" aria-hidden="true"></i>
+                                            Buscar remesa
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            <div class="table-responsive">
-                    <table class="table table-hover">
-                        <tr class="table-header">
-                            <th>Ítem</th>
-                            <th>Encargado de remesa</th>
-                            <th>Monto S/.</th>
-                            <th>Comentario</th>
-                            <th>Fecha</th>
-                            <th class="text-center">Acciones</th>
-                        </tr>
-                        {% for remesa in filter.qs %}
-                            <tr>
-                                <td>{{ forloop.counter }}</td>
-                                <td>{{ remesa.personal_colegio }}</td>
-                                <td>S/ {{ remesa.monto }}</td>
-
-                                {% if remesa.comentario == None %}
-                                    <td></td>
-                                {% else %}
-                                    <td>{{ remesa.comentario }}</td>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <tr class="table-header">
+                                <th>Ítem</th>
+                                <th>Encargado de remesa</th>
+                                <th>Monto S/.</th>
+                                <th>Comentario</th>
+                                <th>Fecha</th>
+                                {% if es_cajero %}
+                                    <th class="text-center">Acciones</th>
                                 {% endif %}
-
-                                <td>{{ remesa.fechacreacion }}</td>
-                                <td class="text-center">
-                                    <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                                        <a href='{% url "cash:consignment_detail" remesa.id_remesa %}' class="btn btn-default">
-                                            <i class="fa fa-info-circle" aria-hidden="true"></i>
-                                        </a>
-                                    </div>
-                                </td>
                             </tr>
-                        {% endfor %}
-                    </table>
+                            {% for remesa in filter.qs %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ remesa.personal_colegio }}</td>
+                                    <td>S/ {{ remesa.monto }}</td>
+
+                                    {% if remesa.comentario == None %}
+                                        <td></td>
+                                    {% else %}
+                                        <td>{{ remesa.comentario }}</td>
+                                    {% endif %}
+
+                                    <td>{{ remesa.fechacreacion }}</td>
+                                    {% if es_cajero %}
+                                        <td class="text-center">
+                                            <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                                                <a href='{% url "cash:consignment_detail" remesa.id_remesa %}'
+                                                   class="btn btn-default">
+                                                    <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    {% endif %}
+
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
-    </form>
-</div>
+        </form>
+    </div>
 
 {% endblock container %}
 {% block scripts %}
 
 
     <script type="text/javascript">
-        $(function() {
-    $('input[name="daterange"]').daterangepicker(
-
-        {
-    "locale": {
-        "format": "DD/MM/YYYY",
-        "separator": " - ",
-        "applyLabel": "Apply",
-        "cancelLabel": "Cancel",
-        "fromLabel": "From",
-        "toLabel": "To",
-        "customRangeLabel": "Custom",
-        "daysOfWeek": [
-            "Dom",
-            "Lun",
-            "Mar",
-            "Mie",
-            "Jue",
-            "Vie",
-            "Sab"
-        ],
-        "monthNames": [
-            "Enero",
-            "Febrero",
-            "Marzo",
-            "Abril",
-            "Mayo",
-            "Junio",
-            "Julio",
-            "Agosto",
-            "Septiembre",
-            "Octubre",
-            "Noviembre",
-            "Diciembre"
-        ],
-        "firstDay": 1
-    }
-}
-    );
+        $(function () {
+            $('input[name="daterange"]').daterangepicker(
+                {
+                    "locale": {
+                        "format": "DD/MM/YYYY",
+                        "separator": " - ",
+                        "applyLabel": "Apply",
+                        "cancelLabel": "Cancel",
+                        "fromLabel": "From",
+                        "toLabel": "To",
+                        "customRangeLabel": "Custom",
+                        "daysOfWeek": [
+                            "Dom",
+                            "Lun",
+                            "Mar",
+                            "Mie",
+                            "Jue",
+                            "Vie",
+                            "Sab"
+                        ],
+                        "monthNames": [
+                            "Enero",
+                            "Febrero",
+                            "Marzo",
+                            "Abril",
+                            "Mayo",
+                            "Junio",
+                            "Julio",
+                            "Agosto",
+                            "Septiembre",
+                            "Octubre",
+                            "Noviembre",
+                            "Diciembre"
+                        ],
+                        "firstDay": 1
+                    }
+                }
+            );
 
         });
 
 
-    function yolo() {
+        function yolo() {
             for (i = 0; i < 3;) {
                 if (i == 0) {
                     'Primero copia el valor del datepicker'
-                    var valorname = document.getElementById('nombre').value ;
+                    var valorname = document.getElementById('nombre').value;
                     document.getElementById('elemento1').innerHTML = valorname;
-                    i = i+1
-                } else if (i==1) {
+                    i = i + 1
+                } else if (i == 1) {
                     for (i = 0; i < 4;) {
                         if (i == 0) {
                             'Luego cambia el "-" por "," para distinguir el espaciado'
                             var str = document.getElementById("elemento1").innerHTML;
                             var res = str.replace(/-/g, ",");
                             document.getElementById("elemento1").innerHTML = res;
-                            i = i+1
-                        } else if (i==1) {
+                            i = i + 1
+                        } else if (i == 1) {
                             'Luego cambia todos los "/" por "-" para darle el formato correcto'
                             var str = document.getElementById("elemento1").innerHTML;
                             var res = str.replace(/\//g, "-");
                             document.getElementById("elemento1").innerHTML = res;
-                            i = i+1
-                        } else if (i==2) {
+                            i = i + 1
+                        } else if (i == 2) {
                             'Separo los valores de la fecha'
                             var input = document.getElementById("elemento1").innerHTML;
                             var fields = input.split(' , ');
@@ -167,9 +174,9 @@
                             var endb = fields[1];
                             document.getElementById("startbe").innerHTML = startb;
                             document.getElementById("endbe").innerHTML = endb;
-                            i = i+1
+                            i = i + 1
                         }
-                        else if (i==3) {
+                        else if (i == 3) {
                             'Alterna las pocisiones cambiando y luego hace un reformat'
                             var startba = document.getElementById("startbe").innerHTML.split('-');
                             startba.reverse();
@@ -179,13 +186,13 @@
                             var endbad = endba.join('-');
                             document.getElementById("startAlt").innerHTML = startbad;
                             document.getElementById("endAlt").innerHTML = endbad;
-                            var separador= " , ";
+                            var separador = " , ";
                             var res = startbad.concat(separador, endbad);
                             document.getElementById("startend").innerHTML = res;
-                            i = i+1
+                            i = i + 1
                         }
                     }
-                    i = i+1
+                    i = i + 1
                 }
             }
             var text = document.getElementById('startend').innerHTML;
