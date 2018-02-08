@@ -799,7 +799,7 @@ class MatriculaListView(MyLoginRequiredMixin, ListView):
         roles = ['promotor', 'director', 'administrativo']
 
         if validar_roles(roles=roles):
-            matriculados = Matricula.objects.filter(colegio_id=self.request.session.get('colegio'), activo=True)
+            matriculados = Matricula.objects.filter(colegio_id=self.request.session.get('colegio'), activo=True).order_by("alumno__apellido_pa")
             return render(request, template_name=self.template_name, context={
                 'matriculados': matriculados,
             })
@@ -1194,13 +1194,14 @@ class FiltrarAlumnoView(ListView):
         for persona in personas:
             id_personas.append(persona.user_id)
         # print(id_personas)
-        lista_alumnos = []
+        lista_alumnos = []#Alumno.objects.filter(usuario_creacion_alumno=0)
         for id_persona in id_personas:
             lista_alumnos.extend(Alumno.objects.filter(usuario_creacion_persona=id_persona))
         # usuarios = personas.user_id
+        #lista_alumnos.order_by("apellido_pa")
         return render(request, template_name=self.template_name, context={
             'object_list': lista_alumnos,
-            # 'object_list': Alumno.objects.all(),
+            #'object_list': Alumno.objects.all(),
         })
 
     def post(self, request, *args, **kwargs):
