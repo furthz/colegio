@@ -1,0 +1,57 @@
+{% load staticfiles %}
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+      integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+<body class="hold-transition skin-green-light sidebar-mini" background="{% static '/site/img/fondo_error.jpg' %}">
+<div class="wrapper">
+
+    <header class="main-header">
+    </header>
+    <!-- INICIA CONTENDOR DE FORMULARIOS -->
+    <div class="content-wrapper">
+        <!-- HEADER INFO PAGE UBICACION -->
+        <section class="content-header">
+        </section>
+        <!-- FIN DE INFO PAGE UBICACION -->
+        <!-- INICIO DE CONTENIDO -->
+        <section class="content">
+            <div class="box box-primary">
+                <div class="box-body">
+                    <!-- PAGE CONTENT -->
+                    <center>
+                        <br/>
+                        <div class="content">
+                            <H1 style="color:#FF9F33"><strong> !ERROR¡</strong></H1>
+                            <br/>
+                            <H3 style="color:#FF9F33"><strong></i> El usuario no se termino de crear,....... Falta
+                                perfil.</strong></H3>
+                            <img src="{% static '/site/img/error_creacion_usuario.jpg' %}"title="error"/>
+                            <br/>
+                            <H3 style="color:#FF9F33"><strong>contactese con un usuario de sistemas</strong></H3>
+                            <div class="col-sm-offset-5 col-sm-2">
+                                <a href="/logout/" type="submit" class="btn btn-danger btn-block"><i class="fa fa-envelope-o"
+                                                                                              aria-hidden="true"></i>
+                                    Cerrar Sesión</a>
+                            </div>
+                            <br/>
+                            <br/>
+                        </div>
+                    </center>
+                    <!-- BAR CHART -->
+                </div>
+            </div>
+
+        </section>
+        <!-- /.FIN DE CONTENIDO -->
+    </div>
+</div>
+</body>
