@@ -21,6 +21,8 @@ from django.shortcuts import render
 # Create your views here.
 from django.views.generic import CreateView
 
+from django.views.generic.edit import UpdateView
+
 from register.forms import PersonaForm, AlumnoForm, ApoderadoForm, PersonalForm, PromotorForm, DirectorForm, CajeroForm, \
     TesoreroForm, ProveedorForm, ColegioForm, SistemasForm, AdministrativoForm, DocenteForm
 from register.models import Alumno, Apoderado, Personal, Promotor, Director, Cajero, Tesorero, Colegio, Proveedor, \
@@ -1410,6 +1412,60 @@ class ColegioListView(MyLoginRequiredMixin, TemplateView):
         return render(request, template_name=self.template_name, context={
             'colegios': colegios,
         })
+
+
+class ColegioUpdate(UpdateView):
+    model = Colegio
+    form_class = ColegioForm
+    template_name = "colegio_create.html"
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        logger.info("En el POST")
+        logger.info(request.POST)
+        if form.is_valid():
+            data_form = form.cleaned_data
+            logger.info(data_form)
+            logger.info(form.data)
+
+            colegio = Colegio(
+                nombre=data_form['nombre'],
+                ruc=data_form['ruc'],
+                ugel=data_form['ugel']
+            )
+            colegio.save()
+            direccion = Direccion(
+                colegio=colegio,
+                dpto=data_form['departamento'],
+                calle=data_form['direccion'],
+                referencia=data_form['referencia'],
+                provincia=data_form['provincia'],
+                distrito=data_form['distrito']
+            )
+            direccion.save()
+            try:
+                celulares = form.data['nros']
+                lst_celulares = celulares.split(',')
+                lista_numeros = []
+                for cel in lst_celulares:
+                    telef = Telefono(
+                        colegio=colegio,
+                        numero=cel,
+                        tipo="Celular"
+                    )
+                    telef.save()
+            except:
+                logger.info("no se registraron numeros del colegio")
+            logger.info("El formulario es valido")
+            return HttpResponseRedirect(reverse('registers:colegio_list'))
+        return HttpResponseRedirect(reverse('registers:colegio_list'))
+
+
+class ColegioDetail(UpdateView):
+    model = Colegio
+    form_class = ColegioForm
+    template_name = "colegio_create.html"
+
 
 
 def renderToRegistro(request, template_name, context):

@@ -48,10 +48,10 @@
                                         <td>{{ colegio.activo }}</td>
                                         <td>
                                             <div class="btn-group btn-group-sm" role="group" aria-level="...">
-                                                <a title="Editar" href="#" class="btn btn-default">
+                                                <a title="Editar" href="{% url "registers:colegio_update" colegio.id_colegio %}" class="btn btn-default">
                                                     <i class="fa fa-pencil" aria-hidden="true"></i>
                                                 </a>
-                                                <a title="Detalle" href="#" class="btn btn-default">
+                                                <a title="Detalle" href="{% url "registers:colegio_detail" colegio.id_colegio %}" class="btn btn-default">
                                                     <i class="fa fa-info-circle" aria-hidden="true"></i>
                                                 </a>
                                                 <a title="Baja" href="#" class="btn btn-default">
