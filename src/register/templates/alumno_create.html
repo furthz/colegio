@@ -126,12 +126,9 @@
                                         <div class="col-sm-9">
                                             <!--{{ form.tipo_documento }}-->
                                             <select name="tipo_documento" tabindex="-5" onchange="maxLengthCheck(this)" class="form-control" id="id_tipo_documento">
-                                              <option value="1">DNI</option>
-
-                                              <option value="2">Carné de Extranjería</option>
-
-                                              <option value="3">Código del Alumno</option>
-
+                                              {% for codigo in tipodocumentos %}
+                                                <option value="{{ codigo.pk }}">{{ codigo.descripcion }}</option>
+                                              {% endfor %}
                                             </select>
                                         </div>
                                     </div>
