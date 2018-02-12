@@ -124,7 +124,15 @@
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">Tipo de Documento</label>
                                         <div class="col-sm-9">
-                                            {{ form.tipo_documento }}
+                                            <!--{{ form.tipo_documento }}-->
+                                            <select name="tipo_documento" tabindex="-5" onchange="maxLengthCheck(this)" class="form-control" id="id_tipo_documento">
+                                              <option value="1">DNI</option>
+
+                                              <option value="2">Carné de Extranjería</option>
+
+                                              <option value="3">Código del Alumno</option>
+
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -424,13 +432,17 @@
             if (document.getElementById('id_tipo_documento').value == "1") {
                 document.getElementById('id_numero_documento').type = 'number';
                 document.getElementById('id_numero_documento').maxLength = 8;
+                document.getElementById('id_numero_documento').disabled = false;
 
             } else if (document.getElementById('id_tipo_documento').value == "2") {
                 document.getElementById('id_numero_documento').type = 'text';
                 document.getElementById('id_numero_documento').maxLength = 15;
+                document.getElementById('id_numero_documento').disabled = false;
             } else {
-                document.getElementById('id_numero_documento').type = 'number';
+                document.getElementById('id_numero_documento').type = 'text';
                 document.getElementById('id_numero_documento').maxLength = 9;
+                document.getElementById('id_numero_documento').hidden = true;
+                document.getElementById('id_numero_documento').value = "XXXXXXXXX";
             }
             if (object.value.length > object.maxLength)
                 object.value = object.value.slice(0, object.maxLength)

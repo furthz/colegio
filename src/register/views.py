@@ -285,6 +285,12 @@ class AlumnoCreateView(MyLoginRequiredMixin, CreateView):
         roles = ['promotor', 'director', 'administrativo', 'sistemas']
 
         if validar_roles(roles=roles):
+            colegio = Colegio.objects.get(pk = get_current_colegio())
+            nom = colegio.nombre[0:3]
+            persona_pk = Profile.objects.latest("id_persona")
+            if form.instance.tipo_documento == 3:
+                form.instance.numero_documento = nom + str(persona_pk.pk)
+                #Colegio.get_latest_by
             alu = SaveGeneric().saveGeneric(padre=Profile, form=form, hijo=Alumno)
             logger.debug("Se creó el alumno en la vista")
 
