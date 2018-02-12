@@ -42,6 +42,10 @@ logger = logging.getLogger("project")
 CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 
 
+def UsuarioSinPerfil(request):
+    return render(request, 'error_falta_perfil.html')
+
+
 class LoginView(bracesviews.AnonymousRequiredMixin,
                 authviews.LoginView):
     """
@@ -98,7 +102,7 @@ class AsignColegioView(LoginRequiredMixin, View):
 
         except Profile.DoesNotExist:
             return HttpResponseRedirect(
-                "/Crear_un_html_que_indique_que_el_usuario_no_tiene_un_perfil_asignado_y_debe_ser_creado")
+                "/error_usuario_sin_perfil/")
 
     @method_decorator(cache_page(CACHE_TTL))
     def post(self, request, **kwargs):

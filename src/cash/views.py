@@ -26,7 +26,7 @@ from profiles.models import BaseProfile as Profile
 from utils.middleware import get_current_request
 
 from utils.views import MyLoginRequiredMixin
-
+from django.contrib.messages.views import SuccessMessageMixin
 from utils.middleware import get_current_user, get_current_colegio
 from register.models import PersonalColegio, Personal, Profile
 from django.contrib.auth import get_user_model
@@ -275,7 +275,8 @@ class BoxCashierCreationView(CreateView):
             perfil = Profile.objects.get(user=usuario)
             personal = Personal.objects.filter(persona=perfil)
             personal_colegio = PersonalColegio.objects.get(personal=personal)
-            cajas = Caja.objects.filter(colegio__id_colegio=get_current_colegio(), eliminado=True)
+
+            cajas = Caja.objects.filter(colegio__id_colegio=get_current_colegio(), eliminado=True, activo=True)
 
             return render(request, template_name=self.template_name, context={
                 'form': self.form_class,
@@ -289,6 +290,11 @@ class BoxCashierCreationView(CreateView):
 
     def form_valid(self, form):
         obj = form.save(commit=False)
+        # =========
+        caja = Caja.objects.get(pk=obj.caja_id)
+        caja.activo = False
+        caja.save()
+        # =========
         obj.estado = True
         obj.save()
         return super(BoxCashierCreationView, self).form_valid(form)
@@ -314,6 +320,12 @@ class BoxCashierUpdateView(UpdateView):
 
     def form_valid(self, form):
         obj = form.save(commit=False)
+        # =========
+
+        caja = Caja.objects.get(pk=obj.caja_id)
+        caja.activo = True
+        caja.save()
+        # =========
         apertura = obj.monto_apertura
         ventas = obj.ventas
         remesa = obj.total_remesa
@@ -373,11 +385,12 @@ class ConsignmentDetailView(DetailView):
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
 
 
-class ConsignmentCreationView(CreateView):
+class ConsignmentCreationView(SuccessMessageMixin, CreateView):
     model = Remesa
     form_class = ConsignmentForm
     success_url = reverse_lazy('cash:consignment_list')
     template_name = 'consignment/consignment_form.html'
+    success_message = "La remesa fue creada con exito"
 
     @method_decorator(permission_required('cash.Consigment_Creation', login_url=settings.REDIRECT_PERMISOS,
                                           raise_exception=False))

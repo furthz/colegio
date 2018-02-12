@@ -7,7 +7,7 @@ from register.views import CreatePersonaView, PersonaDetail, AlumnoCreateView, A
     ProveedorCreateView, ProveedorDetailView, PersonaListView, PersonaDetailView, ColegioCreateView, ColegioListView, \
     PersonalUpdateView, PersonalDeleteView, \
     SistemasCreateView, SistemasDetailView, ProveedorListView, ProveedorDeleteView, ProveedorUpdateView, \
-    AlumnoAutocomplete, DocenteCreateView, DocenteDetailView
+    AlumnoAutocomplete, DocenteCreateView, DocenteDetailView, ColegioUpdate, ColegioDetail
 from utils.views import get_provincias, get_distritos
 
 from .import_export import exportCSV, exportJSON, simple_upload
@@ -23,7 +23,7 @@ urlpatterns = [
     url(r'^apoderados/create/$', ApoderadoCreateView.as_view(), name="apoderado_create"),
     url(r'^apoderados/(?P<pk>\d+)/$', ApoderadoDetailView.as_view(), name='apoderado_detail'),
 
-# $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+    # $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     # url(r'^personales/create/$',PersonalCreateView.as_view(), name="personal_create"),
     # url(r'^personales/(?P<pk>\d+)/$',PersonalDetailView.as_view(), name='personal_detail'),
 
@@ -58,7 +58,8 @@ urlpatterns = [
 
     url(r'^colegios/create/$', ColegioCreateView.as_view(), name="colegio_create"),
     url(r'^colegios/$', ColegioListView.as_view(), name="colegio_list"),
-
+    url(r'^colegios/update/(?P<pk>\d+)$', ColegioUpdate.as_view(), name='colegio_update'),
+    url(r'^colegios/detail/(?P<pk>\d+)$', ColegioDetail.as_view(), name='colegio_detail'),
     url(r'^alumno/autocomplete/$', AlumnoAutocomplete.as_view(), name='alumno_autocomplete'),
 
     url(r'^api/get_provincias/', get_provincias, name='get_provincias'),
