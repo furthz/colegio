@@ -163,7 +163,7 @@ class SetPasswordForm(authforms.SetPasswordForm):
 
 
 class RegistroUsuarioForm(UserCreationForm):
-    TIPO_DOCUMENTOS_CHOICES = ((1, 'DNI'), (2, 'Carnet de Extranjeria'),)
+    TIPO_DOCUMENTOS_CHOICES = ((1, 'DNI'), (2, 'Carnet de Extranjeria'), (3, 'Código Temporal'),)
     groups = forms.ModelMultipleChoiceField(queryset=Group.objects.all(), required=True)
     # a = forms.CharField(max_length=20)
     select_documento = forms.ChoiceField(

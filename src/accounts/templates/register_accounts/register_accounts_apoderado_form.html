@@ -135,14 +135,18 @@
         window.onload = dni;
         function dni() {
             if (document.getElementById('select_documento').value == "1") {
-                document.getElementById('id_name').value = '';
                 document.getElementById('id_name').type = 'number';
                 document.getElementById('id_name').maxLength = 8;
-
-            } else {
-                document.getElementById('id_name').value = '';
+                document.getElementById('id_name').disabled = false;
+            } else if (document.getElementById('select_documento').value == "2") {
                 document.getElementById('id_name').type = 'text';
                 document.getElementById('id_name').maxLength = 15;
+                document.getElementById('id_name').disabled = false;
+            } else {
+                document.getElementById('id_name').type = 'text';
+                document.getElementById('id_name').maxLength = 9;
+                document.getElementById('id_name').hidden = true;
+                document.getElementById('id_name').value = "XXXXXXXXX";
             }
         }
     </script>

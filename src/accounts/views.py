@@ -11,6 +11,7 @@ from django.contrib import messages
 
 from django.views.generic import CreateView, ListView, DetailView, UpdateView
 
+from utils.models import TipoDocumento
 from .forms import RegistroUsuarioForm
 
 from rest_framework import generics
@@ -476,7 +477,6 @@ class RegistroUsuarioApoderado(CreateView):
                 # print("Grupo: " + str(grup.name))
                 # print("==========================")
                 grupos.append(grup)
-
             logger.info("Se asignó el usuario a los grupos: " + str(lista_roles))
             # print("Se asignó el usuario a los grupos: " + str(lista_roles))
             return render(request, template_name=self.template_name, context={

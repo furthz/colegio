@@ -353,7 +353,6 @@
                     endDate: '-1d'
                 }
             );
-
         });
         function myFunction() {
             var x = document.getElementById("id_user");
@@ -420,7 +419,6 @@
         }
         window.onload = document.getElementById('id_numero_documento').type = 'number';
         window.onload = document.getElementById('id_colegio_id').value = {{ idcolegio }};
-
     </script>
     <script>
         // This is an old version, for a more recent version look at
@@ -430,7 +428,6 @@
                 document.getElementById('id_numero_documento').type = 'number';
                 document.getElementById('id_numero_documento').maxLength = 8;
                 document.getElementById('id_numero_documento').disabled = false;
-
             } else if (document.getElementById('id_tipo_documento').value == "2") {
                 document.getElementById('id_numero_documento').type = 'text';
                 document.getElementById('id_numero_documento').maxLength = 15;
@@ -455,11 +452,9 @@
     </script>
     <script>
         function validar() {
-
             //Almacenamos los valores
             tip_doc = $('#id_tipo_documento').val();
             num_doc = $('#id_numero_documento').val();
-
             //Comprobamos la longitud de caracteres
             if (tip_doc == "1") {
                 if (num_doc.length == 8) {
@@ -468,7 +463,6 @@
                 else {
                     alert('El DNI debe tener 8 digitos');
                     return false;
-
                 }
             } else if (tip_doc == "3") {
                 if (num_doc.length == 9) {
@@ -477,13 +471,10 @@
                 else {
                     alert('El Codigo Interno debe tener 9 digitos');
                     return false;
-
                 }
             } else {
                 return true;
             }
-
-
         }
     </script>
 {% endblock scripts %}

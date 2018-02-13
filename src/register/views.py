@@ -359,6 +359,11 @@ class ApoderadoCreateView(MyLoginRequiredMixin, CreateView):
         roles = ['promotor', 'director', 'administrativo']
 
         if validar_roles(roles=roles):
+            colegio = Colegio.objects.get(pk=get_current_colegio())
+            nom = colegio.nombre[0:3]
+            persona_pk = Profile.objects.latest("id_persona")
+            if form.instance.tipo_documento == 3:
+                form.instance.numero_documento = nom + str(persona_pk.pk)
             usuario_creado_id = self.request.session['usuario_creado']
             apoderado = SaveGeneric().saveGeneric(padre=Profile, form=form, hijo=Apoderado)
             logger.debug("Se creó el apoderado en la vista")
