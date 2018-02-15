@@ -11,7 +11,7 @@ from enrollment.models import Servicio
 from enrollment.models import TipoServicio
 from enrollment.models import Matricula
 from enrollment.models import Cuentascobrar
-from register.models import Colegio
+from register.models import Colegio, ApoderadoAlumno
 from profiles.models import Profile
 from register.models import Alumno
 from register.models import Promotor, Administrativo, Director, PersonalColegio
@@ -1246,6 +1246,9 @@ class CargarMatriculaCreateView(TemplateView):
 
             list_tiposervicio = []
             alumno = Alumno.objects.get(pk=request.POST["alumno"])
+            mensaje_error = True
+            if ApoderadoAlumno.objects.filter(alumno= alumno).count() > 0:
+                mensaje_error = False
             matricula = Matricula.objects.filter(alumno=alumno, activo=True, colegio__tiposervicio__is_ordinario=True)
             if matricula.count() > 0:
                 tiposervicios = TipoServicio.objects.filter(colegio_id=self.request.session.get('colegio'), activo=True,
@@ -1265,6 +1268,7 @@ class CargarMatriculaCreateView(TemplateView):
                 'alumno': alumno,
                 'tiposerviciolist': list_tiposervicio,
                 'form': self.form_class,
+                'mensaje_error': mensaje_error,
             })
         else:
             return HttpResponseRedirect(settings.REDIRECT_PERMISOS)
@@ -1284,7 +1288,6 @@ class SolicitarDescuentoView(MyLoginRequiredMixin, TemplateView):
         logger.info("Solicitar descuentos")
         return render(request, template_name=self.template_name, context={
             'form': self.form_class,
-
             'descuentos': descuentos,
             'alumno': Matricula.objects.get(pk=request.POST['matricula']),
         })

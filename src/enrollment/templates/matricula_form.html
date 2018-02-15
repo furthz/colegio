@@ -69,7 +69,7 @@
                                   <div class="form-group">
                                     <div class="col-sm-offset-2 col-sm-10">
                                       <a href="javascript:history.back()" class="btn btn-default">Cancelar</a>
-                                      <button type="submit" class="btn btn-success">Matricular</button>
+                                      <button type="submit" onclick="return confirmDel();" class="btn btn-success">Matricular</button>
                                     </div>
                                   </div>
                                 </form>
@@ -89,3 +89,27 @@
     </section>
     </div>
 {% endblock container %}
+
+
+
+{% block scripts %}
+    {% if mensaje_error %}
+        <script language="Javascript">
+        function confirmDel()
+        {
+          var agree=confirm("El alumno no tiene un apoderado registrado ¿Desea continuar? ");
+          if (agree)
+            return true ;
+          else
+            return false ;
+        }
+        </script>
+    {% else %}
+        <script language="Javascript">
+        function confirmDel()
+        {
+          return true;
+        }
+        </script>
+    {% endif %}
+{% endblock %}
