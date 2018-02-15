@@ -1189,14 +1189,15 @@ class FiltrarAlumnoView(ListView):
     template_name = "alumno_form.html"
 
     def get(self, request, *args, **kwargs):
-        personas = Profile.objects.filter(personal__Colegios__id_colegio=get_current_colegio())
-        id_personas = []
-        for persona in personas:
-            id_personas.append(persona.user_id)
+        #personas = Profile.objects.filter(personal__Colegios__id_colegio=get_current_colegio())
+        #id_personas = []
+        #for persona in personas:
+        #    id_personas.append(persona.user_id)
         # print(id_personas)
-        lista_alumnos = []#Alumno.objects.filter(usuario_creacion_alumno=0)
-        for id_persona in id_personas:
-            lista_alumnos.extend(Alumno.objects.filter(usuario_creacion_persona=id_persona))
+        #lista_alumnos = []#Alumno.objects.filter(usuario_creacion_alumno=0)
+        #for id_persona in id_personas:
+        #    lista_alumnos.extend(Alumno.objects.filter(usuario_creacion_persona=id_persona))
+        lista_alumnos = Alumno.objects.filter(colegio_id=get_current_colegio())
         # usuarios = personas.user_id
         #lista_alumnos.order_by("apellido_pa")
         return render(request, template_name=self.template_name, context={
