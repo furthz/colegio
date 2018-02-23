@@ -145,6 +145,13 @@
                                   <button formmethod="post" formaction="{% url 'income:boleta_A5' %}" form="imprimirboletaA5" class="btn btn-success" ><i class="fa fa-print" aria-hidden="true"></i> Imprimir boleta A5</button>
                           </div>
                           </form>
+                          <form name="imprimirboletaA7" id="imprimirboletaA7">{% csrf_token %}
+                              <div class="col-md-5">
+                                  <input hidden id="cobranza" name="cobranza" value="{{ cobranza }}" >
+                                  <input hidden id="alumno" name="alumno" value="{{ alumno.id_alumno }}" >
+                                  <button formmethod="post" formaction="{% url 'income:boleta_A7' %}" form="imprimirboletaA7" class="btn btn-success" ><i class="fa fa-print" aria-hidden="true"></i> Imprimir Ticket</button>
+                          </div>
+                          </form>
                       </div>
                     </div>
                     <div class="col-md-4">

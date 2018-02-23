@@ -590,6 +590,82 @@ from django.http import HttpResponse
 from datetime import date
 from register.models import Telefono, Direccion
 
+
+def boleta_A7(request):
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="ticket_{0}.pdf"'.format(datetime.today())
+    p = canvas.Canvas(response, pagesize=A6)
+    p.setLineWidth(.3)
+    p.setFont('Helvetica', 12)
+
+    id_cobranza_actual = request.POST["cobranza"]
+    id_alumno = request.POST["alumno"]
+    cobranza_actual = Cobranza.objects.get(id_cobranza=id_cobranza_actual)
+
+    colegio = Colegio.objects.get(pk=get_current_colegio())
+    detalle_cobranza = DetalleCobranza.objects.filter(cobranza=cobranza_actual)
+    alumno = Alumno.objects.get(id_alumno=id_alumno)
+    cajero = Profile.objects.get(user=get_current_user())
+
+    nombre = alumno
+    monto = [(str(p.monto)) for p in detalle_cobranza]
+    total = sum([(p.monto) for p in detalle_cobranza])
+    descripcion = [(str(p.cuentascobrar.servicio.nombre) + " " + str(p.cuentascobrar.servicio.tipo_servicio)) for p in
+                   detalle_cobranza]
+    fecha = date.today()
+
+
+    dire = Direccion.objects.get(colegio=colegio)
+    dir_colegio = dire.calle
+
+    departamento = dire.get_departamento + " - PERU"
+
+    dire_alumno = Direccion.objects.get(persona=alumno.persona)
+    direccion_alumno = dire_alumno.calle
+    ruc_colegio = colegio.ruc
+    numero_recibo = colegio.numero_recibo - 1
+
+    p.line(20, 390, 270, 390)
+    p.setFont('Helvetica', 12)
+    p.drawString(20, 360, '{0}'.format(colegio))
+    p.drawString(20, 346, '{0}'.format(dir_colegio))
+    try:
+        telefono_colegio = Telefono.objects.get(colegio=colegio)
+        p.drawString(20, 332, 'Telf.: {0}'.format(telefono_colegio))
+        p.drawString(20, 318, '{0}'.format(departamento))
+    except:
+        p.drawString(20, 332, '{0}'.format(departamento))
+    p.drawString(180, 360, 'RUC: {0}'.format(ruc_colegio))
+    p.drawString(180, 346, 'RECIBO N° {0}'.format(numero_recibo))
+    p.setFont('Helvetica', 10)
+    p.drawString(20, 305, 'Sr(a):   {0}'.format(nombre))
+    p.drawString(20, 295, 'Dirección:  {0}'.format(direccion_alumno))
+    p.drawString(180, 305, 'Fecha:  {0}'.format(fecha))
+
+    p.setFont('Helvetica', 10)
+    p.line(20, 265, 270, 265)
+    p.line(20, 283, 270, 283)
+    p.line(195, 265, 195, 283)
+    p.drawString(20, 270, 'Descripción:')
+    p.drawString(200, 270, 'Importe S/.')
+
+    p.setFont('Helvetica', 10)
+    for k in range(len(descripcion)):
+        p.drawString(20, 250 - 15 * k, '{0}'.format(descripcion[k]))
+        p.drawString(200, 250 - 15 * k, '{0}'.format(monto[k]))
+
+    p.line(20, 250 - 15 * len(descripcion) - 3, 270, 250 - 15 * len(descripcion) - 3)
+    p.line(20, 250 - 15 * len(descripcion) - 18, 270, 250 - 15 * len(descripcion) - 18)
+    p.drawString(130, 250 - 15 * len(descripcion) - 15, 'TOTAL S/.:')
+    p.drawString(200, 250 - 15 * len(descripcion) - 15, '{0}'.format(total))
+
+    p.showPage()
+    p.save()
+
+    return response
+
+
+
 def recibo_A6(request):
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="recibo_A6_{0}.pdf"'.format(datetime.today())
